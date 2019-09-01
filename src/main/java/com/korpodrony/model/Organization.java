@@ -1,4 +1,4 @@
-package model;
+package com.korpodrony.model;
 
 public class Organization {
     private User[] users;

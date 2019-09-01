@@ -1,4 +1,4 @@
-package model;
+package com.korpodrony.model;
 
 public class Plan {
     private static int currentID = 0;
