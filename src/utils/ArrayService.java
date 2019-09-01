@@ -1,7 +1,6 @@
 package utils;
 
-import exceptions.ElementIsNotUnique;
-import exceptions.NoElementFound;
+import exceptions.*;
 
 import java.util.Arrays;
 
@@ -9,32 +8,31 @@ public class ArrayService {
     private ArrayService() {
     }
 
-    public static <T> T[] addToArray(T[] array, T element) throws ElementIsNotUnique {
+    public static <T> T[] addToArray(T[] array, T element) throws ElementIsNotUniqueException {
         if (!isArrayEmpty(array) && getIndex(array, element) != -1)
-            throw new ElementIsNotUnique();
+            throw new ElementIsNotUniqueException();
         T[] resultArray = Arrays.copyOf(array, array.length + 1);
-        for (int i = 0; i < array.length; i++) {
-            resultArray[i] = array[i];
-        }
         resultArray[resultArray.length - 1] = element;
         return resultArray;
     }
 
-    public static <T> boolean isArrayEmpty(T[] array) {
+    public static <T> T[] addToArray(T[] array, T element, int limit) throws ArrayLimitReachedException, ElementIsNotUniqueException {
+        if (array.length == limit)
+            throw new ArrayLimitReachedException();
+        return addToArray(array, element);
+    }
+
+    private static <T> boolean isArrayEmpty(T[] array) {
         return array.length > 0 ? false : true;
     }
 
-    private static <T> T[] removeFromArrayByIndex(T[] array, int index) {
+    public static <T> T[] removeFromArrayByIndex(T[] array, int index) throws EmptyArrayException, NoElementFoundException {
         if (isArrayEmpty(array))
-            return array;
+            throw new EmptyArrayException();
+        if (index < 0 && index > array.length - 1)
+            throw new NoElementFoundException();
         T[] resultArray = Arrays.copyOf(array, array.length - 1);
-        int i = 0;
-        for (; i < index; i++) {
-            resultArray[i] = array[i];
-        }
-        for (int j = index + 1; j < array.length; j++) {
-            resultArray[i++] = array[j];
-        }
+        System.arraycopy(array, index + 1, resultArray, index, array.length - index - 1);
         return resultArray;
     }
 
@@ -48,10 +46,18 @@ public class ArrayService {
         return -1;
     }
 
-    public static <T> T[] removeElement(T[] array, T element) throws NoElementFound {
+    public static <T> T getElementByIndex(T[] array, int index) throws EmptyArrayException, NoElementFoundException {
+        if (isArrayEmpty(array))
+            throw new EmptyArrayException();
+        if (index < 0 || index > array.length - 1)
+            throw new NoElementFoundException();
+        return array[index];
+    }
+
+    public static <T> T[] removeElement(T[] array, T element) throws NoElementFoundException, EmptyArrayException {
         int index = getIndex(array, element);
         if (index == -1)
-            throw new NoElementFound();
+            throw new NoElementFoundException();
         return removeFromArrayByIndex(array, index);
     }
 
