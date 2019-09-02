@@ -46,19 +46,22 @@ public class ArrayService {
         return -1;
     }
 
-    public static <T> T getElementByIndex(T[] array, int index) throws EmptyArrayException, NoElementFoundException {
-        if (isArrayEmpty(array))
-            throw new EmptyArrayException();
-        if (index < 0 || index > array.length - 1)
-            throw new NoElementFoundException();
-        return array[index];
-    }
-
     public static <T> T[] removeElement(T[] array, T element) throws NoElementFoundException, EmptyArrayException {
         int index = getIndex(array, element);
         if (index == -1)
             throw new NoElementFoundException();
         return removeFromArrayByIndex(array, index);
+    }
+
+    public static <T> T[] filtrArray(T[] array, T[] array2) {
+        T[] resultArray = Arrays.copyOf(array, array.length);
+        for (T element : array2) {
+            try {
+                resultArray = removeElement(resultArray, element);
+            } catch (NoElementFoundException | EmptyArrayException e) {
+            }
+        }
+        return resultArray;
     }
 
     public static <T> void printArray(T[] array) {

@@ -80,16 +80,27 @@ public class Organization {
         }
     }
 
-    public User getUser(int index) throws NoElementFoundException, EmptyArrayException {
-        return ArrayService.getElementByIndex(users, index);
+    public User getUser(int index) {
+        return users[index];
     }
 
-    public Activity getActivity(int index) throws EmptyArrayException, NoElementFoundException {
-        return ArrayService.getElementByIndex(activities, index);
+    public Activity getActivity(int index) {
+        return activities[index];
     }
 
-    public Plan getPlan(int index) throws EmptyArrayException, NoElementFoundException {
-        return ArrayService.getElementByIndex(plans, index);
+    public Plan getPlan(int index) {
+        return plans[index];
     }
 
+    public void editUser(int index, String name, String surname, String password, String birthday) {
+        users[index].editUser(name, surname, password, birthday);
+    }
+
+    public void editActivity(int index, String name, short maxUsers, byte duration){
+        activities[index].editActivity(name, maxUsers, duration);
+    }
+
+    public void editPlan(int index, String name){
+        plans[index].editPlan(name);
+    }
 }
