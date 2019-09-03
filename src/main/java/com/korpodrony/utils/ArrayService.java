@@ -1,6 +1,9 @@
-package utils;
+package com.korpodrony.utils;
 
-import exceptions.*;
+import com.korpodrony.exceptions.ArrayLimitReachedException;
+import com.korpodrony.exceptions.ElementIsNotUniqueException;
+import com.korpodrony.exceptions.EmptyArrayException;
+import com.korpodrony.exceptions.NoElementFoundException;
 
 import java.util.Arrays;
 

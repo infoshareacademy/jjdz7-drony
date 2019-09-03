@@ -1,7 +1,8 @@
-package model;
+package com.korpodrony.model;
 
-import exceptions.*;
-import utils.ArrayService;
+import com.korpodrony.exceptions.ArrayLimitReachedException;
+import com.korpodrony.exceptions.ElementIsNotUniqueException;
+import com.korpodrony.utils.ArrayService;
 
 public class Activity {
     private static int currentID = 0;

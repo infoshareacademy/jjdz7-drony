@@ -1,4 +1,4 @@
-package model;
+package com.korpodrony.model;
 
 import java.util.Objects;
 
@@ -51,31 +51,14 @@ public class User {
         return userID;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
     @Override
     public String toString() {
-        return "User{" +
+        return
                 "userID=" + userID +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", birthDate='" + birthDate + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+                        ", name='" + name + '\'' +
+                        ", surname='" + surname + '\'' +
+                        ", birthDate='" + birthDate + '\'' +
+                        ", password='" + password;
     }
 
     @Override

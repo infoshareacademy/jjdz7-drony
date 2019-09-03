@@ -1,9 +1,9 @@
-package model;
+package com.korpodrony.model;
 
-import exceptions.ElementIsNotUniqueException;
-import exceptions.EmptyArrayException;
-import exceptions.NoElementFoundException;
-import utils.ArrayService;
+import com.korpodrony.exceptions.ElementIsNotUniqueException;
+import com.korpodrony.exceptions.EmptyArrayException;
+import com.korpodrony.exceptions.NoElementFoundException;
+import com.korpodrony.utils.ArrayService;
 
 public class Plan {
     private static int currentID = 0;
@@ -21,7 +21,7 @@ public class Plan {
         this(++currentID, name, new Integer[0]);
     }
 
-    public void editPlan(String name){
+    public void editPlan(String name) {
         setName(name);
     }
 

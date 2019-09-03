@@ -1,9 +1,9 @@
-package model;
+package com.korpodrony.model;
 
-import exceptions.ElementIsNotUniqueException;
-import exceptions.EmptyArrayException;
-import exceptions.NoElementFoundException;
-import utils.ArrayService;
+import com.korpodrony.exceptions.ElementIsNotUniqueException;
+import com.korpodrony.exceptions.EmptyArrayException;
+import com.korpodrony.exceptions.NoElementFoundException;
+import com.korpodrony.utils.ArrayService;
 
 public class Organization {
     public User[] users;
@@ -96,11 +96,11 @@ public class Organization {
         users[index].editUser(name, surname, password, birthday);
     }
 
-    public void editActivity(int index, String name, short maxUsers, byte duration){
+    public void editActivity(int index, String name, short maxUsers, byte duration) {
         activities[index].editActivity(name, maxUsers, duration);
     }
 
-    public void editPlan(int index, String name){
+    public void editPlan(int index, String name) {
         plans[index].editPlan(name);
     }
 }
