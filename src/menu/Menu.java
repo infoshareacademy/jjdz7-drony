@@ -2,7 +2,7 @@ package menu;
 
 import java.util.Scanner;
 
-public class menu {
+public class Menu {
     private boolean exit;
     private boolean contextMenuExit;
     private boolean subMenuExit;
@@ -10,6 +10,7 @@ public class menu {
     public void start() {
         initialParametersLoad();
         do {
+            contextMenuExit = false;
             printMainMenu();
             int choice = getUserInput();
             mainMenuDecide(choice);
@@ -24,24 +25,25 @@ public class menu {
     private void mainMenuDecide(int choice) {
         switch (choice) {
             case 1: {
-//                searchMenu();
+                searchMenu();
                 break;
             }
             case 2: {
-//                usersMenu();
+                usersMenu();
                 break;
             }
             case 3: {
-//                roomsMenu();
+//                roomsMenu(); TODO === to be implemented later
+                printFeatureNotImplementedYet();
                 break;
             }
             case 4: {
-//                activitiesMenu();
+                activitiesMenu();
                 break;
             }
             case 5: {
 
-//                schedulesMenu();
+                schedulesMenu();
                 break;
             }
             case 6: {
@@ -65,8 +67,44 @@ public class menu {
     }
 
     private void searchMenuDecide(int choice) {
+        switch (choice) {
+            case 1: {
+                searchByUserMenu();
+                break;
+            }
+            case 2: {
+                printFeatureNotImplementedYet();
+                //searchByRoomMenu TODO === to be implemented later
+                break;
+            }
+            case 3: {
+                searchByActivityMenu();
+                break;
+            }
+            case 4: {
+                searchByScheduleMenu();
+                break;
+            }
+            case 5: {
+                contextMenuExit = true;
+                break;
+            }
+            default: {
+                printBadInputErrorMessage();
+            }
+
+        }
 
     }
+
+    private void searchByUserMenu(){}
+
+//    private void searchByRoomMenu(){}
+
+    private void searchByActivityMenu(){}
+
+    private void searchByScheduleMenu(){}
+
 
     private void usersMenu() {
         do {
@@ -77,13 +115,49 @@ public class menu {
     }
 
     private void usersMenuDecide(int choice) {
+        switch (choice) {
+            case 1: {
+                usersMenuAddUser();
+                break;
+            }
+            case 2: {
+                usersMenuEditUser();
+                break;
+            }
+            case 3: {
+                usersMenuDeleteUser();
+                break;
+            }
+            case 4: {
+                usersMenuShowUser();
+                break;
+            }
+            case 6: {
+                contextMenuExit = true;
+                break;
+            }
+            default: {
+                printBadInputErrorMessage();
+            }
+
+        }
 
     }
 
-    private void roomsMenu() {
-        printFeatureNotImplementedYet();
-//        printContextMenu("Sale");
-    }
+    private void usersMenuAddUser(){}
+
+    private void usersMenuEditUser(){}
+
+    private void usersMenuDeleteUser(){}
+
+    private void usersMenuShowUser(){}
+
+    /**
+     * private void roomsMenu() {
+     * printFeatureNotImplementedYet();
+     * //        printContextMenu("Sale");
+     * }
+     **/
 
     private void activitiesMenu() {
         do {
@@ -94,8 +168,42 @@ public class menu {
     }
 
     private void activitiesMenuDecide(int choice) {
+        switch (choice) {
+            case 1: {
+                activitiesMenuAddActivity();
+                break;
+            }
+            case 2: {
+                activitiesMenuEditActivity();
+                break;
+            }
+            case 3: {
+                activitiesMenuDeleteActivity();
+                break;
+            }
+            case 4: {
+                activitiesMenuShowActivity();
+                break;
+            }
+            case 6: {
+                contextMenuExit = true;
+                break;
+            }
+            default: {
+                printBadInputErrorMessage();
+            }
+
+        }
 
     }
+
+    private void activitiesMenuAddActivity(){}
+
+    private void activitiesMenuEditActivity(){}
+
+    private void activitiesMenuDeleteActivity(){}
+
+    private void activitiesMenuShowActivity(){}
 
     private void schedulesMenu() {
         do {
@@ -106,8 +214,43 @@ public class menu {
     }
 
     private void schedulesMenuDecide(int choice) {
+        switch (choice) {
+            case 1: {
+                schedulesMenuAddSchedule();
+                break;
+            }
+            case 2: {
+                schedulesMenuEditSchedule();
+                break;
+            }
+            case 3: {
+                schedulesMenuDeleteSchedule();
+                break;
+            }
+            case 4: {
+                schedulesMenuShowSchedule();
+                break;
+            }
+            case 5: {
+                contextMenuExit = true;
+                break;
+            }
+            default: {
+                printBadInputErrorMessage();
+            }
+
+        }
 
     }
+
+    private void schedulesMenuAddSchedule(){}
+
+    private void schedulesMenuEditSchedule(){}
+
+    private void schedulesMenuDeleteSchedule(){}
+
+    private void schedulesMenuShowSchedule(){}
+
 
     /**
      * Menu prints section
@@ -159,6 +302,7 @@ public class menu {
 
 
     private void printBadInputErrorMessage() {
+        System.out.println("Złe dane, dokonaj ponownego wyboru");
     }
 
     private void printFeatureNotImplementedYet() {
