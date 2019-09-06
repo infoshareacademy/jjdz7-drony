@@ -1,4 +1,4 @@
-package util;
+package menu;
 
 /** TODO below code is to be yet implement after Menu is is working conditions - function below
 
