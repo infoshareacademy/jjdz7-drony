@@ -1,6 +1,4 @@
-package uil;
-
-import java.util.Scanner;
+package util;
 
 /** TODO below code is to be yet implement after Menu is is working conditions - function below
 

@@ -1,6 +1,6 @@
 import menu.Menu;
 
-public class Main {
+public class MenuTest {
     public static void main(String[] args) {
         new Menu().start();
 

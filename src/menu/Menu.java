@@ -1,11 +1,15 @@
 package menu;
 
+import model.User;
+
 import java.util.Scanner;
 
 public class Menu {
     private boolean exit;
     private boolean contextMenuExit;
     private boolean subMenuExit;
+
+    private int idToSearch;
 
     public void start() {
         initialParametersLoad();
@@ -97,14 +101,25 @@ public class Menu {
 
     }
 
-    private void searchByUserMenu(){}
+    private void searchByUserMenu() {
+        System.out.println("Szukanie użytkownika po ID, wpisz ID");
+        idToSearch = getUserInput();
+        System.out.println("Szukam po ID " + idToSearch); //TODO insert correct method call
+    }
 
-//    private void searchByRoomMenu(){}
+//    private void searchByRoomMenu(){} //TODO will be implemented when we add rooms fuctionality
 
-    private void searchByActivityMenu(){}
+    private void searchByActivityMenu() {
+        System.out.println("Szukanie zajęć po ID, wpisz ID");
+        idToSearch = getUserInput();
+        System.out.println("Szukam po ID " + idToSearch); //TODO insert correct method call
+    }
 
-    private void searchByScheduleMenu(){}
-
+    private void searchByScheduleMenu() {
+        System.out.println("Szukanie planu po ID, wpisz ID");
+        idToSearch = getUserInput();
+        System.out.println("Szukam po ID " + idToSearch); //TODO insert correct method call
+    }
 
     private void usersMenu() {
         do {
@@ -132,7 +147,7 @@ public class Menu {
                 usersMenuShowUser();
                 break;
             }
-            case 6: {
+            case 5: {
                 contextMenuExit = true;
                 break;
             }
@@ -144,20 +159,43 @@ public class Menu {
 
     }
 
-    private void usersMenuAddUser(){}
+    private void usersMenuAddUser() {
+        System.out.println("Dodawanie nowego użytkownika");
+        String userName = readStringInputWithMessage("Podaj imię");
+        String userSurname = readStringInputWithMessage("Podaj nazwisko");
+        String userBirthdate = readStringInputWithMessage("Podaj datę urodzenia w formacie DDMMYYYY"); //TODO add validator
+        String userPassword = readStringInputWithMessage("Podaj hasło");
+        User usertoAdd = new User(userName, userSurname, userBirthdate, userPassword);
+        //TODO method or direct add using arrayservice?
+    }
 
-    private void usersMenuEditUser(){}
+    private void usersMenuEditUser() {
+        System.out.println("Edytowanie użytkownika");
+        readIntInputWithMessage("Podaj ID użytkownika do edycji:");
+        //TODO check if ID exist
+        String userName = readStringInputWithMessage("Podaj imię");
+        String userSurname = readStringInputWithMessage("Podaj nazwisko");
+        String userBirthdate = readStringInputWithMessage("Podaj datę urodzenia w formacie DDMMYYYY"); //TODO add validator
+        String userPassword = readStringInputWithMessage("Podaj hasło");
+        //insertExisitngUser?(userName, userSurname, userBirthdate, userPassword); TODO call method to alter existing element
+    }
 
-    private void usersMenuDeleteUser(){}
+    private void usersMenuDeleteUser() {
+        System.out.println("Usuwanie użytkownika");
+        readIntInputWithMessage("Podaj ID użytkownika do usunięcia:");
+        //TODO check if ID exist
+        String confirmation = readStringInputWithMessage("Czy na pewno Y/N?");
+        if (confirmation.equals("Y")) {
+            System.out.println("Potwierdziłeś!");
+            //TODO method or direct delete using arrayservice?
+        }
+    }
 
-    private void usersMenuShowUser(){}
-
-    /**
-     * private void roomsMenu() {
-     * printFeatureNotImplementedYet();
-     * //        printContextMenu("Sale");
-     * }
-     **/
+    private void usersMenuShowUser() {
+        System.out.println("Pokazywanie użytkownika po ID:");
+        int idToShow=readIntInputWithMessage("Podaj ID użytkownika");
+        //TODO method to show existing user by ID
+    }
 
     private void activitiesMenu() {
         do {
@@ -185,7 +223,7 @@ public class Menu {
                 activitiesMenuShowActivity();
                 break;
             }
-            case 6: {
+            case 5: {
                 contextMenuExit = true;
                 break;
             }
@@ -197,13 +235,39 @@ public class Menu {
 
     }
 
-    private void activitiesMenuAddActivity(){}
+    private void activitiesMenuAddActivity() {
+        System.out.println("Dodawanie nowych zajęć");
+        String activityName = readStringInputWithMessage("Podaj nazwę zajęć:");
+        int maxUsers = readIntInputWithMessage("Podaj maksymalną ilość użytkowników:");
+        int duration = readIntInputWithMessage("Podaj długość zajęć (w kwadransach):");
+        //TODO method call to be added
+    }
 
-    private void activitiesMenuEditActivity(){}
+    private void activitiesMenuEditActivity() {
+        System.out.println("Edytowanie istniejących zajęć");
+        int idToRetrieve=readIntInputWithMessage("Podaj ID zajęć:");
+        String activityName = readStringInputWithMessage("Podaj nazwę zajęć:");
+        int maxUsers = readIntInputWithMessage("Podaj maksymalną ilość użytkowników:");
+        int duration = readIntInputWithMessage("Podaj długość zajęć (w kwadransach):");
+        //TODO method call to be added
+    }
 
-    private void activitiesMenuDeleteActivity(){}
+    private void activitiesMenuDeleteActivity() {
+        System.out.println("Usuwanie istniejących zajęć");
+        int idToDelete=readIntInputWithMessage("Podaj ID zajęć:");
+        //TODO show existing activity
+        String confirmation = readStringInputWithMessage("Czy na pewno Y/N?");
+        if (confirmation.equals("Y")) {
+            System.out.println("Potwierdziłeś!");
+            //TODO method or direct delete using arrayservice?
+        }
+    }
 
-    private void activitiesMenuShowActivity(){}
+    private void activitiesMenuShowActivity() {
+        System.out.println("Pokazywanie istniejących zajęć");
+        int idToRetrieve=readIntInputWithMessage("Podaj ID zajęć:");
+        //TODO method to show activities
+    }
 
     private void schedulesMenu() {
         do {
@@ -243,13 +307,37 @@ public class Menu {
 
     }
 
-    private void schedulesMenuAddSchedule(){}
+    private void schedulesMenuAddSchedule() {
+        System.out.println("Dodawanie nowych planów");
+        String scheduleName=readStringInputWithMessage("Podaj nazwę planu");
+        //TODO call method adding schedule
+    }
 
-    private void schedulesMenuEditSchedule(){}
+    private void schedulesMenuEditSchedule() {
+        System.out.println("Edytowanie istniejących planów");
+        int idToEdit=readIntInputWithMessage("Podaj ID planu do edycji:");
+        //TODO check if ID exists
+        String scheduleName=readStringInputWithMessage("Podaj nazwę planu");
+        //TODO call method editing schedule
+    }
 
-    private void schedulesMenuDeleteSchedule(){}
+    private void schedulesMenuDeleteSchedule() {
+        System.out.println("Usuwanie istniejących planów");
+        int idToDelete=readIntInputWithMessage("Podaj ID planu do edycji:");
+        //TODO check if ID exists
+        String confirmation = readStringInputWithMessage("Czy na pewno Y/N?");
+        if (confirmation.equals("Y")) {
+            System.out.println("Potwierdziłeś!");
+            //TODO method or direct delete using arrayservice?
+        }
 
-    private void schedulesMenuShowSchedule(){}
+    }
+
+    private void schedulesMenuShowSchedule() {
+        System.out.println("Pokazywanie istniejących planów");
+        int idToDelete=readIntInputWithMessage("Podaj ID planu do edycji:");
+        //TODO method to show existing schedules
+    }
 
 
     /**
@@ -282,25 +370,6 @@ public class Menu {
         System.out.println("5. Wyjście");
     }
 
-    private void printUserSubMenu() {
-
-
-    }
-
-//    Podaj Imię
-//    Podaj nazwisko
-//    Podaj... TODO check all fields needed to get necessary input from user - applies to below 3 classes as well, since logic will be similar
-
-    private void printRoomSubMenu() {
-    }
-
-    private void printActivitySubMenu() {
-    }
-
-    private void printScheduleSubMenu() {
-    }
-
-
     private void printBadInputErrorMessage() {
         System.out.println("Złe dane, dokonaj ponownego wyboru");
     }
@@ -322,16 +391,25 @@ public class Menu {
 
     private int getUserInput() {
         System.out.print("\nTwój wybór: ");
-        return Integer.parseInt(readUserInput());
+        return Integer.parseInt(readStringUserInput());
     }
 
-    public static String readUserInput() {
+    public static String readStringUserInput() {
         return new Scanner(System.in).nextLine();
     }
 
-    public static String readInputWithMessage(String message) {
+    public static int readIntUserInput() {
+        return new Scanner(System.in).nextInt();
+    }
+
+    public static String readStringInputWithMessage(String message){
         System.out.println(message);
-        return readUserInput();
+        return readStringUserInput();
+    }
+
+    public static int readIntInputWithMessage(String message){
+        System.out.println(message);
+        return readIntUserInput();
     }
 
     private void initialParametersLoad() {
