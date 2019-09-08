@@ -8,26 +8,20 @@ public class User {
     private int userID;
     private String name;
     private String surname;
-    private String birthDate;
-    private String password;
 
-    public User(int userID, String name, String surname, String birthDate, String password) {
+    public User(int userID, String name, String surname) {
         this.userID = userID;
         this.name = name;
         this.surname = surname;
-        this.birthDate = birthDate;
-        this.password = password;
     }
 
-    public User(String name, String surname, String birthDate, String password) {
-        this(++currentID, name, surname, birthDate, password);
+    public User(String name, String surname) {
+        this(++currentID, name, surname);
     }
 
-    public void editUser(String name, String surname, String password, String birthday) {
+    public void editUser(String name, String surname) {
         setName(name);
         setSurname(surname);
-        setPassword(password);
-        setBirthDate(birthday);
     }
 
     public void setName(String name) {
@@ -38,27 +32,13 @@ public class User {
         this.surname = surname;
     }
 
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
     public int getUserID() {
         return userID;
     }
 
     @Override
     public String toString() {
-        return
-                "userID=" + userID +
-                        ", name='" + name + '\'' +
-                        ", surname='" + surname + '\'' +
-                        ", birthDate='" + birthDate + '\'' +
-                        ", password='" + password;
+        return "userID = " + userID +", name = " + name + ", surname = " + surname;
     }
 
     @Override
@@ -71,6 +51,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userID, name, surname, birthDate);
+        return Objects.hash(userID, name, surname);
     }
 }
