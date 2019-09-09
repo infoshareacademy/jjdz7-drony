@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class Activity {
     private static int currentID = 0;
-    private int activityID;
+    private int ID;
     private String name;
     private short maxUsers;
     private Set<Integer> assignedUsersIDs;
@@ -16,8 +16,8 @@ public class Activity {
         this(++currentID, name, maxUsers, new HashSet<>(), duration);
     }
 
-    public Activity(int activityID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte duration) {
-        this.activityID = activityID;
+    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte duration) {
+        this.ID = ID;
         this.name = name;
         this.maxUsers = maxUsers;
         this.assignedUsersIDs = assignedUsersIDs;
@@ -30,35 +30,34 @@ public class Activity {
         setDuration(duration);
     }
 
-    public boolean assignUser(User user) {
-        if (assignedUsersIDs.contains(user.getUserID()) || assignedUsersIDs.size() == maxUsers) {
-            return false;
+    public boolean assignUser(int userID) {
+        if (canAssignUser(userID)) {
+            assignedUsersIDs.add(userID);
+            return true;
         }
-        assignedUsersIDs.add(user.getUserID());
-        return true;
+        return false;
     }
 
-    public boolean assignUser(int index) {
-        if (assignedUsersIDs.contains(index) || assignedUsersIDs.size() == maxUsers) {
+    public boolean assignUser(User user) {
+        return assignUser(user.getID());
+    }
+
+    public boolean unassignUser(int userID) {
+        if (!assignedUsersIDs.contains(userID)) {
             return false;
         }
-        assignedUsersIDs.add(index);
+        assignedUsersIDs.remove(userID);
         return true;
     }
 
     public boolean unassignUser(User user) {
-        if (!assignedUsersIDs.contains(user.getUserID())) {
-            return false;
-        }
-        assignedUsersIDs.remove(user.getUserID());
-        return true;
+        return unassignUser(user.getID());
     }
 
-    public boolean unassignUser(int index) {
-        if (!assignedUsersIDs.contains(index)) {
+    public boolean canAssignUser(int userID) {
+        if (assignedUsersIDs.contains(userID) || assignedUsersIDs.size() == maxUsers) {
             return false;
         }
-        assignedUsersIDs.remove(index);
         return true;
     }
 
@@ -66,8 +65,8 @@ public class Activity {
         return assignedUsersIDs;
     }
 
-    public int getActivityID() {
-        return activityID;
+    public int getID() {
+        return ID;
     }
 
     public void setName(String name) {

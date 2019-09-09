@@ -5,12 +5,12 @@ import java.util.Objects;
 public class User {
 
     private static int currentID = 0;
-    private int userID;
+    private int ID;
     private String name;
     private String surname;
 
-    public User(int userID, String name, String surname) {
-        this.userID = userID;
+    public User(int ID, String name, String surname) {
+        this.ID = ID;
         this.name = name;
         this.surname = surname;
     }
@@ -32,13 +32,13 @@ public class User {
         this.surname = surname;
     }
 
-    public int getUserID() {
-        return userID;
+    public int getID() {
+        return ID;
     }
 
     @Override
     public String toString() {
-        return "userID = " + userID +", name = " + name + ", surname = " + surname;
+        return "ID = " + ID + ", name = " + name + ", surname = " + surname;
     }
 
     @Override
@@ -46,11 +46,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return userID == user.userID;
+        return ID == user.ID;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userID, name, surname);
+        return Objects.hash(ID, name, surname);
     }
 }

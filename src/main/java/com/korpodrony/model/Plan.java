@@ -6,12 +6,12 @@ import java.util.Set;
 
 public class Plan {
     private static int currentID = 0;
-    private int planID;
+    private int ID;
     private String name;
     private Set<Integer> activitiesID;
 
-    public Plan(int planID, String name, Set<Integer> activitiesID) {
-        this.planID = planID;
+    public Plan(int ID, String name, Set<Integer> activitiesID) {
+        this.ID = ID;
         this.name = name;
         this.activitiesID = activitiesID;
     }
@@ -25,10 +25,10 @@ public class Plan {
     }
 
     public boolean assignActivity(Activity activity) {
-        if (activitiesID.contains(activity.getActivityID())) {
+        if (activitiesID.contains(activity.getID())) {
             return false;
         }
-        activitiesID.add(activity.getActivityID());
+        activitiesID.add(activity.getID());
         return true;
     }
 
@@ -48,8 +48,8 @@ public class Plan {
         return true;
     }
 
-    public int getPlanID() {
-        return planID;
+    public int getID() {
+        return ID;
     }
 
     private void setName(String name) {
@@ -61,11 +61,11 @@ public class Plan {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Plan plan = (Plan) o;
-        return planID == plan.planID;
+        return ID == plan.ID;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(planID);
+        return Objects.hash(ID);
     }
 }

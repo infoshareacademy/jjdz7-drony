@@ -3,46 +3,46 @@ package com.korpodrony.model;
 import java.util.*;
 
 public class Organization {
-    private Map<Integer, User> users;
-    private Map<Integer, Plan> plans;
-    private Map<Integer, Activity> activities;
+    public Set<User> users;
+    public Set<Plan> plans;
+    public Set<Activity> activities;
 
-    public Organization(Map<Integer, User> users, Map<Integer, Plan> plans, Map<Integer, Activity> activities) {
+    public Organization(Set<User> users, Set<Plan> plans, Set<Activity> activities) {
         this.users = users;
         this.plans = plans;
         this.activities = activities;
     }
 
     public Organization() {
-        this(new HashMap<Integer, User>(), new HashMap<Integer, Plan>(), new HashMap<Integer, Activity>());
+        this(new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
     private boolean addUser(User user) {
-        if (hasUser(user.getUserID())) {
+        if (hasUser(user)) {
             return false;
         }
-        users.put(user.getUserID(), user);
+        users.add(user);
         return true;
     }
 
     private boolean addPlan(Plan plan) {
-        if (hasPlan(plan.getPlanID())) {
+        if (hasPlan(plan)) {
             return false;
         }
-        plans.put(plan.getPlanID(), plan);
+        plans.add(plan);
         return true;
     }
 
     private boolean addActivity(Activity activity) {
-        if (hasActivity(activity.getActivityID())) {
+        if (hasActivity(activity)) {
             return false;
         }
-        activities.put(activity.getActivityID(), activity);
+        activities.add(activity);
         return true;
     }
 
     private boolean removeUser(int userID) {
-        if (!hasUser(userID)) {
+        if (!hasUserWithThisID(userID)) {
             return false;
         }
         users.remove(userID);
@@ -50,18 +50,18 @@ public class Organization {
     }
 
     private boolean removePlan(int planID) {
-        if (!hasPlan(planID)) {
+        if (!hasPlanWithThisID(planID)) {
             return false;
         }
-        plans.remove(planID);
+        plans.remove(getPlan(planID));
         return true;
     }
 
     private boolean removeActivity(int activityID) {
-        if (!hasActivity(activityID)) {
+        if (!hasActivityWithThisID(activityID)) {
             return false;
         }
-        activities.remove(activityID);
+        activities.remove(getActivity(activityID));
         return true;
     }
 
@@ -78,28 +78,28 @@ public class Organization {
     }
 
     public boolean assignUserToActivity(int userID, int activityID) {
-        if (!hasUser(userID) || !hasActivity(activityID)) {
+        if (!hasUserWithThisID(userID) || !hasActivityWithThisID(activityID)) {
             return false;
         }
         return getActivity(activityID).assignUser(userID);
     }
 
     public boolean unassignUserFromActivity(int userID, int activityID) {
-        if (!hasUser(userID) || !hasActivity(activityID)) {
+        if (!hasUserWithThisID(userID) || !hasActivityWithThisID(activityID)) {
             return false;
         }
         return getActivity(activityID).unassignUser(userID);
     }
 
     public boolean assignActivityToPlan(int activityID, int planID) {
-        if (!hasPlan(planID) || !hasActivity(activityID)) {
+        if (!hasPlanWithThisID(planID) || !hasActivityWithThisID(activityID)) {
             return false;
         }
         return getPlan(planID).assignActivity(activityID);
     }
 
     public boolean unassignActivityFromPlan(int activityID, int planID) {
-        if (!hasPlan(planID) || !hasActivity(activityID)) {
+        if (!hasPlanWithThisID(planID) || !hasActivityWithThisID(activityID)) {
             return false;
         }
         return getPlan(planID).unassignActivity(activityID);
@@ -119,80 +119,150 @@ public class Organization {
         return removeActivity(activityID);
     }
 
-    public boolean deletePlan(int planID){
+    public boolean deletePlan(int planID) {
         return removePlan(planID);
     }
 
     public User getUser(int userID) {
-        return users.get(userID);
+        for (User user : users) {
+            if (user.getID() == userID) {
+                return user;
+            }
+        }
+        return null;
     }
 
     public Activity getActivity(int activityID) {
-        return activities.get(activityID);
+        for (Activity activity : activities) {
+            if (activity.getID() == activityID) {
+                return activity;
+            }
+        }
+        return null;
     }
 
     public Plan getPlan(int planID) {
-        return plans.get(planID);
+        for (Plan plan : plans) {
+            if (plan.getID() == planID) {
+                return plan;
+            }
+        }
+        return null;
     }
 
     public boolean editUser(int userID, String name, String surname) {
-        if (!users.containsKey(userID)) {
+        if (!hasUserWithThisID(userID)) {
             return false;
         }
-        users.get(userID).editUser(name, surname);
+        getUser(userID).editUser(name, surname);
         return true;
     }
 
     public boolean editActivity(int activityID, String name, short maxUsers, byte duration) {
-        if (!activities.containsKey(activityID)) {
+        if (!hasActivityWithThisID(activityID)) {
             return false;
         }
-        activities.get(activityID).editActivity(name, maxUsers, duration);
+        getActivity(activityID).editActivity(name, maxUsers, duration);
         return true;
     }
 
     public boolean editPlan(int planID, String name) {
-        if (!plans.containsKey(planID)) {
+        if (!hasPlanWithThisID(planID)) {
             return false;
         }
-        plans.get(planID).editPlan(name);
+        getPlan(planID).editPlan(name);
         return true;
     }
 
-    public Set<Integer> getAllUsersIDs() {
-        return users.keySet();
+    public List<Integer> getAllUsersIDs() {
+        List<Integer> usersIDs = new ArrayList<>();
+        for (User user : users) {
+            usersIDs.add(user.getID());
+        }
+        return usersIDs;
     }
 
-    public Set<Integer> getAllActivitiesIDs() {
-        return activities.keySet();
+    public List<Integer> getAllActivitiesIDs() {
+        List<Integer> activitiesID = new ArrayList<>();
+        for (Activity activity : activities) {
+            activitiesID.add(activity.getID());
+        }
+        return activitiesID;
     }
 
-    public Set<Integer> getAllPlansIDs() {
-        return plans.keySet();
+    public List<Integer> getAllPlansIDs() {
+        List<Integer> activitiesID = new ArrayList<>();
+        for (Activity activity : activities) {
+            activitiesID.add(activity.getID());
+        }
+        return activitiesID;
     }
 
     public List<User> getAllUsers() {
-        return new ArrayList<>(users.values());
+        return new ArrayList<>(users);
     }
 
     public List<Activity> getAllActivies() {
-        return new ArrayList<>(activities.values());
+        return new ArrayList<>(activities);
     }
 
     public List<Plan> getAllPlans() {
-        return new ArrayList<>(plans.values());
+        return new ArrayList<>(plans);
     }
 
-    public boolean hasUser(int userID) {
-        return users.containsKey(userID);
+    public boolean hasUser(User user) {
+        for (User u : users) {
+            if (u.equals(user)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public boolean hasActivity(int activityID) {
-        return activities.containsKey(activityID);
+    public boolean hasActivity(Activity activity) {
+        for (Activity a : activities) {
+            if (a.equals(activity)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public boolean hasPlan(int planID) {
-        return plans.containsKey(planID);
+    public boolean hasPlan(Plan plan) {
+        for (Plan p : plans) {
+            if (p.equals(plan)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public boolean hasUserWithThisID(int userID) {
+        for (User user : users) {
+            if (user.getID() == userID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasActivityWithThisID(int activityID) {
+        for (Activity activity : activities) {
+            if (activity.getID() == activityID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasPlanWithThisID(int planID) {
+        for (Plan plan : plans) {
+            if (plan.getID() == planID) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
