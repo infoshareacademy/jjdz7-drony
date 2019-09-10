@@ -1,24 +1,23 @@
 package com.korpodrony.model;
 
-import com.korpodrony.exceptions.ArrayLimitReachedException;
-import com.korpodrony.exceptions.ElementIsNotUniqueException;
-import com.korpodrony.utils.ArrayService;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Activity {
     private static int currentID = 0;
-    private int activityID;
+    private int ID;
     private String name;
     private short maxUsers;
-    private Integer[] assignedUsersIDs;
+    private Set<Integer> assignedUsersIDs;
     //    Trainer trainer;
     private byte duration; /*Unit of duration is quarter*/
 
     public Activity(String name, short maxUsers, byte duration) {
-        this(++currentID, name, maxUsers, new Integer[0], duration);
+        this(++currentID, name, maxUsers, new HashSet<>(), duration);
     }
 
-    public Activity(int activityID, String name, short maxUsers, Integer[] assignedUsersIDs, byte duration) {
-        this.activityID = activityID;
+    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte duration) {
+        this.ID = ID;
         this.name = name;
         this.maxUsers = maxUsers;
         this.assignedUsersIDs = assignedUsersIDs;
@@ -31,28 +30,43 @@ public class Activity {
         setDuration(duration);
     }
 
-    public boolean assignUser(User user) {
-        try {
-            assignedUsersIDs = ArrayService.addToArray(assignedUsersIDs, user.getUserID(), maxUsers);
+    public boolean assignUser(int userID) {
+        if (canAssignUser(userID)) {
+            assignedUsersIDs.add(userID);
             return true;
-        } catch (ElementIsNotUniqueException | ArrayLimitReachedException e) {
-            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean assignUser(User user) {
+        return assignUser(user.getID());
+    }
+
+    public boolean unassignUser(int userID) {
+        if (!assignedUsersIDs.contains(userID)) {
             return false;
         }
+        assignedUsersIDs.remove(userID);
+        return true;
     }
 
     public boolean unassignUser(User user) {
-        try {
-            assignedUsersIDs = ArrayService.removeElement(assignedUsersIDs, user.getUserID());
-            return true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
+        return unassignUser(user.getID());
     }
 
-    public int getActivityID() {
-        return activityID;
+    public boolean canAssignUser(int userID) {
+        if (assignedUsersIDs.contains(userID) || assignedUsersIDs.size() == maxUsers) {
+            return false;
+        }
+        return true;
+    }
+
+    public Set<Integer> getAssignedUsersIDs() {
+        return assignedUsersIDs;
+    }
+
+    public int getID() {
+        return ID;
     }
 
     public void setName(String name) {
