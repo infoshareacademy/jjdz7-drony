@@ -1,24 +1,23 @@
 package com.korpodrony.model;
 
-import com.korpodrony.exceptions.ElementIsNotUniqueException;
-import com.korpodrony.exceptions.EmptyArrayException;
-import com.korpodrony.exceptions.NoElementFoundException;
-import com.korpodrony.utils.ArrayService;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 public class Plan {
     private static int currentID = 0;
-    private int planID;
+    private int ID;
     private String name;
-    private Integer[] activitiesID;
+    private Set<Integer> activitiesID;
 
-    public Plan(int planID, String name, Integer[] activitiesID) {
-        this.planID = planID;
+    public Plan(int ID, String name, Set<Integer> activitiesID) {
+        this.ID = ID;
         this.name = name;
         this.activitiesID = activitiesID;
     }
 
     public Plan(String name) {
-        this(++currentID, name, new Integer[0]);
+        this(++currentID, name, new HashSet<>());
     }
 
     public void editPlan(String name) {
@@ -26,26 +25,47 @@ public class Plan {
     }
 
     public boolean assignActivity(Activity activity) {
-        try {
-            activitiesID = ArrayService.addToArray(activitiesID, activity.getActivityID());
-            return true;
-        } catch (ElementIsNotUniqueException e) {
-            System.out.println(e.getMessage());
+        if (activitiesID.contains(activity.getID())) {
             return false;
         }
+        activitiesID.add(activity.getID());
+        return true;
     }
 
-    public boolean unassignActivity(Activity activity) {
-        try {
-            activitiesID = ArrayService.removeElement(activitiesID, activity.getActivityID());
-            return true;
-        } catch (NoElementFoundException | EmptyArrayException noElementFoundException) {
-            System.out.println(noElementFoundException.getMessage());
+    public boolean assignActivity(int index) {
+        if (activitiesID.contains(index)) {
             return false;
         }
+        activitiesID.add(index);
+        return true;
+    }
+
+    public boolean unassignActivity(int index) {
+        if (!activitiesID.contains(index)) {
+            return false;
+        }
+        activitiesID.remove(index);
+        return true;
+    }
+
+    public int getID() {
+        return ID;
     }
 
     private void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Plan plan = (Plan) o;
+        return ID == plan.ID;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ID);
     }
 }
