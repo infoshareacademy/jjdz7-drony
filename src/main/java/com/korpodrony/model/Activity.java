@@ -24,6 +24,9 @@ public class Activity {
         this.duration = duration;
     }
 
+    public Activity() {
+    }
+
     public void editActivity(String name, short maxUsers, byte duration) {
         setName(name);
         setMaxUsers(maxUsers);
@@ -67,6 +70,26 @@ public class Activity {
 
     public int getID() {
         return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public short getMaxUsers() {
+        return maxUsers;
+    }
+
+    public void setAssignedUsersIDs(Set<Integer> assignedUsersIDs) {
+        this.assignedUsersIDs = assignedUsersIDs;
+    }
+
+    public byte getDuration() {
+        return duration;
     }
 
     public void setName(String name) {

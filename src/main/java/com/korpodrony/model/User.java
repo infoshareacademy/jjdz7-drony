@@ -15,6 +15,9 @@ public class User {
         this.surname = surname;
     }
 
+    public User() {
+    }
+
     public User(String name, String surname) {
         this(++currentID, name, surname);
     }
@@ -34,6 +37,18 @@ public class User {
 
     public int getID() {
         return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
     }
 
     @Override
