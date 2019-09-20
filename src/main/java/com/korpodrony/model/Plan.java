@@ -83,8 +83,21 @@ public class Plan {
         return ID == plan.ID;
     }
 
+    public Set<Integer> getActivitiesID() {
+        return activitiesID;
+    }
+
+    @Override
+    public String toString() {
+        return "ID = " + ID +
+                ", nazwa planu:  " + name + '\'' +
+                "ID przypisanych zajęć: " + activitiesID;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(ID);
     }
 }
+
+

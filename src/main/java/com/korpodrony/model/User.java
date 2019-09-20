@@ -53,7 +53,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "ID = " + ID + ", name = " + name + ", surname = " + surname;
+        return "ID = " + ID + ", imię: " + name + ", nazwisko: " + surname;
     }
 
     @Override
