@@ -6,7 +6,10 @@ import com.korpodrony.model.Organization;
 import com.korpodrony.model.Plan;
 import com.korpodrony.model.User;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class OrganizationService {
     private Organization organization;
@@ -46,86 +49,118 @@ public class OrganizationService {
     }
 
     public void assignUserToActivity() {
-        if (organization.getAllActivies().size() > 0 && organization.getAllUsers().size() > 0) {
-            int activityID = chooseActivity();
-            if (organization.getActivity(activityID).getAssignedUsersIDs().size() != organization.getActivity(activityID).getMaxUsers()) {
-                List<User> avaiableUsers = chooseAvaiableUsers(activityID);
-                avaiableUsers.forEach(System.out::println);
-                int userID = IoTools.readIntInputWithMessage("Podaj ID użytkownika, którego chcesz przypisać do zajęć");
-                if (organization.assignUserToActivity(userID, activityID)) {
-                    System.out.println("Przypisano użytkownika do zajęć");
-                } else if (!organization.hasUserWithThisID(userID)) {
-                    System.out.println("Użytkownik z takim ID nie istnieje");
-                } else {
-                    System.out.println("Ten użytkownik jest już przypisany do zajęć");
-                }
-            } else {
-                System.out.println("Te zajęcia posiadają już maksylamną liczbę przypisanych uzytkowników");
-            }
-        } else {
+        if (organization.getAllActivies().size() == 0 || organization.getAllUsers().size() == 0) {
             System.out.println("Nie ma obecnie żadnych zajęć lub użytkowników");
+            return;
+        }
+        int activityID = chooseActivity();
+        chooseAvaiableUsers(activityID).forEach(System.out::println);
+        int userID = IoTools.readIntInputWithMessage("Podaj ID użytkownika, którego chcesz przypisać do zajęć");
+        if (canAssignUsertToActivity(userID, activityID)) {
+            if (organization.assignUserToActivity(userID, activityID)) {
+                System.out.println("Przypisano użytkownika do zajęć");
+            }
         }
     }
 
-
     public void assignActivityToPlan() {
-        if (organization.getAllActivies().size() > 0 && organization.getAllPlans().size() > 0) {
-            int planID = choosePlan();
-            List<Activity> avaiableActivites = chooseAvaiableActivites(planID);
-            avaiableActivites.forEach(System.out::println);
-            int activityID = IoTools.readIntInputWithMessage("Podaj ID zajęć, które chcesz przypisać do planu");
-            if (organization.assignActivityToPlan(activityID, planID)) {
-                System.out.println("Przypisano użytkownika do zajęć");
-            } else if (!organization.hasActivityWithThisID(activityID)) {
-                System.out.println("Zajęcia z takim ID nie istnieją");
-            } else {
-                System.out.println("Te zajęcia są już przypisane do planu");
-            }
-        } else {
+        if (organization.getAllActivies().size() == 0 || organization.getAllPlans().size() == 0) {
             System.out.println("Nie ma obecnie żadnych planów lub zajęć");
+            return;
         }
+        int planID = choosePlan();
+        chooseAvaiableActivites(planID).forEach(System.out::println);
+        int activityID = IoTools.readIntInputWithMessage("Podaj ID zajęć, które chcesz przypisać do planu");
+        if (canAssignActivityToPlan(activityID, planID)) {
+            if (organization.assignActivityToPlan(activityID, planID)) {
+                System.out.println("Zajęcia przypisano do planu");
+            }
+        }
+    }
+
+    public boolean canAssignUsertToActivity(int userID, int activityID) {
+        if (!organization.hasUserWithThisID(userID)) {
+            System.out.println("Użytkownik z takim ID nie istnieje");
+            return false;
+        } else if (organization.getActivity(activityID).getAssignedUsersIDs().contains(userID)) {
+            System.out.println("Ten użytkownik jest już przypisany do zajęć");
+            return false;
+        } else if (organization.getActivity(activityID).getAssignedUsersIDs().size() == organization.getActivity(activityID).getMaxUsers()) {
+            System.out.println("Te zajęcia posiadają już maksylamną liczbę przypisanych uzytkowników");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean canAssignActivityToPlan(int activityID, int planID) {
+        if (!organization.hasActivityWithThisID(activityID)) {
+            System.out.println("Zajęcia z takim ID nie istnieją");
+            return false;
+        } else if (!organization.getPlan(planID).getActivitiesID().contains(activityID)) {
+            System.out.println("Te zajęcia są już przypisane do planu");
+            return false;
+        }
+        return true;
     }
 
     public void unassignActivityFromPlan() {
-        if (organization.getAllPlans().size() > 0 && organization.getAllActivies().size() > 0) {
-            int planID = choosePlan();
-            if (organization.getPlan(planID).getActivitiesID().size() > 0) {
-                getActivitiesByIDs(organization.getPlan(planID).getActivitiesID()).forEach(System.out::println);
-                int activityID = IoTools.getIntegerWithMessage("Podaj ID zajęć do wypisania z planu");
-                if (!organization.getAllActivitiesIDs().contains(activityID)) {
-                    System.out.println("zajęcia o takim ID nie istnieją");
-                } else if (organization.unassignActivityFromPlan(activityID, planID)) {
-                    System.out.println("zajęcia wypisano z planu");
-                } else {
-                    System.out.println("zajęcia nie były przypisane do tego planu");
-                }
-            } else {
-                System.out.println("Plan nie posiada przypisanych zajęć");
-            }
-        } else {
+        if (organization.getAllPlans().size() == 0 || organization.getAllActivies().size() == 0) {
             System.out.println("Nie ma obecnie żadnych planów lub zajęć");
+            return;
+        }
+        int planID = choosePlan();
+        if (organization.getPlan(planID).getActivitiesID().size() == 0) {
+            System.out.println("Obcnie nie ma przypisanych żadnych zajęć do planu");
+            return;
+        }
+        getActivitiesByIDs(organization.getPlan(planID).getActivitiesID()).forEach(System.out::println);
+        int activityID = IoTools.getIntegerWithMessage("Podaj ID zajęć do wypisania z planu");
+        if (canUnassignActivityFromPlan(activityID, planID)) {
+            if (organization.unassignActivityFromPlan(activityID, planID)) {
+                System.out.println("zajęcia wypisano z planu");
+            }
         }
     }
 
     public void unassingUserFromActivity() {
-        if (organization.getAllActivies().size() > 0 && organization.getAllUsers().size() > 0) {
-            int activityID = chooseActivity();
-            if (organization.getActivity(activityID).getAssignedUsersIDs().size() > 0) {
-                getUsersByIDs(organization.getActivity(activityID).getAssignedUsersIDs()).forEach(System.out::println);
-                int userID = IoTools.getIntegerWithMessage("Podaj ID użytkownika do wypisania z zajęć");
-                if (!organization.getAllUsersIDs().contains(userID)) {
-                    System.out.println("użytkownik o takim ID nie istnieje");
-                } else if (organization.unassignUserFromActivity(userID, activityID)) {
-                    System.out.println("użytkownika wypisano z zajęć");
-                } else {
-                    System.out.println("użytkownik nie był przypisany do tych zajeć");
-                }
-            } else {
-                System.out.println("Zajęcia nie posiadają przypisanych użytkowników");
-            }
-        } else {
+        if (organization.getAllActivies().size() == 0 || organization.getAllUsers().size() == 0) {
             System.out.println("Nie ma obecnie żadnych zajęć lub użytkowników");
+            return;
         }
+        int activityID = chooseActivity();
+        if (organization.getActivity(activityID).getAssignedUsersIDs().size() == 0) {
+            System.out.println("Zajęcia nie posiadają przypisanych użytkowników");
+            return;
+        }
+        getUsersByIDs(organization.getActivity(activityID).getAssignedUsersIDs()).forEach(System.out::println);
+        int userID = IoTools.getIntegerWithMessage("Podaj ID użytkownika do wypisania z zajęć");
+        if (canUnassignUserFromActivity(userID, activityID)) {
+            if (organization.unassignUserFromActivity(userID, activityID)) {
+                System.out.println("użytkownika wypisano z zajęć");
+            }
+        }
+    }
+
+    public boolean canUnassignActivityFromPlan(int activityID, int planID) {
+        if (!organization.getAllActivitiesIDs().contains(activityID)) {
+            System.out.println("zajęcia o takim ID nie istnieją");
+            return false;
+        } else if (!organization.getPlan(planID).getActivitiesID().contains(activityID)) {
+            System.out.println("zajęcia nie są przypisane do planu, więc nie można ich wypisać");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean canUnassignUserFromActivity(int userID, int activityID) {
+        if (!organization.getAllUsersIDs().contains(userID)) {
+            System.out.println("użytkownik o takim ID nie istnieje");
+            return false;
+        } else if (!organization.getActivity(activityID).getAssignedUsersIDs().contains(userID)) {
+            System.out.println("użytkownik nie jest przypisany do tych zajeć, więc nie może być usunięty");
+            return false;
+        }
+        return true;
     }
 
     private List<User> getUsersByIDs(Set<Integer> users) {
@@ -244,6 +279,53 @@ public class OrganizationService {
         List<Plan> plans = organization.getAllPlans();
         for (int i = 0; i < plans.size(); i++) {
             System.out.println(plans.get(0));
+        }
+    }
+
+    public void editPlan() {
+        if (organization.getAllPlans().size() == 0) {
+            System.out.println("Nie ma obecnie żadnych planów, które można by edytować");
+            return;
+        }
+        printPlans();
+        int planID = IoTools.getIntegerWithMessage("Podaj ID planu, który chcesz edytować");
+        String name = IoTools.readStringInputWithMessage("Podaj nową nazwę zajęć");
+        if (organization.editPlan(planID, name)) {
+            System.out.println("Zedytowano plan");
+        } else {
+            System.out.println("Nie ma takiego planu");
+        }
+    }
+
+    public void editActiity() {
+        if (organization.getAllActivies().size() == 0) {
+            System.out.println("Nie ma obecnie żadnych zajęć, które można by edytować");
+            return;
+        }
+        printActivites();
+        int activityID = IoTools.getIntegerWithMessage("Podaj ID zajęć, które chcesz edytować");
+        String name = IoTools.readStringInputWithMessage("Podaj nazwę zajęć");
+        short maxUsers = IoTools.getShortWithMessage("Podaj maksymalną liczbę użytkowników zajęć");
+        byte duration = IoTools.getByteWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach");
+        if (organization.editActivity(activityID, name, maxUsers, duration)) {
+            System.out.println("Zedytowano zajęcia");
+        } else {
+            System.out.println("Nie ma takich zajęć");
+        }
+    }
+
+    public void editUser() {
+        if (organization.getAllUsers().size() == 0) {
+            System.out.println("Nie ma obecnie żadnych użytkowników, których można by edytować");
+            return;
+        }
+        printUsers();
+        int planID = IoTools.getIntegerWithMessage("Podaj ID planu, który chcesz edytować");
+        String name = IoTools.readStringInputWithMessage("Podaj nową nazwę zajęć");
+        if (organization.editPlan(planID, name)) {
+            System.out.println("Zedytowano plan");
+        } else {
+            System.out.println("Nie ma takiego planu");
         }
     }
 }
