@@ -80,4 +80,17 @@ public class Activity {
     public void setDuration(byte duration) {
         this.duration = duration;
     }
+
+    public short getMaxUsers() {
+        return maxUsers;
+    }
+
+    @Override
+    public String toString() {
+        return "ID =" + ID +
+                ", nazwa: " + name + '\'' +
+                ", maksymalna liczba użytkowników: " + maxUsers +
+                ", ID przypisanych użytkowników: " + assignedUsersIDs +
+                ", czas trwania [min]:" + duration*15;
+    }
 }
