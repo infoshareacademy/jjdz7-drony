@@ -1,11 +1,17 @@
 package com.korpodrony.menu;
 
 
+import com.korpodrony.model.Organization;
+import com.korpodrony.service.OrganizationService;
+
 public class MainMenu {
     public static boolean exit;
     public static boolean contextMenuExit;
     public static boolean subMenuExit;
     public static int menuIdToSearch;
+
+    public static Organization dB = new Organization();
+    public static OrganizationService dBService = new OrganizationService(dB);
 
     public void startMainMenu() {
         initialParametersLoad();
@@ -15,7 +21,6 @@ public class MainMenu {
             int choice = IoTools.getUserInput();
             runMainMenuDecide(choice);
         } while (!exit);
-// TODO discuss whether our app should save changes on the fly, or should it ask at the end of the program to write app state/config etd
     }
 
     /**
@@ -33,7 +38,7 @@ public class MainMenu {
                 break;
             }
             case 3: {
-//                roomsMenu(); TODO === to be implemented later
+//                       TODO === to be implemented later
                 Messages.printFeatureNotImplementedYet();
                 break;
             }
@@ -56,6 +61,7 @@ public class MainMenu {
         }
     }
     private void initialParametersLoad() {
+        System.out.println("=== Parameters load placeholder ===");
     }
 
 

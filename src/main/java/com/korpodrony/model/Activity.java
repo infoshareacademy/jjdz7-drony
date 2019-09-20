@@ -87,8 +87,8 @@ public class Activity {
 
     @Override
     public String toString() {
-        return "ID =" + ID +
-                ", nazwa: " + name + '\'' +
+        return "ID = " + ID +
+                ", nazwa: " + name + '\n' +
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
                 ", czas trwania [min]:" + duration*15;

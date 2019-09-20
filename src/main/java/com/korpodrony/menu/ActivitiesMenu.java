@@ -41,35 +41,21 @@ public class ActivitiesMenu {
 
     private static void startActivitiesMenuAddActivity() {
         System.out.println("Dodawanie nowych zajęć");
-        String activityName = IoTools.readStringInputWithMessage("Podaj nazwę zajęć:");
-        int maxUsers = IoTools.readIntInputWithMessage("Podaj maksymalną ilość użytkowników:");
-        int duration = IoTools.readIntInputWithMessage("Podaj długość zajęć (w kwadransach):");
-        //TODO method call to be added
+        MainMenu.dBService.addActivity();
     }
 
     private static void startActivitiesMenuEditActivity() {
-        System.out.println("Edytowanie istniejących zajęć");
-        int idToRetrieve= IoTools.readIntInputWithMessage("Podaj ID zajęć:");
-        String activityName = IoTools.readStringInputWithMessage("Podaj nazwę zajęć:");
-        int maxUsers = IoTools.readIntInputWithMessage("Podaj maksymalną ilość użytkowników:");
-        int duration = IoTools.readIntInputWithMessage("Podaj długość zajęć (w kwadransach):");
-        //TODO method call to be added
+        MainMenu.dBService.editActiity();
     }
 
     private static void startActivitiesMenuDeleteActivity() {
         System.out.println("Usuwanie istniejących zajęć");
-        int idToDelete= IoTools.readIntInputWithMessage("Podaj ID zajęć:");
-        //TODO show existing activity
-        String confirmation = IoTools.readStringInputWithMessage("Czy na pewno Y/N?");
-        if (confirmation.equals("Y")) {
-            System.out.println("Potwierdziłeś!");
-            //TODO method or direct delete using arrayservice?
-        }
+        MainMenu.dBService.removeActivity();
     }
 
     private static void startActivitiesMenuShowActivity() {
         System.out.println("Pokazywanie istniejących zajęć");
-        int idToRetrieve= IoTools.readIntInputWithMessage("Podaj ID zajęć:");
-        //TODO method to show activities
+        int idToShow=IoTools.readIntInputWithMessage("Podaj ID zajęć");
+        System.out.println(MainMenu.dB.getActivity(idToShow).toString());
     }
 }
