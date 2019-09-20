@@ -13,6 +13,11 @@ public class App {
         os.addUser();
         os.addActivity();
         os.assignUserToActivity();
+        os.addPlan();
+        os.assignActivityToPlan();
+        os.printPlans();
         os.unassignActivityFromPlan();
+        os.removeUser();
+        os.editActiity();
     }
 }

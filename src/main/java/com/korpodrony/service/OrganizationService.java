@@ -96,7 +96,7 @@ public class OrganizationService {
         if (!organization.hasActivityWithThisID(activityID)) {
             System.out.println("Zajęcia z takim ID nie istnieją");
             return false;
-        } else if (!organization.getPlan(planID).getActivitiesID().contains(activityID)) {
+        } else if (organization.getPlan(planID).getActivitiesID().contains(activityID)) {
             System.out.println("Te zajęcia są już przypisane do planu");
             return false;
         }
@@ -211,7 +211,7 @@ public class OrganizationService {
 
     private int chooseActivity() {
         printActivites();
-        int choice = IoTools.readIntInputWithMessage("Podaj numer zajęc");
+        int choice = IoTools.readIntInputWithMessage("Podaj ID zajęc");
         if (organization.hasActivityWithThisID(choice)) {
             return choice;
         } else {
@@ -222,7 +222,7 @@ public class OrganizationService {
 
     private int choosePlan() {
         printPlans();
-        int choice = IoTools.readIntInputWithMessage("Podaj numer planu");
+        int choice = IoTools.readIntInputWithMessage("Podaj ID planu");
         if (organization.hasPlanWithThisID(choice)) {
             return choice;
         } else {
@@ -243,6 +243,7 @@ public class OrganizationService {
 
     public void removeActivity() {
         printActivites();
+
         int choice = IoTools.readIntInputWithMessage("Podaj ID zajęc do usunięcia");
         if (organization.deleteActivity(choice)) {
             System.out.println("Usunięto zajęcia");
@@ -263,6 +264,10 @@ public class OrganizationService {
 
     public void printUsers() {
         List<User> users = organization.getAllUsers();
+        if (users.size() == 0) {
+            System.out.println("nie ma obecnie żadnych użytkowników");
+            return;
+        }
         for (int i = 0; i < users.size(); i++) {
             System.out.println(users.get(i));
         }
@@ -270,6 +275,10 @@ public class OrganizationService {
 
     public void printActivites() {
         List<Activity> activities = organization.getAllActivies();
+        if (activities.size() == 0) {
+            System.out.println("nie ma obecnie żadnych zajęć");
+            return;
+        }
         for (int i = 0; i < activities.size(); i++) {
             System.out.println(activities.get(i));
         }
@@ -277,6 +286,10 @@ public class OrganizationService {
 
     public void printPlans() {
         List<Plan> plans = organization.getAllPlans();
+        if (plans.size() == 0) {
+            System.out.println("nie ma obecnie żadnych planów");
+            return;
+        }
         for (int i = 0; i < plans.size(); i++) {
             System.out.println(plans.get(0));
         }
@@ -289,11 +302,13 @@ public class OrganizationService {
         }
         printPlans();
         int planID = IoTools.getIntegerWithMessage("Podaj ID planu, który chcesz edytować");
+        if (!organization.getAllPlansIDs().contains(planID)) {
+            System.out.println("Nie ma zajęć o takim ID");
+            return;
+        }
         String name = IoTools.readStringInputWithMessage("Podaj nową nazwę zajęć");
         if (organization.editPlan(planID, name)) {
             System.out.println("Zedytowano plan");
-        } else {
-            System.out.println("Nie ma takiego planu");
         }
     }
 
@@ -304,13 +319,15 @@ public class OrganizationService {
         }
         printActivites();
         int activityID = IoTools.getIntegerWithMessage("Podaj ID zajęć, które chcesz edytować");
+        if (!organization.getAllActivitiesIDs().contains(activityID)) {
+            System.out.println("Nie ma zajęć o takim ID");
+            return;
+        }
         String name = IoTools.readStringInputWithMessage("Podaj nazwę zajęć");
         short maxUsers = IoTools.getShortWithMessage("Podaj maksymalną liczbę użytkowników zajęć");
         byte duration = IoTools.getByteWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach");
         if (organization.editActivity(activityID, name, maxUsers, duration)) {
             System.out.println("Zedytowano zajęcia");
-        } else {
-            System.out.println("Nie ma takich zajęć");
         }
     }
 
@@ -320,12 +337,15 @@ public class OrganizationService {
             return;
         }
         printUsers();
-        int planID = IoTools.getIntegerWithMessage("Podaj ID planu, który chcesz edytować");
-        String name = IoTools.readStringInputWithMessage("Podaj nową nazwę zajęć");
-        if (organization.editPlan(planID, name)) {
-            System.out.println("Zedytowano plan");
-        } else {
-            System.out.println("Nie ma takiego planu");
+        int userID = IoTools.getIntegerWithMessage("Podaj ID planu, który chcesz edytować");
+        if (!organization.getAllUsersIDs().contains(userID)) {
+            System.out.println("Nie ma użytkownika o takim ID");
+            return;
+        }
+        String name = IoTools.readStringInputWithMessage("Podaj nowe imię użytkownika");
+        String surName = IoTools.readStringInputWithMessage("Podaj nowe nazwisko użytkownika");
+        if (organization.editUser(userID, name, surName)) {
+            System.out.println("Zedytowano użytkownika");
         }
     }
 }
