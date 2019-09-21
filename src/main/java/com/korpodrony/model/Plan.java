@@ -8,6 +8,27 @@ public class Plan {
     private static int currentID = 0;
     private int ID;
     private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setActivitiesID(Set<Integer> activitiesID) {
+        this.activitiesID = activitiesID;
+    }
+
+    public static int getCurrentID() {
+        return currentID;
+    }
+
+    public static void setCurrentID(int currentID) {
+        Plan.currentID = currentID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
     private Set<Integer> activitiesID;
 
     public Plan(int ID, String name, Set<Integer> activitiesID) {

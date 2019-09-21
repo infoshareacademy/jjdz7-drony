@@ -1,17 +1,27 @@
 package com.korpodrony.menu;
 
-import com.korpodrony.model.User;
+import com.korpodrony.comparators.ActivityIDComparator;
+import com.korpodrony.model.Activity;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UsersMenu {
-    static void startUsersMenu() {
+    MainMenu mainMenu;
+
+    public UsersMenu(MainMenu mainMenu) {
+        this.mainMenu = mainMenu;
+    }
+
+    void startUsersMenu() {
         do {
-            Messages.printContextMenu("Użytkownicy");
+            Messages.printUserMenu("Użytkownicy");
             int choice = IoTools.getUserInput();
             runUsersMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
     }
 
-    private static void runUsersMenuDecide(int choice) {
+    private void runUsersMenuDecide(int choice) {
         switch (choice) {
             case 1: {
                 startUsersMenuAddUser();
@@ -30,6 +40,10 @@ public class UsersMenu {
                 break;
             }
             case 5: {
+                startUsersMenuShowUserActivities();
+                break;
+            }
+            case 6: {
                 MainMenu.contextMenuExit = true;
                 break;
             }
@@ -41,23 +55,42 @@ public class UsersMenu {
 
     }
 
-    private static void startUsersMenuAddUser() {
+    private void startUsersMenuShowUserActivities() {
+        System.out.println("Pokazywanie zajęć użytkownika");
+        mainMenu.dBService.printUsers();
+        if (mainMenu.dB.getAllUsers().size() == 0) {
+            return;
+        }
+        int choice = IoTools.readIntInputWithMessage("Podaj ID użytkownika do którego zajęcia chcesz obejrzeć");
+        if (!mainMenu.dB.hasUserWithThisID(choice)){
+            System.out.println("Nie ma takiego użytkownika");
+            return;
+        }
+        List<Activity> userActivities = mainMenu.dB.getAllActivies().stream().filter(x -> x.getAssignedUsersIDs().contains(choice)).collect(Collectors.toList());
+        if (userActivities.size() == 0) {
+            System.out.println("użytkownik nie jest przypisany do żadnych zajęć");
+            return;
+        }
+        userActivities.sort(new ActivityIDComparator());
+        userActivities.forEach(System.out::println);
+    }
+
+    private void startUsersMenuAddUser() {
         System.out.println("Dodawanie nowego użytkownika");
-        MainMenu.dBService.addUser();
+        mainMenu.dBService.addUser();
     }
 
-    private static void startUsersMenuEditUser() {
+    private void startUsersMenuEditUser() {
         System.out.println("Edytowanie użytkownika");
-        MainMenu.dBService.editUser();
+        mainMenu.dBService.editUser();
     }
 
-    private static void startUsersMenuDeleteUser() {
+    private void startUsersMenuDeleteUser() {
         System.out.println("Usuwanie użytkownika");
-        MainMenu.dBService.removeUser();
+        mainMenu.dBService.removeUser();
     }
 
-
-    private static void startUsersMenuShowUser() {
-            MainMenu.dBService.printUsers();
+    private void startUsersMenuShowUser() {
+        mainMenu.dBService.printUsers();
     }
 }

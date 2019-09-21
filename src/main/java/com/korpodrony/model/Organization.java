@@ -3,9 +3,9 @@ package com.korpodrony.model;
 import java.util.*;
 
 public class Organization {
-    public Set<User> users;
-    public Set<Plan> plans;
-    public Set<Activity> activities;
+    private Set<User> users;
+    private Set<Plan> plans;
+    private Set<Activity> activities;
 
     public Organization(Set<User> users, Set<Plan> plans, Set<Activity> activities) {
         this.users = users;
@@ -15,6 +15,30 @@ public class Organization {
 
     public Organization() {
         this(new HashSet<>(), new HashSet<>(), new HashSet<>());
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public Set<Plan> getPlans() {
+        return plans;
+    }
+
+    public void setPlans(Set<Plan> plans) {
+        this.plans = plans;
+    }
+
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
     }
 
     private boolean addUser(User user) {

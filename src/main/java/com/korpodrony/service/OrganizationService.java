@@ -1,15 +1,15 @@
 package com.korpodrony.service;
 
+import com.korpodrony.comparators.ActivityIDComparator;
+import com.korpodrony.comparators.PlanIDComparator;
+import com.korpodrony.comparators.UserIDComparator;
 import com.korpodrony.menu.IoTools;
 import com.korpodrony.model.Activity;
 import com.korpodrony.model.Organization;
 import com.korpodrony.model.Plan;
 import com.korpodrony.model.User;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class OrganizationService {
     private Organization organization;
@@ -58,7 +58,9 @@ public class OrganizationService {
             System.out.println("obecnie nie ma użytkowników, których można przypisać");
             return;
         }
-        chooseAvaiableUsers(activityID).forEach(System.out::println);
+        List<User> avaiableUsers = chooseAvaiableUsers(activityID);
+        avaiableUsers.sort(new UserIDComparator());
+        avaiableUsers.forEach(System.out::println);
         int userID = IoTools.readIntInputWithMessage("Podaj ID użytkownika, którego chcesz przypisać do zajęć");
         if (canAssignUsertToActivity(userID, activityID)) {
             if (organization.assignUserToActivity(userID, activityID)) {
@@ -77,7 +79,9 @@ public class OrganizationService {
             System.out.println("obecnie nie ma zajęć, które można przypisać");
             return;
         }
-        chooseAvaiableActivites(planID).forEach(System.out::println);
+        List<Activity> avaiableAcitvities = chooseAvaiableActivites(planID);
+        avaiableAcitvities.sort(new ActivityIDComparator());
+        avaiableAcitvities.forEach(System.out::println);
         int activityID = IoTools.readIntInputWithMessage("Podaj ID zajęć, które chcesz przypisać do planu");
         if (canAssignActivityToPlan(activityID, planID)) {
             if (organization.assignActivityToPlan(activityID, planID)) {
@@ -278,8 +282,9 @@ public class OrganizationService {
         }
     }
 
-    public void printUsers() {
+    public void printUsers(Comparator comparator) {
         List<User> users = organization.getAllUsers();
+        users.sort(comparator);
         if (users.size() == 0) {
             System.out.println("Nie ma obecnie żadnych użytkowników");
             return;
@@ -289,8 +294,9 @@ public class OrganizationService {
         }
     }
 
-    public void printActivites() {
+    public void printActivites(Comparator comparator) {
         List<Activity> activities = organization.getAllActivies();
+        activities.sort(comparator);
         if (activities.size() == 0) {
             System.out.println("nie ma obecnie żadnych zajęć");
             return;
@@ -300,8 +306,9 @@ public class OrganizationService {
         }
     }
 
-    public void printPlans() {
+    public void printPlans(Comparator comparator) {
         List<Plan> plans = organization.getAllPlans();
+        plans.sort(comparator);
         if (plans.size() == 0) {
             System.out.println("nie ma obecnie żadnych planów");
             return;
@@ -309,6 +316,18 @@ public class OrganizationService {
         for (int i = 0; i < plans.size(); i++) {
             System.out.println(plans.get(0));
         }
+    }
+
+    public void printPlans() {
+        printPlans(new PlanIDComparator());
+    }
+
+    public void printActivites() {
+        printActivites(new ActivityIDComparator());
+    }
+
+    public void printUsers() {
+        printUsers(new UserIDComparator());
     }
 
     public void editPlan() {

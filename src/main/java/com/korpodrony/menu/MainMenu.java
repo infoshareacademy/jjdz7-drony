@@ -10,11 +10,15 @@ public class MainMenu {
     public static boolean subMenuExit;
     public static int menuIdToSearch;
 
-    public static Organization dB = new Organization();
-    public static OrganizationService dBService = new OrganizationService(dB);
+    public  Organization dB;
+    public  OrganizationService dBService;
+
+    public MainMenu(Organization dB) {
+        this.dB = dB;
+        this.dBService = new OrganizationService(dB);
+    }
 
     public void startMainMenu() {
-        initialParametersLoad();
         do {
             contextMenuExit = false;
             Messages.printMainMenu();
@@ -22,7 +26,6 @@ public class MainMenu {
             runMainMenuDecide(choice);
         } while (!exit);
     }
-
     /**
      * Menu choice logic
      **/
@@ -30,11 +33,11 @@ public class MainMenu {
     private void runMainMenuDecide(int choice) {
         switch (choice) {
             case 1: {
-                SearchMenu.startSearchMenu();
+                new SearchMenu(this).startSearchMenu();
                 break;
             }
             case 2: {
-                UsersMenu.startUsersMenu();
+                new UsersMenu(this).startUsersMenu();
                 break;
             }
 //            case 3: {
@@ -43,11 +46,11 @@ public class MainMenu {
 //                break;
 //            }
             case 3: {
-                ActivitiesMenu.StartActivitiesMenu();
+                new ActivitiesMenu(this).StartActivitiesMenu();
                 break;
             }
             case 4: {
-                SchedulesMenu.startSchedulesMenu();
+                 new SchedulesMenu(this).startSchedulesMenu();
                 break;
             }
             case 5: {
@@ -60,9 +63,4 @@ public class MainMenu {
 
         }
     }
-    private void initialParametersLoad() {
-        System.out.println("=== Parameters load placeholder ===");
-    }
-
-
 }

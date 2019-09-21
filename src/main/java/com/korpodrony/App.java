@@ -3,6 +3,7 @@ package com.korpodrony;
 import com.korpodrony.model.Organization;
 import com.korpodrony.model.User;
 import com.korpodrony.service.OrganizationService;
+import com.korpodrony.service.PropertiesService;
 import com.korpodrony.util.Json;
 
 import java.io.IOException;
@@ -15,19 +16,21 @@ public class App {
     public static void main(String[] args) {
         Organization org = new Organization();
         OrganizationService os = new OrganizationService(org);
-        org.createUser("Jan", "Sam");
-        org.createUser("Xan", "Sam");
-        org.createUser("Han", "Sam");
-        org.createUser("Pan", "Sam");
-        Json.writeSetToFile("/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/Users", org.users);
-        Set<User> users = null;
+        org.createUser("Jan", "Brzechwa");
+        org.createUser("Kubuś", "Puchatek");
+        org.createUser("Han", "Solo");
+        org.createUser("Pan", "Paderweski");
+        org.createActivity("Java", (short) 30, (byte) 5);
+        org.assignUserToActivity(1,1);
+        org.getActivity(1);
+        Json.writeSetToFile("/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/Actvities", org.getUsers());
         try {
-            users = Json.readSetFromFile("/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/Users", User.class);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            org.setUsers(Json.readSetFromFile("/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/Users", User.class));
+        } catch (ClassNotFoundException | IOException e){
+            System.out.println("sdadsadas");
         }
-        System.out.println(users);
+//        PropertiesService propertiesService = new PropertiesService();
+//        String path =   propertiesService.getProperty(PropertiesService.APP_PATH);
+//        System.out.println(path);
     }
 }

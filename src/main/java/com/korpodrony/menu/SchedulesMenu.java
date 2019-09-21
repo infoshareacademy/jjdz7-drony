@@ -1,15 +1,28 @@
 package com.korpodrony.menu;
 
+import com.korpodrony.comparators.UserIDComparator;
+import com.korpodrony.model.Activity;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class SchedulesMenu {
-    static void startSchedulesMenu() {
+
+    private MainMenu mainMenu;
+
+    public SchedulesMenu(MainMenu mainMenu) {
+        this.mainMenu = mainMenu;
+    }
+
+    void startSchedulesMenu() {
         do {
-            Messages.printContextMenu("Plany");
+            Messages.printScheldulesMenu("Plany");
             int choice = IoTools.getUserInput();
             runSchedulesMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
     }
 
-    private static void runSchedulesMenuDecide(int choice) {
+    private void runSchedulesMenuDecide(int choice) {
         switch (choice) {
             case 1: {
                 startSchedulesMenuAddSchedule();
@@ -28,34 +41,74 @@ public class SchedulesMenu {
                 break;
             }
             case 5: {
+                startSchedulesMenuAssignActivity();
+                break;
+            }
+            case 6: {
+                startSchedulesMenuUnassignActivity();
+                break;
+            }
+            case 7: {
+                startSchedulesMenuShowActivtiesOfSchedule();
+                break;
+            }
+            case 8: {
                 MainMenu.contextMenuExit = true;
                 break;
             }
             default: {
                 Messages.printBadInputErrorMessage();
             }
-
         }
-
     }
 
-    private static void startSchedulesMenuAddSchedule() {
+    private void startSchedulesMenuShowActivtiesOfSchedule() {
+        System.out.println("Pokazywanie zajęć przypisanych do planu");
+        mainMenu.dBService.printPlans();
+        if (mainMenu.dB.getAllPlans().size() == 0) {
+            return;
+        }
+        int choice = IoTools.readIntInputWithMessage("Podaj ID planu, którego zajęcia chcesz obejrzeć");
+        if (!mainMenu.dB.hasPlanWithThisID(choice)){
+            System.out.println("Nie ma takiego planu");
+            return;
+        }
+        List<Activity> activities = mainMenu.dB.getPlan(choice).getActivitiesID().stream().map(x->mainMenu.dB.getActivity(x)).collect(Collectors.toList());
+        if (activities.size() == 0) {
+            System.out.println("plan nie mają przypisanych żadnych zajęć");
+            return;
+        }
+        activities.sort(new UserIDComparator());
+        activities.forEach(System.out::println);
+    }
+
+    private void startSchedulesMenuUnassignActivity() {
+        System.out.println("Usuwanie zajęć z planu");
+        mainMenu.dBService.unassignActivityFromPlan();
+    }
+
+    private void startSchedulesMenuAssignActivity() {
+        System.out.println("Przypisywanie zajęc do planu");
+        mainMenu.dBService.assignActivityToPlan();
+    }
+
+    private void startSchedulesMenuAddSchedule() {
         System.out.println("Dodawanie nowych planów");
-        MainMenu.dBService.addPlan();
+        mainMenu.dBService.addPlan();
     }
 
-    private static void startSchedulesMenuEditSchedule() {
+    private void startSchedulesMenuEditSchedule() {
         System.out.println("Edytowanie istniejących planów");
-        MainMenu.dBService.editPlan();
+        mainMenu.dBService.editPlan();
     }
 
-    private static void startSchedulesMenuDeleteSchedule() {
+    private void startSchedulesMenuDeleteSchedule() {
         System.out.println("Usuwanie istniejących planów");
-        MainMenu.dBService.removePlan();
+        mainMenu.dBService.removePlan();
     }
 
-    private static void startSchedulesMenuShowSchedule() {
+    private void startSchedulesMenuShowSchedule() {
         System.out.println("Pokazywanie istniejących planów");
-        MainMenu.dBService.printPlans();
+        mainMenu.dBService.printPlans();
     }
 }

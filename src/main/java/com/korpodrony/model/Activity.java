@@ -12,6 +12,22 @@ public class Activity {
     //    Trainer trainer;
     private byte duration; /*Unit of duration is quarter*/
 
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setAssignedUsersIDs(Set<Integer> assignedUsersIDs) {
+        this.assignedUsersIDs = assignedUsersIDs;
+    }
+
+    public byte getDuration() {
+        return duration;
+    }
+
     public Activity(String name, short maxUsers, byte duration) {
         this(++currentID, name, maxUsers, new HashSet<>(), duration);
     }
