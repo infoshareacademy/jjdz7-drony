@@ -45,7 +45,7 @@ public class Organization {
         if (!hasUserWithThisID(userID)) {
             return false;
         }
-        users.remove(userID);
+        users.remove(getUser(userID));
         return true;
     }
 
@@ -191,11 +191,11 @@ public class Organization {
     }
 
     public List<Integer> getAllPlansIDs() {
-        List<Integer> activitiesID = new ArrayList<>();
-        for (Activity activity : activities) {
-            activitiesID.add(activity.getID());
+        List<Integer> plansIDs = new ArrayList<>();
+        for (Plan plan : plans) {
+            plansIDs.add(plan.getID());
         }
-        return activitiesID;
+        return plansIDs;
     }
 
     public List<User> getAllUsers() {

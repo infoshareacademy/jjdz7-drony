@@ -4,12 +4,6 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class IoTools {
-    /**
-     * UTIL PART OF THE CLASS.
-     * <p>
-     * TODO - decide if this should be split to separate file
-     */
-
 
     public static int getUserInput() {
         System.out.print("\nTwój wybór: ");
@@ -33,6 +27,7 @@ public class IoTools {
         System.out.println(message);
         return readIntUserInput();
     }
+
 
     private static final Scanner sc = new Scanner(System.in).useLocale(Locale.US);
 
@@ -97,4 +92,5 @@ public class IoTools {
         System.out.println(message);
         return getNumericInput();
     }
+
 }
