@@ -16,7 +16,8 @@ public class ActivitiesMenu {
     void StartActivitiesMenu() {
         do {
             Messages.printActivitiesMenu("Zajęcia");
-            int choice = IoTools.getUserInput();
+            System.out.print("Twój wybór: ");
+            int choice = IoTools.getNumericInput();
             runActivitiesMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
     }

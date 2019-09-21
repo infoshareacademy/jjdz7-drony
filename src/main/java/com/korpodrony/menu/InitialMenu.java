@@ -10,7 +10,6 @@ import com.korpodrony.utils.JSONReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.Set;
 
 public class InitialMenu {
@@ -19,7 +18,8 @@ public class InitialMenu {
         int choice = 0;
         do {
             Messages.printInitialMenu();
-            choice = IoTools.getUserInput();
+            System.out.print("Twój wybór: ");
+            choice = IoTools.getNumericInput();
             runInitialMenuDecide(choice);
         } while (choice != 1 && choice != 2);
     }
@@ -41,7 +41,6 @@ public class InitialMenu {
             default: {
                 Messages.printBadInputErrorMessage();
             }
-
         }
     }
 
@@ -56,23 +55,20 @@ public class InitialMenu {
             createNewOrganization();
         } else {
             Organization org = new Organization();
-            if (Files.exists(Paths.get(path, "Users"))) {
-                Set<User> usersFromJson = new JSONReader().parseUserFromJSONFile(Paths.get(path, "Users"));
+            if (Files.exists(Paths.get(path, "Users.json"))) {
+                Set<User> usersFromJson = new JSONReader().parseUserFromJSONFile(Paths.get(path, "Users.json"));
                 org.setUsers(usersFromJson);
                 User.setCurrentID(usersFromJson);
-                System.out.println(User.getCurrentID());
             }
-            if (Files.exists(Paths.get(path, "Activities"))) {
-                Set<Activity> activtiesFromJson = new JSONReader().parseActivityFromJSONFile(Paths.get(path, "Activities"));
+            if (Files.exists(Paths.get(path, "Activities.json"))) {
+                Set<Activity> activtiesFromJson = new JSONReader().parseActivityFromJSONFile(Paths.get(path, "Activities.json"));
                 org.setActivities(activtiesFromJson);
                 Activity.setCurrentID(activtiesFromJson);
-                System.out.println(Activity.getCurrentID());
             }
-            if (Files.exists(Paths.get(path, "Plans"))) {
-                Set<Plan> plansFromJson = new JSONReader().parsePlanFromJSONFile(Paths.get(path, "Plans"));
+            if (Files.exists(Paths.get(path, "Plans.json"))) {
+                Set<Plan> plansFromJson = new JSONReader().parsePlanFromJSONFile(Paths.get(path, "Plans.json"));
                 org.setPlans(plansFromJson);
                 Plan.setCurrentID(plansFromJson);
-                System.out.println(Plan.getCurrentID());
             }
             new MainMenu(org).startMainMenu();
         }
