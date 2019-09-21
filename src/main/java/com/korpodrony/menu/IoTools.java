@@ -9,7 +9,9 @@ public class IoTools {
      * <p>
      * TODO - decide if this should be split to separate file
      */
-    
+
+
+
     public static int getUserInput() {
         System.out.print("\nTwój wybór: ");
         return Integer.parseInt(readStringUserInput());
