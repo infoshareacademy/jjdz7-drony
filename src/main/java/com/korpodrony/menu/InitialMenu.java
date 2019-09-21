@@ -1,6 +1,5 @@
 package com.korpodrony.menu;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.korpodrony.model.Activity;
 import com.korpodrony.model.Organization;
 import com.korpodrony.model.Plan;
@@ -11,6 +10,7 @@ import com.korpodrony.utils.JSONReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.Set;
 
 public class InitialMenu {
@@ -29,7 +29,7 @@ public class InitialMenu {
             case 1: {
                 try {
                     initialParametersLoad();
-                } catch (IOException | ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException  e) {
                     createNewOrganization();
                 }
                 break;
@@ -56,18 +56,23 @@ public class InitialMenu {
             createNewOrganization();
         } else {
             Organization org = new Organization();
-            ObjectMapper objectMapper = new ObjectMapper();
             if (Files.exists(Paths.get(path, "Users"))) {
-                Set<User> usersFromJson = new JSONReader().parseUserFromJSONFile(Paths.get("/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/Users"));
+                Set<User> usersFromJson = new JSONReader().parseUserFromJSONFile(Paths.get(path, "Users"));
                 org.setUsers(usersFromJson);
+                User.setCurrentID(usersFromJson);
+                System.out.println(User.getCurrentID());
             }
             if (Files.exists(Paths.get(path, "Activities"))) {
                 Set<Activity> activtiesFromJson = new JSONReader().parseActivityFromJSONFile(Paths.get(path, "Activities"));
                 org.setActivities(activtiesFromJson);
+                Activity.setCurrentID(activtiesFromJson);
+                System.out.println(Activity.getCurrentID());
             }
             if (Files.exists(Paths.get(path, "Plans"))) {
                 Set<Plan> plansFromJson = new JSONReader().parsePlanFromJSONFile(Paths.get(path, "Plans"));
                 org.setPlans(plansFromJson);
+                Plan.setCurrentID(plansFromJson);
+                System.out.println(Plan.getCurrentID());
             }
             new MainMenu(org).startMainMenu();
         }

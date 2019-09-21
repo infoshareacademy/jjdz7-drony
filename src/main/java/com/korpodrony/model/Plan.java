@@ -18,6 +18,15 @@ public class Plan {
 
     public Plan() {
     }
+    public static void setCurrentID(Set<Plan> plans){
+        int maxValue = 0;
+        for (Plan plan: plans){
+            if (plan.getID()>maxValue){
+                maxValue=plan.getID();
+            }
+        }
+        setCurrentID(maxValue);
+    }
 
     public static int getCurrentID() {
         return currentID;

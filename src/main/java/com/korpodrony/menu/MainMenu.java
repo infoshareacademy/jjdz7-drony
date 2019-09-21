@@ -37,9 +37,9 @@ public class MainMenu {
         if (path == null) {
             path = "/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/";
         }
-        JSONWriter.writeJSONToFile(Paths.get(path, "Users"), dB.getUsers());
-        JSONWriter.writeJSONToFile(Paths.get(path, "Activities"), dB.getActivities());
-        JSONWriter.writeJSONToFile(Paths.get(path, "Plans"), dB.getPlans());
+        JSONWriter.writeJSONToFile(Paths.get(path, "Users.json"), dB.getUsers());
+        JSONWriter.writeJSONToFile(Paths.get(path, "Activities.json"), dB.getActivities());
+        JSONWriter.writeJSONToFile(Paths.get(path, "Plans.json"), dB.getPlans());
     }
 
     /**

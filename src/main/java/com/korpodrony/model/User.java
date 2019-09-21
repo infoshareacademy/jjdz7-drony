@@ -1,6 +1,7 @@
 package com.korpodrony.model;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class User {
 
@@ -15,6 +16,17 @@ public class User {
         this.surname = surname;
     }
 
+    public User() {
+    }
+    public static void setCurrentID(Set<User> users){
+        int maxValue = 0;
+        for (User user: users){
+            if (user.getID()>maxValue){
+                maxValue=user.getID();
+            }
+        }
+        setCurrentID(maxValue);
+    }
     public User(String name, String surname) {
         this(++currentID, name, surname);
     }

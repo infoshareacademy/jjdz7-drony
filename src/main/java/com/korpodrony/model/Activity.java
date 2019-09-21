@@ -31,6 +31,16 @@ public class Activity {
         return currentID;
     }
 
+    public static void setCurrentID(Set<Activity>activities){
+        int maxValue = 0;
+        for (Activity activity: activities){
+            if (activity.getID()>maxValue){
+                maxValue=activity.getID();
+            }
+        }
+        setCurrentID(maxValue);
+    }
+
     public static void setCurrentID(int currentID) {
         Activity.currentID = currentID;
     }
