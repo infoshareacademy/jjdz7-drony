@@ -43,39 +43,21 @@ public class UsersMenu {
 
     private static void startUsersMenuAddUser() {
         System.out.println("Dodawanie nowego użytkownika");
-        String userName = IoTools.readStringInputWithMessage("Podaj imię");
-        String userSurname = IoTools.readStringInputWithMessage("Podaj nazwisko");
-        String userBirthdate = IoTools.readStringInputWithMessage("Podaj datę urodzenia w formacie DDMMYYYY"); //TODO add validator
-        String userPassword = IoTools.readStringInputWithMessage("Podaj hasło");
-        User usertoAdd = new User(userName, userSurname);
-        //TODO method or direct add using arrayservice?
+        MainMenu.dBService.addUser();
     }
 
     private static void startUsersMenuEditUser() {
         System.out.println("Edytowanie użytkownika");
-        IoTools.readIntInputWithMessage("Podaj ID użytkownika do edycji:");
-        //TODO check if ID exist
-        String userName = IoTools.readStringInputWithMessage("Podaj imię");
-        String userSurname = IoTools.readStringInputWithMessage("Podaj nazwisko");
-        String userBirthdate = IoTools.readStringInputWithMessage("Podaj datę urodzenia w formacie DDMMYYYY"); //TODO add validator
-        String userPassword = IoTools.readStringInputWithMessage("Podaj hasło");
-        //insertExisitngUser?(userName, userSurname, userBirthdate, userPassword); TODO call method to alter existing element
+        MainMenu.dBService.editUser();
     }
 
     private static void startUsersMenuDeleteUser() {
         System.out.println("Usuwanie użytkownika");
-        IoTools.readIntInputWithMessage("Podaj ID użytkownika do usunięcia:");
-        //TODO check if ID exist
-        String confirmation = IoTools.readStringInputWithMessage("Czy na pewno Y/N?");
-        if (confirmation.equals("Y")) {
-            System.out.println("Potwierdziłeś!");
-            //TODO method or direct delete using arrayservice?
-        }
+        MainMenu.dBService.removeUser();
     }
 
+
     private static void startUsersMenuShowUser() {
-        System.out.println("Pokazywanie użytkownika po ID:");
-        int idToShow= IoTools.readIntInputWithMessage("Podaj ID użytkownika");
-        //TODO method to show existing user by ID
+            MainMenu.dBService.printUsers();
     }
 }

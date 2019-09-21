@@ -3,9 +3,9 @@ package com.korpodrony.model;
 import java.util.*;
 
 public class Organization {
-    private Set<User> users;
-    private Set<Plan> plans;
-    private Set<Activity> activities;
+    public Set<User> users;
+    public Set<Plan> plans;
+    public Set<Activity> activities;
 
     public Organization(Set<User> users, Set<Plan> plans, Set<Activity> activities) {
         this.users = users;
@@ -45,7 +45,7 @@ public class Organization {
         if (!hasUserWithThisID(userID)) {
             return false;
         }
-        users.remove(userID);
+        users.remove(getUser(userID));
         return true;
     }
 
@@ -191,11 +191,11 @@ public class Organization {
     }
 
     public List<Integer> getAllPlansIDs() {
-        List<Integer> activitiesID = new ArrayList<>();
-        for (Activity activity : activities) {
-            activitiesID.add(activity.getID());
+        List<Integer> plansIDs = new ArrayList<>();
+        for (Plan plan : plans) {
+            plansIDs.add(plan.getID());
         }
-        return activitiesID;
+        return plansIDs;
     }
 
     public List<User> getAllUsers() {

@@ -4,10 +4,10 @@ public class Messages {
     static void printMainMenu() {
         System.out.println("\n1. Szukaj");
         System.out.println("2. Użytkownicy");
-        System.out.println("3. Sale");
-        System.out.println("4. Zajęcia");
-        System.out.println("5. Plany");
-        System.out.println("6. Wyjście");
+//        System.out.println("3. Sale");
+        System.out.println("3. Zajęcia");
+        System.out.println("4. Plany");
+        System.out.println("5. Wyjście");
     }
 
     static void printSearchMenu() {
@@ -25,6 +25,17 @@ public class Messages {
         System.out.println("3. Usuń");
         System.out.println("4. Pokaż");
         System.out.println("5. Wyjście");
+    }
+
+    static void printActivitiesMenu(String contextMenuType) {
+        System.out.println("Menu --" + contextMenuType + "--");
+        System.out.println("\n1. Dodaj");
+        System.out.println("2. Edytuj");
+        System.out.println("3. Usuń");
+        System.out.println("4. Pokaż");
+        System.out.println("5. Przypisz użytkownika do zajęć");
+        System.out.println("6. Wypisz użytkownika z zajęć");
+        System.out.println("7. Wyjście");
     }
 
     static void printBadInputErrorMessage() {

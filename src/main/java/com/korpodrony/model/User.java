@@ -15,6 +15,21 @@ public class User {
         this.surname = surname;
     }
 
+    public User() {
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
     public User(String name, String surname) {
         this(++currentID, name, surname);
     }

@@ -3,7 +3,7 @@ package com.korpodrony.menu;
 public class ActivitiesMenu {
     static void StartActivitiesMenu() {
         do {
-            Messages.printContextMenu("Zajęcia");
+            Messages.printActivitiesMenu("Zajęcia");
             int choice = IoTools.getUserInput();
             runActivitiesMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
@@ -28,6 +28,14 @@ public class ActivitiesMenu {
                 break;
             }
             case 5: {
+                startActivitiesMenuAssignUser();
+                break;
+            }
+            case 6: {
+                startActivitiesMenuUnassignUser();
+                break;
+            }
+            case 7: {
                 MainMenu.contextMenuExit = true;
                 break;
             }
@@ -39,37 +47,32 @@ public class ActivitiesMenu {
 
     }
 
+    private static void startActivitiesMenuUnassignUser() {
+        System.out.println("Wypisywanie użytkownika z zajęć");
+        MainMenu.dBService.unassingUserFromActivity();
+    }
+
+    private static void startActivitiesMenuAssignUser() {
+        System.out.println("Przypisywanie użytkownika do zajęć");
+        MainMenu.dBService.assignUserToActivity();
+    }
+
     private static void startActivitiesMenuAddActivity() {
         System.out.println("Dodawanie nowych zajęć");
-        String activityName = IoTools.readStringInputWithMessage("Podaj nazwę zajęć:");
-        int maxUsers = IoTools.readIntInputWithMessage("Podaj maksymalną ilość użytkowników:");
-        int duration = IoTools.readIntInputWithMessage("Podaj długość zajęć (w kwadransach):");
-        //TODO method call to be added
+        MainMenu.dBService.addActivity();
     }
 
     private static void startActivitiesMenuEditActivity() {
-        System.out.println("Edytowanie istniejących zajęć");
-        int idToRetrieve= IoTools.readIntInputWithMessage("Podaj ID zajęć:");
-        String activityName = IoTools.readStringInputWithMessage("Podaj nazwę zajęć:");
-        int maxUsers = IoTools.readIntInputWithMessage("Podaj maksymalną ilość użytkowników:");
-        int duration = IoTools.readIntInputWithMessage("Podaj długość zajęć (w kwadransach):");
-        //TODO method call to be added
+        MainMenu.dBService.editActiity();
     }
 
     private static void startActivitiesMenuDeleteActivity() {
         System.out.println("Usuwanie istniejących zajęć");
-        int idToDelete= IoTools.readIntInputWithMessage("Podaj ID zajęć:");
-        //TODO show existing activity
-        String confirmation = IoTools.readStringInputWithMessage("Czy na pewno Y/N?");
-        if (confirmation.equals("Y")) {
-            System.out.println("Potwierdziłeś!");
-            //TODO method or direct delete using arrayservice?
-        }
+        MainMenu.dBService.removeActivity();
     }
 
     private static void startActivitiesMenuShowActivity() {
         System.out.println("Pokazywanie istniejących zajęć");
-        int idToRetrieve= IoTools.readIntInputWithMessage("Podaj ID zajęć:");
-        //TODO method to show activities
+        MainMenu.dBService.printActivites();
     }
 }
