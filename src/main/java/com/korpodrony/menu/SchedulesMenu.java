@@ -3,7 +3,7 @@ package com.korpodrony.menu;
 public class SchedulesMenu {
     static void startSchedulesMenu() {
         do {
-            Messages.printContextMenu("Plany");
+            Messages.printSchedulesContextMenu();
             int choice = IoTools.getUserInput();
             runSchedulesMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
@@ -24,7 +24,7 @@ public class SchedulesMenu {
                 break;
             }
             case 4: {
-                startSchedulesMenuShowSchedule();
+                startSchedulesMenuListSchedules();
                 break;
             }
             case 5: {
@@ -54,8 +54,7 @@ public class SchedulesMenu {
         MainMenu.dBService.removePlan();
     }
 
-    private static void startSchedulesMenuShowSchedule() {
-        int idToShow=IoTools.readIntInputWithMessage("Podaj ID planu");
-        System.out.println(MainMenu.dB.getPlan(idToShow).toString());
+    private static void startSchedulesMenuListSchedules() {
+        MainMenu.dBService.printPlans();
     }
 }

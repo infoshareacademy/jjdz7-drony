@@ -18,6 +18,6 @@ public class App {
         os.printPlans();
         os.unassignActivityFromPlan();
         os.removeUser();
-        os.editActiity();
+        os.editActivity();
     }
 }

@@ -3,7 +3,7 @@ package com.korpodrony.menu;
 public class ActivitiesMenu {
     static void StartActivitiesMenu() {
         do {
-            Messages.printContextMenu("Zajęcia");
+            Messages.printActivitiesContextMenu();
             int choice = IoTools.getUserInput();
             runActivitiesMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
@@ -24,10 +24,18 @@ public class ActivitiesMenu {
                 break;
             }
             case 4: {
-                startActivitiesMenuShowActivity();
+                startActivitiesMenuListActivities();
                 break;
             }
             case 5: {
+                startActivitiesMenuAssignActivityToSchedule();
+                break;
+            }
+            case 6: {
+                startActivitiesMenuUnssignActivityToSchedule();
+                break;
+            }
+            case 7: {
                 MainMenu.contextMenuExit = true;
                 break;
             }
@@ -45,7 +53,7 @@ public class ActivitiesMenu {
     }
 
     private static void startActivitiesMenuEditActivity() {
-        MainMenu.dBService.editActiity();
+        MainMenu.dBService.editActivity();
     }
 
     private static void startActivitiesMenuDeleteActivity() {
@@ -53,9 +61,17 @@ public class ActivitiesMenu {
         MainMenu.dBService.removeActivity();
     }
 
-    private static void startActivitiesMenuShowActivity() {
-        System.out.println("Pokazywanie istniejących zajęć");
-        int idToShow=IoTools.readIntInputWithMessage("Podaj ID zajęć");
-        System.out.println(MainMenu.dB.getActivity(idToShow).toString());
+    private static void startActivitiesMenuListActivities() {
+        MainMenu.dBService.printActivites();
+    }
+
+    private static void startActivitiesMenuAssignActivityToSchedule(){
+        System.out.println("Przydzielanie zajęć do planów");
+        MainMenu.dBService.assignActivityToPlan();
+    }
+
+    private static void startActivitiesMenuUnssignActivityToSchedule(){
+        System.out.println("Usuwanie zajęć z planów");
+        MainMenu.dBService.unassignActivityFromPlan();
     }
 }

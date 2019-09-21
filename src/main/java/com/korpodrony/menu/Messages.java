@@ -18,12 +18,35 @@ public class Messages {
         System.out.println("5. Wyjście");
     }
 
-    static void printContextMenu(String contextMenuType) {
-        System.out.println("Menu --" + contextMenuType + "--");
+
+    static void printUsersContextMenu() {
+        System.out.println("Menu -- Użytkownicy --");
         System.out.println("\n1. Dodaj");
         System.out.println("2. Edytuj");
         System.out.println("3. Usuń");
-        System.out.println("4. Pokaż");
+        System.out.println("4. Pokaż listę");
+        System.out.println("5. Przypisz użytkownika do zajęć");
+        System.out.println("6. Usuń użytkownika z zajęć");
+        System.out.println("7. Wyjście");
+    }
+
+    static void printActivitiesContextMenu() {
+        System.out.println("Menu -- Zajęcia --");
+        System.out.println("\n1. Dodaj");
+        System.out.println("2. Edytuj");
+        System.out.println("3. Usuń");
+        System.out.println("4. Pokaż listę");
+        System.out.println("5. Przypisz zajęcia do planu");
+        System.out.println("6. Usuń zajęcia z planu");
+        System.out.println("7. Wyjście");
+    }
+
+    static void printSchedulesContextMenu() {
+        System.out.println("Menu -- Plany --");
+        System.out.println("\n1. Dodaj");
+        System.out.println("2. Edytuj");
+        System.out.println("3. Usuń");
+        System.out.println("4. Pokaż listę");
         System.out.println("5. Wyjście");
     }
 

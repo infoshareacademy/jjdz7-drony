@@ -1,11 +1,9 @@
 package com.korpodrony.menu;
 
-import com.korpodrony.model.User;
-
 public class UsersMenu {
     static void startUsersMenu() {
         do {
-            Messages.printContextMenu("Użytkownicy");
+            Messages.printUsersContextMenu();
             int choice = IoTools.getUserInput();
             runUsersMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
@@ -26,10 +24,18 @@ public class UsersMenu {
                 break;
             }
             case 4: {
-                startUsersMenuShowUser();
+                startUsersMenuListUsers();
                 break;
             }
             case 5: {
+                startUsersMenuAssignUserToActivity();
+                break;
+            }
+            case 6: {
+                startUsersMenuUnassignUserToActivity();
+                break;
+            }
+            case 7: {
                 MainMenu.contextMenuExit = true;
                 break;
             }
@@ -54,12 +60,21 @@ public class UsersMenu {
     private static void startUsersMenuDeleteUser() {
         System.out.println("Usuwanie użytkownika");
         MainMenu.dBService.removeUser();
-        }
-
-
-    private static void startUsersMenuShowUser() {
-        System.out.println("Pokazywanie użytkownika po ID:");
-        int idToShow=IoTools.readIntInputWithMessage("Podaj ID użytkownika");
-        System.out.println(MainMenu.dB.getUser(idToShow).toString());
     }
+
+
+    private static void startUsersMenuListUsers() {
+        MainMenu.dBService.printUsers();
+    }
+
+    private static void startUsersMenuAssignUserToActivity() {
+        System.out.println("Przydzielanie użytkownika do zajęć");
+        MainMenu.dBService.assignUserToActivity();
+    }
+
+    private static void startUsersMenuUnassignUserToActivity(){
+        System.out.println("Usuwanie użytkownika z zajęć");
+        MainMenu.dBService.unassingUserFromActivity();
+    }
+
 }
