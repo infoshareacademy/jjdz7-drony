@@ -71,7 +71,7 @@ public class Plan {
     @Override
     public String toString() {
         return "ID = " + ID +
-                ", nazwa planu:  " + name + 'n' +
+                ", nazwa planu:  " + name + '\n' +
                 "ID przypisanych zajęć: " + activitiesID;
     }
 

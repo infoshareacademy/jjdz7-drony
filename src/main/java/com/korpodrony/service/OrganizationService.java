@@ -35,7 +35,7 @@ public class OrganizationService {
         if (organization.createActivity(name, maxUsers, duration)) {
             System.out.println("Dodano zajęcia");
         } else {
-            System.out.println("Takie zajęcia juz istnieją");
+            System.out.println("Takie zajęcia już istnieją");
         }
     }
 
@@ -86,7 +86,7 @@ public class OrganizationService {
             System.out.println("Ten użytkownik jest już przypisany do zajęć");
             return false;
         } else if (organization.getActivity(activityID).getAssignedUsersIDs().size() == organization.getActivity(activityID).getMaxUsers()) {
-            System.out.println("Te zajęcia posiadają już maksylamną liczbę przypisanych uzytkowników");
+            System.out.println("Te zajęcia posiadają już maksymalną liczbę przypisanych użytkowników");
             return false;
         }
         return true;
@@ -110,7 +110,7 @@ public class OrganizationService {
         }
         int planID = choosePlan();
         if (organization.getPlan(planID).getActivitiesID().size() == 0) {
-            System.out.println("Obcnie nie ma przypisanych żadnych zajęć do planu");
+            System.out.println("Obecnie nie ma przypisanych żadnych zajęć do planu");
             return;
         }
         getActivitiesByIDs(organization.getPlan(planID).getActivitiesID()).forEach(System.out::println);
@@ -157,7 +157,7 @@ public class OrganizationService {
             System.out.println("użytkownik o takim ID nie istnieje");
             return false;
         } else if (!organization.getActivity(activityID).getAssignedUsersIDs().contains(userID)) {
-            System.out.println("użytkownik nie jest przypisany do tych zajeć, więc nie może być usunięty");
+            System.out.println("użytkownik nie jest przypisany do tych zajęć, więc nie może być usunięty");
             return false;
         }
         return true;
@@ -244,7 +244,7 @@ public class OrganizationService {
     public void removeActivity() {
         printActivites();
 
-        int choice = IoTools.readIntInputWithMessage("Podaj ID zajęc do usunięcia");
+        int choice = IoTools.readIntInputWithMessage("Podaj ID zajęć do usunięcia");
         if (organization.deleteActivity(choice)) {
             System.out.println("Usunięto zajęcia");
         } else {
@@ -337,7 +337,7 @@ public class OrganizationService {
             return;
         }
         printUsers();
-        int userID = IoTools.getIntegerWithMessage("Podaj ID planu, który chcesz edytować");
+        int userID = IoTools.getIntegerWithMessage("Podaj ID użytkownika, który chcesz edytować");
         if (!organization.getAllUsersIDs().contains(userID)) {
             System.out.println("Nie ma użytkownika o takim ID");
             return;
