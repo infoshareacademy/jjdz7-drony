@@ -16,6 +16,9 @@ public class Plan {
         this.activitiesID = activitiesID;
     }
 
+    public Plan() {
+    }
+
     public Plan(String name) {
         this(++currentID, name, new HashSet<>());
     }
@@ -54,6 +57,22 @@ public class Plan {
 
     private void setName(String name) {
         this.name = name;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Set<Integer> getActivitiesID() {
+        return activitiesID;
+    }
+
+    public void setActivitiesID(Set<Integer> activitiesID) {
+        this.activitiesID = activitiesID;
     }
 
     @Override
