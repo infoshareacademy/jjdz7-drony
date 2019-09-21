@@ -15,7 +15,25 @@ public class User {
         this.surname = surname;
     }
 
-    public User() {
+    public User(String name, String surname) {
+        this(++currentID, name, surname);
+    }
+
+    public void editUser(String name, String surname) {
+        setName(name);
+        setSurname(surname);
+    }
+
+    public static int getCurrentID() {
+        return currentID;
+    }
+
+    public static void setCurrentID(int currentID) {
+        User.currentID = currentID;
+    }
+
+    public int getID() {
+        return ID;
     }
 
     public void setID(int ID) {
@@ -26,29 +44,16 @@ public class User {
         return name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public User(String name, String surname) {
-        this(++currentID, name, surname);
-    }
-
-    public void editUser(String name, String surname) {
-        setName(name);
-        setSurname(surname);
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public String getSurname() {
+        return surname;
     }
 
-    public int getID() {
-        return ID;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     @Override
@@ -68,5 +73,4 @@ public class User {
     public int hashCode() {
         return Objects.hash(ID, name, surname);
     }
-
 }

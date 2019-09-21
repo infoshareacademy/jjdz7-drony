@@ -8,13 +8,15 @@ public class Plan {
     private static int currentID = 0;
     private int ID;
     private String name;
+    private Set<Integer> activitiesID;
 
-    public String getName() {
-        return name;
+    public Plan(int ID, String name, Set<Integer> activitiesID) {
+        this.ID = ID;
+        this.name = name;
+        this.activitiesID = activitiesID;
     }
 
-    public void setActivitiesID(Set<Integer> activitiesID) {
-        this.activitiesID = activitiesID;
+    public Plan() {
     }
 
     public static int getCurrentID() {
@@ -25,15 +27,27 @@ public class Plan {
         Plan.currentID = currentID;
     }
 
+    public int getID() {
+        return ID;
+    }
+
     public void setID(int ID) {
         this.ID = ID;
     }
 
-    private Set<Integer> activitiesID;
+    public String getName() {
+        return name;
+    }
 
-    public Plan(int ID, String name, Set<Integer> activitiesID) {
-        this.ID = ID;
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Integer> getActivitiesID() {
+        return activitiesID;
+    }
+
+    public void setActivitiesID(Set<Integer> activitiesID) {
         this.activitiesID = activitiesID;
     }
 
@@ -69,24 +83,12 @@ public class Plan {
         return true;
     }
 
-    public int getID() {
-        return ID;
-    }
-
-    private void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Plan plan = (Plan) o;
         return ID == plan.ID;
-    }
-
-    public Set<Integer> getActivitiesID() {
-        return activitiesID;
     }
 
     @Override

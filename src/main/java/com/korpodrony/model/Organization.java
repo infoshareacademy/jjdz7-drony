@@ -17,30 +17,6 @@ public class Organization {
         this(new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    public Set<Plan> getPlans() {
-        return plans;
-    }
-
-    public void setPlans(Set<Plan> plans) {
-        this.plans = plans;
-    }
-
-    public Set<Activity> getActivities() {
-        return activities;
-    }
-
-    public void setActivities(Set<Activity> activities) {
-        this.activities = activities;
-    }
-
     private boolean addUser(User user) {
         if (hasUser(user)) {
             return false;
@@ -286,6 +262,30 @@ public class Organization {
             }
         }
         return false;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public Set<Plan> getPlans() {
+        return plans;
+    }
+
+    public void setPlans(Set<Plan> plans) {
+        this.plans = plans;
+    }
+
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
     }
 
     @Override

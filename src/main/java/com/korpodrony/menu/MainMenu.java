@@ -3,6 +3,10 @@ package com.korpodrony.menu;
 
 import com.korpodrony.model.Organization;
 import com.korpodrony.service.OrganizationService;
+import com.korpodrony.service.PropertiesService;
+import com.korpodrony.utils.JSONWriter;
+
+import java.nio.file.Paths;
 
 public class MainMenu {
     public static boolean exit;
@@ -25,7 +29,19 @@ public class MainMenu {
             int choice = IoTools.getUserInput();
             runMainMenuDecide(choice);
         } while (!exit);
+            writeOrganizationToFile();
     }
+
+    private void writeOrganizationToFile() {
+        String path = new PropertiesService().getProperty(PropertiesService.APP_PATH);
+        if (path == null) {
+            path = "/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/";
+        }
+        JSONWriter.writeJSONToFile(Paths.get(path, "Users"), dB.getUsers());
+        JSONWriter.writeJSONToFile(Paths.get(path, "Activities"), dB.getActivities());
+        JSONWriter.writeJSONToFile(Paths.get(path, "Plans"), dB.getPlans());
+    }
+
     /**
      * Menu choice logic
      **/
@@ -60,7 +76,6 @@ public class MainMenu {
             default: {
                 Messages.printBadInputErrorMessage();
             }
-
         }
     }
 }

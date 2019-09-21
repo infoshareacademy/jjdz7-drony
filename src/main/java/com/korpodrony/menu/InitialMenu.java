@@ -1,15 +1,16 @@
 package com.korpodrony.menu;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.korpodrony.model.Activity;
 import com.korpodrony.model.Organization;
+import com.korpodrony.model.Plan;
 import com.korpodrony.model.User;
 import com.korpodrony.service.PropertiesService;
-import com.korpodrony.util.Json;
+import com.korpodrony.utils.JSONReader;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.Set;
 
 public class InitialMenu {
@@ -26,7 +27,11 @@ public class InitialMenu {
     private void runInitialMenuDecide(int choice) {
         switch (choice) {
             case 1: {
-//                initialParametersLoad();
+                try {
+                    initialParametersLoad();
+                } catch (IOException | ClassNotFoundException e) {
+                    createNewOrganization();
+                }
                 break;
             }
             case 2: {
@@ -51,18 +56,20 @@ public class InitialMenu {
             createNewOrganization();
         } else {
             Organization org = new Organization();
-            Set<User>users = new HashSet<>();
-            Set<User>activities = new HashSet<>();
-            Set<User>plans = new HashSet<>();
-            if (Files.exists(Paths.get(path,"Users"))){
-                org.setUsers(Json.readSetFromFile("/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/Users", User.class));
+            ObjectMapper objectMapper = new ObjectMapper();
+            if (Files.exists(Paths.get(path, "Users"))) {
+                Set<User> usersFromJson = new JSONReader().parseUserFromJSONFile(Paths.get("/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/Users"));
+                org.setUsers(usersFromJson);
             }
-            if (Files.exists(Paths.get(path,"Activities"))){
-                org.setActivities(Json.readSetFromFile("/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/Users", Activity.class));
+            if (Files.exists(Paths.get(path, "Activities"))) {
+                Set<Activity> activtiesFromJson = new JSONReader().parseActivityFromJSONFile(Paths.get(path, "Activities"));
+                org.setActivities(activtiesFromJson);
             }
-            if (Files.exists(Paths.get(path,"Users"))){
-                org.setUsers(Json.readSetFromFile("/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/Users", Activity.class));
+            if (Files.exists(Paths.get(path, "Plans"))) {
+                Set<Plan> plansFromJson = new JSONReader().parsePlanFromJSONFile(Paths.get(path, "Plans"));
+                org.setPlans(plansFromJson);
             }
+            new MainMenu(org).startMainMenu();
         }
     }
 }

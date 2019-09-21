@@ -1,17 +1,1 @@
-[ {
-  "name" : "Han",
-  "surname" : "Solo",
-  "id" : 3
-}, {
-  "name" : "Jan",
-  "surname" : "Brzechwa",
-  "id" : 1
-}, {
-  "name" : "Pan",
-  "surname" : "Paderweski",
-  "id" : 4
-}, {
-  "name" : "Kubuś",
-  "surname" : "Puchatek",
-  "id" : 2
-} ]
+[{"name":"Adam","surname":"Maly","id":1},{"name":"Tomek","surname":"Duzy","id":2}]

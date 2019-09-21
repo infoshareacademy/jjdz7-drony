@@ -12,12 +12,55 @@ public class Activity {
     //    Trainer trainer;
     private byte duration; /*Unit of duration is quarter*/
 
+    public Activity(String name, short maxUsers, byte duration) {
+        this(++currentID, name, maxUsers, new HashSet<>(), duration);
+    }
+
+    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte duration) {
+        this.ID = ID;
+        this.name = name;
+        this.maxUsers = maxUsers;
+        this.assignedUsersIDs = assignedUsersIDs;
+        this.duration = duration;
+    }
+
+    public Activity() {
+    }
+
+    public static int getCurrentID() {
+        return currentID;
+    }
+
+    public static void setCurrentID(int currentID) {
+        Activity.currentID = currentID;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
     public void setID(int ID) {
         this.ID = ID;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public short getMaxUsers() {
+        return maxUsers;
+    }
+
+    public void setMaxUsers(short maxUsers) {
+        this.maxUsers = maxUsers;
+    }
+
+    public Set<Integer> getAssignedUsersIDs() {
+        return assignedUsersIDs;
     }
 
     public void setAssignedUsersIDs(Set<Integer> assignedUsersIDs) {
@@ -28,15 +71,7 @@ public class Activity {
         return duration;
     }
 
-    public Activity(String name, short maxUsers, byte duration) {
-        this(++currentID, name, maxUsers, new HashSet<>(), duration);
-    }
-
-    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte duration) {
-        this.ID = ID;
-        this.name = name;
-        this.maxUsers = maxUsers;
-        this.assignedUsersIDs = assignedUsersIDs;
+    public void setDuration(byte duration) {
         this.duration = duration;
     }
 
@@ -66,39 +101,11 @@ public class Activity {
         return true;
     }
 
-    public boolean unassignUser(User user) {
-        return unassignUser(user.getID());
-    }
-
     public boolean canAssignUser(int userID) {
         if (assignedUsersIDs.contains(userID) || assignedUsersIDs.size() == maxUsers) {
             return false;
         }
         return true;
-    }
-
-    public Set<Integer> getAssignedUsersIDs() {
-        return assignedUsersIDs;
-    }
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setMaxUsers(short maxUsers) {
-        this.maxUsers = maxUsers;
-    }
-
-    public void setDuration(byte duration) {
-        this.duration = duration;
-    }
-
-    public short getMaxUsers() {
-        return maxUsers;
     }
 
     @Override
