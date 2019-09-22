@@ -24,10 +24,11 @@ public class PropertiesService {
     }
 
     private void loadProperties() {
-        if (!Files.exists(Paths.get("/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/config.properties"))){
+        String path = "/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/config.properties";
+        if (!Files.exists(Paths.get(path))){
             return;
         }
-        try (FileInputStream input = new FileInputStream("/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/config.properties")) {
+        try (FileInputStream input = new FileInputStream(path)) {
             if (input == null) {
                 System.out.println("Sorry, unable to find config.properties");
                 return;

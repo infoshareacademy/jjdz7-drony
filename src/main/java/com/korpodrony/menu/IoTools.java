@@ -16,7 +16,7 @@ public class IoTools {
     }
 
     public static String readStringUserInput() {
-        String text =  sc.nextLine();
+        String text = sc.nextLine();
         return text.chars().allMatch(Character::isLetter) ? text : readStringInputWithMessage("Tylko litery są dozwolone. Spróbuj ponownie: ");
     }
 
@@ -58,7 +58,7 @@ public class IoTools {
             System.out.println(sc.next() + ": is not a short, please enter a short ");
         }
         x = sc.nextShort();
-        return x > 0 ? x : getUserInputShort();
+        return x;
     }
 
     public static byte getUserInputByte() {
@@ -71,17 +71,19 @@ public class IoTools {
             System.out.println(sc.next() + ": is not a byte, please enter a byte ");
         }
         x = sc.nextByte();
-        return x > 0 ? x : getUserInputByte();
+        return x;
     }
 
     public static byte getByteWithMessage(String message) {
         System.out.println(message);
-        return getUserInputByte();
+        byte x = getUserInputByte();
+        return x > 0 ? x : getByteWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie");
     }
 
     public static short getShortWithMessage(String message) {
         System.out.println(message);
-        return getUserInputShort();
+        short x = getUserInputShort();
+        return x > 0 ? x : getShortWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie");
     }
 
     public static int getNumericInput() {
@@ -92,8 +94,11 @@ public class IoTools {
         }
         x = sc.nextInt();
         sc.nextLine();
-
-        return x > 0 ? x : getNumericInput();
+        if (x > 0) {
+            return x;
+        }
+        System.out.println("Podana wartośc musi być większa od zera. Spróbuj ponownie");
+        return getNumericInput();
     }
 
     public static int getIntegerWithMessage(String message) {
