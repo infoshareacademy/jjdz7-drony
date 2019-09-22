@@ -120,7 +120,7 @@ public class Activity {
 
     @Override
     public String toString() {
-        return "ID = " + ID +
+        return "Zajęcia: "+ "ID = " + ID +
                 ", nazwa: " + name +
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +

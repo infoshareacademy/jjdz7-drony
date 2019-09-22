@@ -35,7 +35,6 @@ public class PropertiesService {
             }
             prop = new Properties();
             prop.load(input);
-
         } catch (IOException e) {
             e.printStackTrace();
         }

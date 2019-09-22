@@ -55,7 +55,7 @@ public class IoTools {
                 System.err.println("no more input");
                 System.exit(1);
             }
-            System.out.println(sc.next() + ": is not a short, please enter a short ");
+            System.out.println(sc.next() + ": nie jest liczbą z zakresu 1 do 32767. Spróbuj ponownie:");
         }
         x = sc.nextShort();
         return x;
@@ -68,7 +68,7 @@ public class IoTools {
                 System.err.println("no more input");
                 System.exit(1);
             }
-            System.out.println(sc.next() + ": is not a byte, please enter a byte ");
+            System.out.println(sc.next() + ": nie jest liczbą z zakresu 1 do 127. Spróbuj ponownie:");
         }
         x = sc.nextByte();
         return x;
@@ -77,19 +77,19 @@ public class IoTools {
     public static byte getByteWithMessage(String message) {
         System.out.println(message);
         byte x = getUserInputByte();
-        return x > 0 ? x : getByteWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie");
+        return x > 0 ? x : getByteWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie:");
     }
 
     public static short getShortWithMessage(String message) {
         System.out.println(message);
         short x = getUserInputShort();
-        return x > 0 ? x : getShortWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie");
+        return x > 0 ? x : getShortWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie:");
     }
 
     public static int getNumericInput() {
         int x;
         while (!sc.hasNextInt()) {
-            System.out.println(sc.next() + ": is not a number, please enter a number");
+            System.out.println(sc.next() + ": nie jest liczbą. Spróbuj ponownie:");
             sc.nextLine();
         }
         x = sc.nextInt();

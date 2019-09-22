@@ -55,7 +55,7 @@ public class OrganizationService {
         }
         int activityID = chooseActivity();
         if (chooseAvaiableUsers(activityID).size() == 0) {
-            System.out.println("obecnie nie ma użytkowników, których można przypisać");
+            System.out.println("Nie ma obecnie żadnych użytkowników, których można przypisać");
             return;
         }
         List<User> avaiableUsers = chooseAvaiableUsers(activityID);
@@ -76,7 +76,7 @@ public class OrganizationService {
         }
         int planID = choosePlan();
         if (chooseAvaiableActivites(planID).size() == 0) {
-            System.out.println("obecnie nie ma zajęć, które można przypisać");
+            System.out.println("Nie ma obecnie żadnych zajęć, które można przypisać");
             return;
         }
         List<Activity> avaiableAcitvities = chooseAvaiableActivites(planID);
@@ -122,14 +122,14 @@ public class OrganizationService {
         }
         int planID = choosePlan();
         if (organization.getPlan(planID).getActivitiesID().size() == 0) {
-            System.out.println("Obecnie nie ma przypisanych żadnych zajęć do planu");
+            System.out.println("Nie ma obecnie przypisanych żadnych zajęć do planu");
             return;
         }
         getActivitiesByIDs(organization.getPlan(planID).getActivitiesID()).forEach(System.out::println);
         int activityID = IoTools.getIntegerWithMessage("Podaj ID zajęć do wypisania z planu");
         if (canUnassignActivityFromPlan(activityID, planID)) {
             if (organization.unassignActivityFromPlan(activityID, planID)) {
-                System.out.println("zajęcia wypisano z planu");
+                System.out.println("Zajęcia wypisano z planu");
             }
         }
     }
@@ -148,17 +148,17 @@ public class OrganizationService {
         int userID = IoTools.getIntegerWithMessage("Podaj ID użytkownika do wypisania z zajęć");
         if (canUnassignUserFromActivity(userID, activityID)) {
             if (organization.unassignUserFromActivity(userID, activityID)) {
-                System.out.println("użytkownika wypisano z zajęć");
+                System.out.println("Użytkownika wypisano z zajęć");
             }
         }
     }
 
     public boolean canUnassignActivityFromPlan(int activityID, int planID) {
         if (!organization.getAllActivitiesIDs().contains(activityID)) {
-            System.out.println("zajęcia o takim ID nie istnieją");
+            System.out.println("Zajęcia o takim ID nie istnieją");
             return false;
         } else if (!organization.getPlan(planID).getActivitiesID().contains(activityID)) {
-            System.out.println("zajęcia nie są przypisane do planu, więc nie można ich wypisać");
+            System.out.println("Zajęcia nie są przypisane do planu, więc nie można ich wypisać");
             return false;
         }
         return true;
@@ -166,10 +166,10 @@ public class OrganizationService {
 
     public boolean canUnassignUserFromActivity(int userID, int activityID) {
         if (!organization.getAllUsersIDs().contains(userID)) {
-            System.out.println("użytkownik o takim ID nie istnieje");
+            System.out.println("Użytkownik o takim ID nie istnieje");
             return false;
         } else if (!organization.getActivity(activityID).getAssignedUsersIDs().contains(userID)) {
-            System.out.println("użytkownik nie jest przypisany do tych zajęć, więc nie może być usunięty");
+            System.out.println("Użytkownik nie jest przypisany do tych zajęć, więc nie może być usunięty");
             return false;
         }
         return true;
@@ -298,7 +298,7 @@ public class OrganizationService {
         List<Activity> activities = organization.getAllActivies();
         activities.sort(comparator);
         if (activities.size() == 0) {
-            System.out.println("nie ma obecnie żadnych zajęć");
+            System.out.println("Nie ma obecnie żadnych zajęć");
             return;
         }
         for (int i = 0; i < activities.size(); i++) {
@@ -310,7 +310,7 @@ public class OrganizationService {
         List<Plan> plans = organization.getAllPlans();
         plans.sort(comparator);
         if (plans.size() == 0) {
-            System.out.println("nie ma obecnie żadnych planów");
+            System.out.println("Nie ma obecnie żadnych planów");
             return;
         }
         for (int i = 0; i < plans.size(); i++) {

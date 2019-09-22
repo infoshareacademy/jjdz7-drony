@@ -18,6 +18,8 @@ public class Messages {
     }
 
     static void printInitialMenu() {
+        System.out.println("\n\n --" + "Libris by koprodrony" + "--");
+        System.out.println("\n-- " + "MENU" + " --");
         System.out.println("\n1. Wczytaj z pliku");
         System.out.println("2. Stwórz nowy");
     }
