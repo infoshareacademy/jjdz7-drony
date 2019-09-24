@@ -63,19 +63,19 @@ public class SchedulesMenu {
     }
 
     private void startSchedulesMenuShowActivtiesOfSchedule() {
-        System.out.println("Pokazywanie zajęć przypisanych do planu");
+        System.out.println("-- Pokazywanie zajęć przypisanych do planu --");
         mainMenu.dBService.printPlans();
         if (mainMenu.dB.getAllPlans().size() == 0) {
             return;
         }
-        int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu, którego zajęcia chcesz obejrzeć");
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu, którego zajęcia chcesz obejrzeć:");
         if (!mainMenu.dB.hasPlanWithThisID(choice)){
-            System.out.println("Nie ma takiego planu");
+            System.out.println("Nie ma takiego planu.");
             return;
         }
         List<Activity> activities = mainMenu.dB.getPlan(choice).getActivitiesID().stream().map(x->mainMenu.dB.getActivity(x)).collect(Collectors.toList());
         if (activities.size() == 0) {
-            System.out.println("plan nie mają przypisanych żadnych zajęć");
+            System.out.println("Plan nie ma przypisanych żadnych zajęć!");
             return;
         }
         activities.sort(new UserIDComparator());
@@ -83,32 +83,32 @@ public class SchedulesMenu {
     }
 
     private void startSchedulesMenuUnassignActivity() {
-        System.out.println("Usuwanie zajęć z planu");
+        System.out.println("-- Usuwanie zajęć z planu --");
         mainMenu.dBService.unassignActivityFromPlan();
     }
 
     private void startSchedulesMenuAssignActivity() {
-        System.out.println("Przypisywanie zajęc do planu");
+        System.out.println("-- Przypisywanie zajęć do planu --");
         mainMenu.dBService.assignActivityToPlan();
     }
 
     private void startSchedulesMenuAddSchedule() {
-        System.out.println("Dodawanie nowych planów");
+        System.out.println("-- Dodawanie nowych planów --");
         mainMenu.dBService.addPlan();
     }
 
     private void startSchedulesMenuEditSchedule() {
-        System.out.println("Edytowanie istniejących planów");
+        System.out.println("-- Edytowanie istniejących planów --");
         mainMenu.dBService.editPlan();
     }
 
     private void startSchedulesMenuDeleteSchedule() {
-        System.out.println("Usuwanie istniejących planów");
+        System.out.println("-- Usuwanie istniejących planów --");
         mainMenu.dBService.removePlan();
     }
 
     private void startSchedulesMenuShowSchedule() {
-        System.out.println("Pokazywanie istniejących planów");
+        System.out.println("-- Pokazywanie istniejących planów --");
         mainMenu.dBService.printPlans();
     }
 }

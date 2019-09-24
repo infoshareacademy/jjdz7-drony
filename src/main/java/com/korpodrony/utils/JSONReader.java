@@ -17,9 +17,9 @@ import java.util.Set;
 
 public class JSONReader {
 
-    private static final String PROCESSING_FILE_ERROR = "Blad w czasie procesowania pliku";
+    private static final String PROCESSING_FILE_ERROR = "Błąd w czasie przetwarzania pliku!";
 
-    private static final String EMPTY_FILE = "Plik jest pusty";
+    private static final String EMPTY_FILE = "Plik jest pusty!";
 
     public static Set<Activity> parseActivityFromJSONFile(Path path) {
         ObjectMapper mapper = new ObjectMapper();

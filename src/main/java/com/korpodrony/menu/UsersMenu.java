@@ -56,19 +56,19 @@ public class UsersMenu {
     }
 
     private void startUsersMenuShowUserActivities() {
-        System.out.println("Pokazywanie zajęć użytkownika");
+        System.out.println("-- Pokazywanie zajęć użytkownika --");
         mainMenu.dBService.printUsers();
         if (mainMenu.dB.getAllUsers().size() == 0) {
             return;
         }
-        int choice = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika do którego zajęcia chcesz obejrzeć");
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika do którego zajęcia chcesz obejrzeć:");
         if (!mainMenu.dB.hasUserWithThisID(choice)){
-            System.out.println("Nie ma takiego użytkownika");
+            System.out.println("Nie ma takiego użytkownika.");
             return;
         }
         List<Activity> userActivities = mainMenu.dB.getAllActivies().stream().filter(x -> x.getAssignedUsersIDs().contains(choice)).collect(Collectors.toList());
         if (userActivities.size() == 0) {
-            System.out.println("użytkownik nie jest przypisany do żadnych zajęć");
+            System.out.println("Użytkownik nie jest przypisany do żadnych zajęć!");
             return;
         }
         userActivities.sort(new ActivityIDComparator());
@@ -76,17 +76,17 @@ public class UsersMenu {
     }
 
     private void startUsersMenuAddUser() {
-        System.out.println("Dodawanie nowego użytkownika");
+        System.out.println("-- Dodawanie nowego użytkownika --");
         mainMenu.dBService.addUser();
     }
 
     private void startUsersMenuEditUser() {
-        System.out.println("Edytowanie użytkownika");
+        System.out.println("-- Edytowanie użytkownika --");
         mainMenu.dBService.editUser();
     }
 
     private void startUsersMenuDeleteUser() {
-        System.out.println("Usuwanie użytkownika");
+        System.out.println("-- Usuwanie użytkownika --");
         mainMenu.dBService.removeUser();
     }
 

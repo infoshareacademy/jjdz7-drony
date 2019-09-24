@@ -30,7 +30,7 @@ public class PropertiesService {
         }
         try (FileInputStream input = new FileInputStream(path)) {
             if (input == null) {
-                System.out.println("Sorry, unable to find config.properties");
+                System.out.println("Nie znalazłem pliku config.properties !");
                 return;
             }
             prop = new Properties();

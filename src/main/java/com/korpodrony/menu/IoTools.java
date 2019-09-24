@@ -33,7 +33,7 @@ public class IoTools {
         short x = 0;
         while (!sc.hasNextShort()) {
             if (!sc.hasNext()) {
-                System.err.println("no more input");
+                System.err.println("Brak danych!");
                 System.exit(1);
             }
             System.out.println(sc.next() + ": nie jest liczbą z zakresu 1 do 32767. Spróbuj ponownie:");
@@ -52,7 +52,7 @@ public class IoTools {
         byte x = 0;
         while (!sc.hasNextByte()) {
             if (!sc.hasNext()) {
-                System.err.println("no more input");
+                System.err.println("Brak danych!");
                 System.exit(1);
             }
             System.out.println(sc.next() + ": nie jest liczbą z zakresu 1 do 127. Spróbuj ponownie:");

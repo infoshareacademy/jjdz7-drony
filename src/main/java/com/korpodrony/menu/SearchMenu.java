@@ -56,7 +56,7 @@ public class SearchMenu {
         String searchedText = IoTools.getStringFromUser().toLowerCase();
         List<User> users = mainMenu.dB.getAllUsers().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
         if (users.size() == 0) {
-            System.out.println("nie ma takiego użytkownika");
+            System.out.println("Nie ma takiego użytkownika.");
             return;
         }
         users.sort(new UserIDComparator());
@@ -64,11 +64,11 @@ public class SearchMenu {
     }
 
     private void startSearchByActivityMenu() {
-        System.out.println("Szukanie zajęć po nazwie, wpisz nazwe");
+        System.out.println("Szukanie zajęć po nazwie, wpisz nazwę:");
         String searchedText = IoTools.getStringFromUser().toLowerCase();
         List<Activity> activities = mainMenu.dB.getAllActivies().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
         if (activities.size() == 0) {
-            System.out.println("nie ma takich zajęć");
+            System.out.println("Nie ma takich zajęć.");
             return;
         }
         activities.sort(new ActivityIDComparator());
@@ -76,11 +76,11 @@ public class SearchMenu {
     }
 
     private void startSearchByScheduleMenu() {
-        System.out.println("Szukanie planu po nazwie, wpisz nazwę");
+        System.out.println("Szukanie planu po nazwie, wpisz nazwę:");
         String searchedText = IoTools.getStringFromUser().toLowerCase();
         List<Plan> plans = mainMenu.dB.getAllPlans().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
         if (plans.size() == 0) {
-            System.out.println("nie ma takiego planu");
+            System.out.println("Nie ma takiego planu.");
             return;
         }
         plans.sort(new PlanIDComparator());

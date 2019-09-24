@@ -52,11 +52,6 @@ public class MainMenu {
                 new UsersMenu(this).startUsersMenu();
                 break;
             }
-//            case 3: {
-////                       TODO === to be implemented later
-//                Messages.printFeatureNotImplementedYet();
-//                break;
-//            }
             case 3: {
                 new ActivitiesMenu(this).StartActivitiesMenu();
                 break;
