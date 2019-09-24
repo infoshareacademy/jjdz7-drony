@@ -10,16 +10,11 @@ public class IoTools {
     public static String getStringFromUser() {
         String text = sc.nextLine();
         return text.chars().allMatch(Character::isLetter) ? text : getStringFromUserWithMessage("Tylko litery są dozwolone. Spróbuj ponownie: ");
-    }
+    } //TODO current method is over-sensitive - as some names might include numbers (eg activities names). To discuss
 
     public static String getStringFromUserWithMessage(String message) {
         System.out.println(message);
         return getStringFromUser();
-    }
-
-    public static int getIntFromUserWithMessage(String message) {
-        System.out.println(message);
-        return getIntFromUser();
     }
 
 //    public static double getDoubleFromUser() {
@@ -47,6 +42,12 @@ public class IoTools {
         return x;
     }
 
+    public static short getShortFromUserWithMessage(String message) {
+        System.out.println(message);
+        short x = getShortFromUser();
+        return x > 0 ? x : getShortFromUserWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie:");
+    }
+
     public static byte getByteFromUser() {
         byte x = 0;
         while (!sc.hasNextByte()) {
@@ -66,11 +67,6 @@ public class IoTools {
         return x > 0 ? x : getByteFromUserWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie:");
     }
 
-    public static short getShortFromUserWithMessage(String message) {
-        System.out.println(message);
-        short x = getShortFromUser();
-        return x > 0 ? x : getShortFromUserWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie:");
-    }
 
     public static int getIntFromUser() {
         int x;
@@ -84,6 +80,11 @@ public class IoTools {
             return x;
         }
         System.out.println("Podana wartość musi być większa od zera. Spróbuj ponownie");
+        return getIntFromUser();
+    }
+
+    public static int getIntFromUserWithMessage(String message) {
+        System.out.println(message);
         return getIntFromUser();
     }
 }
