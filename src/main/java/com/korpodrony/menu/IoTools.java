@@ -4,11 +4,6 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class IoTools {
-    /**
-     * UTIL PART OF THE CLASS.
-     * <p>
-     * TODO - decide if this should be split to separate file
-     */
 
     public static int getUserInput() {
         System.out.print("\nTwój wybór: ");
@@ -97,7 +92,7 @@ public class IoTools {
         if (x > 0) {
             return x;
         }
-        System.out.println("Podana wartośc musi być większa od zera. Spróbuj ponownie");
+        System.out.println("Podana wartość musi być większa od zera. Spróbuj ponownie");
         return getNumericInput();
     }
 
