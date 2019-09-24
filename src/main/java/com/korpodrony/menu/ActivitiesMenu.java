@@ -17,7 +17,7 @@ public class ActivitiesMenu {
         do {
             Messages.printActivitiesMenu("Zajęcia");
             System.out.print("Twój wybór: ");
-            int choice = IoTools.getNumericInput();
+            int choice = IoTools.getIntFromUser();
             runActivitiesMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
     }
@@ -70,7 +70,7 @@ public class ActivitiesMenu {
         if (mainMenu.dB.getAllActivies().size() == 0) {
             return;
         }
-        int choice = IoTools.readIntInputWithMessage("Podaj ID zajęć, których użytkowników chcesz obejrzeć");
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, których użytkowników chcesz obejrzeć");
         if (!mainMenu.dB.hasActivityWithThisID(choice)){
             System.out.println("Nie ma takich zajęć");
             return;

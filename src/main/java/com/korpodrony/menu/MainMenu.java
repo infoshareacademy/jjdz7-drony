@@ -26,7 +26,7 @@ public class MainMenu {
         do {
             contextMenuExit = false;
             Messages.printMainMenu();
-            int choice = IoTools.getNumericInput();
+            int choice = IoTools.getIntFromUser();
             runMainMenuDecide(choice);
         } while (!exit);
             writeOrganizationToFile();

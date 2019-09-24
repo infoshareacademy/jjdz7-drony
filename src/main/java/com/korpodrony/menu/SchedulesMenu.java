@@ -17,7 +17,7 @@ public class SchedulesMenu {
     void startSchedulesMenu() {
         do {
             Messages.printScheldulesMenu("Plany");
-            int choice = IoTools.getNumericInput();
+            int choice = IoTools.getIntFromUser();
             runSchedulesMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
     }
@@ -68,7 +68,7 @@ public class SchedulesMenu {
         if (mainMenu.dB.getAllPlans().size() == 0) {
             return;
         }
-        int choice = IoTools.readIntInputWithMessage("Podaj ID planu, którego zajęcia chcesz obejrzeć");
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu, którego zajęcia chcesz obejrzeć");
         if (!mainMenu.dB.hasPlanWithThisID(choice)){
             System.out.println("Nie ma takiego planu");
             return;

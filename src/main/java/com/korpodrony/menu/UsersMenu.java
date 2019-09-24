@@ -16,7 +16,7 @@ public class UsersMenu {
     void startUsersMenu() {
         do {
             Messages.printUserMenu("Użytkownicy");
-            int choice = IoTools.getNumericInput();
+            int choice = IoTools.getIntFromUser();
             runUsersMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
     }
@@ -61,7 +61,7 @@ public class UsersMenu {
         if (mainMenu.dB.getAllUsers().size() == 0) {
             return;
         }
-        int choice = IoTools.readIntInputWithMessage("Podaj ID użytkownika do którego zajęcia chcesz obejrzeć");
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika do którego zajęcia chcesz obejrzeć");
         if (!mainMenu.dB.hasUserWithThisID(choice)){
             System.out.println("Nie ma takiego użytkownika");
             return;

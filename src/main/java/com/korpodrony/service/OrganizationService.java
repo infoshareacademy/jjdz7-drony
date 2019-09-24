@@ -19,8 +19,8 @@ public class OrganizationService {
     }
 
     public void addUser() {
-        String name = IoTools.readStringInputWithMessage("Podaj imię");
-        String surname = IoTools.readStringInputWithMessage("Podaj nazwisko");
+        String name = IoTools.getStringFromUserWithMessage("Podaj imię");
+        String surname = IoTools.getStringFromUserWithMessage("Podaj nazwisko");
         if (organization.createUser(name, surname)) {
             System.out.println("Dodano użytownika");
         } else {
@@ -29,9 +29,9 @@ public class OrganizationService {
     }
 
     public void addActivity() {
-        String name = IoTools.readStringInputWithMessage("Podaj nazwę zajęć");
-        short maxUsers = IoTools.getShortWithMessage("Podaj maksymalną liczbę użytkowników zajęć");
-        byte duration = IoTools.getByteWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach");
+        String name = IoTools.getStringFromUserWithMessage("Podaj nazwę zajęć");
+        short maxUsers = IoTools.getShortFromUserWithMessage("Podaj maksymalną liczbę użytkowników zajęć");
+        byte duration = IoTools.getByteFromUserWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach");
         if (organization.createActivity(name, maxUsers, duration)) {
             System.out.println("Dodano zajęcia");
         } else {
@@ -40,7 +40,7 @@ public class OrganizationService {
     }
 
     public void addPlan() {
-        String name = IoTools.readStringInputWithMessage("Podaj nazwę planu");
+        String name = IoTools.getStringFromUserWithMessage("Podaj nazwę planu");
         if (organization.createPlan(name)) {
             System.out.println("Dodano plan");
         } else {
@@ -61,7 +61,7 @@ public class OrganizationService {
         List<User> avaiableUsers = chooseAvaiableUsers(activityID);
         avaiableUsers.sort(new UserIDComparator());
         avaiableUsers.forEach(System.out::println);
-        int userID = IoTools.readIntInputWithMessage("Podaj ID użytkownika, którego chcesz przypisać do zajęć");
+        int userID = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika, którego chcesz przypisać do zajęć");
         if (canAssignUsertToActivity(userID, activityID)) {
             if (organization.assignUserToActivity(userID, activityID)) {
                 System.out.println("Przypisano użytkownika do zajęć");
@@ -82,7 +82,7 @@ public class OrganizationService {
         List<Activity> avaiableAcitvities = chooseAvaiableActivites(planID);
         avaiableAcitvities.sort(new ActivityIDComparator());
         avaiableAcitvities.forEach(System.out::println);
-        int activityID = IoTools.readIntInputWithMessage("Podaj ID zajęć, które chcesz przypisać do planu");
+        int activityID = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, które chcesz przypisać do planu");
         if (canAssignActivityToPlan(activityID, planID)) {
             if (organization.assignActivityToPlan(activityID, planID)) {
                 System.out.println("Zajęcia przypisano do planu");
@@ -126,7 +126,7 @@ public class OrganizationService {
             return;
         }
         getActivitiesByIDs(organization.getPlan(planID).getActivitiesID()).forEach(System.out::println);
-        int activityID = IoTools.getIntegerWithMessage("Podaj ID zajęć do wypisania z planu");
+        int activityID = IoTools.getIntFromUserWithMessage("Podaj ID zajęć do wypisania z planu");
         if (canUnassignActivityFromPlan(activityID, planID)) {
             if (organization.unassignActivityFromPlan(activityID, planID)) {
                 System.out.println("Zajęcia wypisano z planu");
@@ -145,7 +145,7 @@ public class OrganizationService {
             return;
         }
         getUsersByIDs(organization.getActivity(activityID).getAssignedUsersIDs()).forEach(System.out::println);
-        int userID = IoTools.getIntegerWithMessage("Podaj ID użytkownika do wypisania z zajęć");
+        int userID = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika do wypisania z zajęć");
         if (canUnassignUserFromActivity(userID, activityID)) {
             if (organization.unassignUserFromActivity(userID, activityID)) {
                 System.out.println("Użytkownika wypisano z zajęć");
@@ -223,7 +223,7 @@ public class OrganizationService {
 
     private int chooseActivity() {
         printActivites();
-        int choice = IoTools.readIntInputWithMessage("Podaj ID zajęc");
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęc");
         if (organization.hasActivityWithThisID(choice)) {
             return choice;
         } else {
@@ -234,7 +234,7 @@ public class OrganizationService {
 
     private int choosePlan() {
         printPlans();
-        int choice = IoTools.readIntInputWithMessage("Podaj ID planu");
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu");
         if (organization.hasPlanWithThisID(choice)) {
             return choice;
         } else {
@@ -248,7 +248,7 @@ public class OrganizationService {
         if (organization.getAllUsers().size() == 0) {
             return;
         }
-        int choice = IoTools.readIntInputWithMessage("Podaj ID użytkownika do usunięcia");
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika do usunięcia");
         if (organization.deleteUser(choice)) {
             System.out.println("Usunięto użytkownika");
         } else {
@@ -261,7 +261,7 @@ public class OrganizationService {
         if (organization.getAllActivies().size() == 0) {
             return;
         }
-        int choice = IoTools.readIntInputWithMessage("Podaj ID zajęć do usunięcia");
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęć do usunięcia");
         if (organization.deleteActivity(choice)) {
             System.out.println("Usunięto zajęcia");
         } else {
@@ -274,7 +274,7 @@ public class OrganizationService {
         if (organization.getAllPlans().size() == 0) {
             return;
         }
-        int choice = IoTools.readIntInputWithMessage("Podaj ID planu do usunięcia");
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu do usunięcia");
         if (organization.deletePlan(choice)) {
             System.out.println("Usunięto plan");
         } else {
@@ -336,12 +336,12 @@ public class OrganizationService {
             return;
         }
         printPlans();
-        int planID = IoTools.getIntegerWithMessage("Podaj ID planu, który chcesz edytować");
+        int planID = IoTools.getIntFromUserWithMessage("Podaj ID planu, który chcesz edytować");
         if (!organization.getAllPlansIDs().contains(planID)) {
             System.out.println("Nie ma planu o takim ID");
             return;
         }
-        String name = IoTools.readStringInputWithMessage("Podaj nową nazwę zajęć");
+        String name = IoTools.getStringFromUserWithMessage("Podaj nową nazwę zajęć");
         if (organization.editPlan(planID, name)) {
             System.out.println("Zedytowano plan");
         }
@@ -353,14 +353,14 @@ public class OrganizationService {
             return;
         }
         printActivites();
-        int activityID = IoTools.getIntegerWithMessage("Podaj ID zajęć, które chcesz edytować");
+        int activityID = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, które chcesz edytować");
         if (!organization.getAllActivitiesIDs().contains(activityID)) {
             System.out.println("Nie ma zajęć o takim ID");
             return;
         }
-        String name = IoTools.readStringInputWithMessage("Podaj nazwę zajęć");
-        short maxUsers = IoTools.getShortWithMessage("Podaj maksymalną liczbę użytkowników zajęć");
-        byte duration = IoTools.getByteWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach");
+        String name = IoTools.getStringFromUserWithMessage("Podaj nazwę zajęć");
+        short maxUsers = IoTools.getShortFromUserWithMessage("Podaj maksymalną liczbę użytkowników zajęć");
+        byte duration = IoTools.getByteFromUserWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach");
         if (organization.editActivity(activityID, name, maxUsers, duration)) {
             System.out.println("Zedytowano zajęcia");
         }
@@ -372,13 +372,13 @@ public class OrganizationService {
             return;
         }
         printUsers();
-        int userID = IoTools.getIntegerWithMessage("Podaj ID użytkownika, który chcesz edytować");
+        int userID = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika, który chcesz edytować");
         if (!organization.getAllUsersIDs().contains(userID)) {
             System.out.println("Nie ma użytkownika o takim ID");
             return;
         }
-        String name = IoTools.readStringInputWithMessage("Podaj nowe imię użytkownika");
-        String surName = IoTools.readStringInputWithMessage("Podaj nowe nazwisko użytkownika");
+        String name = IoTools.getStringFromUserWithMessage("Podaj nowe imię użytkownika");
+        String surName = IoTools.getStringFromUserWithMessage("Podaj nowe nazwisko użytkownika");
         if (organization.editUser(userID, name, surName)) {
             System.out.println("Zedytowano użytkownika");
         }

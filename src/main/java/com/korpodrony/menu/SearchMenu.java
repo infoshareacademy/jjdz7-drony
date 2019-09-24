@@ -21,7 +21,7 @@ public class SearchMenu {
 
         do {
             Messages.printSearchMenu();
-            int choice = IoTools.getNumericInput();
+            int choice = IoTools.getIntFromUser();
             runSearchMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
     }
@@ -53,7 +53,7 @@ public class SearchMenu {
 
     private void startSearchByUserMenu() {
         System.out.println("Szukanie użytkownika po imieniu, wpisz imię");
-        String searchedText = IoTools.readStringUserInput().toLowerCase();
+        String searchedText = IoTools.getStringFromUser().toLowerCase();
         List<User> users = mainMenu.dB.getAllUsers().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
         if (users.size() == 0) {
             System.out.println("nie ma takiego użytkownika");
@@ -65,7 +65,7 @@ public class SearchMenu {
 
     private void startSearchByActivityMenu() {
         System.out.println("Szukanie zajęć po nazwie, wpisz nazwe");
-        String searchedText = IoTools.readStringUserInput().toLowerCase();
+        String searchedText = IoTools.getStringFromUser().toLowerCase();
         List<Activity> activities = mainMenu.dB.getAllActivies().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
         if (activities.size() == 0) {
             System.out.println("nie ma takich zajęć");
@@ -76,8 +76,8 @@ public class SearchMenu {
     }
 
     private void startSearchByScheduleMenu() {
-        System.out.println("Szukanie planu po naziwe, wpisz nazwe");
-        String searchedText = IoTools.readStringUserInput().toLowerCase();
+        System.out.println("Szukanie planu po nazwie, wpisz nazwę");
+        String searchedText = IoTools.getStringFromUser().toLowerCase();
         List<Plan> plans = mainMenu.dB.getAllPlans().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
         if (plans.size() == 0) {
             System.out.println("nie ma takiego planu");

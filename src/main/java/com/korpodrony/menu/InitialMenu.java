@@ -18,7 +18,7 @@ public class InitialMenu {
         int choice = 0;
         do {
             Messages.printInitialMenu();
-            choice = IoTools.getNumericInput();
+            choice = IoTools.getIntFromUser();
             runInitialMenuDecide(choice);
         } while (choice != 1 && choice != 2);
     }
