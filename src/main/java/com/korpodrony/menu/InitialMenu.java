@@ -18,7 +18,6 @@ public class InitialMenu {
         int choice = 0;
         do {
             Messages.printInitialMenu();
-            System.out.print("Twój wybór: ");
             choice = IoTools.getNumericInput();
             runInitialMenuDecide(choice);
         } while (choice != 1 && choice != 2);

@@ -16,7 +16,6 @@ public class UsersMenu {
     void startUsersMenu() {
         do {
             Messages.printUserMenu("Użytkownicy");
-            System.out.print("Twój wybór: ");
             int choice = IoTools.getNumericInput();
             runUsersMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);

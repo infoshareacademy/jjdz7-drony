@@ -21,7 +21,6 @@ public class SearchMenu {
 
         do {
             Messages.printSearchMenu();
-            System.out.print("Twój wybór: ");
             int choice = IoTools.getNumericInput();
             runSearchMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
