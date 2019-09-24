@@ -1,6 +1,14 @@
 package com.korpodrony.menu;
 
 public class Messages {
+
+    static void printInitialMenu() {
+        System.out.println("\n\n --" + "Libris by koprodrony" + "--");
+        System.out.println("\n-- Baza danych programu --\n");
+        System.out.println("\n1. Wczytaj z pliku");
+        System.out.println("2. Stwórz nowy");
+    }
+
     static void printMainMenu() {
         System.out.println("\n1. Szukaj");
         System.out.println("2. Użytkownicy");
@@ -17,24 +25,8 @@ public class Messages {
         System.out.println("4. Wyjście");
     }
 
-    static void printInitialMenu() {
-        System.out.println("\n\n --" + "Libris by koprodrony" + "--");
-        System.out.println("\n-- " + "MENU" + " --");
-        System.out.println("\n1. Wczytaj z pliku");
-        System.out.println("2. Stwórz nowy");
-    }
-
-    static void printContextMenu(String contextMenuType) {
-        System.out.println("Menu --" + contextMenuType + "--");
-        System.out.println("\n1. Dodaj");
-        System.out.println("2. Edytuj");
-        System.out.println("3. Usuń");
-        System.out.println("4. Pokaż");
-        System.out.println("5. Wyjście");
-    }
-
-    static void printUserMenu(String contextMenuType) {
-        System.out.println("Menu --" + contextMenuType + "--");
+    static void printUserMenu() {
+        System.out.println("Menu -- Użytkownicy --");
         System.out.println("\n1. Dodaj");
         System.out.println("2. Edytuj");
         System.out.println("3. Usuń");
@@ -43,8 +35,8 @@ public class Messages {
         System.out.println("6. Wyjście");
     }
 
-    static void printActivitiesMenu(String contextMenuType) {
-        System.out.println("Menu --" + contextMenuType + "--");
+    static void printActivitiesMenu() {
+        System.out.println("Menu -- zajęcia --");
         System.out.println("\n1. Dodaj");
         System.out.println("2. Edytuj");
         System.out.println("3. Usuń");
@@ -55,8 +47,8 @@ public class Messages {
         System.out.println("8. Wyjście");
     }
 
-    static void printScheldulesMenu(String contextMenuType) {
-        System.out.println("Menu --" + contextMenuType + "--");
+    static void printSchedulesMenu() {
+        System.out.println("Menu -- Plany --");
         System.out.println("\n1. Dodaj");
         System.out.println("2. Edytuj");
         System.out.println("3. Usuń");

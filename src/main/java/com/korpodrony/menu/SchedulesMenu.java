@@ -16,7 +16,7 @@ public class SchedulesMenu {
 
     void startSchedulesMenu() {
         do {
-            Messages.printScheldulesMenu("Plany");
+            Messages.printSchedulesMenu();
             int choice = IoTools.getIntFromUser();
             runSchedulesMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);

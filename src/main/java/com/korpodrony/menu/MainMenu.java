@@ -42,10 +42,6 @@ public class MainMenu {
         JSONWriter.writeJSONToFile(Paths.get(path, "Plans.json"), dB.getPlans());
     }
 
-    /**
-     * Menu choice logic
-     **/
-
     private void runMainMenuDecide(int choice) {
         switch (choice) {
             case 1: {

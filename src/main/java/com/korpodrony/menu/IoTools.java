@@ -70,6 +70,7 @@ public class IoTools {
 
     public static int getIntFromUser() {
         int x;
+        System.out.println("Twój wybór?");
         while (!sc.hasNextInt()) {
             System.out.println(sc.next() + ": nie jest liczbą. Spróbuj ponownie:");
             sc.nextLine();
