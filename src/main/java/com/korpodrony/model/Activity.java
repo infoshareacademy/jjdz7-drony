@@ -10,18 +10,18 @@ public class Activity {
     private short maxUsers;
     private Set<Integer> assignedUsersIDs;
     //    Trainer trainer;
-    private byte duration; /*Unit of duration is quarter*/
+    private byte lenghtInMinutes; /*Unit of duration is quarter*/
 
-    public Activity(String name, short maxUsers, byte duration) {
-        this(++currentID, name, maxUsers, new HashSet<>(), duration);
+    public Activity(String name, short maxUsers, byte lenghtInMinutes) {
+        this(++currentID, name, maxUsers, new HashSet<>(), lenghtInMinutes);
     }
 
-    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte duration) {
+    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte lenghtInMinutes) {
         this.ID = ID;
         this.name = name;
         this.maxUsers = maxUsers;
         this.assignedUsersIDs = assignedUsersIDs;
-        this.duration = duration;
+        this.lenghtInMinutes = lenghtInMinutes;
     }
 
     public Activity() {
@@ -77,18 +77,18 @@ public class Activity {
         this.assignedUsersIDs = assignedUsersIDs;
     }
 
-    public byte getDuration() {
-        return duration;
+    public byte getLenghtInMinutes() {
+        return lenghtInMinutes;
     }
 
-    public void setDuration(byte duration) {
-        this.duration = duration;
+    public void setLenghtInMinutes(byte lenghtInMinutes) {
+        this.lenghtInMinutes = lenghtInMinutes;
     }
 
-    public void editActivity(String name, short maxUsers, byte duration) {
+    public void editActivity(String name, short maxUsers, byte lenghtInMinutes) {
         setName(name);
         setMaxUsers(maxUsers);
-        setDuration(duration);
+        setLenghtInMinutes(lenghtInMinutes);
     }
 
     public boolean assignUser(int userID) {
@@ -124,6 +124,6 @@ public class Activity {
                 ", nazwa: " + name +
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
-                ", czas trwania [min]:" + duration*15;
+                ", czas trwania [min]:" + lenghtInMinutes *15;
     }
 }

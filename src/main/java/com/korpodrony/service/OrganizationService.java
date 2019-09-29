@@ -360,8 +360,8 @@ public class OrganizationService {
         }
         String name = IoTools.getStringFromUserWithMessage("Podaj nazwę zajęć:");
         short maxUsers = IoTools.getShortFromUserWithMessage("Podaj maksymalną liczbę użytkowników zajęć:");
-        byte duration = IoTools.getByteFromUserWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach:");
-        if (organization.editActivity(activityID, name, maxUsers, duration)) {
+        byte lenghtInQuarters = IoTools.getByteFromUserWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach:");
+        if (organization.editActivity(activityID, name, maxUsers, lenghtInQuarters)) {
             System.out.println("Zedytowano zajęcia.");
         }
     }
