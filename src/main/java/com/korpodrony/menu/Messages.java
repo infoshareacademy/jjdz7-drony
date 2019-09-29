@@ -54,9 +54,9 @@ public class Messages {
         System.out.println("2. Edytuj");
         System.out.println("3. Usuń");
         System.out.println("4. Pokaż");
-        System.out.println("5. Dołącz zajęcia do planu");
+        System.out.println("5. Przypisz zajęcia do planu");
         System.out.println("6. Usuń zajęcia z planu");
-        System.out.println("7. Pokaż zajęcia przypisanych do planu");
+        System.out.println("7. Pokaż zajęcia przypisane do planu");
         System.out.println("8. Wyjście\n");
     }
 

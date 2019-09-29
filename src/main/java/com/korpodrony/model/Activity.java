@@ -10,18 +10,18 @@ public class Activity {
     private short maxUsers;
     private Set<Integer> assignedUsersIDs;
     //    Trainer trainer;
-    private byte lenghtInMinutes; /*Unit of duration is quarter*/
+    private byte lenghtInQuarters; /*Unit of duration is quarter*/
 
-    public Activity(String name, short maxUsers, byte lenghtInMinutes) {
-        this(++currentID, name, maxUsers, new HashSet<>(), lenghtInMinutes);
+    public Activity(String name, short maxUsers, byte lenghtInQuarters) {
+        this(++currentID, name, maxUsers, new HashSet<>(), lenghtInQuarters);
     }
 
-    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte lenghtInMinutes) {
+    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte lenghtInQuarters) {
         this.ID = ID;
         this.name = name;
         this.maxUsers = maxUsers;
         this.assignedUsersIDs = assignedUsersIDs;
-        this.lenghtInMinutes = lenghtInMinutes;
+        this.lenghtInQuarters = lenghtInQuarters;
     }
 
     public Activity() {
@@ -77,18 +77,18 @@ public class Activity {
         this.assignedUsersIDs = assignedUsersIDs;
     }
 
-    public byte getLenghtInMinutes() {
-        return lenghtInMinutes;
+    public byte getLenghtInQuarters() {
+        return lenghtInQuarters;
     }
 
-    public void setLenghtInMinutes(byte lenghtInMinutes) {
-        this.lenghtInMinutes = lenghtInMinutes;
+    public void setLenghtInQuarters(byte lenghtInQuarters) {
+        this.lenghtInQuarters = lenghtInQuarters;
     }
 
-    public void editActivity(String name, short maxUsers, byte lenghtInMinutes) {
+    public void editActivity(String name, short maxUsers, byte lenghtInQuarters) {
         setName(name);
         setMaxUsers(maxUsers);
-        setLenghtInMinutes(lenghtInMinutes);
+        setLenghtInQuarters(lenghtInQuarters);
     }
 
     public boolean assignUser(int userID) {
@@ -124,6 +124,6 @@ public class Activity {
                 ", nazwa: " + name +
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
-                ", czas trwania [min]:" + lenghtInMinutes *15;
+                ", czas trwania [min]:" + lenghtInQuarters *15;
     }
 }

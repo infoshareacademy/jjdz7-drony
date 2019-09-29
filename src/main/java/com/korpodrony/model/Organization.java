@@ -69,8 +69,8 @@ public class Organization {
         return addUser(new User(name, surname));
     }
 
-    public boolean createActivity(String name, short maxUsers, byte lenghtInMinutes) {
-        return addActivity(new Activity(name, maxUsers, lenghtInMinutes));
+    public boolean createActivity(String name, short maxUsers, byte lenghtInQuarters) {
+        return addActivity(new Activity(name, maxUsers, lenghtInQuarters));
     }
 
     public boolean createPlan(String name) {
@@ -158,11 +158,11 @@ public class Organization {
         return true;
     }
 
-    public boolean editActivity(int activityID, String name, short maxUsers, byte lenghtInMinutes) {
+    public boolean editActivity(int activityID, String name, short maxUsers, byte lenghtInQuarters) {
         if (!hasActivityWithThisID(activityID)) {
             return false;
         }
-        getActivity(activityID).editActivity(name, maxUsers, lenghtInMinutes);
+        getActivity(activityID).editActivity(name, maxUsers, lenghtInQuarters);
         return true;
     }
 
