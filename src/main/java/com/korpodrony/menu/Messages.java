@@ -28,9 +28,9 @@ public class Messages {
 
     static void printUserMenu() {
         System.out.println("\nMenu -- Użytkownicy --");
-        System.out.println("\n1. Dodaj");
-        System.out.println("2. Edytuj");
-        System.out.println("3. Usuń");
+        System.out.println("\n1. Dodaj użytkownika");
+        System.out.println("2. Edytuj użytkownika");
+        System.out.println("3. Usuń użytkownika");
         System.out.println("4. Pokaż wszystkich użytkowników");
         System.out.println("5. Pokaż wszystkie zajęcia, do których przypisany jest użytkownik");
         System.out.println("6. Wyjście\n");
@@ -38,10 +38,10 @@ public class Messages {
 
     static void printActivitiesMenu() {
         System.out.println("\nMenu -- Zajęcia --");
-        System.out.println("\n1. Dodaj");
-        System.out.println("2. Edytuj");
-        System.out.println("3. Usuń");
-        System.out.println("4. Pokaż");
+        System.out.println("\n1. Dodaj zajęcia");
+        System.out.println("2. Edytuj zajęcia");
+        System.out.println("3. Usuń zajęcia");
+        System.out.println("4. Pokaż listę zajęć");
         System.out.println("5. Przypisz użytkownika do zajęć");
         System.out.println("6. Wypisz użytkownika z zajęć");
         System.out.println("7. Pokaż użytkowników przypisanych do zajęć");
@@ -50,10 +50,10 @@ public class Messages {
 
     static void printSchedulesMenu() {
         System.out.println("\nMenu -- Plany --");
-        System.out.println("\n1. Dodaj");
-        System.out.println("2. Edytuj");
-        System.out.println("3. Usuń");
-        System.out.println("4. Pokaż");
+        System.out.println("\n1. Dodaj plan");
+        System.out.println("2. Edytuj plan");
+        System.out.println("3. Usuń plan");
+        System.out.println("4. Pokaż listę planów");
         System.out.println("5. Przypisz zajęcia do planu");
         System.out.println("6. Usuń zajęcia z planu");
         System.out.println("7. Pokaż zajęcia przypisane do planu");

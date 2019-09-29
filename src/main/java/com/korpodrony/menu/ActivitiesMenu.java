@@ -65,7 +65,7 @@ public class ActivitiesMenu {
 
     private void startActivitiesMenuShowAssignedUsers() {
         System.out.println("-- Pokazywanie użytkowników przypisanych do zajęć --");
-        mainMenu.dBService.printActivites();
+        mainMenu.dBService.printActivities();
         if (mainMenu.dB.getAllActivies().size() == 0) {
             return;
         }
@@ -99,7 +99,7 @@ public class ActivitiesMenu {
     }
 
     private void startActivitiesMenuEditActivity() {
-        mainMenu.dBService.editActiity();
+        mainMenu.dBService.editActivity();
     }
 
     private void startActivitiesMenuDeleteActivity() {
@@ -109,6 +109,6 @@ public class ActivitiesMenu {
 
     private void startActivitiesMenuShowActivity() {
         System.out.println("-- Pokazywanie istniejących zajęć --");
-        mainMenu.dBService.printActivites();
+        mainMenu.dBService.printActivities();
     }
 }
