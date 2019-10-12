@@ -10,6 +10,7 @@ import com.korpodrony.model.Plan;
 import com.korpodrony.model.User;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class OrganizationService {
     private Organization organization;
@@ -49,12 +50,12 @@ public class OrganizationService {
     }
 
     public void assignUserToActivity() {
-        if (organization.getAllActivies().size() == 0 || organization.getAllUsers().size() == 0) {
+        if (organization.getAllActivies().isEmpty() || organization.getAllUsers().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych zajęć lub użytkowników");
             return;
         }
         int activityID = chooseActivity();
-        if (chooseAvaiableUsers(activityID).size() == 0) {
+        if (chooseAvaiableUsers(activityID).isEmpty()) {
             System.out.println("Nie ma obecnie żadnych użytkowników, których można przypisać");
             return;
         }
@@ -70,12 +71,12 @@ public class OrganizationService {
     }
 
     public void assignActivityToPlan() {
-        if (organization.getAllActivies().size() == 0 || organization.getAllPlans().size() == 0) {
+        if (organization.getAllActivies().isEmpty() || organization.getAllPlans().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych planów lub zajęć");
             return;
         }
         int planID = choosePlan();
-        if (chooseAvaiableActivites(planID).size() == 0) {
+        if (chooseAvaiableActivites(planID).isEmpty()) {
             System.out.println("Nie ma obecnie żadnych zajęć, które można przypisać");
             return;
         }
@@ -116,12 +117,12 @@ public class OrganizationService {
     }
 
     public void unassignActivityFromPlan() {
-        if (organization.getAllPlans().size() == 0 || organization.getAllActivies().size() == 0) {
+        if (organization.getAllPlans().isEmpty() || organization.getAllActivies().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych planów lub zajęć");
             return;
         }
         int planID = choosePlan();
-        if (organization.getPlan(planID).getActivitiesID().size() == 0) {
+        if (organization.getPlan(planID).getActivitiesID().isEmpty()) {
             System.out.println("Nie ma obecnie przypisanych żadnych zajęć do planu");
             return;
         }
@@ -135,12 +136,12 @@ public class OrganizationService {
     }
 
     public void unassingUserFromActivity() {
-        if (organization.getAllActivies().size() == 0 || organization.getAllUsers().size() == 0) {
+        if (organization.getAllActivies().isEmpty() || organization.getAllUsers().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych zajęć lub użytkowników");
             return;
         }
         int activityID = chooseActivity();
-        if (organization.getActivity(activityID).getAssignedUsersIDs().size() == 0) {
+        if (organization.getActivity(activityID).getAssignedUsersIDs().isEmpty()) {
             System.out.println("Zajęcia nie posiadają przypisanych użytkowników");
             return;
         }
@@ -245,7 +246,7 @@ public class OrganizationService {
 
     public void removeUser() {
         printUsers();
-        if (organization.getAllUsers().size() == 0) {
+        if (organization.getAllUsers().isEmpty()) {
             return;
         }
         int choice = IoTools.readIntInputWithMessage("Podaj ID użytkownika do usunięcia");
@@ -258,7 +259,7 @@ public class OrganizationService {
 
     public void removeActivity() {
         printActivites();
-        if (organization.getAllActivies().size() == 0) {
+        if (organization.getAllActivies().isEmpty()) {
             return;
         }
         int choice = IoTools.readIntInputWithMessage("Podaj ID zajęć do usunięcia");
@@ -271,7 +272,7 @@ public class OrganizationService {
 
     public void removePlan() {
         printPlans();
-        if (organization.getAllPlans().size() == 0) {
+        if (organization.getAllPlans().isEmpty()) {
             return;
         }
         int choice = IoTools.readIntInputWithMessage("Podaj ID planu do usunięcia");
@@ -285,7 +286,7 @@ public class OrganizationService {
     public void printUsers(Comparator comparator) {
         List<User> users = organization.getAllUsers();
         users.sort(comparator);
-        if (users.size() == 0) {
+        if (users.isEmpty()) {
             System.out.println("Nie ma obecnie żadnych użytkowników");
             return;
         }
@@ -297,19 +298,53 @@ public class OrganizationService {
     public void printActivites(Comparator comparator) {
         List<Activity> activities = organization.getAllActivies();
         activities.sort(comparator);
-        if (activities.size() == 0) {
+        if (activities.isEmpty()) {
             System.out.println("Nie ma obecnie żadnych zajęć");
             return;
         }
+        System.out.println("\nPodaj numer, by wybrać rodzaj zajęć (1 - wykład, 2 - ćwiczenia, 3- warsztaty, 4 - wszystkie): ");
+        int typeChoice = IoTools.getNumericInput();
+        activityTypeDecide(typeChoice, activities);
         for (int i = 0; i < activities.size(); i++) {
             System.out.println(activities.get(i));
         }
     }
 
+    private void activityTypeDecide(int typeChoice, List<Activity> activities) {
+        switch (typeChoice) {
+            case 1: {
+                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.WYKŁAD);
+                printFilteredActivites(filter, activities);
+                break;
+            }
+            case 2: {
+                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.ĆWICZENIA);
+                printFilteredActivites(filter, activities);
+                break;
+            }
+            case 3: {
+                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.WARSZTATY);
+                printFilteredActivites(filter, activities);
+                break;
+            }
+            default: {
+                Predicate<? super Activity> filter = a -> true;
+                printFilteredActivites(filter, activities);
+            }
+        }
+    }
+
+    private void printFilteredActivites(Predicate<? super Activity> filter, List<Activity> activities) {
+
+        activities.stream()
+                .filter(filter)
+                .forEach(w -> System.out.println(w.toString()));
+    }
+
     public void printPlans(Comparator comparator) {
         List<Plan> plans = organization.getAllPlans();
         plans.sort(comparator);
-        if (plans.size() == 0) {
+        if (plans.isEmpty()) {
             System.out.println("Nie ma obecnie żadnych planów");
             return;
         }
@@ -331,7 +366,7 @@ public class OrganizationService {
     }
 
     public void editPlan() {
-        if (organization.getAllPlans().size() == 0) {
+        if (organization.getAllPlans().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych planów, które można by edytować");
             return;
         }
@@ -348,7 +383,7 @@ public class OrganizationService {
     }
 
     public void editActiity() {
-        if (organization.getAllActivies().size() == 0) {
+        if (organization.getAllActivies().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych zajęć, które można by edytować");
             return;
         }
@@ -367,7 +402,7 @@ public class OrganizationService {
     }
 
     public void editUser() {
-        if (organization.getAllUsers().size() == 0) {
+        if (organization.getAllUsers().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych użytkowników, których można by edytować");
             return;
         }

@@ -56,7 +56,7 @@ public class SearchMenu {
         System.out.println("Szukanie użytkownika po imieniu, wpisz imię");
         String searchedText = IoTools.readStringUserInput().toLowerCase();
         List<User> users = mainMenu.dB.getAllUsers().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
-        if (users.size() == 0) {
+        if (users.isEmpty()) {
             System.out.println("nie ma takiego użytkownika");
             return;
         }
@@ -68,7 +68,7 @@ public class SearchMenu {
         System.out.println("Szukanie zajęć po nazwie, wpisz nazwe");
         String searchedText = IoTools.readStringUserInput().toLowerCase();
         List<Activity> activities = mainMenu.dB.getAllActivies().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
-        if (activities.size() == 0) {
+        if (activities.isEmpty()) {
             System.out.println("nie ma takich zajęć");
             return;
         }
@@ -80,7 +80,7 @@ public class SearchMenu {
         System.out.println("Szukanie planu po naziwe, wpisz nazwe");
         String searchedText = IoTools.readStringUserInput().toLowerCase();
         List<Plan> plans = mainMenu.dB.getAllPlans().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
-        if (plans.size() == 0) {
+        if (plans.isEmpty()) {
             System.out.println("nie ma takiego planu");
             return;
         }

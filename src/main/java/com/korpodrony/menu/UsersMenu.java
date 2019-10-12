@@ -59,7 +59,7 @@ public class UsersMenu {
     private void startUsersMenuShowUserActivities() {
         System.out.println("Pokazywanie zajęć użytkownika");
         mainMenu.dBService.printUsers();
-        if (mainMenu.dB.getAllUsers().size() == 0) {
+        if (mainMenu.dB.getAllUsers().isEmpty()) {
             return;
         }
         int choice = IoTools.readIntInputWithMessage("Podaj ID użytkownika do którego zajęcia chcesz obejrzeć");
@@ -68,7 +68,7 @@ public class UsersMenu {
             return;
         }
         List<Activity> userActivities = mainMenu.dB.getAllActivies().stream().filter(x -> x.getAssignedUsersIDs().contains(choice)).collect(Collectors.toList());
-        if (userActivities.size() == 0) {
+        if (userActivities.isEmpty()) {
             System.out.println("użytkownik nie jest przypisany do żadnych zajęć");
             return;
         }

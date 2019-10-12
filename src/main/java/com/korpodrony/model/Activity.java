@@ -1,5 +1,7 @@
 package com.korpodrony.model;
 
+import com.korpodrony.service.ActivitiesType;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +13,7 @@ public class Activity {
     private Set<Integer> assignedUsersIDs;
     //    Trainer trainer;
     private byte duration; /*Unit of duration is quarter*/
+    private ActivitiesType activitiesType;
 
     public Activity(String name, short maxUsers, byte duration) {
         this(++currentID, name, maxUsers, new HashSet<>(), duration);
@@ -83,6 +86,14 @@ public class Activity {
 
     public void setDuration(byte duration) {
         this.duration = duration;
+    }
+
+    public ActivitiesType getActivitiesType() {
+        return activitiesType;
+    }
+
+    public void setActivitiesType(ActivitiesType activitiesType) {
+        this.activitiesType = activitiesType;
     }
 
     public void editActivity(String name, short maxUsers, byte duration) {
