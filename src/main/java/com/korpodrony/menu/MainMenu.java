@@ -18,7 +18,7 @@ public class MainMenu {
         do {
             contextMenuExit = false;
             Messages.printMainMenu();
-            int choice = IoTools.getUserInput();
+            int choice = IoTools.getIntegerWithMessage("\nTwój wybór: ");
             runMainMenuDecide(choice);
         } while (!exit);
     }

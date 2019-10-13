@@ -80,10 +80,6 @@ public class Activity {
         return name;
     }
 
-    public short getMaxUsers() {
-        return maxUsers;
-    }
-
     public void setAssignedUsersIDs(Set<Integer> assignedUsersIDs) {
         this.assignedUsersIDs = assignedUsersIDs;
     }

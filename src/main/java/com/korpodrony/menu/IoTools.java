@@ -3,94 +3,60 @@ package com.korpodrony.menu;
 import java.util.Locale;
 import java.util.Scanner;
 
+import static java.lang.System.in;
+import static java.lang.System.out;
+
 public class IoTools {
 
-    public static int getUserInput() {
-        System.out.print("\nTwój wybór: ");
-        return Integer.parseInt(readStringUserInput());
+    private static final Scanner sc = new Scanner(in).useLocale(Locale.US);
+    private static final String WRONG_INPUT_MESSAGE = ": nie jest liczbą, lub jest liczbą z poza dozwolonego zakresu";
+
+    public static int getIntegerWithMessage(String message) {
+        out.println(message);
+        return getNumericInput();
     }
 
-    public static String readStringUserInput() {
-        return new Scanner(System.in).nextLine();
-    }
-
-    public static int readIntUserInput() {
-        return new Scanner(System.in).nextInt();
-    }
-
-    public static String readStringInputWithMessage(String message){
-        System.out.println(message);
+    public static String readStringInputWithMessage(String message) {
+        out.println(message);
         return readStringUserInput();
     }
 
-    public static int readIntInputWithMessage(String message){
-        System.out.println(message);
-        return readIntUserInput();
+    public static byte getByteWithMessage(String message) {
+        out.println(message);
+        return getUserInputByte();
     }
 
+    public static short getShortWithMessage(String message) {
+        out.println(message);
+        return getUserInputShort();
+    }
 
-    private static final Scanner sc = new Scanner(System.in).useLocale(Locale.US);
-
-    public static double getUserInputDouble() {
-        double x = 0;
-        while (!sc.hasNextDouble()) {
-            if (!sc.hasNext()) {
-                System.err.println("no more input");
-                System.exit(1);
-            }
-            System.out.println(sc.next() + ": is not a double, please enter a double ");
+    private static int getNumericInput() {
+        int result;
+        while (!sc.hasNextInt()) {
+            out.println(sc.next() + WRONG_INPUT_MESSAGE);
+            sc.nextLine();
         }
-        return sc.nextDouble();
+        result = sc.nextInt();
+        sc.nextLine();
+        return result;
     }
 
-    public static short getUserInputShort() {
-        short x = 0;
-        while (!sc.hasNextShort()) {
-            if (!sc.hasNext()) {
-                System.err.println("no more input");
-                System.exit(1);
-            }
-            System.out.println(sc.next() + ": is not a short, please enter a short ");
-        }
-        return sc.nextShort();
+    private static String readStringUserInput() {
+        return sc.nextLine();
     }
 
-    public static byte getUserInputByte() {
-        short x = 0;
+    private static byte getUserInputByte() {
         while (!sc.hasNextByte()) {
-            if (!sc.hasNext()) {
-                System.err.println("no more input");
-                System.exit(1);
-            }
-            System.out.println(sc.next() + ": is not a byte, please enter a byte ");
+            out.println(sc.next() + WRONG_INPUT_MESSAGE);
         }
         return sc.nextByte();
     }
 
-    public static byte getByteWithMessage(String message){
-        System.out.println(message);
-        return getUserInputByte();
-    }
-
-    public static short getShortWithMessage(String message){
-        System.out.println(message);
-        return getUserInputShort();
-    }
-
-    public static int getNumericInput() {
-        int x;
-        while (!sc.hasNextInt()) {
-            System.out.println(sc.next() + ": is not a number, please enter a number");
-            sc.nextLine();
+    private static short getUserInputShort() {
+        while (!sc.hasNextShort()) {
+            out.println(sc.next() + WRONG_INPUT_MESSAGE);
         }
-        x = sc.nextInt();
-        sc.nextLine();
-        return x;
+        return sc.nextShort();
     }
-
-    public static int getIntegerWithMessage(String message){
-        System.out.println(message);
-        return getNumericInput();
-    }
-
 }

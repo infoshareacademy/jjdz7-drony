@@ -7,7 +7,7 @@ public class SearchMenu {
 
         do {
             Messages.printSearchMenu();
-            int choice = IoTools.getUserInput();
+            int choice = IoTools.getIntegerWithMessage("\nTwój wybór: ");
             runSearchMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
     }
@@ -45,19 +45,19 @@ public class SearchMenu {
 
     private static void startSearchByUserMenu() {
         System.out.println("Szukanie użytkownika po ID, wpisz ID");
-        MainMenu.menuIdToSearch = IoTools.getUserInput();
+        MainMenu.menuIdToSearch = IoTools.getIntegerWithMessage("Wpisz szukane id: ");
         System.out.println("Szukam po ID " + MainMenu.menuIdToSearch); //TODO insert correct method call
     }
 
     private static void startSearchByActivityMenu() {
         System.out.println("Szukanie zajęć po ID, wpisz ID");
-        MainMenu.menuIdToSearch = IoTools.getUserInput();
+        MainMenu.menuIdToSearch = IoTools.getIntegerWithMessage("Wpisz szukane id: ");
         System.out.println("Szukam po ID " + MainMenu.menuIdToSearch); //TODO insert correct method call
     }
 
     private static void startSearchByScheduleMenu() {
         System.out.println("Szukanie planu po ID, wpisz ID");
-        MainMenu.menuIdToSearch = IoTools.getUserInput();
+        MainMenu.menuIdToSearch = IoTools.getIntegerWithMessage("Wpisz szukane id: ");
         System.out.println("Szukam po ID " + MainMenu.menuIdToSearch); //TODO insert correct method call
     }
 }

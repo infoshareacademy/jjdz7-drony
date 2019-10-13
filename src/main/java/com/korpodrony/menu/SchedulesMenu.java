@@ -4,7 +4,7 @@ public class SchedulesMenu {
     static void startSchedulesMenu() {
         do {
             Messages.printSchedulesContextMenu();
-            int choice = IoTools.getUserInput();
+            int choice = IoTools.getIntegerWithMessage("\nTwój wybór: ");
             runSchedulesMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
     }

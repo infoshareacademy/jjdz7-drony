@@ -67,10 +67,6 @@ public class Plan {
         return name;
     }
 
-    public Set<Integer> getActivitiesID() {
-        return activitiesID;
-    }
-
     public void setActivitiesID(Set<Integer> activitiesID) {
         this.activitiesID = activitiesID;
     }

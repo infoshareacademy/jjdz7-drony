@@ -4,7 +4,7 @@ public class UsersMenu {
     static void startUsersMenu() {
         do {
             Messages.printUsersContextMenu();
-            int choice = IoTools.getUserInput();
+            int choice = IoTools.getIntegerWithMessage("\nTwój wybór: " );
             runUsersMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
     }

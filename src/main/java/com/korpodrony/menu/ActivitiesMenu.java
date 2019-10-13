@@ -4,7 +4,7 @@ public class ActivitiesMenu {
     static void StartActivitiesMenu() {
         do {
             Messages.printActivitiesContextMenu();
-            int choice = IoTools.getUserInput();
+            int choice = IoTools.getIntegerWithMessage("\nTwój wybór: ");
             runActivitiesMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
     }
