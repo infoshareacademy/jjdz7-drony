@@ -42,7 +42,7 @@ public class Activity {
     }
 
     public boolean assignUser(User user) {
-        return assignUser(user.getID());
+        return assignUser(user.getId());
     }
 
     public boolean unassignUser(int userID) {
@@ -54,7 +54,7 @@ public class Activity {
     }
 
     public boolean unassignUser(User user) {
-        return unassignUser(user.getID());
+        return unassignUser(user.getId());
     }
 
     public boolean canAssignUser(int userID) {
