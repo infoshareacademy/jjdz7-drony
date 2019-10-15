@@ -15,16 +15,17 @@ public class Activity {
     private byte duration; /*Unit of duration is quarter*/
     private ActivitiesType activitiesType;
 
-    public Activity(String name, short maxUsers, byte duration) {
-        this(++currentID, name, maxUsers, new HashSet<>(), duration);
+    public Activity(String name, short maxUsers, byte duration, ActivitiesType activitiesType) {
+        this(++currentID, name, maxUsers, new HashSet<>(), duration, activitiesType);
     }
 
-    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte duration) {
+    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte duration, ActivitiesType activitiesType) {
         this.ID = ID;
         this.name = name;
         this.maxUsers = maxUsers;
         this.assignedUsersIDs = assignedUsersIDs;
         this.duration = duration;
+        this.activitiesType = activitiesType;
     }
 
     public Activity() {
@@ -96,10 +97,11 @@ public class Activity {
         this.activitiesType = activitiesType;
     }
 
-    public void editActivity(String name, short maxUsers, byte duration) {
+    public void editActivity(String name, short maxUsers, byte duration, ActivitiesType activitiesType) {
         setName(name);
         setMaxUsers(maxUsers);
         setDuration(duration);
+        setActivitiesType(activitiesType);
     }
 
     public boolean assignUser(int userID) {
@@ -135,6 +137,7 @@ public class Activity {
                 ", nazwa: " + name +
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
-                ", czas trwania [min]:" + duration*15;
+                ", czas trwania [min]:" + duration*15 +
+                ", typ zajęć: " + activitiesType;
     }
 }

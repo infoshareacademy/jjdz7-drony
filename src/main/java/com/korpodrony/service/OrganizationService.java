@@ -11,6 +11,7 @@ import com.korpodrony.model.User;
 
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class OrganizationService {
     private Organization organization;
@@ -29,25 +30,63 @@ public class OrganizationService {
         }
     }
 
+    public void addPlan() {
+        String name = IoTools.readStringInputWithMessage("Podaj nazwę planu: ");
+        if (organization.createPlan(name)) {
+            System.out.println("Dodano plan.");
+        } else {
+            System.out.println("Podany plan już istnieje.");
+        }
+    }
+
     public void addActivity() {
         String name = IoTools.readStringInputWithMessage("Podaj nazwę zajęć");
         short maxUsers = IoTools.getShortWithMessage("Podaj maksymalną liczbę użytkowników zajęć");
         byte duration = IoTools.getByteWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach");
-        if (organization.createActivity(name, maxUsers, duration)) {
+        ActivitiesType chosenActivity = choosingActivityType();
+        if (organization.createActivity(name, maxUsers, duration, chosenActivity)) {
             System.out.println("Dodano zajęcia");
         } else {
             System.out.println("Takie zajęcia już istnieją");
         }
     }
 
-    public void addPlan() {
-        String name = IoTools.readStringInputWithMessage("Podaj nazwę planu");
-        if (organization.createPlan(name)) {
-            System.out.println("Dodano plan");
-        } else {
-            System.out.println("Taki plan juz istnieje");
+    private ActivitiesType choosingActivityType () {
+
+        ActivitiesType chosenActivityType;
+
+        do {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Podaj rodzaj zajęć: wykład, ćwiczenia, warsztaty");
+            String activityInput = scanner.nextLine();
+            chosenActivityType = decodeActivityTypeFromInputString(activityInput);
+
+        } while (chosenActivityType == null);
+
+        return chosenActivityType;
+    }
+
+    private ActivitiesType decodeActivityTypeFromInputString(String activityInput) {
+
+        switch (activityInput) {
+            case "wykład":
+
+                return ActivitiesType.WYKŁAD;
+
+            case "ćwiczenia":
+
+                return  ActivitiesType.ĆWICZENIA;
+
+            case "warsztaty":
+
+                return ActivitiesType.WARSZTATY;
+
+                default:
+                    System.out.println("Podano błędne zajęcia. Podaj prawidłową nazwę: ");
+                    return null;
         }
     }
+
 
     public void assignUserToActivity() {
         if (organization.getAllActivies().isEmpty() || organization.getAllUsers().isEmpty()) {
@@ -305,9 +344,6 @@ public class OrganizationService {
         System.out.println("\nPodaj numer, by wybrać rodzaj zajęć (1 - wykład, 2 - ćwiczenia, 3- warsztaty, 4 - wszystkie): ");
         int typeChoice = IoTools.getNumericInput();
         activityTypeDecide(typeChoice, activities);
-        for (int i = 0; i < activities.size(); i++) {
-            System.out.println(activities.get(i));
-        }
     }
 
     private void activityTypeDecide(int typeChoice, List<Activity> activities) {
@@ -336,9 +372,14 @@ public class OrganizationService {
 
     private void printFilteredActivites(Predicate<? super Activity> filter, List<Activity> activities) {
 
-        activities.stream()
+        List<Activity> activityList = activities.stream()
                 .filter(filter)
-                .forEach(w -> System.out.println(w.toString()));
+                .collect(Collectors.toList());
+        if (activityList.isEmpty()) {
+            System.out.println("Nie ma zajęć spełniających podane kryteria.");
+        } else {
+            activityList.forEach(System.out::println);
+        }
     }
 
     public void printPlans(Comparator comparator) {
@@ -396,7 +437,8 @@ public class OrganizationService {
         String name = IoTools.readStringInputWithMessage("Podaj nazwę zajęć");
         short maxUsers = IoTools.getShortWithMessage("Podaj maksymalną liczbę użytkowników zajęć");
         byte duration = IoTools.getByteWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach");
-        if (organization.editActivity(activityID, name, maxUsers, duration)) {
+        ActivitiesType chosenActivity = choosingActivityType();
+        if (organization.editActivity(activityID, name, maxUsers, duration, chosenActivity)) {
             System.out.println("Zedytowano zajęcia");
         }
     }
