@@ -18,6 +18,47 @@ public class Plan {
 
     public Plan() {
     }
+    public static void setCurrentID(Set<Plan> plans){
+        int maxValue = 0;
+        for (Plan plan: plans){
+            if (plan.getID()>maxValue){
+                maxValue=plan.getID();
+            }
+        }
+        setCurrentID(maxValue);
+    }
+
+    public static int getCurrentID() {
+        return currentID;
+    }
+
+    public static void setCurrentID(int currentID) {
+        Plan.currentID = currentID;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<Integer> getActivitiesID() {
+        return activitiesID;
+    }
+
+    public void setActivitiesID(Set<Integer> activitiesID) {
+        this.activitiesID = activitiesID;
+    }
 
     public Plan(String name) {
         this(++currentID, name, new HashSet<>());
@@ -51,30 +92,6 @@ public class Plan {
         return true;
     }
 
-    public int getID() {
-        return ID;
-    }
-
-    private void setName(String name) {
-        this.name = name;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Set<Integer> getActivitiesID() {
-        return activitiesID;
-    }
-
-    public void setActivitiesID(Set<Integer> activitiesID) {
-        this.activitiesID = activitiesID;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -83,14 +100,10 @@ public class Plan {
         return ID == plan.ID;
     }
 
-    public Set<Integer> getActivitiesID() {
-        return activitiesID;
-    }
-
     @Override
     public String toString() {
-        return "ID = " + ID +
-                ", nazwa planu:  " + name + '\n' +
+        return "Plan"+"ID = " + ID +
+                ", nazwa planu:  " + name +
                 "ID przypisanych zajęć: " + activitiesID;
     }
 

@@ -9,8 +9,7 @@ import java.nio.file.StandardOpenOption;
 
 public class JSONWriter {
 
-
-    private String generateJsonString(Object object) {
+    private static String generateJsonString(Object object) {
 
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -22,12 +21,10 @@ public class JSONWriter {
         return null;
     }
 
-
-    public void writeJSONToFile(Path filePath, Object objectToMap) {
-
+    public static void writeJSONToFile(Path filePath, Object objectToMap) {
         try {
             String jsonString = generateJsonString(objectToMap);
-            Files.write(filePath, jsonString.getBytes(), StandardOpenOption.CREATE);
+            Files.write(filePath, jsonString.getBytes(), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Hmmm, zapis do pliku nie zadziałał");

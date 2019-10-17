@@ -1,7 +1,5 @@
 package com.korpodrony.model;
 
-import com.korpodrony.service.ActivitiesType;
-
 import java.util.*;
 
 public class Organization {

@@ -4,6 +4,11 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class IoTools {
+    /**
+     * UTIL PART OF THE CLASS.
+     * <p>
+     * TODO - decide if this should be split to separate file
+     */
 
     public static int getUserInput() {
         System.out.print("\nTwój wybór: ");
@@ -11,23 +16,23 @@ public class IoTools {
     }
 
     public static String readStringUserInput() {
-        return new Scanner(System.in).nextLine();
+        String text = sc.nextLine();
+        return text.chars().allMatch(Character::isLetter) ? text : readStringInputWithMessage("Tylko litery są dozwolone. Spróbuj ponownie: ");
     }
 
     public static int readIntUserInput() {
         return new Scanner(System.in).nextInt();
     }
 
-    public static String readStringInputWithMessage(String message){
+    public static String readStringInputWithMessage(String message) {
         System.out.println(message);
         return readStringUserInput();
     }
 
-    public static int readIntInputWithMessage(String message){
+    public static int readIntInputWithMessage(String message) {
         System.out.println(message);
-        return readIntUserInput();
+        return getNumericInput();
     }
-
 
     private static final Scanner sc = new Scanner(System.in).useLocale(Locale.US);
 
@@ -50,47 +55,54 @@ public class IoTools {
                 System.err.println("no more input");
                 System.exit(1);
             }
-            System.out.println(sc.next() + ": is not a short, please enter a short ");
+            System.out.println(sc.next() + ": nie jest liczbą z zakresu 1 do 32767. Spróbuj ponownie:");
         }
-        return sc.nextShort();
+        x = sc.nextShort();
+        return x;
     }
 
     public static byte getUserInputByte() {
-        short x = 0;
+        byte x = 0;
         while (!sc.hasNextByte()) {
             if (!sc.hasNext()) {
                 System.err.println("no more input");
                 System.exit(1);
             }
-            System.out.println(sc.next() + ": is not a byte, please enter a byte ");
+            System.out.println(sc.next() + ": nie jest liczbą z zakresu 1 do 127. Spróbuj ponownie:");
         }
-        return sc.nextByte();
+        x = sc.nextByte();
+        return x;
     }
 
-    public static byte getByteWithMessage(String message){
+    public static byte getByteWithMessage(String message) {
         System.out.println(message);
-        return getUserInputByte();
+        byte x = getUserInputByte();
+        return x > 0 ? x : getByteWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie:");
     }
 
-    public static short getShortWithMessage(String message){
+    public static short getShortWithMessage(String message) {
         System.out.println(message);
-        return getUserInputShort();
+        short x = getUserInputShort();
+        return x > 0 ? x : getShortWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie:");
     }
 
     public static int getNumericInput() {
         int x;
         while (!sc.hasNextInt()) {
-            System.out.println(sc.next() + ": is not a number, please enter a number");
+            System.out.println(sc.next() + ": nie jest liczbą. Spróbuj ponownie:");
             sc.nextLine();
         }
         x = sc.nextInt();
         sc.nextLine();
-        return x;
-    }
-
-    public static int getIntegerWithMessage(String message){
-        System.out.println(message);
+        if (x > 0) {
+            return x;
+        }
+        System.out.println("Podana wartośc musi być większa od zera. Spróbuj ponownie");
         return getNumericInput();
     }
 
+    public static int getIntegerWithMessage(String message) {
+        System.out.println(message);
+        return getNumericInput();
+    }
 }

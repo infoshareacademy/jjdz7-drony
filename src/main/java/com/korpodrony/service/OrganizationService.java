@@ -4,10 +4,7 @@ import com.korpodrony.comparators.ActivityIDComparator;
 import com.korpodrony.comparators.PlanIDComparator;
 import com.korpodrony.comparators.UserIDComparator;
 import com.korpodrony.menu.IoTools;
-import com.korpodrony.model.Activity;
-import com.korpodrony.model.Organization;
-import com.korpodrony.model.Plan;
-import com.korpodrony.model.User;
+import com.korpodrony.model.*;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -71,15 +68,15 @@ public class OrganizationService {
         switch (activityInput) {
             case "wykład":
 
-                return ActivitiesType.WYKŁAD;
+                return ActivitiesType.LECTURES;
 
             case "ćwiczenia":
 
-                return  ActivitiesType.ĆWICZENIA;
+                return  ActivitiesType.EXERCISES;
 
             case "warsztaty":
 
-                return ActivitiesType.WARSZTATY;
+                return ActivitiesType.WORKSHOPS;
 
                 default:
                     System.out.println("Podano błędne zajęcia. Podaj prawidłową nazwę: ");
@@ -335,6 +332,7 @@ public class OrganizationService {
     }
 
     public void printActivites(Comparator comparator) {
+
         List<Activity> activities = organization.getAllActivies();
         activities.sort(comparator);
         if (activities.isEmpty()) {
@@ -349,22 +347,22 @@ public class OrganizationService {
     private void activityTypeDecide(int typeChoice, List<Activity> activities) {
         switch (typeChoice) {
             case 1: {
-                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.WYKŁAD);
+                Predicate<Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.LECTURES);
                 printFilteredActivites(filter, activities);
                 break;
             }
             case 2: {
-                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.ĆWICZENIA);
+                Predicate<Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.EXERCISES);
                 printFilteredActivites(filter, activities);
                 break;
             }
             case 3: {
-                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.WARSZTATY);
+                Predicate<Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.WORKSHOPS);
                 printFilteredActivites(filter, activities);
                 break;
             }
             default: {
-                Predicate<? super Activity> filter = a -> true;
+                Predicate<Activity> filter = a -> true;
                 printFilteredActivites(filter, activities);
             }
         }

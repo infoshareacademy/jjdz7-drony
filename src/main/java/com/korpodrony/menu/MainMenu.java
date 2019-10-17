@@ -3,6 +3,10 @@ package com.korpodrony.menu;
 
 import com.korpodrony.model.Organization;
 import com.korpodrony.service.OrganizationService;
+import com.korpodrony.service.PropertiesService;
+import com.korpodrony.utils.JSONWriter;
+
+import java.nio.file.Paths;
 
 public class MainMenu {
     public static boolean exit;
@@ -10,17 +14,33 @@ public class MainMenu {
     public static boolean subMenuExit;
     public static int menuIdToSearch;
 
-    public static Organization dB = new Organization();
-    public static OrganizationService dBService = new OrganizationService(dB);
+    public  Organization dB;
+    public  OrganizationService dBService;
+
+    public MainMenu(Organization dB) {
+        this.dB = dB;
+        this.dBService = new OrganizationService(dB);
+    }
 
     public void startMainMenu() {
-        initialParametersLoad();
         do {
             contextMenuExit = false;
             Messages.printMainMenu();
-            int choice = IoTools.getUserInput();
+            System.out.print("Twój wybór: ");
+            int choice = IoTools.getNumericInput();
             runMainMenuDecide(choice);
         } while (!exit);
+            writeOrganizationToFile();
+    }
+
+    private void writeOrganizationToFile() {
+        String path = new PropertiesService().getProperty(PropertiesService.APP_PATH);
+        if (path == null) {
+            path = "/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/";
+        }
+        JSONWriter.writeJSONToFile(Paths.get(path, "Users.json"), dB.getUsers());
+        JSONWriter.writeJSONToFile(Paths.get(path, "Activities.json"), dB.getActivities());
+        JSONWriter.writeJSONToFile(Paths.get(path, "Plans.json"), dB.getPlans());
     }
 
     /**
@@ -30,39 +50,33 @@ public class MainMenu {
     private void runMainMenuDecide(int choice) {
         switch (choice) {
             case 1: {
-                SearchMenu.startSearchMenu();
+                new SearchMenu(this).startSearchMenu();
                 break;
             }
             case 2: {
-                UsersMenu.startUsersMenu();
+                new UsersMenu(this).startUsersMenu();
                 break;
             }
+//            case 3: {
+////                       TODO === to be implemented later
+//                Messages.printFeatureNotImplementedYet();
+//                break;
+//            }
             case 3: {
-//                       TODO === to be implemented later
-                Messages.printFeatureNotImplementedYet();
+                new ActivitiesMenu(this).StartActivitiesMenu();
                 break;
             }
             case 4: {
-                ActivitiesMenu.StartActivitiesMenu();
+                 new SchedulesMenu(this).startSchedulesMenu();
                 break;
             }
             case 5: {
-                SchedulesMenu.startSchedulesMenu();
-                break;
-            }
-            case 6: {
                 exit = true;
                 break;
             }
             default: {
                 Messages.printBadInputErrorMessage();
             }
-
         }
     }
-    private void initialParametersLoad() {
-        System.out.println("=== Parameters load placeholder ===");
-    }
-
-
 }

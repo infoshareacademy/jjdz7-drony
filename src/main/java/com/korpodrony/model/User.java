@@ -1,6 +1,7 @@
 package com.korpodrony.model;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class User {
 
@@ -17,7 +18,15 @@ public class User {
 
     public User() {
     }
-
+    public static void setCurrentID(Set<User> users){
+        int maxValue = 0;
+        for (User user: users){
+            if (user.getID()>maxValue){
+                maxValue=user.getID();
+            }
+        }
+        setCurrentID(maxValue);
+    }
     public User(String name, String surname) {
         this(++currentID, name, surname);
     }
@@ -27,12 +36,12 @@ public class User {
         setSurname(surname);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public static int getCurrentID() {
+        return currentID;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public static void setCurrentID(int currentID) {
+        User.currentID = currentID;
     }
 
     public int getID() {
@@ -47,13 +56,21 @@ public class User {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getSurname() {
         return surname;
     }
 
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     @Override
     public String toString() {
-        return "ID = " + ID + ", imię: " + name + ", nazwisko: " + surname;
+        return "Plan " + "ID = " + ID + ", imię: " + name + ", nazwisko: " + surname;
     }
 
     @Override
