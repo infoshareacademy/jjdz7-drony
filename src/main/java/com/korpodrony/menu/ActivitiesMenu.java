@@ -66,7 +66,7 @@ public class ActivitiesMenu {
     private void startActivitiesMenuShowAssignedUsers() {
         System.out.println("-- Pokazywanie użytkowników przypisanych do zajęć --");
         mainMenu.dBService.printActivities();
-        if (mainMenu.dB.getAllActivies().size() == 0) {
+        if (mainMenu.dB.getAllActivies().isEmpty()) {
             return;
         }
         int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, których użytkowników chcesz obejrzeć:");
@@ -75,7 +75,7 @@ public class ActivitiesMenu {
             return;
         }
         List<User> users = mainMenu.dB.getActivity(choice).getAssignedUsersIDs().stream().map(x->mainMenu.dB.getUser(x)).collect(Collectors.toList());
-        if (users.size() == 0) {
+        if (users.isEmpty()) {
             System.out.println("Zajęcia nie mają przypisanych żadnych użytkowników!");
             return;
         }

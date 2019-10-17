@@ -1,5 +1,7 @@
 package com.korpodrony.model;
 
+import com.korpodrony.service.ActivitiesType;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,17 +13,19 @@ public class Activity {
     private Set<Integer> assignedUsersIDs;
     //    Trainer trainer;
     private byte lenghtInQuarters; /*Unit of duration is quarter*/
+    private ActivitiesType activitiesType;
 
-    public Activity(String name, short maxUsers, byte lenghtInQuarters) {
-        this(++currentID, name, maxUsers, new HashSet<>(), lenghtInQuarters);
+    public Activity(String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
+        this(++currentID, name, maxUsers, new HashSet<>(), lenghtInQuarters, activitiesType);
     }
 
-    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte lenghtInQuarters) {
+    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte lenghtInQuarters, ActivitiesType activitiesType) {
         this.ID = ID;
         this.name = name;
         this.maxUsers = maxUsers;
         this.assignedUsersIDs = assignedUsersIDs;
         this.lenghtInQuarters = lenghtInQuarters;
+        this.activitiesType = activitiesType;
     }
 
     public Activity() {
@@ -31,11 +35,11 @@ public class Activity {
         return currentID;
     }
 
-    public static void setCurrentID(Set<Activity>activities){
+    public static void setCurrentID(Set<Activity> activities) {
         int maxValue = 0;
-        for (Activity activity: activities){
-            if (activity.getID()>maxValue){
-                maxValue=activity.getID();
+        for (Activity activity : activities) {
+            if (activity.getID() > maxValue) {
+                maxValue = activity.getID();
             }
         }
         setCurrentID(maxValue);
@@ -73,6 +77,10 @@ public class Activity {
         return assignedUsersIDs;
     }
 
+    public ActivitiesType getActivitiesType() {
+        return activitiesType;
+    }
+
     public void setAssignedUsersIDs(Set<Integer> assignedUsersIDs) {
         this.assignedUsersIDs = assignedUsersIDs;
     }
@@ -85,10 +93,16 @@ public class Activity {
         this.lenghtInQuarters = lenghtInQuarters;
     }
 
-    public void editActivity(String name, short maxUsers, byte lenghtInQuarters) {
+
+    public void setActivitiesType(ActivitiesType activitiesType) {
+        this.activitiesType = activitiesType;
+    }
+
+    public void editActivity(String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
         setName(name);
         setMaxUsers(maxUsers);
         setLenghtInQuarters(lenghtInQuarters);
+        setActivitiesType(activitiesType);
     }
 
     public boolean assignUser(int userID) {
@@ -120,10 +134,11 @@ public class Activity {
 
     @Override
     public String toString() {
-        return "Zajęcia: "+ "ID = " + ID +
+        return "Zajęcia: " + "ID = " + ID +
                 ", nazwa: " + name +
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
-                ", czas trwania [min]:" + lenghtInQuarters *15;
+                ", czas trwania [min]: " + lenghtInQuarters * 15 +
+                ", typ zajęć: " + activitiesType;
     }
 }

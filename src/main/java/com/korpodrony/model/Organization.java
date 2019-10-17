@@ -1,5 +1,7 @@
 package com.korpodrony.model;
 
+import com.korpodrony.service.ActivitiesType;
+
 import java.util.*;
 
 public class Organization {
@@ -69,8 +71,8 @@ public class Organization {
         return addUser(new User(name, surname));
     }
 
-    public boolean createActivity(String name, short maxUsers, byte lenghtInQuarters) {
-        return addActivity(new Activity(name, maxUsers, lenghtInQuarters));
+    public boolean createActivity(String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
+        return addActivity(new Activity(name, maxUsers, lenghtInQuarters, activitiesType));
     }
 
     public boolean createPlan(String name) {
@@ -158,11 +160,11 @@ public class Organization {
         return true;
     }
 
-    public boolean editActivity(int activityID, String name, short maxUsers, byte lenghtInQuarters) {
+    public boolean editActivity(int activityID, String name, short maxUsers,byte lenghtInQuarters, ActivitiesType activitiesType) {
         if (!hasActivityWithThisID(activityID)) {
             return false;
         }
-        getActivity(activityID).editActivity(name, maxUsers, lenghtInQuarters);
+        getActivity(activityID).editActivity(name, maxUsers, lenghtInQuarters, activitiesType);
         return true;
     }
 

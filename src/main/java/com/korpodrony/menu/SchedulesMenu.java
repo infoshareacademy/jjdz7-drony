@@ -65,7 +65,7 @@ public class SchedulesMenu {
     private void startSchedulesMenuShowActivtiesOfSchedule() {
         System.out.println("-- Pokazywanie zajęć przypisanych do planu --");
         mainMenu.dBService.printPlans();
-        if (mainMenu.dB.getAllPlans().size() == 0) {
+        if (mainMenu.dB.getAllPlans().isEmpty()) {
             return;
         }
         int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu, którego zajęcia chcesz obejrzeć:");
@@ -74,7 +74,7 @@ public class SchedulesMenu {
             return;
         }
         List<Activity> activities = mainMenu.dB.getPlan(choice).getActivitiesID().stream().map(x->mainMenu.dB.getActivity(x)).collect(Collectors.toList());
-        if (activities.size() == 0) {
+        if (activities.isEmpty()) {
             System.out.println("Plan nie ma przypisanych żadnych zajęć!");
             return;
         }
