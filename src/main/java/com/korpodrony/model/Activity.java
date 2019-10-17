@@ -1,5 +1,7 @@
 package com.korpodrony.model;
 
+import com.korpodrony.service.ActivitiesType;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,26 +13,95 @@ public class Activity {
     private Set<Integer> assignedUsersIDs;
     //    Trainer trainer;
     private byte duration; /*Unit of duration is quarter*/
+    private ActivitiesType activitiesType;
 
-    public Activity(String name, short maxUsers, byte duration) {
-        this(++currentID, name, maxUsers, new HashSet<>(), duration);
+    public Activity(String name, short maxUsers, byte duration, ActivitiesType activitiesType) {
+        this(++currentID, name, maxUsers, new HashSet<>(), duration, activitiesType);
     }
 
-    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte duration) {
+    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte duration, ActivitiesType activitiesType) {
         this.ID = ID;
         this.name = name;
         this.maxUsers = maxUsers;
         this.assignedUsersIDs = assignedUsersIDs;
         this.duration = duration;
+        this.activitiesType = activitiesType;
     }
 
     public Activity() {
     }
 
-    public void editActivity(String name, short maxUsers, byte duration) {
+    public static int getCurrentID() {
+        return currentID;
+    }
+
+    public static void setCurrentID(Set<Activity>activities){
+        int maxValue = 0;
+        for (Activity activity: activities){
+            if (activity.getID()>maxValue){
+                maxValue=activity.getID();
+            }
+        }
+        setCurrentID(maxValue);
+    }
+
+    public static void setCurrentID(int currentID) {
+        Activity.currentID = currentID;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public short getMaxUsers() {
+        return maxUsers;
+    }
+
+    public void setMaxUsers(short maxUsers) {
+        this.maxUsers = maxUsers;
+    }
+
+    public Set<Integer> getAssignedUsersIDs() {
+        return assignedUsersIDs;
+    }
+
+    public void setAssignedUsersIDs(Set<Integer> assignedUsersIDs) {
+        this.assignedUsersIDs = assignedUsersIDs;
+    }
+
+    public byte getDuration() {
+        return duration;
+    }
+
+    public void setDuration(byte duration) {
+        this.duration = duration;
+    }
+
+    public ActivitiesType getActivitiesType() {
+        return activitiesType;
+    }
+
+    public void setActivitiesType(ActivitiesType activitiesType) {
+        this.activitiesType = activitiesType;
+    }
+
+    public void editActivity(String name, short maxUsers, byte duration, ActivitiesType activitiesType) {
         setName(name);
         setMaxUsers(maxUsers);
         setDuration(duration);
+        setActivitiesType(activitiesType);
     }
 
     public boolean assignUser(int userID) {
@@ -53,10 +124,6 @@ public class Activity {
         return true;
     }
 
-    public boolean unassignUser(User user) {
-        return unassignUser(user.getID());
-    }
-
     public boolean canAssignUser(int userID) {
         if (assignedUsersIDs.contains(userID) || assignedUsersIDs.size() == maxUsers) {
             return false;
@@ -64,56 +131,13 @@ public class Activity {
         return true;
     }
 
-    public Set<Integer> getAssignedUsersIDs() {
-        return assignedUsersIDs;
-    }
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public short getMaxUsers() {
-        return maxUsers;
-    }
-
-    public void setAssignedUsersIDs(Set<Integer> assignedUsersIDs) {
-        this.assignedUsersIDs = assignedUsersIDs;
-    }
-
-    public byte getDuration() {
-        return duration;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setMaxUsers(short maxUsers) {
-        this.maxUsers = maxUsers;
-    }
-
-    public void setDuration(byte duration) {
-        this.duration = duration;
-    }
-
-    public short getMaxUsers() {
-        return maxUsers;
-    }
-
     @Override
     public String toString() {
-        return "ID = " + ID +
+        return "Zajęcia: "+ "ID = " + ID +
                 ", nazwa: " + name +
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
-                ", czas trwania [min]:" + duration*15;
+                ", czas trwania [min]:" + duration*15 +
+                ", typ zajęć: " + activitiesType;
     }
 }

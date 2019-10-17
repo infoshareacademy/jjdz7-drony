@@ -1,15 +1,28 @@
 package com.korpodrony.menu;
 
+import com.korpodrony.comparators.UserIDComparator;
+import com.korpodrony.model.User;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ActivitiesMenu {
-    static void StartActivitiesMenu() {
+    private MainMenu mainMenu;
+
+    public ActivitiesMenu(MainMenu mainMenu) {
+        this.mainMenu = mainMenu;
+    }
+
+    void StartActivitiesMenu() {
         do {
-            Messages.printActivitiesContextMenu();
-            int choice = IoTools.getUserInput();
+            Messages.printActivitiesMenu("Zajęcia");
+            System.out.print("Twój wybór: ");
+            int choice = IoTools.getNumericInput();
             runActivitiesMenuDecide(choice);
         } while (!MainMenu.contextMenuExit);
     }
 
-    private static void runActivitiesMenuDecide(int choice) {
+    private  void runActivitiesMenuDecide(int choice) {
         switch (choice) {
             case 1: {
                 startActivitiesMenuAddActivity();
@@ -24,18 +37,22 @@ public class ActivitiesMenu {
                 break;
             }
             case 4: {
-                startActivitiesMenuListActivities();
+                startActivitiesMenuShowActivity();
                 break;
             }
             case 5: {
-                startActivitiesMenuAssignActivityToSchedule();
+                startActivitiesMenuAssignUser();
                 break;
             }
             case 6: {
-                startActivitiesMenuUnssignActivityToSchedule();
+                startActivitiesMenuUnassignUser();
                 break;
             }
             case 7: {
+                startActivitiesMenuShowAssignedUsers();
+                break;
+            }
+            case 8: {
                 MainMenu.contextMenuExit = true;
                 break;
             }
@@ -47,31 +64,52 @@ public class ActivitiesMenu {
 
     }
 
-    private static void startActivitiesMenuAddActivity() {
+    private void startActivitiesMenuShowAssignedUsers() {
+        System.out.println("Pokazywanie użytkowników przypisanych do zajęć");
+        mainMenu.dBService.printActivites();
+        if (mainMenu.dB.getAllActivies().isEmpty()) {
+            return;
+        }
+        int choice = IoTools.readIntInputWithMessage("Podaj ID zajęć, których użytkowników chcesz obejrzeć");
+        if (!mainMenu.dB.hasActivityWithThisID(choice)){
+            System.out.println("Nie ma takich zajęć");
+            return;
+        }
+        List<User> users = mainMenu.dB.getActivity(choice).getAssignedUsersIDs().stream().map(x->mainMenu.dB.getUser(x)).collect(Collectors.toList());
+        if (users.isEmpty()) {
+            System.out.println("zajęcia nie mają przypisanych  żadnych użytkowników");
+            return;
+        }
+        users.sort(new UserIDComparator());
+        users.forEach(System.out::println);
+    }
+
+    private void startActivitiesMenuUnassignUser() {
+        System.out.println("Wypisywanie użytkownika z zajęć");
+        mainMenu.dBService.unassingUserFromActivity();
+    }
+
+    private void startActivitiesMenuAssignUser() {
+        System.out.println("Przypisywanie użytkownika do zajęć");
+        mainMenu.dBService.assignUserToActivity();
+    }
+
+    private void startActivitiesMenuAddActivity() {
         System.out.println("Dodawanie nowych zajęć");
-        MainMenu.dBService.addActivity();
+        mainMenu.dBService.addActivity();
     }
 
-    private static void startActivitiesMenuEditActivity() {
-        MainMenu.dBService.editActivity();
+    private void startActivitiesMenuEditActivity() {
+        mainMenu.dBService.editActiity();
     }
 
-    private static void startActivitiesMenuDeleteActivity() {
+    private void startActivitiesMenuDeleteActivity() {
         System.out.println("Usuwanie istniejących zajęć");
-        MainMenu.dBService.removeActivity();
+        mainMenu.dBService.removeActivity();
     }
 
-    private static void startActivitiesMenuListActivities() {
-        MainMenu.dBService.printActivites();
-    }
-
-    private static void startActivitiesMenuAssignActivityToSchedule(){
-        System.out.println("Przydzielanie zajęć do planów");
-        MainMenu.dBService.assignActivityToPlan();
-    }
-
-    private static void startActivitiesMenuUnssignActivityToSchedule(){
-        System.out.println("Usuwanie zajęć z planów");
-        MainMenu.dBService.unassignActivityFromPlan();
+    private void startActivitiesMenuShowActivity() {
+        System.out.println("Pokazywanie istniejących zajęć");
+        mainMenu.dBService.printActivites();
     }
 }
