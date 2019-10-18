@@ -1,7 +1,5 @@
 package com.korpodrony.model;
 
-import com.korpodrony.service.ActivitiesType;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -139,6 +137,6 @@ public class Activity {
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
                 ", czas trwania [min]: " + lenghtInQuarters * 15 +
-                ", typ zajęć: " + activitiesType;
+                ", typ zajęć: " + activitiesType.polishName;
     }
 }

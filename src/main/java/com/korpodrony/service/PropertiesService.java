@@ -1,11 +1,7 @@
 package com.korpodrony.service;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Properties;
 
 public class PropertiesService {
@@ -16,7 +12,7 @@ public class PropertiesService {
     public String getProperty(String key) {
         if (prop == null) {
             loadProperties();
-            if (prop == null){
+            if (prop == null) {
                 return null;
             }
         }
@@ -24,13 +20,12 @@ public class PropertiesService {
     }
 
     private void loadProperties() {
-        String path = "/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/config.properties";
-        if (!Files.exists(Paths.get(path))){
-            return;
-        }
-        try (FileInputStream input = new FileInputStream(path)) {
+        try (InputStream input
+                     = getClass().getClassLoader()
+                .getResourceAsStream("config.properties")) {
+
             if (input == null) {
-                System.out.println("Nie znalazłem pliku config.properties !");
+                System.out.println("Sorry, unable to find config.properties");
                 return;
             }
             prop = new Properties();

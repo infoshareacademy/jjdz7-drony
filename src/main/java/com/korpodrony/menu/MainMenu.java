@@ -35,7 +35,7 @@ public class MainMenu {
     private void writeOrganizationToFile() {
         String path = new PropertiesService().getProperty(PropertiesService.APP_PATH);
         if (path == null) {
-            path = "/home/patryk/Pulpit/Drony/jjdz7-drony/src/main/resources/";
+            return;
         }
         JSONWriter.writeJSONToFile(Paths.get(path, "Users.json"), dB.getUsers());
         JSONWriter.writeJSONToFile(Paths.get(path, "Activities.json"), dB.getActivities());

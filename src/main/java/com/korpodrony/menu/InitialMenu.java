@@ -26,11 +26,7 @@ public class InitialMenu {
     private void runInitialMenuDecide(int choice) {
         switch (choice) {
             case 1: {
-                try {
-                    initialParametersLoad();
-                } catch (IOException | ClassNotFoundException  e) {
-                    createNewOrganization();
-                }
+                initialParametersLoad();
                 break;
             }
             case 2: {
@@ -48,7 +44,7 @@ public class InitialMenu {
         new MainMenu(org).startMainMenu();
     }
 
-    private void initialParametersLoad() throws IOException, ClassNotFoundException {
+    private void initialParametersLoad() {
         String path = new PropertiesService().getProperty(PropertiesService.APP_PATH);
         if (path == null) {
             createNewOrganization();

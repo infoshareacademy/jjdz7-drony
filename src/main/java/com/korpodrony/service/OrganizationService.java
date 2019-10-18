@@ -4,10 +4,7 @@ import com.korpodrony.comparators.ActivityIDComparator;
 import com.korpodrony.comparators.PlanIDComparator;
 import com.korpodrony.comparators.UserIDComparator;
 import com.korpodrony.menu.IoTools;
-import com.korpodrony.model.Activity;
-import com.korpodrony.model.Organization;
-import com.korpodrony.model.Plan;
-import com.korpodrony.model.User;
+import com.korpodrony.model.*;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -347,15 +344,15 @@ public class OrganizationService {
         switch (activityInput) {
             case "wykład":
 
-                return ActivitiesType.WYKŁAD;
+                return ActivitiesType.LECTURE;
 
             case "ćwiczenia":
 
-                return ActivitiesType.ĆWICZENIA;
+                return ActivitiesType.EXCERCISE;
 
             case "warsztaty":
 
-                return ActivitiesType.WARSZTATY;
+                return ActivitiesType.WORKSHOP;
 
             default:
                 System.out.println("Podano błędne zajęcia. Podaj prawidłową nazwę: ");
@@ -367,17 +364,17 @@ public class OrganizationService {
     private void activityTypeDecide(int typeChoice, List<Activity> activities) {
         switch (typeChoice) {
             case 1: {
-                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.WYKŁAD);
+                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.LECTURE);
                 printFilteredActivites(filter, activities);
                 break;
             }
             case 2: {
-                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.ĆWICZENIA);
+                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.EXCERCISE);
                 printFilteredActivites(filter, activities);
                 break;
             }
             case 3: {
-                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.WARSZTATY);
+                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.WORKSHOP);
                 printFilteredActivites(filter, activities);
                 break;
             }
@@ -461,6 +458,4 @@ public class OrganizationService {
             System.out.println("Zedytowano zajęcia");
         }
     }
-
-
 }
