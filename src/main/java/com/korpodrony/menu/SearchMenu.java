@@ -21,24 +21,23 @@ public class SearchMenu {
 
         do {
             Messages.printSearchMenu();
-            System.out.print("Twój wybór: ");
-            int choice = IoTools.getNumericInput();
-            runSearchMenuDecide(choice);
+            int choice = IoTools.getIntFromUser();
+            decide(choice);
         } while (!MainMenu.contextMenuExit);
     }
 
-    private void runSearchMenuDecide(int choice) {
+    private void decide(int choice) {
         switch (choice) {
             case 1: {
-                startSearchByUserMenu();
+                searchByUserMenu();
                 break;
             }
             case 2: {
-                startSearchByActivityMenu();
+                searchByActivityMenu();
                 break;
             }
             case 3: {
-                startSearchByScheduleMenu();
+                searchByScheduleMenu();
                 break;
             }
             case 4: {
@@ -52,36 +51,38 @@ public class SearchMenu {
         }
     }
 
-    private void startSearchByUserMenu() {
-        System.out.println("Szukanie użytkownika po imieniu, wpisz imię");
+    private void searchByUserMenu() {
+        System.out.println("-- Szukanie użytkownika po imieniu - Wpisz imię:");
         String searchedText = IoTools.readStringUserInput().toLowerCase();
-        List<User> users = mainMenu.dB.getAllUsers().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
+        List<User> users = mainMenu.dB.getAllUsers().stream()
+                .filter(x -> x.getName().toLowerCase().contains(searchedText))
+                .collect(Collectors.toList());
         if (users.isEmpty()) {
-            System.out.println("nie ma takiego użytkownika");
+            System.out.println("Nie ma takiego użytkownika.");
             return;
         }
         users.sort(new UserIDComparator());
         users.forEach(System.out::println);
     }
 
-    private void startSearchByActivityMenu() {
-        System.out.println("Szukanie zajęć po nazwie, wpisz nazwe");
+    private void searchByActivityMenu() {
+        System.out.println("-- Szukanie zajęć po nazwie - wpisz nazwę:");
         String searchedText = IoTools.readStringUserInput().toLowerCase();
         List<Activity> activities = mainMenu.dB.getAllActivies().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
         if (activities.isEmpty()) {
-            System.out.println("nie ma takich zajęć");
+            System.out.println("Nie ma takich zajęć.");
             return;
         }
         activities.sort(new ActivityIDComparator());
         activities.forEach(System.out::println);
     }
 
-    private void startSearchByScheduleMenu() {
-        System.out.println("Szukanie planu po naziwe, wpisz nazwe");
+    private void searchByScheduleMenu() {
+        System.out.println("-- Szukanie planu po nazwie, wpisz nazwę:");
         String searchedText = IoTools.readStringUserInput().toLowerCase();
         List<Plan> plans = mainMenu.dB.getAllPlans().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
         if (plans.isEmpty()) {
-            System.out.println("nie ma takiego planu");
+            System.out.println("Nie ma takiego planu.");
             return;
         }
         plans.sort(new PlanIDComparator());

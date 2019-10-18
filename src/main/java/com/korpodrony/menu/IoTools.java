@@ -4,11 +4,6 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class IoTools {
-    /**
-     * UTIL PART OF THE CLASS.
-     * <p>
-     * TODO - decide if this should be split to separate file
-     */
 
     public static int getUserInput() {
         System.out.print("\nTwój wybór: ");
@@ -16,12 +11,7 @@ public class IoTools {
     }
 
     public static String readStringUserInput() {
-        String text = sc.nextLine();
-        return text.chars().allMatch(Character::isLetter) ? text : readStringInputWithMessage("Tylko litery są dozwolone. Spróbuj ponownie: ");
-    }
-
-    public static int readIntUserInput() {
-        return new Scanner(System.in).nextInt();
+        return sc.nextLine();
     }
 
     public static String readStringInputWithMessage(String message) {
@@ -31,31 +21,19 @@ public class IoTools {
 
     public static int readIntInputWithMessage(String message) {
         System.out.println(message);
-        return getNumericInput();
+        return getIntFromUser();
     }
 
     private static final Scanner sc = new Scanner(System.in).useLocale(Locale.US);
-
-    public static double getUserInputDouble() {
-        double x = 0;
-        while (!sc.hasNextDouble()) {
-            if (!sc.hasNext()) {
-                System.err.println("no more input");
-                System.exit(1);
-            }
-            System.out.println(sc.next() + ": is not a double, please enter a double ");
-        }
-        return sc.nextDouble();
-    }
 
     public static short getUserInputShort() {
         short x = 0;
         while (!sc.hasNextShort()) {
             if (!sc.hasNext()) {
-                System.err.println("no more input");
+                System.err.println("Brak danych!");
                 System.exit(1);
             }
-            System.out.println(sc.next() + ": nie jest liczbą z zakresu 1 do 32767. Spróbuj ponownie:");
+            System.out.println(sc.next() + ": nie jest liczbą z zakresu od 1 do 32767. Spróbuj ponownie:");
         }
         x = sc.nextShort();
         return x;
@@ -65,10 +43,10 @@ public class IoTools {
         byte x = 0;
         while (!sc.hasNextByte()) {
             if (!sc.hasNext()) {
-                System.err.println("no more input");
+                System.err.println("Brak danych!");
                 System.exit(1);
             }
-            System.out.println(sc.next() + ": nie jest liczbą z zakresu 1 do 127. Spróbuj ponownie:");
+            System.out.println(sc.next() + ": nie jest liczbą z zakresu od 1 do 127. Spróbuj ponownie:");
         }
         x = sc.nextByte();
         return x;
@@ -86,7 +64,8 @@ public class IoTools {
         return x > 0 ? x : getShortWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie:");
     }
 
-    public static int getNumericInput() {
+    public static int getIntFromUser() {
+        System.out.println("Twój wybór:");
         int x;
         while (!sc.hasNextInt()) {
             System.out.println(sc.next() + ": nie jest liczbą. Spróbuj ponownie:");
@@ -97,12 +76,12 @@ public class IoTools {
         if (x > 0) {
             return x;
         }
-        System.out.println("Podana wartośc musi być większa od zera. Spróbuj ponownie");
-        return getNumericInput();
+        System.out.println("Podana wartość musi być większa od zera. Spróbuj ponownie");
+        return getIntFromUser();
     }
 
     public static int getIntegerWithMessage(String message) {
         System.out.println(message);
-        return getNumericInput();
+        return getIntFromUser();
     }
 }

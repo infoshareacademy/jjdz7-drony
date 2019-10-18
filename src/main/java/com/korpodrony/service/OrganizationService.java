@@ -340,7 +340,7 @@ public class OrganizationService {
             return;
         }
         System.out.println("\nPodaj numer, by wybrać rodzaj zajęć (1 - wykład, 2 - ćwiczenia, 3- warsztaty, 4 - wszystkie): ");
-        int typeChoice = IoTools.getNumericInput();
+        int typeChoice = IoTools.getIntFromUser();
         activityTypeDecide(typeChoice, activities);
     }
 

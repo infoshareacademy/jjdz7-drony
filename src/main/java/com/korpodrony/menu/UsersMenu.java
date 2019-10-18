@@ -15,33 +15,32 @@ public class UsersMenu {
 
     void startUsersMenu() {
         do {
-            Messages.printUserMenu("Użytkownicy");
-            System.out.print("Twój wybór: ");
-            int choice = IoTools.getNumericInput();
-            runUsersMenuDecide(choice);
+            Messages.printUsersMenu();
+            int choice = IoTools.getIntFromUser();
+            decide(choice);
         } while (!MainMenu.contextMenuExit);
     }
 
-    private void runUsersMenuDecide(int choice) {
+    private void decide(int choice) {
         switch (choice) {
             case 1: {
-                startUsersMenuAddUser();
+                addUser();
                 break;
             }
             case 2: {
-                startUsersMenuEditUser();
+                editUser();
                 break;
             }
             case 3: {
-                startUsersMenuDeleteUser();
+                deleteUser();
                 break;
             }
             case 4: {
-                startUsersMenuShowUser();
+                showUser();
                 break;
             }
             case 5: {
-                startUsersMenuShowUserActivities();
+                showUserActivities();
                 break;
             }
             case 6: {
@@ -56,42 +55,44 @@ public class UsersMenu {
 
     }
 
-    private void startUsersMenuShowUserActivities() {
-        System.out.println("Pokazywanie zajęć użytkownika");
+    private void showUserActivities() {
+        System.out.println("-- Pokazywanie zajęć użytkownika --");
         mainMenu.dBService.printUsers();
         if (mainMenu.dB.getAllUsers().isEmpty()) {
             return;
         }
-        int choice = IoTools.readIntInputWithMessage("Podaj ID użytkownika do którego zajęcia chcesz obejrzeć");
+        int choice = IoTools.readIntInputWithMessage("Podaj ID użytkownika, do którego zajęcia chcesz obejrzeć:");
         if (!mainMenu.dB.hasUserWithThisID(choice)){
-            System.out.println("Nie ma takiego użytkownika");
+            System.out.println("Nie ma takiego użytkownika.");
             return;
         }
-        List<Activity> userActivities = mainMenu.dB.getAllActivies().stream().filter(x -> x.getAssignedUsersIDs().contains(choice)).collect(Collectors.toList());
+        List<Activity> userActivities = mainMenu.dB.getAllActivies().stream()
+                .filter(x -> x.getAssignedUsersIDs().contains(choice))
+                .collect(Collectors.toList());
         if (userActivities.isEmpty()) {
-            System.out.println("użytkownik nie jest przypisany do żadnych zajęć");
+            System.out.println("Użytkownik nie jest przypisany do żadnych zajęć.");
             return;
         }
         userActivities.sort(new ActivityIDComparator());
         userActivities.forEach(System.out::println);
     }
 
-    private void startUsersMenuAddUser() {
-        System.out.println("Dodawanie nowego użytkownika");
+    private void addUser() {
+        System.out.println("-- Dodawanie nowego użytkownika --");
         mainMenu.dBService.addUser();
     }
 
-    private void startUsersMenuEditUser() {
-        System.out.println("Edytowanie użytkownika");
+    private void editUser() {
+        System.out.println("-- Edytowanie użytkownika --");
         mainMenu.dBService.editUser();
     }
 
-    private void startUsersMenuDeleteUser() {
-        System.out.println("Usuwanie użytkownika");
+    private void deleteUser() {
+        System.out.println("-- Usuwanie użytkownika --");
         mainMenu.dBService.removeUser();
     }
 
-    private void startUsersMenuShowUser() {
+    private void showUser() {
         mainMenu.dBService.printUsers();
     }
 }
