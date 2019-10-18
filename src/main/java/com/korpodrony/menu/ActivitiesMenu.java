@@ -77,7 +77,7 @@ public class ActivitiesMenu {
         }
         List<User> users = mainMenu.dB.getActivity(choice).getAssignedUsersIDs().stream().map(x->mainMenu.dB.getUser(x)).collect(Collectors.toList());
         if (users.isEmpty()) {
-            System.out.println("zajęcia nie mają przypisanych  żadnych użytkowników");
+            System.out.println("Zajęcia nie mają przypisanych żadnych użytkowników");
             return;
         }
         users.sort(new UserIDComparator());
