@@ -19,11 +19,11 @@ public class InitialMenu {
         do {
             Messages.printInitialMenu();
             choice = IoTools.getIntFromUser();
-            Decide(choice);
+            decide(choice);
         } while (choice != 1 && choice != 2);
     }
 
-    private void Decide(int choice) {
+    private void decide(int choice) {
         switch (choice) {
             case 1: {
                 try {
