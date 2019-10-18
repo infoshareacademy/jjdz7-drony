@@ -63,8 +63,8 @@ public class ActivitiesMenu {
 
     private void showAssignedUsers() {
         System.out.println("-- Pokazywanie użytkowników przypisanych do zajęć --");
-        mainMenu.dBService.printActivites();
-        if (mainMenu.dB.getAllActivies().isEmpty()) {
+        mainMenu.dBService.printActivities();
+        if (mainMenu.dB.getAllActivities().isEmpty()) {
             return;
         }
         int choice = IoTools.readIntInputWithMessage("Podaj ID zajęć, których użytkowników chcesz obejrzeć:");
@@ -97,7 +97,7 @@ public class ActivitiesMenu {
     }
 
     private void editActivity() {
-        mainMenu.dBService.editActiity();
+        mainMenu.dBService.editActivity();
     }
 
     private void deleteActivity() {
@@ -107,6 +107,6 @@ public class ActivitiesMenu {
 
     private void showActivity() {
         System.out.println("-- Pokazywanie istniejących zajęć --");
-        mainMenu.dBService.printActivites();
+        mainMenu.dBService.printActivities();
     }
 }

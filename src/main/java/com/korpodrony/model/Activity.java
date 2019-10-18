@@ -9,20 +9,19 @@ public class Activity {
     private String name;
     private short maxUsers;
     private Set<Integer> assignedUsersIDs;
-    //    Trainer trainer;
-    private byte duration; /*Unit of duration is quarter*/
+    private byte lenghtInQuarters;
     private ActivitiesType activitiesType;
 
-    public Activity(String name, short maxUsers, byte duration, ActivitiesType activitiesType) {
-        this(++currentID, name, maxUsers, new HashSet<>(), duration, activitiesType);
+    public Activity(String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
+        this(++currentID, name, maxUsers, new HashSet<>(), lenghtInQuarters, activitiesType);
     }
 
-    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte duration, ActivitiesType activitiesType) {
+    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte lenghtInQuarters, ActivitiesType activitiesType) {
         this.ID = ID;
         this.name = name;
         this.maxUsers = maxUsers;
         this.assignedUsersIDs = assignedUsersIDs;
-        this.duration = duration;
+        this.lenghtInQuarters = lenghtInQuarters;
         this.activitiesType = activitiesType;
     }
 
@@ -79,12 +78,12 @@ public class Activity {
         this.assignedUsersIDs = assignedUsersIDs;
     }
 
-    public byte getDuration() {
-        return duration;
+    public byte getLenghtInQuarters() {
+        return lenghtInQuarters;
     }
 
-    public void setDuration(byte duration) {
-        this.duration = duration;
+    public void setLenghtInQuarters(byte lenghtInQuarters) {
+        this.lenghtInQuarters = lenghtInQuarters;
     }
 
     public ActivitiesType getActivitiesType() {
@@ -98,7 +97,7 @@ public class Activity {
     public void editActivity(String name, short maxUsers, byte duration, ActivitiesType activitiesType) {
         setName(name);
         setMaxUsers(maxUsers);
-        setDuration(duration);
+        setLenghtInQuarters(duration);
         setActivitiesType(activitiesType);
     }
 
@@ -135,7 +134,7 @@ public class Activity {
                 ", nazwa: " + name +
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
-                ", czas trwania [min]:" + duration*15 +
+                ", czas trwania [min]:" + lenghtInQuarters *15 +
                 ", typ zajęć: " + activitiesType;
     }
 }
