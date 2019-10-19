@@ -26,8 +26,7 @@ public class MainMenu {
         do {
             contextMenuExit = false;
             Messages.printMainMenu();
-            System.out.print("Twój wybór: ");
-            int choice = IoTools.getNumericInput();
+            int choice = IoTools.getIntFromUser();
             runMainMenuDecide(choice);
         } while (!exit);
             writeOrganizationToFile();
@@ -43,10 +42,6 @@ public class MainMenu {
         JSONWriter.writeJSONToFile(Paths.get(path, "Plans.json"), dB.getPlans());
     }
 
-    /**
-     * Menu choice logic
-     **/
-
     private void runMainMenuDecide(int choice) {
         switch (choice) {
             case 1: {
@@ -57,13 +52,8 @@ public class MainMenu {
                 new UsersMenu(this).startUsersMenu();
                 break;
             }
-//            case 3: {
-////                       TODO === to be implemented later
-//                Messages.printFeatureNotImplementedYet();
-//                break;
-//            }
             case 3: {
-                new ActivitiesMenu(this).StartActivitiesMenu();
+                new ActivitiesMenu(this).startActivitiesMenu();
                 break;
             }
             case 4: {

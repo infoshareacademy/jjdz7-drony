@@ -18,13 +18,12 @@ public class InitialMenu {
         int choice = 0;
         do {
             Messages.printInitialMenu();
-            System.out.print("Twój wybór: ");
-            choice = IoTools.getNumericInput();
-            runInitialMenuDecide(choice);
+            choice = IoTools.getIntFromUser();
+            decide(choice);
         } while (choice != 1 && choice != 2);
     }
 
-    private void runInitialMenuDecide(int choice) {
+    private void decide(int choice) {
         switch (choice) {
             case 1: {
                 try {

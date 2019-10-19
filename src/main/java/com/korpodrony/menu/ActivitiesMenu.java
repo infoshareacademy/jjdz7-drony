@@ -13,43 +13,42 @@ public class ActivitiesMenu {
         this.mainMenu = mainMenu;
     }
 
-    void StartActivitiesMenu() {
+    void startActivitiesMenu() {
         do {
-            Messages.printActivitiesMenu("Zajęcia");
-            System.out.print("Twój wybór: ");
-            int choice = IoTools.getNumericInput();
-            runActivitiesMenuDecide(choice);
+            Messages.printActivitiesMenu();
+            int choice = IoTools.getIntFromUser();
+            decide(choice);
         } while (!MainMenu.contextMenuExit);
     }
 
-    private  void runActivitiesMenuDecide(int choice) {
+    private void decide(int choice) {
         switch (choice) {
             case 1: {
-                startActivitiesMenuAddActivity();
+                addActivity();
                 break;
             }
             case 2: {
-                startActivitiesMenuEditActivity();
+                editActivity();
                 break;
             }
             case 3: {
-                startActivitiesMenuDeleteActivity();
+                deleteActivity();
                 break;
             }
             case 4: {
-                startActivitiesMenuShowActivity();
+                showActivity();
                 break;
             }
             case 5: {
-                startActivitiesMenuAssignUser();
+                assignUser();
                 break;
             }
             case 6: {
-                startActivitiesMenuUnassignUser();
+                unassignUser();
                 break;
             }
             case 7: {
-                startActivitiesMenuShowAssignedUsers();
+                showAssignedUsers();
                 break;
             }
             case 8: {
@@ -59,57 +58,55 @@ public class ActivitiesMenu {
             default: {
                 Messages.printBadInputErrorMessage();
             }
-
         }
-
     }
 
-    private void startActivitiesMenuShowAssignedUsers() {
-        System.out.println("Pokazywanie użytkowników przypisanych do zajęć");
-        mainMenu.dBService.printActivites();
-        if (mainMenu.dB.getAllActivies().isEmpty()) {
+    private void showAssignedUsers() {
+        System.out.println("-- Pokazywanie użytkowników przypisanych do zajęć --");
+        mainMenu.dBService.printActivities();
+        if (mainMenu.dB.getAllActivities().isEmpty()) {
             return;
         }
-        int choice = IoTools.readIntInputWithMessage("Podaj ID zajęć, których użytkowników chcesz obejrzeć");
-        if (!mainMenu.dB.hasActivityWithThisID(choice)){
-            System.out.println("Nie ma takich zajęć");
+        int choice = IoTools.readIntInputWithMessage("Podaj ID zajęć, których użytkowników chcesz obejrzeć:");
+        if (!mainMenu.dB.hasActivityWithThisID(choice)) {
+            System.out.println("Nie ma takich zajęć.");
             return;
         }
-        List<User> users = mainMenu.dB.getActivity(choice).getAssignedUsersIDs().stream().map(x->mainMenu.dB.getUser(x)).collect(Collectors.toList());
+        List<User> users = mainMenu.dB.getActivity(choice).getAssignedUsersIDs().stream().map(x -> mainMenu.dB.getUser(x)).collect(Collectors.toList());
         if (users.isEmpty()) {
-            System.out.println("zajęcia nie mają przypisanych  żadnych użytkowników");
+            System.out.println("Zajęcia nie mają przypisanych żadnych użytkowników!");
             return;
         }
         users.sort(new UserIDComparator());
         users.forEach(System.out::println);
     }
 
-    private void startActivitiesMenuUnassignUser() {
-        System.out.println("Wypisywanie użytkownika z zajęć");
+    private void unassignUser() {
+        System.out.println("-- Wypisywanie użytkownika z zajęć --");
         mainMenu.dBService.unassingUserFromActivity();
     }
 
-    private void startActivitiesMenuAssignUser() {
-        System.out.println("Przypisywanie użytkownika do zajęć");
+    private void assignUser() {
+        System.out.println("-- Przypisywanie użytkownika do zajęć --");
         mainMenu.dBService.assignUserToActivity();
     }
 
-    private void startActivitiesMenuAddActivity() {
-        System.out.println("Dodawanie nowych zajęć");
+    private void addActivity() {
+        System.out.println("-- Dodawanie nowych zajęć --");
         mainMenu.dBService.addActivity();
     }
 
-    private void startActivitiesMenuEditActivity() {
-        mainMenu.dBService.editActiity();
+    private void editActivity() {
+        mainMenu.dBService.editActivity();
     }
 
-    private void startActivitiesMenuDeleteActivity() {
-        System.out.println("Usuwanie istniejących zajęć");
+    private void deleteActivity() {
+        System.out.println("-- Usuwanie istniejących zajęć --");
         mainMenu.dBService.removeActivity();
     }
 
-    private void startActivitiesMenuShowActivity() {
-        System.out.println("Pokazywanie istniejących zajęć");
-        mainMenu.dBService.printActivites();
+    private void showActivity() {
+        System.out.println("-- Pokazywanie istniejących zajęć --");
+        mainMenu.dBService.printActivities();
     }
 }

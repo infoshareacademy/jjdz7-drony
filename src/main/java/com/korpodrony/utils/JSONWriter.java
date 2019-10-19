@@ -27,7 +27,7 @@ public class JSONWriter {
             Files.write(filePath, jsonString.getBytes(), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Hmmm, zapis do pliku nie zadziałał");
+            System.out.println("Zapis do pliku nie zadziałał");
         }
     }
 

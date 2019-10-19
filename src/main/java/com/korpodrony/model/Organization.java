@@ -158,11 +158,11 @@ public class Organization {
         return true;
     }
 
-    public boolean editActivity(int activityID, String name, short maxUsers, byte duration, ActivitiesType activitiesType) {
+    public boolean editActivity(int activityID, String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
         if (!hasActivityWithThisID(activityID)) {
             return false;
         }
-        getActivity(activityID).editActivity(name, maxUsers, duration, activitiesType);
+        getActivity(activityID).editActivity(name, maxUsers, lenghtInQuarters, activitiesType);
         return true;
     }
 
@@ -202,7 +202,7 @@ public class Organization {
         return new ArrayList<>(users);
     }
 
-    public List<Activity> getAllActivies() {
+    public List<Activity> getAllActivities() {
         return new ArrayList<>(activities);
     }
 
