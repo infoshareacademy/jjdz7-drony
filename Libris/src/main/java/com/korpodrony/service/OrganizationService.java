@@ -5,7 +5,10 @@ import com.korpodrony.comparators.PlanIDComparator;
 import com.korpodrony.comparators.UserIDComparator;
 import com.korpodrony.utils.IoTools;
 import com.korpodrony.model.*;
+import com.korpodrony.utils.JSONReader;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -17,6 +20,42 @@ public class OrganizationService {
     public OrganizationService(Organization organization) {
         this.organization = organization;
     }
+
+    //TODO ------------------------------- methods moved from menu start here ---------------------------------------------------
+    public static Organization loadParametersFromFile () {
+        String path = new PropertiesService().getProperty(PropertiesService.APP_PATH);
+        Organization org = new Organization();
+
+        if (path == null) {
+            return org;
+        } else {
+
+            if (Files.exists(Paths.get(path, "Users.json"))) {
+                Set<User> usersFromJson = new JSONReader().parseUserFromJSONFile(Paths.get(path, "Users.json"));
+                org.setUsers(usersFromJson);
+                User.setCurrentID(usersFromJson);
+            }
+            if (Files.exists(Paths.get(path, "Activities.json"))) {
+                Set<Activity> activtitiesFromJson = new JSONReader().parseActivityFromJSONFile(Paths.get(path, "Activities.json"));
+                org.setActivities(activtitiesFromJson);
+                Activity.setCurrentID(activtitiesFromJson);
+            }
+            if (Files.exists(Paths.get(path, "Plans.json"))) {
+                Set<Plan> plansFromJson = new JSONReader().parsePlanFromJSONFile(Paths.get(path, "Plans.json"));
+                org.setPlans(plansFromJson);
+                Plan.setCurrentID(plansFromJson);
+            }
+
+            return org;
+        }
+    }
+
+
+
+
+
+
+    //TODO ------------------------------- methods moved from menu end here ---------------------------------------------------
 
     public void addUser() {
         String name = IoTools.getStringFromUserWithMessage("Podaj imię:");
@@ -67,7 +106,7 @@ public class OrganizationService {
         }
     }
 
-    public void unassingUserFromActivity() {
+    public void unassignUserFromActivity() {
         if (organization.getAllActivities().isEmpty() || organization.getAllUsers().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych zajęć lub użytkowników.");
             return;

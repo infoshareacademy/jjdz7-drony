@@ -4,6 +4,7 @@ import com.korpodrony.model.Activity;
 import com.korpodrony.model.Organization;
 import com.korpodrony.model.Plan;
 import com.korpodrony.model.User;
+import com.korpodrony.service.OrganizationService;
 import com.korpodrony.service.PropertiesService;
 import com.korpodrony.utils.IoTools;
 import com.korpodrony.utils.JSONReader;
@@ -43,29 +44,9 @@ public class InitialMenu {
         Organization org = new Organization();
         new MainMenu(org).startMainMenu();
     }
-    //TODO take logic out of menu
+
     private void initialParametersLoad() {
-        String path = new PropertiesService().getProperty(PropertiesService.APP_PATH);
-        if (path == null) {
-            createNewOrganization();
-        } else {
-            Organization org = new Organization();
-            if (Files.exists(Paths.get(path, "Users.json"))) {
-                Set<User> usersFromJson = new JSONReader().parseUserFromJSONFile(Paths.get(path, "Users.json"));
-                org.setUsers(usersFromJson);
-                User.setCurrentID(usersFromJson);
-            }
-            if (Files.exists(Paths.get(path, "Activities.json"))) {
-                Set<Activity> activtiesFromJson = new JSONReader().parseActivityFromJSONFile(Paths.get(path, "Activities.json"));
-                org.setActivities(activtiesFromJson);
-                Activity.setCurrentID(activtiesFromJson);
-            }
-            if (Files.exists(Paths.get(path, "Plans.json"))) {
-                Set<Plan> plansFromJson = new JSONReader().parsePlanFromJSONFile(Paths.get(path, "Plans.json"));
-                org.setPlans(plansFromJson);
-                Plan.setCurrentID(plansFromJson);
-            }
-            new MainMenu(org).startMainMenu();
+            new MainMenu(OrganizationService.loadParametersFromFile()).startMainMenu();
         }
-    }
+
 }

@@ -86,7 +86,7 @@ public class ActivitiesMenu {
 
     private void unassignUser() {
         System.out.println("-- Wypisywanie użytkownika z zajęć --");
-        mainMenu.dBService.unassingUserFromActivity();
+        mainMenu.dBService.unassignUserFromActivity();
     }
 
     private void assignUser() {
