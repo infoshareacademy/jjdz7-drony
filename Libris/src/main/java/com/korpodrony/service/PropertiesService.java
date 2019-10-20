@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+//TODO change messages to polish langugage
 public class PropertiesService {
     public static final String APP_PATH = "app.path";
 

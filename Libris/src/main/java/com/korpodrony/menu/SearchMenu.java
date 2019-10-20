@@ -51,7 +51,7 @@ public class SearchMenu {
 
         }
     }
-
+    //TODO take logic out of menu
     private void searchByUserMenu() {
         System.out.println("-- Szukanie użytkownika po imieniu - Wpisz imię:");
         String searchedText = IoTools.getStringFromUser().toLowerCase();
@@ -65,7 +65,7 @@ public class SearchMenu {
         users.sort(new UserIDComparator());
         users.forEach(System.out::println);
     }
-
+    //TODO take logic out of menu
     private void searchByActivityMenu() {
         System.out.println("-- Szukanie zajęć po nazwie - wpisz nazwę:");
         String searchedText = IoTools.getStringFromUser().toLowerCase();
@@ -77,7 +77,7 @@ public class SearchMenu {
         activities.sort(new ActivityIDComparator());
         activities.forEach(System.out::println);
     }
-
+    //TODO take logic out of menu
     private void searchByScheduleMenu() {
         System.out.println("-- Szukanie planu po nazwie, wpisz nazwę:");
         String searchedText = IoTools.getStringFromUser().toLowerCase();

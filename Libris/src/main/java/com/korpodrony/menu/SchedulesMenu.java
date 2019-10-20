@@ -62,7 +62,7 @@ public class SchedulesMenu {
             }
         }
     }
-
+    //TODO take logic out of menu
     private void showActivitiesOfSchedule() {
         System.out.println("-- Pokazywanie zajęć przypisanych do planu --");
         mainMenu.dBService.printPlans();

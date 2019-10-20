@@ -53,9 +53,9 @@ public class UsersMenu {
             }
 
         }
-
     }
 
+    //TODO take logic out of menu
     private void showUserActivities() {
         System.out.println("-- Pokazywanie zajęć użytkownika --");
         mainMenu.dBService.printUsers();

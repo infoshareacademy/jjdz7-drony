@@ -30,7 +30,6 @@ public class JSONWriter {
             System.out.println("Błąd przy zapisie do pliku!");
         }
     }
-
 }
 
 

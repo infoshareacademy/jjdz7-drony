@@ -63,7 +63,7 @@ public class ActivitiesMenu {
         }
 
     }
-
+//TODO take logic out of menu
     private void showAssignedUsers() {
         System.out.println("-- Pokazywanie użytkowników przypisanych do zajęć --");
         mainMenu.dBService.printActivities();

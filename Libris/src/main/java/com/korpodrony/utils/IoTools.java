@@ -3,9 +3,11 @@ package com.korpodrony.utils;
 import java.util.Locale;
 import java.util.Scanner;
 
+//TODO make methods unrecursive and also split valudation and taking value from user to two speperated methods in all cases
 public class IoTools {
 
     private static final Scanner sc = new Scanner(System.in).useLocale(Locale.US);
+
 
     public static String getStringFromUser() {
         String text = sc.nextLine();

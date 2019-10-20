@@ -18,6 +18,5 @@ public class HelloServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.println("Hello World from my first Servlet!");
-
     }
 }

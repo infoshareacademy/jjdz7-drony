@@ -43,7 +43,7 @@ public class InitialMenu {
         Organization org = new Organization();
         new MainMenu(org).startMainMenu();
     }
-
+    //TODO take logic out of menu
     private void initialParametersLoad() {
         String path = new PropertiesService().getProperty(PropertiesService.APP_PATH);
         if (path == null) {

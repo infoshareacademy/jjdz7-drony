@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+//TODO split it to smaller services and make them using the same static repository!!!!!!!!!!
 public class OrganizationService {
     private Organization organization;
 

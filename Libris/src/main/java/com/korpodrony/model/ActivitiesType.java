@@ -2,9 +2,9 @@ package com.korpodrony.model;
 
 public enum ActivitiesType {
 
-    LECTURE("WYKŁAD"),
-    EXCERCISE("ĆWICZENIA"),
-    WORKSHOP("WARSZTATY");
+    LECTURE("wykład"),
+    EXCERCISE("ćwiczenia"),
+    WORKSHOP("warszaty");
 
     String polishName;
 
