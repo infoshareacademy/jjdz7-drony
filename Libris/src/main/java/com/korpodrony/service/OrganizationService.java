@@ -22,7 +22,8 @@ public class OrganizationService {
     }
 
     //TODO ------------------------------- methods moved from menu start here ---------------------------------------------------
-    public static Organization loadParametersFromFile () {
+
+    public static Organization loadParametersFromFile() {
         String path = new PropertiesService().getProperty(PropertiesService.APP_PATH);
         Organization org = new Organization();
 
@@ -50,9 +51,25 @@ public class OrganizationService {
         }
     }
 
+    public void showAssignedUsers() {
+        printActivities();
+        if (organization.getAllActivities().isEmpty()) {
+            return;
+        }
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, których użytkowników chcesz obejrzeć:");
+        if (!organization.hasActivityWithThisID(choice)) {
+            System.out.println("Nie ma takich zajęć.");
+            return;
+        }
+        List<User> users = organization.getActivity(choice).getAssignedUsersIDs().stream().map(x -> organization.getUser(x)).collect(Collectors.toList());
+        if (users.isEmpty()) {
+            System.out.println("Zajęcia nie mają przypisanych żadnych użytkowników!");
+            return;
+        }
+        users.sort(new UserIDComparator());
+        users.forEach(System.out::println);
 
-
-
+    }
 
 
     //TODO ------------------------------- methods moved from menu end here ---------------------------------------------------
@@ -105,6 +122,7 @@ public class OrganizationService {
             }
         }
     }
+
 
     public void unassignUserFromActivity() {
         if (organization.getAllActivities().isEmpty() || organization.getAllUsers().isEmpty()) {
