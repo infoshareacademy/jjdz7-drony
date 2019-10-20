@@ -51,42 +51,19 @@ public class SearchMenu {
 
         }
     }
-    //TODO take logic out of menu
+
     private void searchByUserMenu() {
-        System.out.println("-- Szukanie użytkownika po imieniu - Wpisz imię:");
-        String searchedText = IoTools.getStringFromUser().toLowerCase();
-        List<User> users = mainMenu.dB.getAllUsers().stream()
-                .filter(x -> x.getName().toLowerCase().contains(searchedText))
-                .collect(Collectors.toList());
-        if (users.isEmpty()) {
-            System.out.println("Nie ma takiego użytkownika.");
-            return;
-        }
-        users.sort(new UserIDComparator());
-        users.forEach(System.out::println);
+        System.out.println("-- Szukanie użytkownika po imieniu");
+        mainMenu.dBService.searchByUserMenu();
     }
-    //TODO take logic out of menu
+
     private void searchByActivityMenu() {
-        System.out.println("-- Szukanie zajęć po nazwie - wpisz nazwę:");
-        String searchedText = IoTools.getStringFromUser().toLowerCase();
-        List<Activity> activities = mainMenu.dB.getAllActivities().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
-        if (activities.isEmpty()) {
-            System.out.println("Nie ma takich zajęć.");
-            return;
-        }
-        activities.sort(new ActivityIDComparator());
-        activities.forEach(System.out::println);
+        System.out.println("-- Szukanie zajęć po nazwie");
+        mainMenu.dBService.searchByActivityMenu();
     }
-    //TODO take logic out of menu
+
     private void searchByScheduleMenu() {
-        System.out.println("-- Szukanie planu po nazwie, wpisz nazwę:");
-        String searchedText = IoTools.getStringFromUser().toLowerCase();
-        List<Plan> plans = mainMenu.dB.getAllPlans().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
-        if (plans.isEmpty()) {
-            System.out.println("Nie ma takiego planu.");
-            return;
-        }
-        plans.sort(new PlanIDComparator());
-        plans.forEach(System.out::println);
+        System.out.println("-- Szukanie planu po nazwie");
+        mainMenu.dBService.searchByScheduleMenu();
     }
 }

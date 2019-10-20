@@ -91,6 +91,51 @@ public class OrganizationService {
     }
 
 
+    public void searchByUserMenu() {
+        System.out.println("- Wpisz imię:");
+        String searchedText = IoTools.getStringFromUser().toLowerCase();
+        List<User> users = organization.getAllUsers().stream()
+                .filter(x -> x.getName().toLowerCase().contains(searchedText))
+                .collect(Collectors.toList());
+        if (users.isEmpty()) {
+            System.out.println("Nie ma takiego użytkownika.");
+            return;
+        }
+        users.sort(new UserIDComparator());
+        users.forEach(System.out::println);
+    }
+
+    public void searchByActivityMenu() {
+        System.out.println("- Wpisz nazwę:");
+        String searchedText = IoTools.getStringFromUser().toLowerCase();
+        List<Activity> activities = organization.getAllActivities().stream()
+                .filter(x -> x.getName().toLowerCase().contains(searchedText))
+                .collect(Collectors.toList());
+
+        if (activities.isEmpty()) {
+            System.out.println("Nie ma takich zajęć.");
+            return;
+        }
+        activities.sort(new ActivityIDComparator());
+        activities.forEach(System.out::println);
+    }
+
+    public void searchByScheduleMenu() {
+        System.out.println("- Wpisz nazwę:");
+        String searchedText = IoTools.getStringFromUser().toLowerCase();
+        List<Plan> plans = organization.getAllPlans().stream()
+                .filter(x -> x.getName().toLowerCase().contains(searchedText))
+                .collect(Collectors.toList());
+
+        if (plans.isEmpty()) {
+            System.out.println("Nie ma takiego planu.");
+            return;
+        }
+        plans.sort(new PlanIDComparator());
+        plans.forEach(System.out::println);
+    }
+
+
     //TODO ------------------------------- methods moved from menu end here ---------------------------------------------------
 
     public void addUser() {
