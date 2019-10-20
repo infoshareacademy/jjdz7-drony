@@ -5,9 +5,9 @@ import com.korpodrony.model.Organization;
 import com.korpodrony.model.Plan;
 import com.korpodrony.model.User;
 import com.korpodrony.service.PropertiesService;
+import com.korpodrony.utils.IoTools;
 import com.korpodrony.utils.JSONReader;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Set;

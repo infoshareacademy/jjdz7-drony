@@ -3,7 +3,7 @@ package com.korpodrony.service;
 import com.korpodrony.comparators.ActivityIDComparator;
 import com.korpodrony.comparators.PlanIDComparator;
 import com.korpodrony.comparators.UserIDComparator;
-import com.korpodrony.menu.IoTools;
+import com.korpodrony.utils.IoTools;
 import com.korpodrony.model.*;
 
 import java.util.*;
@@ -67,7 +67,7 @@ public class OrganizationService {
     }
 
     public void unassingUserFromActivity() {
-        if (organization.getAllActivies().size() == 0 || organization.getAllUsers().isEmpty()) {
+        if (organization.getAllActivies().isEmpty() || organization.getAllUsers().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych zajęć lub użytkowników.");
             return;
         }

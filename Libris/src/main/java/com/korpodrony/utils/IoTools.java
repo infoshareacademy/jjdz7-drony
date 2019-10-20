@@ -1,4 +1,4 @@
-package com.korpodrony.menu;
+package com.korpodrony.utils;
 
 import java.util.Locale;
 import java.util.Scanner;
@@ -10,32 +10,16 @@ public class IoTools {
     public static String getStringFromUser() {
         String text = sc.nextLine();
         return text.chars().allMatch(Character::isLetter) ? text : getStringFromUserWithMessage("Tylko litery są dozwolone. Spróbuj ponownie: ");
-    } //TODO current method is over-sensitive - as some names might include numbers (eg activities names). To discuss
+    }
 
     public static String getStringFromUserWithMessage(String message) {
         System.out.println(message);
         return getStringFromUser();
     }
 
-//    public static double getDoubleFromUser() {
-//        double x = 0;
-//        while (!sc.hasNextDouble()) {
-//            if (!sc.hasNext()) {
-//                System.err.println("no more input");
-//                System.exit(1);
-//            }
-//            System.out.println(sc.next() + ": is not a double, please enter a double ");
-//        }
-//        return sc.nextDouble();
-//    } TODO - is it necessary to keep this one?
-
     public static short getShortFromUser() {
         short x = 0;
         while (!sc.hasNextShort()) {
-            if (!sc.hasNext()) {
-                System.err.println("Brak danych!");
-                System.exit(1);
-            }
             System.out.println(sc.next() + ": nie jest liczbą z zakresu 1 do 32767. Spróbuj ponownie:");
         }
         x = sc.nextShort();
@@ -51,10 +35,6 @@ public class IoTools {
     public static byte getByteFromUser() {
         byte x = 0;
         while (!sc.hasNextByte()) {
-            if (!sc.hasNext()) {
-                System.err.println("Brak danych!");
-                System.exit(1);
-            }
             System.out.println(sc.next() + ": nie jest liczbą z zakresu 1 do 127. Spróbuj ponownie:");
         }
         x = sc.nextByte();
@@ -66,7 +46,6 @@ public class IoTools {
         byte x = getByteFromUser();
         return x > 0 ? x : getByteFromUserWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie:");
     }
-
 
     public static int getIntFromUser() {
         int x;
