@@ -172,7 +172,6 @@ public class OrganizationService {
         }
     }
 
-
     public boolean canUnassignActivityFromPlan(int activityID, int planID) {
         if (!organization.getAllActivitiesIDs().contains(activityID)) {
             System.out.println("Zajęcia o takim ID nie istnieją.");
