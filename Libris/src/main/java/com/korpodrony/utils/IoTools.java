@@ -8,14 +8,14 @@ public class IoTools {
 
     private static final Scanner sc = new Scanner(System.in).useLocale(Locale.US);
 
-    public static String getStringFromUser() {
+    public static String getCharsOnlyStringFromUser() {
         String text = sc.nextLine();
         return text.chars().allMatch(Character::isLetter) ? text : getStringFromUserWithMessage("Tylko litery są dozwolone. Spróbuj ponownie: ");
     }
 
     public static String getStringFromUserWithMessage(String message) {
         System.out.println(message);
-        return getStringFromUser();
+        return getCharsOnlyStringFromUser();
     }
 
     public static short getShortFromUser() {

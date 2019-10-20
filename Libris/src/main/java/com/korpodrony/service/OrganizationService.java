@@ -93,7 +93,7 @@ public class OrganizationService {
 
     public void searchByUserMenu() {
         System.out.println("- Wpisz imię:");
-        String searchedText = IoTools.getStringFromUser().toLowerCase();
+        String searchedText = IoTools.getCharsOnlyStringFromUser().toLowerCase();
         List<User> users = organization.getAllUsers().stream()
                 .filter(x -> x.getName().toLowerCase().contains(searchedText))
                 .collect(Collectors.toList());
@@ -107,7 +107,7 @@ public class OrganizationService {
 
     public void searchByActivityMenu() {
         System.out.println("- Wpisz nazwę:");
-        String searchedText = IoTools.getStringFromUser().toLowerCase();
+        String searchedText = IoTools.getCharsOnlyStringFromUser().toLowerCase();
         List<Activity> activities = organization.getAllActivities().stream()
                 .filter(x -> x.getName().toLowerCase().contains(searchedText))
                 .collect(Collectors.toList());
@@ -122,7 +122,7 @@ public class OrganizationService {
 
     public void searchByScheduleMenu() {
         System.out.println("- Wpisz nazwę:");
-        String searchedText = IoTools.getStringFromUser().toLowerCase();
+        String searchedText = IoTools.getCharsOnlyStringFromUser().toLowerCase();
         List<Plan> plans = organization.getAllPlans().stream()
                 .filter(x -> x.getName().toLowerCase().contains(searchedText))
                 .collect(Collectors.toList());
@@ -141,7 +141,7 @@ public class OrganizationService {
             return;
         }
         int choice = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika, do którego zajęcia chcesz obejrzeć:");
-        if (!organization.hasUserWithThisID(choice)){
+        if (!organization.hasUserWithThisID(choice)) {
             System.out.println("Nie ma takiego użytkownika.");
             return;
         }

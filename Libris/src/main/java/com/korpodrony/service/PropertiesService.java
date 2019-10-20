@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-//TODO change messages to polish langugage
 public class PropertiesService {
     public static final String APP_PATH = "app.path";
 
@@ -26,7 +25,7 @@ public class PropertiesService {
                 .getResourceAsStream("config.properties")) {
 
             if (input == null) {
-                System.out.println("Sorry, unable to find config.properties");
+                System.out.println("Nie można znaleźć pliku - config.properties");
                 return;
             }
             prop = new Properties();
