@@ -219,7 +219,7 @@ public class OrganizationService {
         Set<Integer> activityUser = organization.getActivity(actityID).getAssignedUsersIDs();
         for (Integer i : activityUser) {
             for (int j = 0; j < users.size(); j++) {
-                if (users.get(j).getID() == i) {
+                if (users.get(j).getId() == i) {
                     users.remove(j);
                 }
             }

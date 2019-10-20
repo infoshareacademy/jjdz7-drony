@@ -6,12 +6,12 @@ import java.util.Set;
 public class User {
 
     private static int currentID = 0;
-    private int ID;
+    private int id;
     private String name;
     private String surname;
 
-    public User(int ID, String name, String surname) {
-        this.ID = ID;
+    public User(int id, String name, String surname) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
     }
@@ -21,8 +21,8 @@ public class User {
     public static void setCurrentID(Set<User> users){
         int maxValue = 0;
         for (User user: users){
-            if (user.getID()>maxValue){
-                maxValue=user.getID();
+            if (user.getId()>maxValue){
+                maxValue=user.getId();
             }
         }
         setCurrentID(maxValue);
@@ -44,12 +44,12 @@ public class User {
         User.currentID = currentID;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
     public void setID(int ID) {
-        this.ID = ID;
+        this.id = ID;
     }
 
     public String getName() {
@@ -70,7 +70,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "Użytkownik " + "ID = " + ID + ", imię: " + name + ", nazwisko: " + surname;
+        return "Użytkownik " + "ID = " + id + ", imię: " + name + ", nazwisko: " + surname;
     }
 
     @Override
@@ -78,11 +78,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return ID == user.ID;
+        return id == user.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ID, name, surname);
+        return Objects.hash(id, name, surname);
     }
 }

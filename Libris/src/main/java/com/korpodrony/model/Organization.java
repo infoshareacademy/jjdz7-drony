@@ -125,7 +125,7 @@ public class Organization {
 
     public User getUser(int userID) {
         for (User user : users) {
-            if (user.getID() == userID) {
+            if (user.getId() == userID) {
                 return user;
             }
         }
@@ -177,7 +177,7 @@ public class Organization {
     public List<Integer> getAllUsersIDs() {
         List<Integer> usersIDs = new ArrayList<>();
         for (User user : users) {
-            usersIDs.add(user.getID());
+            usersIDs.add(user.getId());
         }
         return usersIDs;
     }
@@ -239,7 +239,7 @@ public class Organization {
 
     public boolean hasUserWithThisID(int userID) {
         for (User user : users) {
-            if (user.getID() == userID) {
+            if (user.getId() == userID) {
                 return true;
             }
         }

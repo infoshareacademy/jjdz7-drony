@@ -9,6 +9,6 @@ public class UserIDComparator implements Comparator {
     public int compare(Object o, Object t1) {
         User usr1 = (User) o;
         User usr2 = (User) t1;
-        return usr1.getID() - usr2.getID();
+        return usr1.getId() - usr2.getId();
     }
 }
