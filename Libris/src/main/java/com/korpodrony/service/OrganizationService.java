@@ -135,6 +135,27 @@ public class OrganizationService {
         plans.forEach(System.out::println);
     }
 
+    public void showUserActivities() {
+        printUsers();
+        if (organization.getAllUsers().isEmpty()) {
+            return;
+        }
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika, do którego zajęcia chcesz obejrzeć:");
+        if (!organization.hasUserWithThisID(choice)){
+            System.out.println("Nie ma takiego użytkownika.");
+            return;
+        }
+        List<Activity> userActivities = organization.getAllActivities().stream()
+                .filter(x -> x.getAssignedUsersIDs().contains(choice))
+                .collect(Collectors.toList());
+        if (userActivities.isEmpty()) {
+            System.out.println("Użytkownik nie jest przypisany do żadnych zajęć.");
+            return;
+        }
+        userActivities.sort(new ActivityIDComparator());
+        userActivities.forEach(System.out::println);
+    }
+
 
     //TODO ------------------------------- methods moved from menu end here ---------------------------------------------------
 

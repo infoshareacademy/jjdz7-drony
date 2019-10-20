@@ -55,27 +55,10 @@ public class UsersMenu {
         }
     }
 
-    //TODO take logic out of menu
     private void showUserActivities() {
         System.out.println("-- Pokazywanie zajęć użytkownika --");
-        mainMenu.dBService.printUsers();
-        if (mainMenu.dB.getAllUsers().isEmpty()) {
-            return;
-        }
-        int choice = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika, do którego zajęcia chcesz obejrzeć:");
-        if (!mainMenu.dB.hasUserWithThisID(choice)){
-            System.out.println("Nie ma takiego użytkownika.");
-            return;
-        }
-        List<Activity> userActivities = mainMenu.dB.getAllActivities().stream()
-                .filter(x -> x.getAssignedUsersIDs().contains(choice))
-                .collect(Collectors.toList());
-        if (userActivities.isEmpty()) {
-            System.out.println("Użytkownik nie jest przypisany do żadnych zajęć.");
-            return;
-        }
-        userActivities.sort(new ActivityIDComparator());
-        userActivities.forEach(System.out::println);
+        mainMenu.dBService.showUserActivities();
+
     }
 
     private void addUser() {
