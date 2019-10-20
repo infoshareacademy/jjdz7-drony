@@ -67,7 +67,7 @@ public class UsersMenu {
             System.out.println("Nie ma takiego użytkownika.");
             return;
         }
-        List<Activity> userActivities = mainMenu.dB.getAllActivies().stream().filter(x -> x.getAssignedUsersIDs().contains(choice)).collect(Collectors.toList());
+        List<Activity> userActivities = mainMenu.dB.getAllActivities().stream().filter(x -> x.getAssignedUsersIDs().contains(choice)).collect(Collectors.toList());
         if (userActivities.isEmpty()) {
             System.out.println("Użytkownik nie jest przypisany do żadnych zajęć!");
             return;

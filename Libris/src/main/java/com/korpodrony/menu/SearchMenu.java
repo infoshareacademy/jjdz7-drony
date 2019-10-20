@@ -67,7 +67,7 @@ public class SearchMenu {
     private void startSearchByActivityMenu() {
         System.out.println("Szukanie zajęć po nazwie, wpisz nazwę:");
         String searchedText = IoTools.getStringFromUser().toLowerCase();
-        List<Activity> activities = mainMenu.dB.getAllActivies().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
+        List<Activity> activities = mainMenu.dB.getAllActivities().stream().filter(x -> x.getName().toLowerCase().contains(searchedText)).collect(Collectors.toList());
         if (activities.isEmpty()) {
             System.out.println("Nie ma takich zajęć.");
             return;

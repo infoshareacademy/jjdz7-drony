@@ -67,7 +67,7 @@ public class ActivitiesMenu {
     private void startActivitiesMenuShowAssignedUsers() {
         System.out.println("-- Pokazywanie użytkowników przypisanych do zajęć --");
         mainMenu.dBService.printActivities();
-        if (mainMenu.dB.getAllActivies().isEmpty()) {
+        if (mainMenu.dB.getAllActivities().isEmpty()) {
             return;
         }
         int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, których użytkowników chcesz obejrzeć:");

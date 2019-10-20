@@ -46,7 +46,7 @@ public class OrganizationService {
     }
 
     public void assignUserToActivity() {
-        if (organization.getAllActivies().isEmpty() || organization.getAllUsers().isEmpty()) {
+        if (organization.getAllActivities().isEmpty() || organization.getAllUsers().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych zajęć lub użytkowników.");
             return;
         }
@@ -55,11 +55,11 @@ public class OrganizationService {
             System.out.println("Nie ma obecnie żadnych użytkowników, których można przypisać.");
             return;
         }
-        List<User> avaiableUsers = chooseAvailableUsers(activityID);
-        avaiableUsers.sort(new UserIDComparator());
-        avaiableUsers.forEach(System.out::println);
+        List<User> availableUsers = chooseAvailableUsers(activityID);
+        availableUsers.sort(new UserIDComparator());
+        availableUsers.forEach(System.out::println);
         int userID = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika, którego chcesz przypisać do zajęć:");
-        if (canAssignUsertToActivity(userID, activityID)) {
+        if (canAssignUserToActivity(userID, activityID)) {
             if (organization.assignUserToActivity(userID, activityID)) {
                 System.out.println("Przypisano użytkownika do zajęć.");
             }
@@ -67,7 +67,7 @@ public class OrganizationService {
     }
 
     public void unassingUserFromActivity() {
-        if (organization.getAllActivies().isEmpty() || organization.getAllUsers().isEmpty()) {
+        if (organization.getAllActivities().isEmpty() || organization.getAllUsers().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych zajęć lub użytkowników.");
             return;
         }
@@ -85,7 +85,7 @@ public class OrganizationService {
         }
     }
 
-    public boolean canAssignUsertToActivity(int userID, int activityID) {
+    public boolean canAssignUserToActivity(int userID, int activityID) {
         if (!organization.hasUserWithThisID(userID)) {
             System.out.println("Użytkownik z takim ID nie istnieje!");
             return false;
@@ -121,18 +121,18 @@ public class OrganizationService {
     }
 
     public void assignActivityToPlan() {
-        if (organization.getAllActivies().isEmpty() || organization.getAllPlans().isEmpty()) {
+        if (organization.getAllActivities().isEmpty() || organization.getAllPlans().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych planów lub zajęć.");
             return;
         }
         int planID = choosePlan();
-        if (chooseAvaiableActivites(planID).isEmpty()) {
+        if (chooseAvailableActivities(planID).isEmpty()) {
             System.out.println("Nie ma obecnie żadnych zajęć, które można przypisać.");
             return;
         }
-        List<Activity> avaiableAcitvities = chooseAvaiableActivites(planID);
-        avaiableAcitvities.sort(new ActivityIDComparator());
-        avaiableAcitvities.forEach(System.out::println);
+        List<Activity> availableActivities = chooseAvailableActivities(planID);
+        availableActivities.sort(new ActivityIDComparator());
+        availableActivities.forEach(System.out::println);
         int activityID = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, które chcesz przypisać do planu:");
         if (canAssignActivityToPlan(activityID, planID)) {
             if (organization.assignActivityToPlan(activityID, planID)) {
@@ -153,7 +153,7 @@ public class OrganizationService {
     }
 
     public void unassignActivityFromPlan() {
-        if (organization.getAllPlans().size() == 0 || organization.getAllActivies().isEmpty()) {
+        if (organization.getAllPlans().size() == 0 || organization.getAllActivities().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych planów lub zajęć.");
             return;
         }
@@ -227,8 +227,8 @@ public class OrganizationService {
         return users;
     }
 
-    private List<Activity> chooseAvaiableActivites(int planID) {
-        List<Activity> activities = organization.getAllActivies();
+    private List<Activity> chooseAvailableActivities(int planID) {
+        List<Activity> activities = organization.getAllActivities();
         Set<Integer> activitesFromPlan = organization.getPlan(planID).getActivitiesID();
         for (Integer i : activitesFromPlan) {
             for (int j = 0; j < activitesFromPlan.size(); j++) {
@@ -277,7 +277,7 @@ public class OrganizationService {
 
     public void removeActivity() {
         printActivities();
-        if (organization.getAllActivies().isEmpty()) {
+        if (organization.getAllActivities().isEmpty()) {
             return;
         }
         int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęć do usunięcia:");
@@ -314,7 +314,7 @@ public class OrganizationService {
     }
 
     public void printActivities(Comparator comparator) {
-        List<Activity> activities = organization.getAllActivies();
+        List<Activity> activities = organization.getAllActivities();
         activities.sort(comparator);
         if (activities.isEmpty()) {
             System.out.println("Nie ma obecnie żadnych zajęć");
@@ -365,27 +365,27 @@ public class OrganizationService {
         switch (typeChoice) {
             case 1: {
                 Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.LECTURE);
-                printFilteredActivites(filter, activities);
+                printFilteredActivities(filter, activities);
                 break;
             }
             case 2: {
                 Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.EXCERCISE);
-                printFilteredActivites(filter, activities);
+                printFilteredActivities(filter, activities);
                 break;
             }
             case 3: {
                 Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.WORKSHOP);
-                printFilteredActivites(filter, activities);
+                printFilteredActivities(filter, activities);
                 break;
             }
             default: {
                 Predicate<? super Activity> filter = a -> true;
-                printFilteredActivites(filter, activities);
+                printFilteredActivities(filter, activities);
             }
         }
     }
 
-    private void printFilteredActivites(Predicate<? super Activity> filter, List<Activity> activities) {
+    private void printFilteredActivities(Predicate<? super Activity> filter, List<Activity> activities) {
 
         List<Activity> activityList = activities.stream()
                 .filter(filter)
@@ -439,7 +439,7 @@ public class OrganizationService {
     }
 
     public void editActivity() {
-        if (organization.getAllActivies().isEmpty()) {
+        if (organization.getAllActivities().isEmpty()) {
             System.out.println("Nie ma obecnie żadnych zajęć, które można by edytować.");
             return;
         }
@@ -449,7 +449,7 @@ public class OrganizationService {
             System.out.println("Nie ma zajęć o takim ID.");
             return;
         }
-        System.out.println("poprzednia nazwa" + organization.getActivity(activityID).getName());
+        System.out.println("Poprzednia nazwa" + organization.getActivity(activityID).getName());
         String name = IoTools.getStringFromUserWithMessage("Podaj nazwę zajęć:");
         short maxUsers = IoTools.getShortFromUserWithMessage("Podaj maksymalną liczbę użytkowników zajęć:");
         byte lenghtInQuarters = IoTools.getByteFromUserWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach:");

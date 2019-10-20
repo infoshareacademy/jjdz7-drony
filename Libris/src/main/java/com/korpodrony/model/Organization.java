@@ -202,7 +202,7 @@ public class Organization {
         return new ArrayList<>(users);
     }
 
-    public List<Activity> getAllActivies() {
+    public List<Activity> getAllActivities() {
         return new ArrayList<>(activities);
     }
 
