@@ -71,6 +71,25 @@ public class OrganizationService {
 
     }
 
+    public void showActivitiesOfSchedule() {
+        printPlans();
+        if (organization.getAllPlans().isEmpty()) {
+            return;
+        }
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu, którego zajęcia chcesz obejrzeć: ");
+        if (!organization.hasPlanWithThisID(choice)) {
+            System.out.println("Nie ma takiego planu.");
+            return;
+        }
+        List<Activity> activities = organization.getPlan(choice).getActivitiesID().stream().map(x -> organization.getActivity(x)).collect(Collectors.toList());
+        if (activities.isEmpty()) {
+            System.out.println("Plan nie ma przypisanych żadnych zajęć!");
+            return;
+        }
+        activities.sort(new UserIDComparator());
+        activities.forEach(System.out::println);
+    }
+
 
     //TODO ------------------------------- methods moved from menu end here ---------------------------------------------------
 

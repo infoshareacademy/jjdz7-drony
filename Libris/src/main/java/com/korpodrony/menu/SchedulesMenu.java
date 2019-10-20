@@ -62,25 +62,10 @@ public class SchedulesMenu {
             }
         }
     }
-    //TODO take logic out of menu
+
     private void showActivitiesOfSchedule() {
         System.out.println("-- Pokazywanie zajęć przypisanych do planu --");
-        mainMenu.dBService.printPlans();
-        if (mainMenu.dB.getAllPlans().isEmpty()) {
-            return;
-        }
-        int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu, którego zajęcia chcesz obejrzeć: ");
-        if (!mainMenu.dB.hasPlanWithThisID(choice)) {
-            System.out.println("Nie ma takiego planu.");
-            return;
-        }
-        List<Activity> activities = mainMenu.dB.getPlan(choice).getActivitiesID().stream().map(x -> mainMenu.dB.getActivity(x)).collect(Collectors.toList());
-        if (activities.isEmpty()) {
-            System.out.println("Plan nie ma przypisanych żadnych zajęć!");
-            return;
-        }
-        activities.sort(new UserIDComparator());
-        activities.forEach(System.out::println);
+        mainMenu.dBService.showActivitiesOfSchedule();
     }
 
     private void unassignActivity() {
