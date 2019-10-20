@@ -364,29 +364,28 @@ public class OrganizationService {
     private void activityTypeDecide(int typeChoice, List<Activity> activities) {
         switch (typeChoice) {
             case 1: {
-                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.LECTURE);
+                Predicate<Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.LECTURE);
                 printFilteredActivities(filter, activities);
                 break;
             }
             case 2: {
-                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.EXCERCISE);
+                Predicate<Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.EXCERCISE);
                 printFilteredActivities(filter, activities);
                 break;
             }
             case 3: {
-                Predicate<? super Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.WORKSHOP);
+                Predicate<Activity> filter = a -> a.getActivitiesType().equals(ActivitiesType.WORKSHOP);
                 printFilteredActivities(filter, activities);
                 break;
             }
             default: {
-                Predicate<? super Activity> filter = a -> true;
+                Predicate<Activity> filter = a -> true;
                 printFilteredActivities(filter, activities);
             }
         }
     }
 
     private void printFilteredActivities(Predicate<? super Activity> filter, List<Activity> activities) {
-
         List<Activity> activityList = activities.stream()
                 .filter(filter)
                 .collect(Collectors.toList());

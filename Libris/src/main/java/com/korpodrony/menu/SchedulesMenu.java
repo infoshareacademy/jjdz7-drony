@@ -19,38 +19,38 @@ public class SchedulesMenu {
         do {
             Messages.printSchedulesMenu();
             int choice = IoTools.getIntFromUser();
-            runSchedulesMenuDecide(choice);
+            decide(choice);
         } while (!MainMenu.contextMenuExit);
     }
 
-    private void runSchedulesMenuDecide(int choice) {
+    private void decide(int choice) {
         switch (choice) {
             case 1: {
-                startSchedulesMenuAddSchedule();
+                addSchedule();
                 break;
             }
             case 2: {
-                startSchedulesMenuEditSchedule();
+                editSchedule();
                 break;
             }
             case 3: {
-                startSchedulesMenuDeleteSchedule();
+                deleteSchedule();
                 break;
             }
             case 4: {
-                startSchedulesMenuShowSchedule();
+                showSchedules();
                 break;
             }
             case 5: {
-                startSchedulesMenuAssignActivity();
+                assignActivity();
                 break;
             }
             case 6: {
-                startSchedulesMenuUnassignActivity();
+                unassignActivity();
                 break;
             }
             case 7: {
-                startSchedulesMenuShowActivtiesOfSchedule();
+                showActivitiesOfSchedule();
                 break;
             }
             case 8: {
@@ -63,18 +63,18 @@ public class SchedulesMenu {
         }
     }
 
-    private void startSchedulesMenuShowActivtiesOfSchedule() {
+    private void showActivitiesOfSchedule() {
         System.out.println("-- Pokazywanie zajęć przypisanych do planu --");
         mainMenu.dBService.printPlans();
         if (mainMenu.dB.getAllPlans().isEmpty()) {
             return;
         }
-        int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu, którego zajęcia chcesz obejrzeć:");
-        if (!mainMenu.dB.hasPlanWithThisID(choice)){
+        int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu, którego zajęcia chcesz obejrzeć: ");
+        if (!mainMenu.dB.hasPlanWithThisID(choice)) {
             System.out.println("Nie ma takiego planu.");
             return;
         }
-        List<Activity> activities = mainMenu.dB.getPlan(choice).getActivitiesID().stream().map(x->mainMenu.dB.getActivity(x)).collect(Collectors.toList());
+        List<Activity> activities = mainMenu.dB.getPlan(choice).getActivitiesID().stream().map(x -> mainMenu.dB.getActivity(x)).collect(Collectors.toList());
         if (activities.isEmpty()) {
             System.out.println("Plan nie ma przypisanych żadnych zajęć!");
             return;
@@ -83,32 +83,32 @@ public class SchedulesMenu {
         activities.forEach(System.out::println);
     }
 
-    private void startSchedulesMenuUnassignActivity() {
+    private void unassignActivity() {
         System.out.println("-- Usuwanie zajęć z planu --");
         mainMenu.dBService.unassignActivityFromPlan();
     }
 
-    private void startSchedulesMenuAssignActivity() {
-        System.out.println("-- Przypisywanie zajęć do planu --");
+    private void assignActivity() {
+        System.out.println("-- Przypisywanie zajęc do planu --");
         mainMenu.dBService.assignActivityToPlan();
     }
 
-    private void startSchedulesMenuAddSchedule() {
+    private void addSchedule() {
         System.out.println("-- Dodawanie nowych planów --");
         mainMenu.dBService.addPlan();
     }
 
-    private void startSchedulesMenuEditSchedule() {
+    private void editSchedule() {
         System.out.println("-- Edytowanie istniejących planów --");
         mainMenu.dBService.editPlan();
     }
 
-    private void startSchedulesMenuDeleteSchedule() {
+    private void deleteSchedule() {
         System.out.println("-- Usuwanie istniejących planów --");
         mainMenu.dBService.removePlan();
     }
 
-    private void startSchedulesMenuShowSchedule() {
+    private void showSchedules() {
         System.out.println("-- Pokazywanie istniejących planów --");
         mainMenu.dBService.printPlans();
     }

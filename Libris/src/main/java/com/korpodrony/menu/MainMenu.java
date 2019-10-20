@@ -54,7 +54,7 @@ public class MainMenu {
                 break;
             }
             case 3: {
-                new ActivitiesMenu(this).StartActivitiesMenu();
+                new ActivitiesMenu(this).startActivitiesMenu();
                 break;
             }
             case 4: {

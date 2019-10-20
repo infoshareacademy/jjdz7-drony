@@ -9,8 +9,7 @@ public class Activity {
     private String name;
     private short maxUsers;
     private Set<Integer> assignedUsersIDs;
-    //    Trainer trainer;
-    private byte lenghtInQuarters; /*Unit of duration is quarter*/
+    private byte lenghtInQuarters;
     private ActivitiesType activitiesType;
 
     public Activity(String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
@@ -75,10 +74,6 @@ public class Activity {
         return assignedUsersIDs;
     }
 
-    public ActivitiesType getActivitiesType() {
-        return activitiesType;
-    }
-
     public void setAssignedUsersIDs(Set<Integer> assignedUsersIDs) {
         this.assignedUsersIDs = assignedUsersIDs;
     }
@@ -91,12 +86,15 @@ public class Activity {
         this.lenghtInQuarters = lenghtInQuarters;
     }
 
+    public ActivitiesType getActivitiesType() {
+        return activitiesType;
+    }
 
     public void setActivitiesType(ActivitiesType activitiesType) {
         this.activitiesType = activitiesType;
     }
 
-    public void editActivity(String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
+    public void editActivity(String name, short maxUsers, byte duration, ActivitiesType activitiesType) {
         setName(name);
         setMaxUsers(maxUsers);
         setLenghtInQuarters(lenghtInQuarters);
@@ -136,7 +134,7 @@ public class Activity {
                 ", nazwa: " + name +
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
-                ", czas trwania [min]: " + lenghtInQuarters * 15 +
-                ", typ zajęć: " + activitiesType.polishName;
+                ", czas trwania [min]:" + lenghtInQuarters *15 +
+                ", typ zajęć: " + activitiesType;
     }
 }

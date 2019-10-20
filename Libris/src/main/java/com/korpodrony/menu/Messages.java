@@ -26,7 +26,7 @@ public class Messages {
         System.out.println("4. Wyjście\n");
     }
 
-    static void printUserMenu() {
+    static void printUsersMenu() {
         System.out.println("\nMenu -- Użytkownicy --");
         System.out.println("\n1. Dodaj użytkownika");
         System.out.println("2. Edytuj użytkownika");
