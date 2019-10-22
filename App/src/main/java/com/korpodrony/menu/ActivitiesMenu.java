@@ -1,15 +1,11 @@
 package com.korpodrony.menu;
 
-import com.korpodrony.comparators.UserIDComparator;
-import com.korpodrony.model.User;
+import com.korpodrony.service.ActivitiesService;
 import com.korpodrony.utils.IoTools;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ActivitiesMenu {
     private MainMenu mainMenu;
-
+    private ActivitiesService aS = new ActivitiesService();
     public ActivitiesMenu(MainMenu mainMenu) {
         this.mainMenu = mainMenu;
     }
@@ -66,35 +62,35 @@ public class ActivitiesMenu {
 
     private void showAssignedUsers() {
         System.out.println("-- Pokazywanie użytkowników przypisanych do zajęć --");
-        mainMenu.dBService.showAssignedUsers();
+        aS.showAssignedUsers();
     }
 
     private void unassignUser() {
         System.out.println("-- Wypisywanie użytkownika z zajęć --");
-        mainMenu.dBService.unassignUserFromActivity();
+        aS.unassignUserFromActivity();
     }
 
     private void assignUser() {
         System.out.println("-- Przypisywanie użytkownika do zajęć --");
-        mainMenu.dBService.assignUserToActivity();
+        aS.assignUserToActivity();
     }
 
     private void addActivity() {
         System.out.println("-- Dodawanie nowych zajęć --");
-        mainMenu.dBService.addActivity();
+       aS.addActivity();
     }
 
     private void editActivity() {
-        mainMenu.dBService.editActivity();
+       aS.editActivity();
     }
 
     private void deleteActivity() {
         System.out.println("-- Usuwanie istniejących zajęć --");
-        mainMenu.dBService.removeActivity();
+        aS.removeActivity();
     }
 
     private void showActivity() {
         System.out.println("-- Pokazywanie istniejących zajęć --");
-        mainMenu.dBService.printActivities();
+        aS.printActivities();
     }
 }

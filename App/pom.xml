@@ -5,11 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.korpodrony</groupId>
-  <artifactId>Libris</artifactId>
+  <artifactId>App</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>Libris</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
 
   <parent>
     <artifactId>jjdz7-korpodrony</artifactId>

@@ -1,17 +1,9 @@
 package com.korpodrony.menu;
 
-import com.korpodrony.model.Activity;
 import com.korpodrony.model.Organization;
-import com.korpodrony.model.Plan;
-import com.korpodrony.model.User;
-import com.korpodrony.service.OrganizationService;
-import com.korpodrony.service.PropertiesService;
+import com.korpodrony.repository.OrganizationRepository;
+import com.korpodrony.service.RepositoryService;
 import com.korpodrony.utils.IoTools;
-import com.korpodrony.utils.JSONReader;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Set;
 
 public class InitialMenu {
 
@@ -42,11 +34,11 @@ public class InitialMenu {
 
     private void createNewOrganization() {
         Organization org = new Organization();
-        new MainMenu(org).startMainMenu();
+        OrganizationRepository.setOrganizationRepository(org);
     }
 
     private void initialParametersLoad() {
-            new MainMenu(OrganizationService.loadParametersFromFile()).startMainMenu();
+            new RepositoryService().loadParametersFromFile();
+            new MainMenu().startMainMenu();
         }
-
 }

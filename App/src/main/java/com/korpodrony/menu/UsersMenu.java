@@ -1,18 +1,10 @@
 package com.korpodrony.menu;
 
-import com.korpodrony.comparators.ActivityIDComparator;
-import com.korpodrony.model.Activity;
+import com.korpodrony.service.UserService;
 import com.korpodrony.utils.IoTools;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class UsersMenu {
-    MainMenu mainMenu;
-
-    public UsersMenu(MainMenu mainMenu) {
-        this.mainMenu = mainMenu;
-    }
+    private UserService uS = new UserService();
 
     void startUsersMenu() {
         do {
@@ -57,26 +49,26 @@ public class UsersMenu {
 
     private void showUserActivities() {
         System.out.println("-- Pokazywanie zajęć użytkownika --");
-        mainMenu.dBService.showUserActivities();
+        uS.showUserActivities();
 
     }
 
     private void addUser() {
         System.out.println("-- Dodawanie nowego użytkownika --");
-        mainMenu.dBService.addUser();
+        uS.addUser();
     }
 
     private void editUser() {
         System.out.println("-- Edytowanie użytkownika --");
-        mainMenu.dBService.editUser();
+        uS.editUser();
     }
 
     private void deleteUser() {
         System.out.println("-- Usuwanie użytkownika --");
-        mainMenu.dBService.removeUser();
+        uS.removeUser();
     }
 
     private void showUser() {
-        mainMenu.dBService.printUsers();
+        uS.printUsers();
     }
 }

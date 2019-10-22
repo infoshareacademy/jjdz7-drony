@@ -1,27 +1,22 @@
-package com.korpodrony.model;
+package com.korpodrony.dao;
 
-import java.util.*;
+import com.korpodrony.model.*;
+import com.korpodrony.repository.OrganizationRepository;
 
-public class Organization {
-    private Set<User> users;
-    private Set<Plan> plans;
-    private Set<Activity> activities;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
-    public Organization(Set<User> users, Set<Plan> plans, Set<Activity> activities) {
-        this.users = users;
-        this.plans = plans;
-        this.activities = activities;
-    }
+public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao {
 
-    public Organization() {
-        this(new HashSet<>(), new HashSet<>(), new HashSet<>());
-    }
+    private Organization org = OrganizationRepository.getOrganizationRepository();
 
     private boolean addUser(User user) {
         if (hasUser(user)) {
             return false;
         }
-        users.add(user);
+        org.getUsers()
+                .add(user);
         return true;
     }
 
@@ -29,7 +24,8 @@ public class Organization {
         if (hasPlan(plan)) {
             return false;
         }
-        plans.add(plan);
+        org.getPlans()
+                .add(plan);
         return true;
     }
 
@@ -37,7 +33,8 @@ public class Organization {
         if (hasActivity(activity)) {
             return false;
         }
-        activities.add(activity);
+        org.getActivities()
+                .add(activity);
         return true;
     }
 
@@ -45,7 +42,7 @@ public class Organization {
         if (!hasUserWithThisID(userID)) {
             return false;
         }
-        users.remove(getUser(userID));
+        org.getUsers().remove(getUser(userID));
         return true;
     }
 
@@ -53,7 +50,8 @@ public class Organization {
         if (!hasPlanWithThisID(planID)) {
             return false;
         }
-        plans.remove(getPlan(planID));
+        org.getPlans()
+                .remove(getPlan(planID));
         return true;
     }
 
@@ -61,7 +59,8 @@ public class Organization {
         if (!hasActivityWithThisID(activityID)) {
             return false;
         }
-        activities.remove(getActivity(activityID));
+        org.getActivities()
+                .remove(getActivity(activityID));
         return true;
     }
 
@@ -124,7 +123,7 @@ public class Organization {
     }
 
     public User getUser(int userID) {
-        for (User user : users) {
+        for (User user : org.getUsers()) {
             if (user.getId() == userID) {
                 return user;
             }
@@ -133,7 +132,7 @@ public class Organization {
     }
 
     public Activity getActivity(int activityID) {
-        for (Activity activity : activities) {
+        for (Activity activity : org.getActivities()) {
             if (activity.getID() == activityID) {
                 return activity;
             }
@@ -142,7 +141,7 @@ public class Organization {
     }
 
     public Plan getPlan(int planID) {
-        for (Plan plan : plans) {
+        for (Plan plan : org.getPlans()) {
             if (plan.getID() == planID) {
                 return plan;
             }
@@ -176,7 +175,7 @@ public class Organization {
 
     public List<Integer> getAllUsersIDs() {
         List<Integer> usersIDs = new ArrayList<>();
-        for (User user : users) {
+        for (User user : org.getUsers()) {
             usersIDs.add(user.getId());
         }
         return usersIDs;
@@ -184,7 +183,7 @@ public class Organization {
 
     public List<Integer> getAllActivitiesIDs() {
         List<Integer> activitiesID = new ArrayList<>();
-        for (Activity activity : activities) {
+        for (Activity activity : org.getActivities()) {
             activitiesID.add(activity.getID());
         }
         return activitiesID;
@@ -192,26 +191,26 @@ public class Organization {
 
     public List<Integer> getAllPlansIDs() {
         List<Integer> plansIDs = new ArrayList<>();
-        for (Plan plan : plans) {
+        for (Plan plan : org.getPlans()) {
             plansIDs.add(plan.getID());
         }
         return plansIDs;
     }
 
     public List<User> getAllUsers() {
-        return new ArrayList<>(users);
+        return new ArrayList<>(org.getUsers());
     }
 
     public List<Activity> getAllActivities() {
-        return new ArrayList<>(activities);
+        return new ArrayList<>(org.getActivities());
     }
 
     public List<Plan> getAllPlans() {
-        return new ArrayList<>(plans);
+        return new ArrayList<>(org.getPlans());
     }
 
     public boolean hasUser(User user) {
-        for (User u : users) {
+        for (User u : org.getUsers()) {
             if (u.equals(user)) {
                 return true;
             }
@@ -220,7 +219,7 @@ public class Organization {
     }
 
     public boolean hasActivity(Activity activity) {
-        for (Activity a : activities) {
+        for (Activity a : org.getActivities()) {
             if (a.equals(activity)) {
                 return true;
             }
@@ -229,7 +228,7 @@ public class Organization {
     }
 
     public boolean hasPlan(Plan plan) {
-        for (Plan p : plans) {
+        for (Plan p : org.getPlans()) {
             if (p.equals(plan)) {
                 return true;
             }
@@ -238,7 +237,7 @@ public class Organization {
     }
 
     public boolean hasUserWithThisID(int userID) {
-        for (User user : users) {
+        for (User user : org.getUsers()) {
             if (user.getId() == userID) {
                 return true;
             }
@@ -247,7 +246,7 @@ public class Organization {
     }
 
     public boolean hasActivityWithThisID(int activityID) {
-        for (Activity activity : activities) {
+        for (Activity activity : org.getActivities()) {
             if (activity.getID() == activityID) {
                 return true;
             }
@@ -256,7 +255,7 @@ public class Organization {
     }
 
     public boolean hasPlanWithThisID(int planID) {
-        for (Plan plan : plans) {
+        for (Plan plan : org.getPlans()) {
             if (plan.getID() == planID) {
                 return true;
             }
@@ -264,42 +263,18 @@ public class Organization {
         return false;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    public Set<Plan> getPlans() {
-        return plans;
-    }
-
-    public void setPlans(Set<Plan> plans) {
-        this.plans = plans;
-    }
-
-    public Set<Activity> getActivities() {
-        return activities;
-    }
-
-    public void setActivities(Set<Activity> activities) {
-        this.activities = activities;
+    @Override
+    public Set<User> getUsersSet() {
+        return org.getUsers();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Organization that = (Organization) o;
-        return Objects.equals(users, that.users) &&
-                Objects.equals(plans, that.plans) &&
-                Objects.equals(activities, that.activities);
+    public Set<Activity> getActivitiesSet() {
+        return org.getActivities();
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(users, plans, activities);
+    public Set<Plan> getPlansSet() {
+        return org.getPlans();
     }
 }

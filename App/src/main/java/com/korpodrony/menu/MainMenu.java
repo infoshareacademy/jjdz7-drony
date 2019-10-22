@@ -1,27 +1,14 @@
 package com.korpodrony.menu;
 
 
-import com.korpodrony.model.Organization;
-import com.korpodrony.service.OrganizationService;
-import com.korpodrony.service.PropertiesService;
+import com.korpodrony.service.RepositoryService;
 import com.korpodrony.utils.IoTools;
-import com.korpodrony.utils.JSONWriter;
-
-import java.nio.file.Paths;
 
 public class MainMenu {
     public static boolean exit;
     public static boolean contextMenuExit;
     public static boolean subMenuExit;
     public static int menuIdToSearch;
-
-    public  Organization dB;
-    public  OrganizationService dBService;
-
-    public MainMenu(Organization dB) {
-        this.dB = dB;
-        this.dBService = new OrganizationService(dB);
-    }
 
     public void startMainMenu() {
         do {
@@ -30,17 +17,7 @@ public class MainMenu {
             int choice = IoTools.getIntFromUser();
             runMainMenuDecide(choice);
         } while (!exit);
-            writeOrganizationToFile();
-    }
-
-    private void writeOrganizationToFile() {
-        String path = new PropertiesService().getProperty(PropertiesService.APP_PATH);
-        if (path == null) {
-            return;
-        }
-        JSONWriter.writeJSONToFile(Paths.get(path, "Users.json"), dB.getUsers());
-        JSONWriter.writeJSONToFile(Paths.get(path, "Activities.json"), dB.getActivities());
-        JSONWriter.writeJSONToFile(Paths.get(path, "Plans.json"), dB.getPlans());
+            new RepositoryService().writeRepositoryToFile();
     }
 
     private void runMainMenuDecide(int choice) {

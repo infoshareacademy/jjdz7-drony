@@ -10,7 +10,7 @@
     <name>jjdz7-korpodrony</name>
 
     <modules>
-        <module>Libris</module>
+        <module>App</module>
         <module>Web</module>
     </modules>
 

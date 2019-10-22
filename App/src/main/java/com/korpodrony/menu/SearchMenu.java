@@ -6,17 +6,18 @@ import com.korpodrony.comparators.UserIDComparator;
 import com.korpodrony.model.Activity;
 import com.korpodrony.model.Plan;
 import com.korpodrony.model.User;
+import com.korpodrony.service.ActivitiesService;
+import com.korpodrony.service.PlansService;
+import com.korpodrony.service.UserService;
 import com.korpodrony.utils.IoTools;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SearchMenu {
-    private MainMenu mainMenu;
-
-    public SearchMenu(MainMenu mainMenu) {
-        this.mainMenu = mainMenu;
-    }
+    private UserService uS = new UserService();
+    private ActivitiesService aS = new ActivitiesService();
+    private PlansService pS = new PlansService();
 
     void startSearchMenu() {
 
@@ -54,16 +55,16 @@ public class SearchMenu {
 
     private void searchByUserMenu() {
         System.out.println("-- Szukanie użytkownika po imieniu");
-        mainMenu.dBService.searchByUserMenu();
+        uS.searchByUserMenu();
     }
 
     private void searchByActivityMenu() {
         System.out.println("-- Szukanie zajęć po nazwie");
-        mainMenu.dBService.searchByActivityMenu();
+        aS.searchByActivityMenu();
     }
 
     private void searchByScheduleMenu() {
         System.out.println("-- Szukanie planu po nazwie");
-        mainMenu.dBService.searchByScheduleMenu();
+        pS.searchByScheduleMenu();
     }
 }
