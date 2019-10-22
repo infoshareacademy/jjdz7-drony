@@ -23,19 +23,19 @@ public class MainMenu {
     private void runMainMenuDecide(int choice) {
         switch (choice) {
             case 1: {
-                new SearchMenu(this).startSearchMenu();
+                new SearchMenu().startSearchMenu();
                 break;
             }
             case 2: {
-                new UsersMenu(this).startUsersMenu();
+                new UsersMenu().startUsersMenu();
                 break;
             }
             case 3: {
-                new ActivitiesMenu(this).startActivitiesMenu();
+                new ActivitiesMenu().startActivitiesMenu();
                 break;
             }
             case 4: {
-                 new SchedulesMenu(this).startSchedulesMenu();
+                 new SchedulesMenu().startSchedulesMenu();
                 break;
             }
             case 5: {

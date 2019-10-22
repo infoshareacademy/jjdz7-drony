@@ -35,6 +35,7 @@ public class InitialMenu {
     private void createNewOrganization() {
         Organization org = new Organization();
         OrganizationRepository.setOrganizationRepository(org);
+        new MainMenu().startMainMenu();
     }
 
     private void initialParametersLoad() {

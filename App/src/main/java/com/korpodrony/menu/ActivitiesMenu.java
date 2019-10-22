@@ -6,9 +6,6 @@ import com.korpodrony.utils.IoTools;
 public class ActivitiesMenu {
     private MainMenu mainMenu;
     private ActivitiesService aS = new ActivitiesService();
-    public ActivitiesMenu(MainMenu mainMenu) {
-        this.mainMenu = mainMenu;
-    }
 
     void startActivitiesMenu() {
         do {
