@@ -1,6 +1,6 @@
 package com.korpodrony.menu;
 
-public class Messages {
+class Messages {
 
     static void printInitialMenu() {
         System.out.println("\n\n .---==[ Libris by Korpodrony ]==---.");

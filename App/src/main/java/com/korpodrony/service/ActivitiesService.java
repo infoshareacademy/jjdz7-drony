@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class ActivitiesService {
     private OrganizationRepositoryDao organization = new OrganizationRepositoryDaoImpl();
-    private UserService uS = new UserService();
+    private UsersService usersService = new UsersService();
 
     public void showAssignedUsers() {
         printActivities();
@@ -68,7 +68,7 @@ public class ActivitiesService {
             System.out.println("Zajęcia nie posiadają przypisanych użytkowników.");
             return;
         }
-        uS.getUsersByIDs(organization.getActivity(activityID).getAssignedUsersIDs()).forEach(System.out::println);
+        usersService.getUsersByIDs(organization.getActivity(activityID).getAssignedUsersIDs()).forEach(System.out::println);
         int userID = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika do wypisania z zajęć:");
         if (canUnassignUserFromActivity(userID, activityID)) {
             if (organization.unassignUserFromActivity(userID, activityID)) {

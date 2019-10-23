@@ -1,10 +1,10 @@
 package com.korpodrony.menu;
 
-import com.korpodrony.service.UserService;
+import com.korpodrony.service.UsersService;
 import com.korpodrony.utils.IoTools;
 
-public class UsersMenu {
-    private UserService uS = new UserService();
+class UsersMenu {
+    private UsersService usersService = new UsersService();
 
     void startUsersMenu() {
         do {
@@ -49,26 +49,26 @@ public class UsersMenu {
 
     private void showUserActivities() {
         System.out.println("-- Pokazywanie zajęć użytkownika --");
-        uS.showUserActivities();
+        usersService.showUserActivities();
 
     }
 
     private void addUser() {
         System.out.println("-- Dodawanie nowego użytkownika --");
-        uS.addUser();
+        usersService.addUser();
     }
 
     private void editUser() {
         System.out.println("-- Edytowanie użytkownika --");
-        uS.editUser();
+        usersService.editUser();
     }
 
     private void deleteUser() {
         System.out.println("-- Usuwanie użytkownika --");
-        uS.removeUser();
+        usersService.removeUser();
     }
 
     private void showUser() {
-        uS.printUsers();
+        usersService.printUsers();
     }
 }

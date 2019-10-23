@@ -3,9 +3,9 @@ package com.korpodrony.menu;
 import com.korpodrony.service.PlansService;
 import com.korpodrony.utils.IoTools;
 
-public class SchedulesMenu {
+class SchedulesMenu {
 
-    private PlansService pS = new PlansService();
+    private PlansService plansService = new PlansService();
 
     void startSchedulesMenu() {
         do {
@@ -57,36 +57,36 @@ public class SchedulesMenu {
 
     private void showActivitiesOfSchedule() {
         System.out.println("-- Pokazywanie zajęć przypisanych do planu --");
-        pS.showActivitiesOfSchedule();
+        plansService.showActivitiesOfSchedule();
     }
 
     private void unassignActivity() {
         System.out.println("-- Usuwanie zajęć z planu --");
-        pS.unassignActivityFromPlan();
+        plansService.unassignActivityFromPlan();
     }
 
     private void assignActivity() {
         System.out.println("-- Przypisywanie zajęc do planu --");
-        pS.assignActivityToPlan();
+        plansService.assignActivityToPlan();
     }
 
     private void addSchedule() {
         System.out.println("-- Dodawanie nowych planów --");
-        pS.addPlan();
+        plansService.addPlan();
     }
 
     private void editSchedule() {
         System.out.println("-- Edytowanie istniejących planów --");
-        pS.editPlan();
+        plansService.editPlan();
     }
 
     private void deleteSchedule() {
         System.out.println("-- Usuwanie istniejących planów --");
-        pS.removePlan();
+        plansService.removePlan();
     }
 
     private void showSchedules() {
         System.out.println("-- Pokazywanie istniejących planów --");
-        pS.printPlans();
+        plansService.printPlans();
     }
 }

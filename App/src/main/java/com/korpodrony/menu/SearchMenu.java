@@ -1,23 +1,14 @@
 package com.korpodrony.menu;
 
-import com.korpodrony.comparators.ActivityIDComparator;
-import com.korpodrony.comparators.PlanIDComparator;
-import com.korpodrony.comparators.UserIDComparator;
-import com.korpodrony.model.Activity;
-import com.korpodrony.model.Plan;
-import com.korpodrony.model.User;
 import com.korpodrony.service.ActivitiesService;
 import com.korpodrony.service.PlansService;
-import com.korpodrony.service.UserService;
+import com.korpodrony.service.UsersService;
 import com.korpodrony.utils.IoTools;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-public class SearchMenu {
-    private UserService uS = new UserService();
-    private ActivitiesService aS = new ActivitiesService();
-    private PlansService pS = new PlansService();
+class SearchMenu {
+    private UsersService usersService = new UsersService();
+    private ActivitiesService activitiesService = new ActivitiesService();
+    private PlansService plansService = new PlansService();
 
     void startSearchMenu() {
 
@@ -55,16 +46,16 @@ public class SearchMenu {
 
     private void searchByUserMenu() {
         System.out.println("-- Szukanie użytkownika po imieniu");
-        uS.searchByUserMenu();
+        usersService.searchUsersByName();
     }
 
     private void searchByActivityMenu() {
         System.out.println("-- Szukanie zajęć po nazwie");
-        aS.searchByActivityMenu();
+        activitiesService.searchByActivityMenu();
     }
 
     private void searchByScheduleMenu() {
         System.out.println("-- Szukanie planu po nazwie");
-        pS.searchByScheduleMenu();
+        plansService.searchByScheduleMenu();
     }
 }

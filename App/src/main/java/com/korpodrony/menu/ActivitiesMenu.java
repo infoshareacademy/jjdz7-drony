@@ -4,8 +4,7 @@ import com.korpodrony.service.ActivitiesService;
 import com.korpodrony.utils.IoTools;
 
 public class ActivitiesMenu {
-    private MainMenu mainMenu;
-    private ActivitiesService aS = new ActivitiesService();
+    private ActivitiesService activitiesService = new ActivitiesService();
 
     void startActivitiesMenu() {
         do {
@@ -59,35 +58,35 @@ public class ActivitiesMenu {
 
     private void showAssignedUsers() {
         System.out.println("-- Pokazywanie użytkowników przypisanych do zajęć --");
-        aS.showAssignedUsers();
+        activitiesService.showAssignedUsers();
     }
 
     private void unassignUser() {
         System.out.println("-- Wypisywanie użytkownika z zajęć --");
-        aS.unassignUserFromActivity();
+        activitiesService.unassignUserFromActivity();
     }
 
     private void assignUser() {
         System.out.println("-- Przypisywanie użytkownika do zajęć --");
-        aS.assignUserToActivity();
+        activitiesService.assignUserToActivity();
     }
 
     private void addActivity() {
         System.out.println("-- Dodawanie nowych zajęć --");
-       aS.addActivity();
+       activitiesService.addActivity();
     }
 
     private void editActivity() {
-       aS.editActivity();
+       activitiesService.editActivity();
     }
 
     private void deleteActivity() {
         System.out.println("-- Usuwanie istniejących zajęć --");
-        aS.removeActivity();
+        activitiesService.removeActivity();
     }
 
     private void showActivity() {
         System.out.println("-- Pokazywanie istniejących zajęć --");
-        aS.printActivities();
+        activitiesService.printActivities();
     }
 }

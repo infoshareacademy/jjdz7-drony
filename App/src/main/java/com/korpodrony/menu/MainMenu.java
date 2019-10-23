@@ -5,10 +5,10 @@ import com.korpodrony.service.RepositoryService;
 import com.korpodrony.utils.IoTools;
 
 public class MainMenu {
-    public static boolean exit;
-    public static boolean contextMenuExit;
-    public static boolean subMenuExit;
-    public static int menuIdToSearch;
+    private static boolean exit;
+    static boolean contextMenuExit;
+    static boolean subMenuExit;
+    static int menuIdToSearch;
 
     public void startMainMenu() {
         do {
