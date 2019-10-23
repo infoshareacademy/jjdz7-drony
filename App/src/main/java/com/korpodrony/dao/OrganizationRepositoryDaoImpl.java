@@ -6,18 +6,219 @@ import com.korpodrony.repository.OrganizationRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao {
 
     private Organization org = OrganizationRepository.getOrganizationRepository();
 
-    private boolean addUser(User user) {
-        if (hasUser(user)) {
+    @Override
+    public boolean editPlan(int planID, String name) {
+        if (!hasPlanWithThisID(planID)) {
             return false;
         }
-        org.getUsers()
-                .add(user);
+        getPlan(planID).editPlan(name);
         return true;
+    }
+
+    @Override
+    public boolean hasPlanWithThisID(int planID) {
+        return org.getPlans().stream()
+                .anyMatch(x->x.getID()==planID);
+    }
+
+    @Override
+    public Plan getPlan(int planID) {
+        return org.getPlans().stream()
+                .filter(x->x.getID() == planID)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public boolean editActivity(int activityID, String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
+        if (!hasActivityWithThisID(activityID)) {
+            return false;
+        }
+        getActivity(activityID).editActivity(name, maxUsers, lenghtInQuarters, activitiesType);
+        return true;
+    }
+
+    @Override
+    public boolean hasActivityWithThisID(int activityID) {
+        return org.getActivities().stream()
+                .anyMatch(x->x.getID() == activityID);
+    }
+
+    @Override
+    public Activity getActivity(int activityID) {
+        return org.getActivities().stream()
+                .filter(x->x.getID() == activityID)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public boolean editUser(int userID, String name, String surname) {
+        if (!hasUserWithThisID(userID)) {
+            return false;
+        }
+        getUser(userID).editUser(name, surname);
+        return true;
+    }
+
+    @Override
+    public boolean hasUserWithThisID(int userID) {
+        return org.getUsers().stream()
+                .anyMatch(x->x.getId() == userID);
+    }
+
+    @Override
+    public User getUser(int userID) {
+        return org.getUsers()
+                .stream()
+                .filter(x -> x.getId() == userID)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public boolean createPlan(String name) {
+        return addPlan(new Plan(name));
+    }
+
+    @Override
+    public boolean hasPlan(Plan plan) {
+        return org.getPlans().stream()
+                .anyMatch(x->x.equals(plan));
+    }
+
+    @Override
+    public boolean createActivity(String name, short maxUsers, byte duration, ActivitiesType activitiesType) {
+        return addActivity(new Activity(name, maxUsers, duration, activitiesType));
+    }
+
+    @Override
+    public boolean hasActivity(Activity activity) {
+        return org.getActivities().stream()
+                .anyMatch(x->x.equals(activity));
+    }
+
+    @Override
+    public boolean createUser(String name, String surname) {
+        return addUser(new User(name, surname));
+    }
+
+    @Override
+    public boolean hasUser(User user) {
+        return org.getUsers().stream()
+                .anyMatch(x -> x.equals(user));
+    }
+
+    @Override
+    public boolean assignActivityToPlan(int activityID, int planID) {
+        if (!hasPlanWithThisID(planID) || !hasActivityWithThisID(activityID)) {
+            return false;
+        }
+        return getPlan(planID)
+                .assignActivity(activityID);
+    }
+
+    @Override
+    public boolean unassignActivityFromPlan(int activityID, int planID) {
+        if (!hasPlanWithThisID(planID) || !hasActivityWithThisID(activityID)) {
+            return false;
+        }
+        return getPlan(planID)
+                .unassignActivity(activityID);
+    }
+
+    @Override
+    public boolean assignUserToActivity(int userID, int activityID) {
+        if (!hasUserWithThisID(userID) || !hasActivityWithThisID(activityID)) {
+            return false;
+        }
+        return getActivity(activityID)
+                .assignUser(userID);
+    }
+
+    @Override
+    public boolean unassignUserFromActivity(int userID, int activityID) {
+        if (!hasUserWithThisID(userID) || !hasActivityWithThisID(activityID)) {
+            return false;
+        }
+        return getActivity(activityID)
+                .unassignUser(userID);
+    }
+
+    @Override
+    public boolean deleteUser(int userID) {
+        getAllActivitiesIDs()
+                .forEach(x -> unassignUserFromActivity(userID, x));
+        return removeUser(userID);
+    }
+
+    @Override
+    public boolean deleteActivity(int activityID) {
+        getAllActivitiesIDs()
+                .forEach(x -> unassignActivityFromPlan(activityID, x));
+        return removeActivity(activityID);
+    }
+
+    @Override
+    public boolean deletePlan(int planID) {
+        return removePlan(planID);
+    }
+
+    @Override
+    public List<Integer> getAllPlansIDs() {
+        return org.getPlans().stream()
+                .map(Plan::getID)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Integer> getAllActivitiesIDs() {
+        return org.getActivities().stream()
+                .map(Activity::getID)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Integer> getAllUsersIDs() {
+        return org.getUsers().stream()
+                .map(User::getId)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Plan> getAllPlans() {
+        return new ArrayList<>(org.getPlans());
+    }
+
+    @Override
+    public List<Activity> getAllActivities() {
+        return new ArrayList<>(org.getActivities());
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return new ArrayList<>(org.getUsers());
+    }
+
+    @Override
+    public Set<User> getUsersSet() {
+        return org.getUsers();
+    }
+
+    @Override
+    public Set<Activity> getActivitiesSet() {
+        return org.getActivities();
+    }
+
+    @Override
+    public Set<Plan> getPlansSet() {
+        return org.getPlans();
     }
 
     private boolean addPlan(Plan plan) {
@@ -38,11 +239,12 @@ public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao 
         return true;
     }
 
-    private boolean removeUser(int userID) {
-        if (!hasUserWithThisID(userID)) {
+    private boolean addUser(User user) {
+        if (hasUser(user)) {
             return false;
         }
-        org.getUsers().remove(getUser(userID));
+        org.getUsers()
+                .add(user);
         return true;
     }
 
@@ -64,217 +266,12 @@ public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao 
         return true;
     }
 
-    public boolean createUser(String name, String surname) {
-        return addUser(new User(name, surname));
-    }
-
-    public boolean createActivity(String name, short maxUsers, byte duration, ActivitiesType activitiesType) {
-        return addActivity(new Activity(name, maxUsers, duration, activitiesType));
-    }
-
-    public boolean createPlan(String name) {
-        return addPlan(new Plan(name));
-    }
-
-    public boolean assignUserToActivity(int userID, int activityID) {
-        if (!hasUserWithThisID(userID) || !hasActivityWithThisID(activityID)) {
-            return false;
-        }
-        return getActivity(activityID).assignUser(userID);
-    }
-
-    public boolean unassignUserFromActivity(int userID, int activityID) {
-        if (!hasUserWithThisID(userID) || !hasActivityWithThisID(activityID)) {
-            return false;
-        }
-        return getActivity(activityID).unassignUser(userID);
-    }
-
-    public boolean assignActivityToPlan(int activityID, int planID) {
-        if (!hasPlanWithThisID(planID) || !hasActivityWithThisID(activityID)) {
-            return false;
-        }
-        return getPlan(planID).assignActivity(activityID);
-    }
-
-    public boolean unassignActivityFromPlan(int activityID, int planID) {
-        if (!hasPlanWithThisID(planID) || !hasActivityWithThisID(activityID)) {
-            return false;
-        }
-        return getPlan(planID).unassignActivity(activityID);
-    }
-
-    public boolean deleteUser(int userID) {
-        for (int activityIndex : getAllActivitiesIDs()) {
-            unassignUserFromActivity(userID, activityIndex);
-        }
-        return removeUser(userID);
-    }
-
-    public boolean deleteActivity(int activityID) {
-        for (int planIndex : getAllPlansIDs()) {
-            unassignActivityFromPlan(activityID, planIndex);
-        }
-        return removeActivity(activityID);
-    }
-
-    public boolean deletePlan(int planID) {
-        return removePlan(planID);
-    }
-
-    public User getUser(int userID) {
-        for (User user : org.getUsers()) {
-            if (user.getId() == userID) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-    public Activity getActivity(int activityID) {
-        for (Activity activity : org.getActivities()) {
-            if (activity.getID() == activityID) {
-                return activity;
-            }
-        }
-        return null;
-    }
-
-    public Plan getPlan(int planID) {
-        for (Plan plan : org.getPlans()) {
-            if (plan.getID() == planID) {
-                return plan;
-            }
-        }
-        return null;
-    }
-
-    public boolean editUser(int userID, String name, String surname) {
+    private boolean removeUser(int userID) {
         if (!hasUserWithThisID(userID)) {
             return false;
         }
-        getUser(userID).editUser(name, surname);
+        org.getUsers()
+                .remove(getUser(userID));
         return true;
-    }
-
-    public boolean editActivity(int activityID, String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
-        if (!hasActivityWithThisID(activityID)) {
-            return false;
-        }
-        getActivity(activityID).editActivity(name, maxUsers, lenghtInQuarters, activitiesType);
-        return true;
-    }
-
-    public boolean editPlan(int planID, String name) {
-        if (!hasPlanWithThisID(planID)) {
-            return false;
-        }
-        getPlan(planID).editPlan(name);
-        return true;
-    }
-
-    public List<Integer> getAllUsersIDs() {
-        List<Integer> usersIDs = new ArrayList<>();
-        for (User user : org.getUsers()) {
-            usersIDs.add(user.getId());
-        }
-        return usersIDs;
-    }
-
-    public List<Integer> getAllActivitiesIDs() {
-        List<Integer> activitiesID = new ArrayList<>();
-        for (Activity activity : org.getActivities()) {
-            activitiesID.add(activity.getID());
-        }
-        return activitiesID;
-    }
-
-    public List<Integer> getAllPlansIDs() {
-        List<Integer> plansIDs = new ArrayList<>();
-        for (Plan plan : org.getPlans()) {
-            plansIDs.add(plan.getID());
-        }
-        return plansIDs;
-    }
-
-    public List<User> getAllUsers() {
-        return new ArrayList<>(org.getUsers());
-    }
-
-    public List<Activity> getAllActivities() {
-        return new ArrayList<>(org.getActivities());
-    }
-
-    public List<Plan> getAllPlans() {
-        return new ArrayList<>(org.getPlans());
-    }
-
-    public boolean hasUser(User user) {
-        for (User u : org.getUsers()) {
-            if (u.equals(user)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean hasActivity(Activity activity) {
-        for (Activity a : org.getActivities()) {
-            if (a.equals(activity)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean hasPlan(Plan plan) {
-        for (Plan p : org.getPlans()) {
-            if (p.equals(plan)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean hasUserWithThisID(int userID) {
-        for (User user : org.getUsers()) {
-            if (user.getId() == userID) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean hasActivityWithThisID(int activityID) {
-        for (Activity activity : org.getActivities()) {
-            if (activity.getID() == activityID) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean hasPlanWithThisID(int planID) {
-        for (Plan plan : org.getPlans()) {
-            if (plan.getID() == planID) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public Set<User> getUsersSet() {
-        return org.getUsers();
-    }
-
-    @Override
-    public Set<Activity> getActivitiesSet() {
-        return org.getActivities();
-    }
-
-    @Override
-    public Set<Plan> getPlansSet() {
-        return org.getPlans();
     }
 }

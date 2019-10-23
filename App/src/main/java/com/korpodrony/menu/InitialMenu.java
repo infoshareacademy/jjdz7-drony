@@ -33,12 +33,12 @@ public class InitialMenu {
     }
 
     private void createNewOrganization() {
-        Organization org = new Organization();
-        OrganizationRepository.setOrganizationRepository(org);
+        OrganizationRepository.setOrganizationRepository(new Organization());
+        new MainMenu().startMainMenu();
     }
 
     private void initialParametersLoad() {
-            new RepositoryService().loadParametersFromFile();
-            new MainMenu().startMainMenu();
-        }
+        new RepositoryService().loadParametersFromFile();
+        new MainMenu().startMainMenu();
+    }
 }

@@ -1,19 +1,11 @@
 package com.korpodrony.menu;
 
-import com.korpodrony.comparators.UserIDComparator;
-import com.korpodrony.model.Activity;
+import com.korpodrony.service.PlansService;
 import com.korpodrony.utils.IoTools;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class SchedulesMenu {
 
-    private MainMenu mainMenu;
-
-    public SchedulesMenu(MainMenu mainMenu) {
-        this.mainMenu = mainMenu;
-    }
+    private PlansService pS = new PlansService();
 
     void startSchedulesMenu() {
         do {
@@ -65,36 +57,36 @@ public class SchedulesMenu {
 
     private void showActivitiesOfSchedule() {
         System.out.println("-- Pokazywanie zajęć przypisanych do planu --");
-        mainMenu.dBService.showActivitiesOfSchedule();
+        pS.showActivitiesOfSchedule();
     }
 
     private void unassignActivity() {
         System.out.println("-- Usuwanie zajęć z planu --");
-        mainMenu.dBService.unassignActivityFromPlan();
+        pS.unassignActivityFromPlan();
     }
 
     private void assignActivity() {
         System.out.println("-- Przypisywanie zajęc do planu --");
-        mainMenu.dBService.assignActivityToPlan();
+        pS.assignActivityToPlan();
     }
 
     private void addSchedule() {
         System.out.println("-- Dodawanie nowych planów --");
-        mainMenu.dBService.addPlan();
+        pS.addPlan();
     }
 
     private void editSchedule() {
         System.out.println("-- Edytowanie istniejących planów --");
-        mainMenu.dBService.editPlan();
+        pS.editPlan();
     }
 
     private void deleteSchedule() {
         System.out.println("-- Usuwanie istniejących planów --");
-        mainMenu.dBService.removePlan();
+        pS.removePlan();
     }
 
     private void showSchedules() {
         System.out.println("-- Pokazywanie istniejących planów --");
-        mainMenu.dBService.printPlans();
+        pS.printPlans();
     }
 }
