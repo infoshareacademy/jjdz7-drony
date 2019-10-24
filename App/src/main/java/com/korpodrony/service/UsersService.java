@@ -43,10 +43,10 @@ public class UsersService {
     }
 
     public void editUser() {
-        if (areThereUsersWithMessageOnFalse(dao.getAllUsers(), "Nie ma obecnie żadnych użytkowników, których można by edytować.")) {
+        if (checkWithMessageOnFalse(!dao.getAllUsers().isEmpty(), "Nie ma obecnie żadnych użytkowników, których można by edytować.")) {
             printUsers();
             int userID = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika, który chcesz edytować:");
-            if (checkContitionWithMessageOnFalse(dao.getAllUsersIDs().contains(userID), "Nie ma użytkownika o takim ID!")) {
+            if (checkWithMessageOnFalse(dao.hasUserWithThisID(userID), "Nie ma użytkownika o takim ID!")) {
                 String name = IoTools.getStringFromUserWithMessage("Podaj nowe imię użytkownika:");
                 String surName = IoTools.getStringFromUserWithMessage("Podaj nowe nazwisko użytkownika:");
                 if (dao.editUser(userID, name, surName)) {
@@ -60,16 +60,14 @@ public class UsersService {
         printUsers();
         if (!dao.getAllUsers().isEmpty()) {
             int choice = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika, do którego zajęcia chcesz obejrzeć:");
-            if (checkContitionWithMessageOnFalse(dao.hasUserWithThisID(choice), "Nie ma takiego użytkownika.")) {
+            if (checkWithMessageOnFalse(dao.hasUserWithThisID(choice), "Nie ma takiego użytkownika.")) {
                 List<Activity> userActivities = dao.getAllActivities().stream()
                         .filter(x -> x.getAssignedUsersIDs().contains(choice))
                         .collect(Collectors.toList());
-                if (userActivities.isEmpty()) {
-                    out.println("Użytkownik nie jest przypisany do żadnych zajęć.");
-                    return;
+                if (checkWithMessageOnFalse(!userActivities.isEmpty(), "Użytkownik nie jest przypisany do żadnych zajęć.")) {
+                    userActivities.sort(new ActivityIDComparator());
+                    userActivities.forEach(out::println);
                 }
-                userActivities.sort(new ActivityIDComparator());
-                userActivities.forEach(out::println);
             }
         }
     }
@@ -81,19 +79,19 @@ public class UsersService {
     public void printUsers(Comparator comparator) {
         List<User> users = dao.getAllUsers();
         users.sort(comparator);
-        if (areThereUsersWithMessageOnFalse(users, "Nie ma obecnie żadnych użytkowników.")) {
+        if (checkWithMessageOnFalse(!users.isEmpty(), "Nie ma obecnie żadnych użytkowników.")) {
             users.forEach(out::println);
         }
     }
 
     public void searchUsersByName() {
         out.println("- Wpisz imię:");
-        String searchedText = IoTools.getCharsOnlyStringFromUser()
+        String name = IoTools.getCharsOnlyStringFromUser()
                 .toLowerCase();
         List<User> users = dao.getAllUsers().stream()
-                .filter(x -> x.getName().toLowerCase().contains(searchedText))
+                .filter(x -> x.getName().toLowerCase().contains(name))
                 .collect(Collectors.toList());
-        if (areThereUsersWithMessageOnFalse(users, "Nie ma takiego użytkownika.")) {
+        if (checkWithMessageOnFalse(!users.isEmpty(), "Nie ma takiego użytkownika.")) {
             users.sort(new UserIDComparator());
             users.forEach(out::println);
         }
@@ -105,7 +103,7 @@ public class UsersService {
                 .collect(Collectors.toList());
     }
 
-    private boolean checkContitionWithMessageOnFalse(boolean statement, String s) {
+    private boolean checkWithMessageOnFalse(boolean statement, String s) {
         if (!statement) {
             out.println(s);
             return false;
@@ -113,11 +111,4 @@ public class UsersService {
         return true;
     }
 
-    private boolean areThereUsersWithMessageOnFalse(List<User> allUsers, String s) {
-        if (allUsers.isEmpty()) {
-            out.println(s);
-            return false;
-        }
-        return true;
-    }
 }

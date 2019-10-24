@@ -14,162 +14,149 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.lang.System.out;
+
 public class PlansService {
-    private OrganizationRepositoryDao organization = new OrganizationRepositoryDaoImpl();
-    private ActivitiesService aS = new ActivitiesService();
+    private OrganizationRepositoryDao dao = new OrganizationRepositoryDaoImpl();
+    private ActivitiesService activitiesService = new ActivitiesService();
 
     public void searchByScheduleMenu() {
-        System.out.println("- Wpisz nazwę:");
+        out.println("- Wpisz nazwę:");
         String searchedText = IoTools.getCharsOnlyStringFromUser().toLowerCase();
-        List<Plan> plans = organization.getAllPlans().stream()
+        List<Plan> plans = dao.getAllPlans().stream()
                 .filter(x -> x.getName().toLowerCase().contains(searchedText))
                 .collect(Collectors.toList());
-
-        if (plans.isEmpty()) {
-            System.out.println("Nie ma takiego planu.");
-            return;
+        if (checkWithMessageOnFalse(plans.isEmpty(), "Nie ma takiego planu.")) {
+            plans.sort(new PlanIDComparator());
+            plans.forEach(out::println);
         }
-        plans.sort(new PlanIDComparator());
-        plans.forEach(System.out::println);
     }
 
     public void showActivitiesOfSchedule() {
         printPlans();
-        if (organization.getAllPlans().isEmpty()) {
-            return;
+        if (!dao.getAllPlans().isEmpty()) {
+            int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu, którego zajęcia chcesz obejrzeć: ");
+            if (checkWithMessageOnFalse(dao.hasPlanWithThisID(choice), "Nie ma takiego planu.")) {
+                List<Activity> activities = getAssignedActivities(choice);
+                if (checkWithMessageOnFalse(!activities.isEmpty(), "Plan nie ma przypisanych żadnych zajęć!")) {
+                    activities.sort(new UserIDComparator());
+                    activities.forEach(out::println);
+                }
+            }
         }
-        int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu, którego zajęcia chcesz obejrzeć: ");
-        if (!organization.hasPlanWithThisID(choice)) {
-            System.out.println("Nie ma takiego planu.");
-            return;
-        }
-        List<Activity> activities = organization.getPlan(choice).getActivitiesID().stream().map(x -> organization.getActivity(x)).collect(Collectors.toList());
-        if (activities.isEmpty()) {
-            System.out.println("Plan nie ma przypisanych żadnych zajęć!");
-            return;
-        }
-        activities.sort(new UserIDComparator());
-        activities.forEach(System.out::println);
+    }
+
+    private List<Activity> getAssignedActivities(int choice) {
+        return dao.getPlan(choice)
+                .getActivitiesID().stream()
+                .map(x -> dao.getActivity(x))
+                .collect(Collectors.toList());
     }
 
     public void addPlan() {
         String name = IoTools.getStringFromUserWithMessage("Podaj nazwę planu:");
-        if (organization.createPlan(name)) {
-            System.out.println("Dodano plan.");
+        if (dao.createPlan(name)) {
+            out.println("Dodano plan.");
         } else {
-            System.out.println("Taki plan juz istnieje!");
+            out.println("Taki plan juz istnieje!");
         }
     }
 
     public void assignActivityToPlan() {
-        if (organization.getAllActivities().isEmpty() || organization.getAllPlans().isEmpty()) {
-            System.out.println("Nie ma obecnie żadnych planów lub zajęć.");
-            return;
-        }
-        int planID = choosePlan();
-        if (chooseAvailableActivities(planID).isEmpty()) {
-            System.out.println("Nie ma obecnie żadnych zajęć, które można przypisać.");
-            return;
-        }
-        List<Activity> availableActivities = chooseAvailableActivities(planID);
-        availableActivities.sort(new ActivityIDComparator());
-        availableActivities.forEach(System.out::println);
-        int activityID = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, które chcesz przypisać do planu:");
-        if (canAssignActivityToPlan(activityID, planID)) {
-            if (organization.assignActivityToPlan(activityID, planID)) {
-                System.out.println("Zajęcia przypisano do planu.");
-            }
-        }
-    }
-
-    public boolean canAssignActivityToPlan(int activityID, int planID) {
-        if (!organization.hasActivityWithThisID(activityID)) {
-            System.out.println("Zajęcia z takim ID nie istnieją!");
-            return false;
-        } else if (organization.getPlan(planID).getActivitiesID().contains(activityID)) {
-            System.out.println("Te zajęcia są już przypisane do tego planu!");
-            return false;
-        }
-        return true;
-    }
-
-    public void unassignActivityFromPlan() {
-        if (organization.getAllPlans().size() == 0 || organization.getAllActivities().isEmpty()) {
-            System.out.println("Nie ma obecnie żadnych planów lub zajęć.");
-            return;
-        }
-        int planID = choosePlan();
-        if (organization.getPlan(planID).getActivitiesID().isEmpty()) {
-            System.out.println("Nie ma obecnie przypisanych żadnych zajęć do planu.");
-            return;
-        }
-
-        aS.getActivitiesByIDs(organization.getPlan(planID).getActivitiesID()).forEach(System.out::println);
-        int activityID = IoTools.getIntFromUserWithMessage("Podaj ID zajęć do wypisania z planu:");
-        if (canUnassignActivityFromPlan(activityID, planID)) {
-            if (organization.unassignActivityFromPlan(activityID, planID)) {
-                System.out.println("Zajęcia wypisano z planu.");
-            }
-        }
-    }
-
-    public boolean canUnassignActivityFromPlan(int activityID, int planID) {
-        if (!organization.getAllActivitiesIDs().contains(activityID)) {
-            System.out.println("Zajęcia o takim ID nie istnieją.");
-            return false;
-        } else if (!organization.getPlan(planID).getActivitiesID().contains(activityID)) {
-            System.out.println("Zajęcia nie są przypisane do planu, więc nie można ich wypisać.");
-            return false;
-        }
-        return true;
-    }
-
-    private List<Activity> chooseAvailableActivities(int planID) {
-        List<Activity> activities = organization.getAllActivities();
-        Set<Integer> activitesFromPlan = organization.getPlan(planID).getActivitiesID();
-        for (Integer i : activitesFromPlan) {
-            for (int j = 0; j < activitesFromPlan.size(); j++) {
-                if (activities.get(j).getID() == i) {
-                    activities.remove(j);
+        if (arePlansAndActivities()) {
+            int planID = choosePlan();
+            if (checkWithMessageOnFalse(!chooseAvailableActivities(planID).isEmpty(), "Nie ma obecnie żadnych zajęć, które można przypisać.")) {
+                List<Activity> availableActivities = chooseAvailableActivities(planID);
+                availableActivities.sort(new ActivityIDComparator());
+                availableActivities.forEach(out::println);
+                int activityID = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, które chcesz przypisać do planu:");
+                if (canAssignActivityToPlan(activityID, planID) && dao.assignActivityToPlan(activityID, planID)) {
+                    out.println("Zajęcia przypisano do planu.");
                 }
             }
         }
-        return activities;
+    }
+
+    private boolean canAssignActivityToPlan(int activityID, int planID) {
+        return (checkWithMessageOnFalse(dao.hasActivityWithThisID(activityID), "Zajęcia z takim ID nie istnieją!")
+                &&
+                checkWithMessageOnFalse(!dao.getPlan(planID).getActivitiesID().contains(activityID), "Te zajęcia są już przypisane do tego planu!"));
+    }
+
+    public void unassignActivityFromPlan() {
+        if (arePlansAndActivities()) {
+            int planID = choosePlan();
+            if (isPlanWithMessage(planID)) {
+                int activityID = getActivityIDToUnAssign(planID);
+                if (canUnassignActivityFromPlan(activityID, planID) && dao.unassignActivityFromPlan(activityID, planID)) {
+                    out.println("Zajęcia wypisano z planu.");
+                }
+            }
+        }
+    }
+
+    private boolean arePlansAndActivities() {
+        return checkWithMessageOnFalse(!dao.getAllPlans().isEmpty() || !dao.getAllActivities().isEmpty(),
+                "Nie ma obecnie żadnych planów lub zajęć.");
+    }
+
+    private boolean isPlanWithMessage(int planID) {
+        return checkWithMessageOnFalse(!dao.getPlan(planID).getActivitiesID().isEmpty(),
+                "Nie ma obecnie przypisanych żadnych zajęć do planu.");
+    }
+
+    private int getActivityIDToUnAssign(int planID) {
+        printActivitiesOfPlan(planID);
+        return IoTools.getIntFromUserWithMessage("Podaj ID zajęć do wypisania z planu:");
+    }
+
+    private void printActivitiesOfPlan(int planID) {
+        activitiesService.getActivitiesByIDs(dao.getPlan(planID)
+                .getActivitiesID())
+                .forEach(out::println);
+    }
+
+    private boolean canUnassignActivityFromPlan(int activityID, int planID) {
+        return (checkWithMessageOnFalse(dao.getAllActivitiesIDs().contains(activityID), "Zajęcia o takim ID nie istnieją.")
+                &&
+                checkWithMessageOnFalse(dao.getPlan(planID).getActivitiesID().contains(activityID), "Zajęcia nie są przypisane do planu, więc nie można ich wypisać."));
+    }
+
+    private List<Activity> chooseAvailableActivities(int planID) {
+        Set<Integer> activitiesFromPlan = dao.getPlan(planID).getActivitiesID();
+        return dao.getAllActivities().stream()
+                .filter(x -> !activitiesFromPlan.contains(x.getID()))
+                .collect(Collectors.toList());
     }
 
     private int choosePlan() {
         printPlans();
         int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu:");
-        if (organization.hasPlanWithThisID(choice)) {
+        if (dao.hasPlanWithThisID(choice)) {
             return choice;
         } else {
-            System.out.println("Nie ma planu o takim ID.");
-            return aS.chooseActivity();
+            out.println("Nie ma planu o takim ID.");
+            return choosePlan();
         }
     }
 
     public void removePlan() {
         printPlans();
-        if (organization.getAllPlans().isEmpty()) {
-            return;
-        }
-        int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu do usunięcia:");
-        if (organization.deletePlan(choice)) {
-            System.out.println("Usunięto plan.");
-        } else {
-            System.out.println("Wybrany plan nie istnieje!");
+        if (!dao.getAllPlans().isEmpty()) {
+            int choice = IoTools.getIntFromUserWithMessage("Podaj ID planu do usunięcia:");
+            if (dao.deletePlan(choice)) {
+                out.println("Usunięto plan.");
+            } else {
+                out.println("Wybrany plan nie istnieje!");
+            }
         }
     }
 
-    public void printPlans(Comparator comparator) {
-        List<Plan> plans = organization.getAllPlans();
+    private void printPlans(Comparator comparator) {
+        List<Plan> plans = dao.getAllPlans();
         plans.sort(comparator);
-        if (plans.isEmpty()) {
-            System.out.println("Nie ma obecnie żadnych planów.");
-            return;
-        }
-        for (int i = 0; i < plans.size(); i++) {
-            System.out.println(plans.get(0));
+        if (checkWithMessageOnFalse(!plans.isEmpty(), "Nie ma obecnie żadnych planów.")) {
+            plans.forEach(out::println);
         }
     }
 
@@ -178,19 +165,25 @@ public class PlansService {
     }
 
     public void editPlan() {
-        if (organization.getAllPlans().isEmpty()) {
-            System.out.println("Nie ma obecnie żadnych planów, które można by edytować.");
-            return;
+        if (checkWithMessageOnFalse(!dao.getAllPlans().isEmpty(), "Nie ma obecnie żadnych planów, które można by edytować.")) {
+            printPlans();
+            int planID = IoTools.getIntFromUserWithMessage("Podaj ID planu, który chcesz edytować:");
+            if (!dao.getAllPlansIDs().contains(planID)) {
+                out.println("Nie ma planu o takim ID!");
+                return;
+            }
+            String name = IoTools.getStringFromUserWithMessage("Podaj nową nazwę zajęć:");
+            if (dao.editPlan(planID, name)) {
+                out.println("Zedytowano plan.");
+            }
         }
-        printPlans();
-        int planID = IoTools.getIntFromUserWithMessage("Podaj ID planu, który chcesz edytować:");
-        if (!organization.getAllPlansIDs().contains(planID)) {
-            System.out.println("Nie ma planu o takim ID!");
-            return;
+    }
+
+    private boolean checkWithMessageOnFalse(boolean statement, String s) {
+        if (!statement) {
+            out.println(s);
+            return false;
         }
-        String name = IoTools.getStringFromUserWithMessage("Podaj nową nazwę zajęć:");
-        if (organization.editPlan(planID, name)) {
-            System.out.println("Zedytowano plan.");
-        }
+        return true;
     }
 }
