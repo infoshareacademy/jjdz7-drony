@@ -56,6 +56,6 @@ class SearchMenu {
 
     private void searchByScheduleMenu() {
         System.out.println("-- Szukanie planu po nazwie");
-        plansService.searchByScheduleMenu();
+        plansService.searchPlan();
     }
 }
