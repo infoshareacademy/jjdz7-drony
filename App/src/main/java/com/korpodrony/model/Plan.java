@@ -102,7 +102,7 @@ public class Plan {
 
     @Override
     public String toString() {
-        return "Plan"+"ID = " + ID +
+        return "Plan: "+"ID = " + ID +
                 ", nazwa planu:  " + name +
                 "ID przypisanych zajęć: " + activitiesID;
     }
@@ -112,5 +112,3 @@ public class Plan {
         return Objects.hash(ID);
     }
 }
-
-

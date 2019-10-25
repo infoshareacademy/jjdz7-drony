@@ -11,4 +11,8 @@ public enum ActivitiesType {
     ActivitiesType(String polishName) {
         this.polishName = polishName;
     }
+
+    public static ActivitiesType getActivity(int number) {
+        return ActivitiesType.values()[number];
+    }
 }

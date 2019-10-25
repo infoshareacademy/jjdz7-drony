@@ -9,99 +9,85 @@ import com.korpodrony.model.Activity;
 import com.korpodrony.model.User;
 import com.korpodrony.utils.IoTools;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static java.lang.System.out;
+
 public class ActivitiesService {
-    private OrganizationRepositoryDao organization = new OrganizationRepositoryDaoImpl();
+    private OrganizationRepositoryDao dao = new OrganizationRepositoryDaoImpl();
     private UsersService usersService = new UsersService();
 
     public void showAssignedUsers() {
         printActivities();
-        if (organization.getAllActivities().isEmpty()) {
-            return;
+        if (!dao.getAllActivities().isEmpty()) {
+            int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, których użytkowników chcesz obejrzeć:");
+            if (checkWithMessageOnFalse(dao.hasActivityWithThisID(choice), "Nie ma takich zajęć.")) {
+                List<User> users = dao.getActivity(choice)
+                        .getAssignedUsersIDs()
+                        .stream()
+                        .map(x -> dao.getUser(x))
+                        .collect(Collectors.toList());
+                if (checkWithMessageOnFalse(!users.isEmpty(), "Zajęcia nie mają przypisanych żadnych użytkowników!"))
+                    users.sort(new UserIDComparator());
+                users.forEach(out::println);
+            }
         }
-        int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, których użytkowników chcesz obejrzeć:");
-        if (!organization.hasActivityWithThisID(choice)) {
-            System.out.println("Nie ma takich zajęć.");
-            return;
-        }
-        List<User> users = organization.getActivity(choice).getAssignedUsersIDs().stream().map(x -> organization.getUser(x)).collect(Collectors.toList());
-        if (users.isEmpty()) {
-            System.out.println("Zajęcia nie mają przypisanych żadnych użytkowników!");
-            return;
-        }
-        users.sort(new UserIDComparator());
-        users.forEach(System.out::println);
-
     }
 
     public void assignUserToActivity() {
-        if (organization.getAllActivities().isEmpty() || organization.getAllUsers().isEmpty()) {
-            System.out.println("Nie ma obecnie żadnych zajęć lub użytkowników.");
-            return;
-        }
-        int activityID = chooseActivity();
-        if (chooseAvailableUsers(activityID).isEmpty()) {
-            System.out.println("Nie ma obecnie żadnych użytkowników, których można przypisać.");
-            return;
-        }
-        List<User> availableUsers = chooseAvailableUsers(activityID);
-        availableUsers.sort(new UserIDComparator());
-        availableUsers.forEach(System.out::println);
-        int userID = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika, którego chcesz przypisać do zajęć:");
-        if (canAssignUserToActivity(userID, activityID)) {
-            if (organization.assignUserToActivity(userID, activityID)) {
-                System.out.println("Przypisano użytkownika do zajęć.");
+        if (checkWithMessageOnFalse(!dao.getAllActivities().isEmpty() || !dao.getAllUsers().isEmpty()
+                , "Nie ma obecnie żadnych zajęć lub użytkowników.")) {
+            int activityID = chooseActivity();
+            if (checkWithMessageOnFalse(!chooseAvailableUsers(activityID).isEmpty(), "Nie ma obecnie żadnych użytkowników, których można przypisać.")) {
+                List<User> availableUsers = chooseAvailableUsers(activityID);
+                availableUsers.sort(new UserIDComparator());
+                availableUsers.forEach(out::println);
+                int userID = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika, którego chcesz przypisać do zajęć:");
+                if (canAssignUserToActivity(userID, activityID)) {
+                    if (dao.assignUserToActivity(userID, activityID)) {
+                        out.println("Przypisano użytkownika do zajęć.");
+                    }
+                }
             }
         }
     }
 
     public void unassignUserFromActivity() {
-        if (organization.getAllActivities().isEmpty() || organization.getAllUsers().isEmpty()) {
-            System.out.println("Nie ma obecnie żadnych zajęć lub użytkowników.");
-            return;
-        }
-        int activityID = chooseActivity();
-        if (organization.getActivity(activityID).getAssignedUsersIDs().isEmpty()) {
-            System.out.println("Zajęcia nie posiadają przypisanych użytkowników.");
-            return;
-        }
-        usersService.getUsersByIDs(organization.getActivity(activityID).getAssignedUsersIDs()).forEach(System.out::println);
-        int userID = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika do wypisania z zajęć:");
-        if (canUnassignUserFromActivity(userID, activityID)) {
-            if (organization.unassignUserFromActivity(userID, activityID)) {
-                System.out.println("Użytkownika wypisano z zajęć.");
+        if (checkWithMessageOnFalse(!dao.getAllActivities().isEmpty() || !dao.getAllUsers().isEmpty(), "Nie ma obecnie żadnych zajęć lub użytkowników.")) {
+            int activityID = chooseActivity();
+            if (checkWithMessageOnFalse(!dao.getActivity(activityID).getAssignedUsersIDs().isEmpty(), "Zajęcia nie posiadają przypisanych użytkowników.")) {
+                usersService.getUsersByIDs(dao.getActivity(activityID).getAssignedUsersIDs()).forEach(out::println);
+                int userID = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika do wypisania z zajęć:");
+                if (canUnassignUserFromActivity(userID, activityID) || dao.unassignUserFromActivity(userID, activityID)) {
+                    out.println("Użytkownika wypisano z zajęć.");
+                }
             }
         }
     }
 
-    public boolean canAssignUserToActivity(int userID, int activityID) {
-        if (!organization.hasUserWithThisID(userID)) {
-            System.out.println("Użytkownik z takim ID nie istnieje!");
+    private boolean canAssignUserToActivity(int userID, int activityID) {
+        if (!dao.hasUserWithThisID(userID)) {
+            out.println("Użytkownik z takim ID nie istnieje!");
             return false;
-        } else if (organization.getActivity(activityID).getAssignedUsersIDs().contains(userID)) {
-            System.out.println("Ten użytkownik jest już przypisany do zajęć.");
+        } else if (dao.getActivity(activityID).getAssignedUsersIDs().contains(userID)) {
+            out.println("Ten użytkownik jest już przypisany do zajęć.");
             return false;
-        } else if (organization.getActivity(activityID).getAssignedUsersIDs().size() == organization.getActivity(activityID).getMaxUsers()) {
-            System.out.println("Te zajęcia posiadają już maksymalną liczbę przypisanych użytkowników!");
+        } else if (dao.getActivity(activityID).getAssignedUsersIDs().size() == dao.getActivity(activityID).getMaxUsers()) {
+            out.println("Te zajęcia posiadają już maksymalną liczbę przypisanych użytkowników!");
             return false;
         }
         return true;
     }
 
     private List<User> chooseAvailableUsers(int actityID) {
-        List<User> users = organization.getAllUsers();
-        Set<Integer> activityUser = organization.getActivity(actityID).getAssignedUsersIDs();
-        for (Integer i : activityUser) {
-            for (int j = 0; j < users.size(); j++) {
-                if (users.get(j).getId() == i) {
-                    users.remove(j);
-                }
-            }
-        }
-        return users;
+        Set<Integer> activityUser = dao.getActivity(actityID).getAssignedUsersIDs();
+        return dao.getAllUsers().stream()
+                .filter(x -> !activityUser.contains(x.getId()))
+                .collect(Collectors.toList());
     }
 
     public void addActivity() {
@@ -109,96 +95,83 @@ public class ActivitiesService {
         short maxUsers = IoTools.getShortFromUserWithMessage("Podaj maksymalną liczbę użytkowników zajęć:");
         byte lenghtInQuarters = IoTools.getByteFromUserWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach:");
         ActivitiesType chosenActivity = choosingActivityType();
-        if (organization.createActivity(name, maxUsers, lenghtInQuarters, chosenActivity)) {
-            System.out.println("Dodano zajęcia");
+        if (dao.createActivity(name, maxUsers, lenghtInQuarters, chosenActivity)) {
+            out.println("Dodano zajęcia");
         } else {
-            System.out.println("Takie zajęcia już istnieją");
+            out.println("Takie zajęcia już istnieją");
         }
     }
 
     public void searchByActivityMenu() {
-        System.out.println("- Wpisz nazwę:");
+        out.println("- Wpisz nazwę:");
         String searchedText = IoTools.getCharsOnlyStringFromUser().toLowerCase();
-        List<Activity> activities = organization.getAllActivities().stream()
+        List<Activity> activities = dao.getAllActivities().stream()
                 .filter(x -> x.getName().toLowerCase().contains(searchedText))
                 .collect(Collectors.toList());
-
-        if (activities.isEmpty()) {
-            System.out.println("Nie ma takich zajęć.");
-            return;
+        if (checkWithMessageOnFalse(!activities.isEmpty(), "Nie ma takich zajęć.")) {
+            activities.sort(new ActivityIDComparator());
+            activities.forEach(out::println);
         }
-        activities.sort(new ActivityIDComparator());
-        activities.forEach(System.out::println);
     }
 
-    public boolean canUnassignUserFromActivity(int userID, int activityID) {
-        if (!organization.getAllUsersIDs().contains(userID)) {
-            System.out.println("Użytkownik o takim ID nie istnieje.");
+    private boolean canUnassignUserFromActivity(int userID, int activityID) {
+        if (!dao.getAllUsersIDs().contains(userID)) {
+            out.println("Użytkownik o takim ID nie istnieje.");
             return false;
-        } else if (!organization.getActivity(activityID).getAssignedUsersIDs().contains(userID)) {
-            System.out.println("Użytkownik nie jest przypisany do tych zajęć, więc nie może być usunięty.");
+        } else if (!dao.getActivity(activityID).getAssignedUsersIDs().contains(userID)) {
+            out.println("Użytkownik nie jest przypisany do tych zajęć, więc nie może być usunięty.");
             return false;
         }
         return true;
     }
 
-    List<Activity> getActivitiesByIDs(Set<Integer> activities) {
-        List<Activity> resultActivity = new ArrayList<>();
-        List<Integer> activitiesIDs = new ArrayList<>(activities);
-        Collections.sort(activitiesIDs);
-        for (int i : activitiesIDs) {
-            resultActivity.add(organization.getActivity(i));
-        }
-        return resultActivity;
+    public List<Activity> getActivitiesByIDs(Set<Integer> activities) {
+        return activities.stream()
+                .map(x -> dao.getActivity(x))
+                .collect(Collectors.toList());
     }
-
 
     public void printActivities() {
         printActivities(new ActivityIDComparator());
     }
 
     public void editActivity() {
-        if (organization.getAllActivities().isEmpty()) {
-            System.out.println("Nie ma obecnie żadnych zajęć, które można by edytować.");
-            return;
-        }
-        printActivities();
-        int activityID = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, które chcesz edytować:");
-        if (!organization.getAllActivitiesIDs().contains(activityID)) {
-            System.out.println("Nie ma zajęć o takim ID.");
-            return;
-        }
-        System.out.println("Poprzednia nazwa" + organization.getActivity(activityID).getName());
-        String name = IoTools.getStringFromUserWithMessage("Podaj nazwę zajęć:");
-        short maxUsers = IoTools.getShortFromUserWithMessage("Podaj maksymalną liczbę użytkowników zajęć:");
-        byte lenghtInQuarters = IoTools.getByteFromUserWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach:");
-        ActivitiesType chosenActivity = choosingActivityType();
-        if (organization.editActivity(activityID, name, maxUsers, lenghtInQuarters, chosenActivity)) {
-            System.out.println("Zedytowano zajęcia");
+        if (checkWithMessageOnFalse(!dao.getAllActivities().isEmpty(), "Nie ma obecnie żadnych zajęć, które można by edytować.")) {
+            printActivities();
+            int activityID = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, które chcesz edytować:");
+            if (checkWithMessageOnFalse(dao.getAllActivitiesIDs().contains(activityID), "Nie ma zajęć o takim ID.")) {
+                out.println("Poprzednia nazwa" + dao.getActivity(activityID).getName());
+                String name = IoTools.getStringFromUserWithMessage("Podaj nazwę zajęć:");
+                short maxUsers = IoTools.getShortFromUserWithMessage("Podaj maksymalną liczbę użytkowników zajęć:");
+                byte lenghtInQuarters = IoTools.getByteFromUserWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach:");
+                ActivitiesType chosenActivity = choosingActivityType();
+                if (dao.editActivity(activityID, name, maxUsers, lenghtInQuarters, chosenActivity)) {
+                    out.println("Zedytowano zajęcia");
+                }
+            }
         }
     }
 
-    int chooseActivity() {
+    private int chooseActivity() {
         printActivities();
         int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęć:");
-        if (organization.hasActivityWithThisID(choice)) {
+        if (dao.hasActivityWithThisID(choice)) {
             return choice;
         } else {
-            System.out.println("Nie ma zajęć o takim ID.");
+            out.println("Nie ma zajęć o takim ID.");
             return chooseActivity();
         }
     }
 
     public void removeActivity() {
         printActivities();
-        if (organization.getAllActivities().isEmpty()) {
-            return;
-        }
-        int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęć do usunięcia:");
-        if (organization.deleteActivity(choice)) {
-            System.out.println("Usunięto zajęcia.");
-        } else {
-            System.out.println("Wybrane zajęcia nie istnieją!");
+        if (!dao.getAllActivities().isEmpty()) {
+            int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęć do usunięcia:");
+            if (dao.deleteActivity(choice)) {
+                out.println("Usunięto zajęcia.");
+            } else {
+                out.println("Wybrane zajęcia nie istnieją!");
+            }
         }
     }
 
@@ -219,68 +192,53 @@ public class ActivitiesService {
                 printFilteredActivities(filter, activities);
                 break;
             }
-            default: {
+            case 4: {
                 Predicate<Activity> filter = a -> true;
                 printFilteredActivities(filter, activities);
+                break;
+            }
+            default: {
+                out.println("Podano błędny numer zajęć");
             }
         }
     }
 
-    private void printFilteredActivities(Predicate<? super Activity> filter, List<Activity> activities) {
+    private void printFilteredActivities(Predicate<Activity> filter, List<Activity> activities) {
         List<Activity> activityList = activities.stream()
                 .filter(filter)
                 .collect(Collectors.toList());
-        if (activityList.isEmpty()) {
-            System.out.println("Nie ma zajęć spełniających podane kryteria.");
-        } else {
-            activityList.forEach(System.out::println);
+        if (checkWithMessageOnFalse(!activityList.isEmpty(), "Nie ma zajęć spełniających podane kryteria.")) {
+            activityList.forEach(out::println);
         }
     }
 
-    public void printActivities(Comparator comparator) {
-        List<Activity> activities = organization.getAllActivities();
+    private void printActivities(Comparator comparator) {
+        List<Activity> activities = dao.getAllActivities();
         activities.sort(comparator);
-        if (activities.isEmpty()) {
-            System.out.println("Nie ma obecnie żadnych zajęć");
-            return;
+        if (checkWithMessageOnFalse(!activities.isEmpty(), "Nie ma obecnie żadnych zajęć")) {
+            int typeChoice = IoTools.getIntFromUserWithMessage("Podaj numer, by wybrać rodzaj zajęć (1 - wykład, 2 - ćwiczenia, 3- warsztaty, 4 - wszystkie): ");
+            activityTypeDecide(typeChoice, activities);
         }
-        int typeChoice = IoTools.getIntFromUserWithMessage("Podaj numer, by wybrać rodzaj zajęć (1 - wykład, 2 - ćwiczenia, 3- warsztaty, 4 - wszystkie): ");
-        activityTypeDecide(typeChoice, activities);
     }
 
     private ActivitiesType choosingActivityType() {
-
-        ActivitiesType chosenActivityType;
-
+        ActivitiesType chosenActivityType = null;
         do {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Podaj rodzaj zajęć: wykład, ćwiczenia, warsztaty");
-            String activityInput = scanner.nextLine();
-            chosenActivityType = decodeActivityTypeFromInputString(activityInput);
-
+            try {
+                chosenActivityType = ActivitiesType.getActivity(IoTools.getIntFromUserWithMessage("Podaj numer, by wybrać rodzaj zajęć (1 - wykład, 2 - ćwiczenia, 3- warsztaty)"));
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                out.println("Podany numer zajęć jest nieprawidłowy.");
+            }
         } while (chosenActivityType == null);
-
         return chosenActivityType;
     }
 
-    private ActivitiesType decodeActivityTypeFromInputString(String activityInput) {
 
-        switch (activityInput) {
-            case "wykład":
-
-                return ActivitiesType.LECTURE;
-
-            case "ćwiczenia":
-
-                return ActivitiesType.EXCERCISE;
-
-            case "warsztaty":
-
-                return ActivitiesType.WORKSHOP;
-
-            default:
-                System.out.println("Podano błędne zajęcia. Podaj prawidłową nazwę: ");
-                return null;
+    private boolean checkWithMessageOnFalse(boolean statement, String s) {
+        if (!statement) {
+            out.println(s);
+            return false;
         }
+        return true;
     }
 }
