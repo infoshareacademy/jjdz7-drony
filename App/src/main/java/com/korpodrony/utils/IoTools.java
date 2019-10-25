@@ -38,9 +38,9 @@ public class IoTools {
     public static short getShortFromUserWithMessage(String message) {
         out.println(message);
         short number = 0;
-        while (!Validator.isPositive(number)) {
+        while (Validator.isNotPositive(number)) {
             number = getShortFromUser();
-            if (!Validator.isPositive(number)) {
+            if (Validator.isNotPositive(number)) {
                 out.println("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie:");
             }
         }
@@ -59,9 +59,9 @@ public class IoTools {
     public static byte getByteFromUserWithMessage(String message) {
         out.println(message);
         byte number = 0;
-        while (!Validator.isPositive(number)) {
+        while (Validator.isNotPositive(number)) {
             number = getByteFromUser();
-            if (!Validator.isPositive(number)) {
+            if (Validator.isNotPositive(number)) {
                 out.println("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie:");
             }
         }
@@ -71,14 +71,14 @@ public class IoTools {
     public static int getIntFromUser() {
         int number = 0;
         out.println("Twój wybór?");
-        while (!Validator.isPositive(number)) {
+        while (Validator.isNotPositive(number)) {
             while (!sc.hasNextInt()) {
                 out.println(sc.next() + ": nie jest liczbą. Spróbuj ponownie:");
                 sc.nextLine();
             }
             number = sc.nextInt();
             sc.nextLine();
-            if (!Validator.isPositive(number)) {
+            if (Validator.isNotPositive(number)) {
                 out.println("Podana wartość musi być większa od zera. Spróbuj ponownie");
             }
         }

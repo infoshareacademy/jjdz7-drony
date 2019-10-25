@@ -5,18 +5,18 @@ public class Validator {
     }
 
     public static boolean containsOnlyLetters(String text) {
-        return text.chars().allMatch(Character::isLetter);
+        return text.chars().allMatch(Character::isLetter) && !text.equals("");
     }
 
-    public static boolean isPositive(short number) {
-        return number > 0;
+    public static boolean isNotPositive(short number) {
+        return number <= 0;
     }
 
-    public static boolean isPositive(byte number){
-        return number > 0;
+    public static boolean isNotPositive(byte number) {
+        return number <= 0;
     }
 
-    public static boolean isPositive(int number){
-        return number > 0;
+    public static boolean isNotPositive(int number) {
+        return number <= 0;
     }
 }
