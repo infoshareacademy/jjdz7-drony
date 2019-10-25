@@ -27,12 +27,12 @@ public class IoTools {
     }
 
     public static short getShortFromUser() {
-        short x = 0;
+        short number = 0;
         while (!sc.hasNextShort()) {
             out.println(sc.next() + ": nie jest liczbą z zakresu 1 do 32767. Spróbuj ponownie:");
         }
-        x = sc.nextShort();
-        return x;
+        number = sc.nextShort();
+        return number;
     }
 
     public static short getShortFromUserWithMessage(String message) {
@@ -58,8 +58,14 @@ public class IoTools {
 
     public static byte getByteFromUserWithMessage(String message) {
         out.println(message);
-        byte x = getByteFromUser();
-        return x > 0 ? x : getByteFromUserWithMessage("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie:");
+        byte number = 0;
+        while (!Validator.isPositive(number)) {
+            number = getByteFromUser();
+            if (!Validator.isPositive(number)) {
+                out.println("Nie można przekazać wartości mniejszej od 1. Spróbuj ponownie:");
+            }
+        }
+        return number;
     }
 
     public static int getIntFromUser() {
