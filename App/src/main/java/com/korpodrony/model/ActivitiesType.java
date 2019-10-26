@@ -3,7 +3,7 @@ package com.korpodrony.model;
 public enum ActivitiesType {
 
     LECTURE("wykład"),
-    EXCERCISE("ćwiczenia"),
+    EXERCISE("ćwiczenia"),
     WORKSHOP("warszaty");
 
     String polishName;
@@ -13,6 +13,6 @@ public enum ActivitiesType {
     }
 
     public static ActivitiesType getActivity(int number) {
-        return ActivitiesType.values()[number];
+        return ActivitiesType.values()[number - 1];
     }
 }

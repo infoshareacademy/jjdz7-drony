@@ -12,9 +12,9 @@ public class IoTools {
 
     public static String getCharsOnlyStringFromUser() {
         String text = "";
-        while (!Validator.containsOnlyLetters(text)) {
+        while (Validator.notContainsOnlyLetters(text)) {
             text = sc.nextLine();
-            if (!Validator.containsOnlyLetters(text)) {
+            if (Validator.notContainsOnlyLetters(text)) {
                 out.println("Tylko litery są dozwolone. Spróbuj ponownie: ");
             }
         }

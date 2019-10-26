@@ -1,8 +1,6 @@
 package com.korpodrony.service;
 
-import com.korpodrony.comparators.ActivityIDComparator;
 import com.korpodrony.comparators.PlanIDComparator;
-import com.korpodrony.comparators.UserIDComparator;
 import com.korpodrony.dao.OrganizationRepositoryDao;
 import com.korpodrony.dao.OrganizationRepositoryDaoImpl;
 import com.korpodrony.model.Activity;
@@ -40,12 +38,9 @@ public class PlansService {
     public void searchPlan() {
         out.println("- Wpisz nazwę:");
         String searchedText = IoTools.getCharsOnlyStringFromUser().toLowerCase();
-        List<Plan> plans = dao.getAllPlans().stream()
-                .filter(x -> x.getName().toLowerCase().contains(searchedText))
-                .collect(Collectors.toList());
-        if (checkWithMessageOnFalse(plans.isEmpty(), "Nie ma takiego planu.")) {
-            plans.sort(new PlanIDComparator());
-            plans.forEach(out::println);
+        List<Plan> plans = getPlansByName(searchedText);
+        if (checkWithMessageOnFalse(!plans.isEmpty(), "Nie ma takiego planu.")) {
+            printPlans(plans);
         }
     }
 
@@ -56,8 +51,7 @@ public class PlansService {
             if (checkWithMessageOnFalse(dao.hasPlanWithThisID(choice), "Nie ma takiego planu.")) {
                 List<Activity> activities = getAssignedActivities(choice);
                 if (checkWithMessageOnFalse(!activities.isEmpty(), "Plan nie ma przypisanych żadnych zajęć!")) {
-                    activities.sort(new UserIDComparator());
-                    activities.forEach(out::println);
+                    activitiesService.printActivities(activities);
                 }
             }
         }
@@ -77,8 +71,7 @@ public class PlansService {
             int planID = choosePlan();
             if (checkWithMessageOnFalse(!chooseAvailableActivities(planID).isEmpty(), "Nie ma obecnie żadnych zajęć, które można przypisać.")) {
                 List<Activity> availableActivities = chooseAvailableActivities(planID);
-                availableActivities.sort(new ActivityIDComparator());
-                availableActivities.forEach(out::println);
+                activitiesService.printActivities(availableActivities);
                 int activityID = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, które chcesz przypisać do planu:");
                 if (canAssignActivityToPlan(activityID, planID) && dao.assignActivityToPlan(activityID, planID)) {
                     out.println("Zajęcia przypisano do planu.");
@@ -99,14 +92,6 @@ public class PlansService {
         }
     }
 
-    private void printPlans(Comparator comparator) {
-        List<Plan> plans = dao.getAllPlans();
-        plans.sort(comparator);
-        if (checkWithMessageOnFalse(!plans.isEmpty(), "Nie ma obecnie żadnych planów.")) {
-            plans.forEach(out::println);
-        }
-    }
-
     public void unassignActivityFromPlan() {
         if (arePlansAndActivities()) {
             int planID = choosePlan();
@@ -119,59 +104,43 @@ public class PlansService {
         }
     }
 
-    private boolean checkWithMessageOnFalse(boolean statement, String s) {
+    private boolean checkWithMessageOnFalse(boolean statement, String message) {
         if (!statement) {
-            out.println(s);
+            out.println(message);
             return false;
         }
         return true;
     }
 
-    private int getActivityIDToUnAssign(int planID) {
-        printActivitiesOfPlan(planID);
-        return IoTools.getIntFromUserWithMessage("Podaj ID zajęć do wypisania z planu:");
+    private void printPlans(Comparator comparator) {
+        List<Plan> plans = dao.getAllPlans();
+        plans.sort(comparator);
+        if (checkWithMessageOnFalse(!plans.isEmpty(), "Nie ma obecnie żadnych planów.")) {
+            plans.forEach(out::println);
+        }
     }
 
-    private boolean canAssignActivityToPlan(int activityID, int planID) {
-        return (checkWithMessageOnFalse(dao.hasActivityWithThisID(activityID), "Zajęcia z takim ID nie istnieją!")
-                &&
-                checkWithMessageOnFalse(!dao.getPlan(planID).getActivitiesID().contains(activityID), "Te zajęcia są już przypisane do tego planu!"));
-    }
-
-    private boolean arePlansAndActivities() {
-        return checkWithMessageOnFalse(!dao.getAllPlans().isEmpty() || !dao.getAllActivities().isEmpty(),
-                "Nie ma obecnie żadnych planów lub zajęć.");
-    }
-
-    private List<Activity> chooseAvailableActivities(int planID) {
-        Set<Integer> activitiesFromPlan = dao.getPlan(planID).getActivitiesID();
-        return dao.getAllActivities().stream()
-                .filter(x -> !activitiesFromPlan.contains(x.getID()))
+    private List<Plan> getPlansByName(String searchedText) {
+        return dao.getAllPlans().stream()
+                .filter(x -> x.getName().toLowerCase().contains(searchedText))
                 .collect(Collectors.toList());
     }
 
-    private void printActivitiesOfPlan(int planID) {
-        activitiesService.getActivitiesByIDs(dao.getPlan(planID)
-                .getActivitiesID())
-                .forEach(out::println);
+    private void printPlans(List<Plan> plans) {
+        plans.sort(new PlanIDComparator());
+        plans.forEach(out::println);
     }
 
-    private boolean isPlanWithMessage(int planID) {
-        return checkWithMessageOnFalse(!dao.getPlan(planID).getActivitiesID().isEmpty(),
-                "Nie ma obecnie przypisanych żadnych zajęć do planu.");
-    }
-
-    private List<Activity> getAssignedActivities(int choice) {
-        return dao.getPlan(choice)
+    private List<Activity> getAssignedActivities(int planId) {
+        return dao.getPlan(planId)
                 .getActivitiesID().stream()
                 .map(x -> dao.getActivity(x))
                 .collect(Collectors.toList());
     }
 
-    private boolean canUnassignActivityFromPlan(int activityID, int planID) {
-        return (checkWithMessageOnFalse(dao.getAllActivitiesIDs().contains(activityID), "Zajęcia o takim ID nie istnieją.")
-                &&
-                checkWithMessageOnFalse(dao.getPlan(planID).getActivitiesID().contains(activityID), "Zajęcia nie są przypisane do planu, więc nie można ich wypisać."));
+    private boolean arePlansAndActivities() {
+        return checkWithMessageOnFalse(!dao.getAllPlans().isEmpty() || !dao.getAllActivities().isEmpty(),
+                "Nie ma obecnie żadnych planów lub zajęć.");
     }
 
     private int choosePlan() {
@@ -183,5 +152,34 @@ public class PlansService {
             out.println("Nie ma planu o takim ID.");
             return choosePlan();
         }
+    }
+
+    private List<Activity> chooseAvailableActivities(int planID) {
+        Set<Integer> activitiesFromPlan = dao.getPlan(planID).getActivitiesID();
+        return dao.getAllActivities().stream()
+                .filter(x -> !activitiesFromPlan.contains(x.getId()))
+                .collect(Collectors.toList());
+    }
+
+    private boolean canAssignActivityToPlan(int activityID, int planID) {
+        return (checkWithMessageOnFalse(dao.hasActivityWithThisID(activityID), "Zajęcia z takim ID nie istnieją!")
+                &&
+                checkWithMessageOnFalse(!dao.getPlan(planID).getActivitiesID().contains(activityID), "Te zajęcia są już przypisane do tego planu!"));
+    }
+
+    private int getActivityIDToUnAssign(int planID) {
+        activitiesService.printActivities(getAssignedActivities(planID));
+        return IoTools.getIntFromUserWithMessage("Podaj ID zajęć do wypisania z planu:");
+    }
+
+    private boolean isPlanWithMessage(int planID) {
+        return checkWithMessageOnFalse(!dao.getPlan(planID).getActivitiesID().isEmpty(),
+                "Nie ma obecnie przypisanych żadnych zajęć do planu.");
+    }
+
+    private boolean canUnassignActivityFromPlan(int activityID, int planID) {
+        return (checkWithMessageOnFalse(dao.getAllActivitiesIDs().contains(activityID), "Zajęcia o takim ID nie istnieją.")
+                &&
+                checkWithMessageOnFalse(dao.getPlan(planID).getActivitiesID().contains(activityID), "Zajęcia nie są przypisane do planu, więc nie można ich wypisać."));
     }
 }

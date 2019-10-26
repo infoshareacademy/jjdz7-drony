@@ -24,7 +24,7 @@ public class JSONWriter {
     public static void writeJSONToFile(Path filePath, Object objectToMap) {
         try {
             String jsonString = generateJsonString(objectToMap);
-            Files.write(filePath, jsonString.getBytes(), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+            Files.write(filePath, jsonString.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Błąd przy zapisie do pliku!");

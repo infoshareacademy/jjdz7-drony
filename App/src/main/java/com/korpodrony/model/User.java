@@ -70,7 +70,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "Użytkownik " + "ID = " + id + ", imię: " + name + ", nazwisko: " + surname;
+        return "Użytkownik " + "id = " + id + ", imię: " + name + ", nazwisko: " + surname;
     }
 
     @Override

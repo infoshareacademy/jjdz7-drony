@@ -6,12 +6,12 @@ import java.util.Set;
 
 public class Plan {
     private static int currentID = 0;
-    private int ID;
+    private int id;
     private String name;
     private Set<Integer> activitiesID;
 
-    public Plan(int ID, String name, Set<Integer> activitiesID) {
-        this.ID = ID;
+    public Plan(int id, String name, Set<Integer> activitiesID) {
+        this.id = id;
         this.name = name;
         this.activitiesID = activitiesID;
     }
@@ -21,8 +21,8 @@ public class Plan {
     public static void setCurrentID(Set<Plan> plans){
         int maxValue = 0;
         for (Plan plan: plans){
-            if (plan.getID()>maxValue){
-                maxValue=plan.getID();
+            if (plan.getId()>maxValue){
+                maxValue=plan.getId();
             }
         }
         setCurrentID(maxValue);
@@ -36,12 +36,12 @@ public class Plan {
         Plan.currentID = currentID;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -69,10 +69,10 @@ public class Plan {
     }
 
     public boolean assignActivity(Activity activity) {
-        if (activitiesID.contains(activity.getID())) {
+        if (activitiesID.contains(activity.getId())) {
             return false;
         }
-        activitiesID.add(activity.getID());
+        activitiesID.add(activity.getId());
         return true;
     }
 
@@ -97,18 +97,18 @@ public class Plan {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Plan plan = (Plan) o;
-        return ID == plan.ID;
+        return id == plan.id;
     }
 
     @Override
     public String toString() {
-        return "Plan: "+"ID = " + ID +
+        return "Plan: "+"id = " + id +
                 ", nazwa planu:  " + name +
-                "ID przypisanych zajęć: " + activitiesID;
+                ", id przypisanych zajęć: " + activitiesID;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ID);
+        return Objects.hash(id);
     }
 }

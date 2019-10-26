@@ -24,13 +24,13 @@ public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao 
     @Override
     public boolean hasPlanWithThisID(int planID) {
         return org.getPlans().stream()
-                .anyMatch(x->x.getID()==planID);
+                .anyMatch(x->x.getId()==planID);
     }
 
     @Override
     public Plan getPlan(int planID) {
         return org.getPlans().stream()
-                .filter(x->x.getID() == planID)
+                .filter(x->x.getId() == planID)
                 .findFirst()
                 .orElse(null);
     }
@@ -47,13 +47,13 @@ public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao 
     @Override
     public boolean hasActivityWithThisID(int activityID) {
         return org.getActivities().stream()
-                .anyMatch(x->x.getID() == activityID);
+                .anyMatch(x->x.getId() == activityID);
     }
 
     @Override
     public Activity getActivity(int activityID) {
         return org.getActivities().stream()
-                .filter(x->x.getID() == activityID)
+                .filter(x->x.getId() == activityID)
                 .findFirst()
                 .orElse(null);
     }
@@ -126,7 +126,7 @@ public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao 
 
     @Override
     public boolean unassignActivityFromPlan(int activityID, int planID) {
-        if (!hasPlanWithThisID(planID) || !hasActivityWithThisID(activityID)) {
+        if (!hasPlanWithThisID(planID) && !hasActivityWithThisID(activityID)) {
             return false;
         }
         return getPlan(planID)
@@ -135,7 +135,7 @@ public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao 
 
     @Override
     public boolean assignUserToActivity(int userID, int activityID) {
-        if (!hasUserWithThisID(userID) || !hasActivityWithThisID(activityID)) {
+        if (!hasUserWithThisID(userID) && !hasActivityWithThisID(activityID)) {
             return false;
         }
         return getActivity(activityID)
@@ -144,7 +144,7 @@ public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao 
 
     @Override
     public boolean unassignUserFromActivity(int userID, int activityID) {
-        if (!hasUserWithThisID(userID) || !hasActivityWithThisID(activityID)) {
+        if (!hasUserWithThisID(userID) && !hasActivityWithThisID(activityID)) {
             return false;
         }
         return getActivity(activityID)
@@ -160,7 +160,7 @@ public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao 
 
     @Override
     public boolean deleteActivity(int activityID) {
-        getAllActivitiesIDs()
+        getAllPlansIDs()
                 .forEach(x -> unassignActivityFromPlan(activityID, x));
         return removeActivity(activityID);
     }
@@ -173,14 +173,14 @@ public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao 
     @Override
     public List<Integer> getAllPlansIDs() {
         return org.getPlans().stream()
-                .map(Plan::getID)
+                .map(Plan::getId)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Integer> getAllActivitiesIDs() {
         return org.getActivities().stream()
-                .map(Activity::getID)
+                .map(Activity::getId)
                 .collect(Collectors.toList());
     }
 

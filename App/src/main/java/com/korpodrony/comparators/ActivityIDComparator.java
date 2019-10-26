@@ -9,6 +9,6 @@ public class ActivityIDComparator implements Comparator {
     public int compare(Object o, Object t1) {
         Activity act1 = (Activity) o;
         Activity act2 = (Activity) t1;
-        return act1.getID() - act2.getID();
+        return act1.getId() - act2.getId();
     }
 }

@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class Activity {
     private static int currentID = 0;
-    private int ID;
+    private int id;
     private String name;
     private short maxUsers;
     private Set<Integer> assignedUsersIDs;
@@ -16,8 +16,8 @@ public class Activity {
         this(++currentID, name, maxUsers, new HashSet<>(), lenghtInQuarters, activitiesType);
     }
 
-    public Activity(int ID, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte lenghtInQuarters, ActivitiesType activitiesType) {
-        this.ID = ID;
+    public Activity(int id, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte lenghtInQuarters, ActivitiesType activitiesType) {
+        this.id = id;
         this.name = name;
         this.maxUsers = maxUsers;
         this.assignedUsersIDs = assignedUsersIDs;
@@ -35,8 +35,8 @@ public class Activity {
     public static void setCurrentID(Set<Activity> activities) {
         int maxValue = 0;
         for (Activity activity : activities) {
-            if (activity.getID() > maxValue) {
-                maxValue = activity.getID();
+            if (activity.getId() > maxValue) {
+                maxValue = activity.getId();
             }
         }
         setCurrentID(maxValue);
@@ -46,12 +46,12 @@ public class Activity {
         Activity.currentID = currentID;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -134,11 +134,11 @@ public class Activity {
 
     @Override
     public String toString() {
-        return "Zajęcia: " + "ID = " + ID +
+        return "Zajęcia: " + "id = " + id +
                 ", nazwa: " + name +
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
                 ", czas trwania [min]:" + lenghtInQuarters *15 +
-                ", typ zajęć: " + activitiesType;
+                ", typ zajęć: " + activitiesType.polishName;
     }
 }

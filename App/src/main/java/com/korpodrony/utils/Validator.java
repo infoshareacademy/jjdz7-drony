@@ -4,8 +4,8 @@ public class Validator {
     private Validator() {
     }
 
-    public static boolean containsOnlyLetters(String text) {
-        return text.chars().allMatch(Character::isLetter) && !text.equals("");
+    public static boolean notContainsOnlyLetters(String text) {
+        return !text.chars().allMatch(Character::isLetter) || text.equals("");
     }
 
     public static boolean isNotPositive(short number) {

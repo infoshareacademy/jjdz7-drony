@@ -103,9 +103,9 @@ public class UsersService {
                 .collect(Collectors.toList());
     }
 
-    private boolean checkWithMessageOnFalse(boolean statement, String s) {
+    private boolean checkWithMessageOnFalse(boolean statement, String message) {
         if (!statement) {
-            out.println(s);
+            out.println(message);
             return false;
         }
         return true;
