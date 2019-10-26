@@ -26,16 +26,20 @@ public class ActivitiesService {
         if (!dao.getAllActivities().isEmpty()) {
             int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, których użytkowników chcesz obejrzeć:");
             if (checkWithMessageOnFalse(dao.hasActivityWithThisID(choice), "Nie ma takich zajęć.")) {
-                List<User> users = dao.getActivity(choice)
-                        .getAssignedUsersIDs()
-                        .stream()
-                        .map(x -> dao.getUser(x))
-                        .collect(Collectors.toList());
+                List<User> users = getUsersFromActivity(choice);
                 if (checkWithMessageOnFalse(!users.isEmpty(), "Zajęcia nie mają przypisanych żadnych użytkowników!"))
                     users.sort(new UserIDComparator());
                 users.forEach(out::println);
             }
         }
+    }
+
+    private List<User> getUsersFromActivity(int choice) {
+        return dao.getActivity(choice)
+                            .getAssignedUsersIDs()
+                            .stream()
+                            .map(x -> dao.getUser(x))
+                            .collect(Collectors.toList());
     }
 
     public void assignUserToActivity() {
@@ -102,16 +106,20 @@ public class ActivitiesService {
         }
     }
 
-    public void searchByActivityMenu() {
+    public void searchActivity() {
         out.println("- Wpisz nazwę:");
         String searchedText = IoTools.getCharsOnlyStringFromUser().toLowerCase();
-        List<Activity> activities = dao.getAllActivities().stream()
-                .filter(x -> x.getName().toLowerCase().contains(searchedText))
-                .collect(Collectors.toList());
+        List<Activity> activities = getActivitiesByText(searchedText);
         if (checkWithMessageOnFalse(!activities.isEmpty(), "Nie ma takich zajęć.")) {
             activities.sort(new ActivityIDComparator());
             activities.forEach(out::println);
         }
+    }
+
+    private List<Activity> getActivitiesByText(String searchedText) {
+        return dao.getAllActivities().stream()
+                    .filter(x -> x.getName().toLowerCase().contains(searchedText))
+                    .collect(Collectors.toList());
     }
 
     private boolean canUnassignUserFromActivity(int userID, int activityID) {
@@ -140,7 +148,7 @@ public class ActivitiesService {
             printActivities();
             int activityID = IoTools.getIntFromUserWithMessage("Podaj ID zajęć, które chcesz edytować:");
             if (checkWithMessageOnFalse(dao.getAllActivitiesIDs().contains(activityID), "Nie ma zajęć o takim ID.")) {
-                out.println("Poprzednia nazwa" + dao.getActivity(activityID).getName());
+                out.println("Poprzednia nazwa " + dao.getActivity(activityID).getName());
                 String name = IoTools.getStringFromUserWithMessage("Podaj nazwę zajęć:");
                 short maxUsers = IoTools.getShortFromUserWithMessage("Podaj maksymalną liczbę użytkowników zajęć:");
                 byte lenghtInQuarters = IoTools.getByteFromUserWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach:");
@@ -154,14 +162,17 @@ public class ActivitiesService {
 
     private int chooseActivity() {
         printActivities();
-        int choice = IoTools.getIntFromUserWithMessage("Podaj ID zajęć:");
-        if (dao.hasActivityWithThisID(choice)) {
-            return choice;
-        } else {
-            out.println("Nie ma zajęć o takim ID.");
-            return chooseActivity();
+        int choice = 0;
+        out.println("Podaj ID zajęć:");
+        while (!dao.hasActivityWithThisID(choice)) {
+            choice = IoTools.getIntFromUser();
+            if (!dao.hasActivityWithThisID(choice)) {
+                out.println("Nie ma zajęć o takim ID.");
+            }
         }
+        return chooseActivity();
     }
+
 
     public void removeActivity() {
         printActivities();
@@ -204,12 +215,16 @@ public class ActivitiesService {
     }
 
     private void printFilteredActivities(Predicate<Activity> filter, List<Activity> activities) {
-        List<Activity> activityList = activities.stream()
-                .filter(filter)
-                .collect(Collectors.toList());
+        List<Activity> activityList = filterActivities(filter, activities);
         if (checkWithMessageOnFalse(!activityList.isEmpty(), "Nie ma zajęć spełniających podane kryteria.")) {
             activityList.forEach(out::println);
         }
+    }
+
+    private List<Activity> filterActivities(Predicate<Activity> filter, List<Activity> activities) {
+        return activities.stream()
+                .filter(filter)
+                .collect(Collectors.toList());
     }
 
     private void printActivities(Comparator comparator) {
@@ -225,7 +240,8 @@ public class ActivitiesService {
         ActivitiesType chosenActivityType = null;
         do {
             try {
-                chosenActivityType = ActivitiesType.getActivity(IoTools.getIntFromUserWithMessage("Podaj numer, by wybrać rodzaj zajęć (1 - wykład, 2 - ćwiczenia, 3- warsztaty)"));
+                chosenActivityType = ActivitiesType.getActivity(IoTools
+                        .getIntFromUserWithMessage("Podaj numer, by wybrać rodzaj zajęć (1 - wykład, 2 - ćwiczenia, 3- warsztaty)"));
             } catch (ArrayIndexOutOfBoundsException ex) {
                 out.println("Podany numer zajęć jest nieprawidłowy.");
             }

@@ -51,7 +51,7 @@ class SearchMenu {
 
     private void searchByActivityMenu() {
         System.out.println("-- Szukanie zajęć po nazwie");
-        activitiesService.searchByActivityMenu();
+        activitiesService.searchActivity();
     }
 
     private void searchByScheduleMenu() {
