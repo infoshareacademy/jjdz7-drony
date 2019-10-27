@@ -48,8 +48,8 @@ public class User {
         return id;
     }
 
-    public void setID(int ID) {
-        this.id = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
