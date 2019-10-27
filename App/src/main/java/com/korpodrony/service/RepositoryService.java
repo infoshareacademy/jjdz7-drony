@@ -10,10 +10,12 @@ import com.korpodrony.repository.OrganizationRepository;
 import com.korpodrony.utils.JSONReader;
 import com.korpodrony.utils.JSONWriter;
 
+import javax.enterprise.context.RequestScoped;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Set;
 
+@RequestScoped
 public class RepositoryService {
 
     private static final String USERS_JSON = "Users.json";
@@ -31,7 +33,7 @@ public class RepositoryService {
         JSONWriter.writeJSONToFile(Paths.get(path, PLANS_JSON), organization.getPlansSet());
     }
 
-    public void loadParametersFromFile() {
+    public void loadRepositoryFromFile() {
         String path = new PropertiesService().getProperty(PropertiesService.APP_PATH);
         Organization org = new Organization();
         if (path != null) {
