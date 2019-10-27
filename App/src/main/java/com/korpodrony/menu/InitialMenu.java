@@ -38,7 +38,7 @@ public class InitialMenu {
     }
 
     private void initialParametersLoad() {
-        new RepositoryService().loadParametersFromFile();
+        new RepositoryService().loadRepositoryFromFile();
         new MainMenu().startMainMenu();
     }
 }
