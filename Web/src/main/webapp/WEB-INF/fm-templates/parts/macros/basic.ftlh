@@ -1,4 +1,4 @@
-<#macro includeContent>
+<#macro includeContent scripts>
 <!doctype html>
 <html lang="pl">
 <#include "../header.ftlh">
@@ -9,7 +9,7 @@
         <#nested>
     </div>
 </div>
-<#include "../scripts.ftlh">
+<#include scripts>
 </body>
 </html>
 </#macro>

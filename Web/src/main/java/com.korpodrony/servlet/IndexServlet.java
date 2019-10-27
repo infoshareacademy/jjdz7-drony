@@ -1,4 +1,4 @@
-package com.korpodrony.Servlet;
+package com.korpodrony.servlet;
 
 import com.korpodrony.freemarker.TemplateProvider;
 import freemarker.template.Template;

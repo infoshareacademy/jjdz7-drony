@@ -1,7 +1,8 @@
-package com.korpodrony.Servlet;
+package com.korpodrony.servlet;
 
 import com.korpodrony.dao.OrganizationRepositoryDao;
 import com.korpodrony.freemarker.TemplateProvider;
+import com.korpodrony.services.UsersWebService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -26,12 +27,15 @@ public class UsersServlet extends HttpServlet {
     @EJB
     OrganizationRepositoryDao dao;
 
+    @Inject
+    UsersWebService usersWebService;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
         Map<String, Object> model = new HashMap<>();
-        model.put("users", dao.getAllUsers());
+        model.put("users", usersWebService.getAllUsers());
         Template template = templateProvider.getTemplate(getServletContext(), "users.ftlh");
         try {
             template.process(model, writer);

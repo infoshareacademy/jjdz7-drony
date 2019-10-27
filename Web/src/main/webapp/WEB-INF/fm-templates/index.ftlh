@@ -1,5 +1,5 @@
 <#import "parts/macros/basic.ftlh" as baisc/>
-<@baisc.includeContent>
+<@baisc.includeContent scripts="../scripts.ftlh">
     <div class="row">
         <div col-6 class="ml-auto m-5">
             <div class="card" style="width: 18rem;">
