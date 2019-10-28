@@ -2,7 +2,7 @@
 <@baisc.includeContent scripts="../scripts.ftlh" currentPosition="users">
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
-            <h2>Użytkowicy</h2>
+            <h2>Użytkownicy</h2>
             <#list users>
             <ul class="list-group w-100 ">
                 <#items as user>
