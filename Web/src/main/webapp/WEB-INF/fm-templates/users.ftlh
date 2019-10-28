@@ -1,5 +1,5 @@
 <#import "parts/macros/basic.ftlh" as baisc/>
-<@baisc.includeContent scripts="../scripts.ftlh">
+<@baisc.includeContent scripts="../scripts.ftlh" currentPosition="users">
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Użytkowicy</h2>

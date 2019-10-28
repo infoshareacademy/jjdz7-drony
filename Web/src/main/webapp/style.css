@@ -20,7 +20,7 @@ canvas{
     color: #FFf;
     font-size: 4rem;
     text-align: center;
-    background-color: rgb(156, 159, 255, 0.3);
+    background-color: rgba(156, 159, 255, 0.3);
     margin: 0;
     box-sizing: border-box;
     font-style: italic;
