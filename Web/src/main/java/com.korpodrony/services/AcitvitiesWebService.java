@@ -1,5 +1,6 @@
 package com.korpodrony.services;
 
+import com.korpodrony.comparators.ActivityIDComparator;
 import com.korpodrony.dao.OrganizationRepositoryDao;
 import com.korpodrony.model.Activity;
 import com.korpodrony.model.User;
@@ -42,5 +43,11 @@ public class AcitvitiesWebService {
                 .stream()
                 .filter(x -> !getAssignedUsers(activityId).contains(x))
                 .collect(Collectors.toList());
+    }
+
+    public Object getAllActivities() {
+        List<Activity> activities = dao.getAllActivities();
+        activities.sort(new ActivityIDComparator());
+        return activities;
     }
 }

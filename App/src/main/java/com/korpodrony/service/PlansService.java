@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 
-@RequestScoped
 public class PlansService {
     private OrganizationRepositoryDao dao = new OrganizationRepositoryDaoImpl();
     private ActivitiesService activitiesService = new ActivitiesService();
