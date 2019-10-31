@@ -1,5 +1,6 @@
 <#import "parts/macros/basic.ftlh" as baisc/>
 <@baisc.includeContent scripts="../scripts-activity.ftlh" currentPosition="none">
+
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Zajęcia</h2>
@@ -7,13 +8,13 @@
                 <div class="form-group row">
                     <label for="id" class="col-sm-2 col-form-label">ID:</label>
                     <div class="col-sm-10">
-                        <input type="number" readonly class="form-control-plaintext" id="id" value="${activity.id}">
+                        <input type="number" readonly class="form-control-plaintext" id="id" data-id="1 value="${activity.id}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="name" class="col-sm-2 col-form-label">Nazwa</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control name" id="${activity.name}" value="${activity.name}"
+                        <input type="text" class="form-control name" id="name" value="${activity.name}"
                                placeholder="${activity.name}">
                     </div>
                 </div>
@@ -32,17 +33,20 @@
                     </div>
                 </div>
             </form>
+              <ul class="list-group w-80 mb-3 border border-danger d-none" id="errors">
+                      <li class="list-group-item" id="type-error"></li>
+               </ul>
         </div>
     </div>
 
     <div class="row mt-3">
-        <div class="col-3 mb-3 ml-auto">
-            <a class="btn btn-success text-white w-100">Zmień</a>
-        </div>
-        <div class="col-3 mb-3 mr-auto">
-            <a class="btn btn-danger text-white w-100">usuń</a>
-        </div>
-    </div>
+            <div class="col-3 mb-3 ml-auto">
+                   <button class="btn btn-success text-white w-100 change">Zmień</button>
+             </div>
+                    <div class="col-3 mb-3 mr-auto">
+                    <button class="btn btn-danger text-white w-100 delete" data-toggle="modal" data-target="#exampleModalCenter">usuń</button>
+                  </div>
+             </div>
 
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
@@ -62,28 +66,34 @@
     </div>
 
     <div class="row">
-        <div class="col-10 ml-auto mr-auto mt-5">
-            <div class="input-group mb-3">
-                <input type="number" class="form-control" placeholder="Id użytkownika do wypisania"
-                       aria-label="deleteUser" aria-describedby="basic-addon2">
-                <div class="input-group-append">
-                    <span class="input-group-text btn" id="deleteUser">Wypisz użytkownika</span>
+                    <div class="col-10 ml-auto mr-auto mt-5">
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" placeholder="Id użytkownika do wypisania" aria-label="deleteUser" aria-describedby="basic-addon2" id="deleteUserInput">
+                            <div class="input-group-append col-3">
+                                <button class="btn w-100" id="deleteUser">Wypisz użytkownika</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-10 ml-auto mr-auto">
-            <div class="input-group mb-3">
-                <input type="number" class="form-control" placeholder="Id użytkownika do zapisania"
-                       aria-label="assignUser" aria-describedby="basic-addon2">
-                <div class="input-group-append">
-                    <span class="input-group-text btn" id="assignUser">Zapisz użytkownika</span>
+                <ul class="list-group w-80 mb-3 border border-danger d-none col-10 mr-auto ml-auto" id="delete-errors">
+                    <li class="list-group-item" id="delete-error"></li>
+                </ul>
+
+                <div class="row">
+                    <div class="col-10 ml-auto mr-auto">
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" placeholder="Id użytkownika do zapisania" aria-label="assignUser" aria-describedby="basic-addon2" id="assignUserInput">
+                            <div class="input-group-append col-3">
+                                <button class="btn w-100" id="assignUser">Zapisz użytkownika</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
+
+                <ul class="list-group w-80 mb-3 border border-danger mr-auto ml-auto col-10 d-none" id="assign-errors">
+                    <li class="list-group-item" id="assign-error"></li>
+                </ul>
 
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
@@ -101,4 +111,24 @@
             </#if>
         </div>
     </div>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Usuwane zajęć</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Czy jesteś pewny/a, że chcesz usunąć te zajęcia?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-dismiss="modal">Nie</button>
+                        <button type="button" class="btn btn-danger" id="delete-activty" data-dismiss="modal">Usuń</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </@baisc.includeContent>
