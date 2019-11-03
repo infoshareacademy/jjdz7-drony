@@ -67,4 +67,8 @@ public class AcitvitiesWebService {
     public boolean editActivity(int activityId, String name, short maxUsers, byte duration, int activityTypeNumber) {
         return dao.editActivity(activityId, name, maxUsers, duration, ActivitiesType.getActivity(activityTypeNumber));
     }
+
+    public boolean createActivity(String name, short maxUsers, byte duration, int activityType) {
+        return dao.createActivity(name, maxUsers, duration, ActivitiesType.getActivity(activityType));
+    }
 }
