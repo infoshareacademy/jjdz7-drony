@@ -29,11 +29,11 @@ canvas{
     display: flex;
 }
 
-#errors {
+.errors {
 	border: solid 5px red !important;
 }
 
-#type-error{
+.type-error{
     color: crimson;
     font-weight: 800;
 }

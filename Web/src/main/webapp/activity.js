@@ -13,9 +13,13 @@ var maxUsersInput = document.querySelector('.maxUsers'),
     assingUserButton = document.querySelector('#assignUser'),
     deleteUserButton = document.querySelector('#deleteUser'),
     dataId = document.querySelector('[data-id]').getAttribute('data-id'),
+    activityType = document.querySelector('#activityType'),
+    basicActitiyTypeValue = $('#activityType').attr('data-activitySelect'),
     maxUsersValue = JSON.parse(JSON.stringify(maxUsersInput.value)),
     durationValue = JSON.parse(JSON.stringify(durationInput.value)),
     nameValue = JSON.parse(JSON.stringify(nameInput.value));
+
+$('#activityType').val($('#activityType').attr('data-activitySelect'));
 
 function setInput(label, text, value, text2) {
     label.innerText = text + value + text2;
@@ -33,7 +37,10 @@ durationInput.addEventListener('input', function () {
 }, false);
 
 function checkChanges() {
-    if (nameInput.value == nameValue && maxUsersInput.value == maxUsersValue && durationInput.value == durationValue) {
+    if (nameInput.value == nameValue
+        && maxUsersInput.value == maxUsersValue
+        && durationInput.value == durationValue
+        && activityType.value == basicActitiyTypeValue) {
         return false;
     } else {
         return true;
@@ -63,8 +70,9 @@ function handleChangeButton() {
             url: '/activity?' + $.param({
                 "id": dataId,
                 "name": trimedValue,
-                "maxUsers": maxUsersInput.value,
+                "maxusers": maxUsersInput.value,
                 "duration": durationInput.value,
+                "activitytype" : activityType.value
             })
         }).done(function () {
             window.location.href = "/activity?id=" + dataId;
@@ -103,7 +111,7 @@ function handleAddButton() {
     if (checkAssignInput()) {
         $.ajax({
             type: 'PUT',
-            url: '/activity-assing?' + $.param({
+            url: '/activity-assign?' + $.param({
                 "id": dataId,
                 "userid": assingInput.value
             })
@@ -120,7 +128,7 @@ function handleAddButton() {
 function checkAssignInput() {
     if (assingInput.value == "") {
         $('#assign-errors').removeClass('d-none');
-        $('#assing-error').text("Nie podano id użytkownika do zapisania");
+        $('#assign-error').text("Nie podano id użytkownika do zapisania");
         return false;
     } else if (+assingInput.value <= 0) {
         $('#assign-errors').removeClass('d-none');

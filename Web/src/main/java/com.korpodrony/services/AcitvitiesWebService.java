@@ -2,6 +2,7 @@ package com.korpodrony.services;
 
 import com.korpodrony.comparators.ActivityIDComparator;
 import com.korpodrony.dao.OrganizationRepositoryDao;
+import com.korpodrony.model.ActivitiesType;
 import com.korpodrony.model.Activity;
 import com.korpodrony.model.User;
 
@@ -49,5 +50,21 @@ public class AcitvitiesWebService {
         List<Activity> activities = dao.getAllActivities();
         activities.sort(new ActivityIDComparator());
         return activities;
+    }
+
+    public boolean assignUserToActivity(int userId, int activityId) {
+        return dao.assignUserToActivity(userId, activityId);
+    }
+
+    public boolean unassignUserFromActivity(int userId, int activityId) {
+        return dao.unassignUserFromActivity(userId, activityId);
+    }
+
+    public boolean deleteActivity(int activityId) {
+        return dao.deleteActivity(activityId);
+    }
+
+    public boolean editActivity(int activityId, String name, short maxUsers, byte duration, int activityTypeNumber) {
+        return dao.editActivity(activityId, name, maxUsers, duration, ActivitiesType.getActivity(activityTypeNumber));
     }
 }

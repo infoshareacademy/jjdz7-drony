@@ -1,5 +1,5 @@
 <#import "parts/macros/basic.ftlh" as baisc/>
-<@baisc.includeContent scripts="../scripts-activity.ftlh" currentPosition="none">
+<@baisc.includeContent scripts="../scripts-activity.ftlh" currentPosition="none" modal="../activity-modal.ftlh">
 
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
@@ -8,7 +8,7 @@
                 <div class="form-group row">
                     <label for="id" class="col-sm-2 col-form-label">ID:</label>
                     <div class="col-sm-10">
-                        <input type="number" readonly class="form-control-plaintext" id="id" data-id="1 value="${activity.id}">
+                        <input type="number" readonly class="form-control-plaintext" id="id" data-id="${activity.id}" value="${activity.id}">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -20,21 +20,29 @@
                 </div>
                 <div class="form-group row">
                     <label for="maxUsers" class="col-sm-6 col-form-label maxUsersLabel">Max l. użytkowników: x</label>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 col-lg-12">
                         <input type="range" class="custom-range maxUsers" min="1" max="30" value="${activity.maxUsers}"
                                id="${activity.maxUsers}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="duration" class="col-sm-6 col-form-label durationLabel">Czas trwania: x</label>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 col-lg-12">
                         <input type="range" class="custom-range duration" min="1" max="10"
                                value="${activity.lenghtInQuarters}" id="duration">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="activityType">Wybierz rodzaj zajęć</label>
+                    <select class="form-control" data-activitySelect="${activity.activitiesType.number}" id="activityType">
+                        <option value="1">Wykład</option>
+                        <option value="2">Ćwiczenia</option>
+                        <option value="3">Warsztaty</option>
+                    </select>
+                </div>
             </form>
-              <ul class="list-group w-80 mb-3 border border-danger d-none" id="errors">
-                      <li class="list-group-item" id="type-error"></li>
+              <ul class="list-group w-80 mb-3 border border-danger d-none errors" id="errors">
+                      <li class="list-group-item type-error" id="type-error"></li>
                </ul>
         </div>
     </div>
@@ -49,7 +57,7 @@
              </div>
 
     <div class="row">
-        <div class="col-10 ml-auto mr-auto mt-5">
+        <div class="col-10 ml-auto mr-auto mt-5" id="assigned-users">
             <h2>Użytykownicy przypisani do zajęć</h2>
             <#list users>
                 <ul class="list-group w-100 mb-3 ">
@@ -76,8 +84,8 @@
                     </div>
                 </div>
 
-                <ul class="list-group w-80 mb-3 border border-danger d-none col-10 mr-auto ml-auto" id="delete-errors">
-                    <li class="list-group-item" id="delete-error"></li>
+                <ul class="list-group w-80 mb-3 border border-danger d-none col-10 mr-auto ml-auto errors" id="delete-errors">
+                    <li class="list-group-item type-error" id="delete-error"></li>
                 </ul>
 
                 <div class="row">
@@ -91,8 +99,8 @@
                     </div>
                 </div>
 
-                <ul class="list-group w-80 mb-3 border border-danger mr-auto ml-auto col-10 d-none" id="assign-errors">
-                    <li class="list-group-item" id="assign-error"></li>
+                <ul class="list-group w-80 mb-3 border border-danger mr-auto ml-auto col-10 d-none errors" id="assign-errors">
+                    <li class="list-group-item type-error" id="assign-error"></li>
                 </ul>
 
     <div class="row">
@@ -112,23 +120,4 @@
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Usuwane zajęć</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Czy jesteś pewny/a, że chcesz usunąć te zajęcia?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn" data-dismiss="modal">Nie</button>
-                        <button type="button" class="btn btn-danger" id="delete-activty" data-dismiss="modal">Usuń</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 </@baisc.includeContent>
