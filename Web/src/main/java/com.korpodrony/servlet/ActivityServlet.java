@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(urlPatterns = {"/activity", "/activity-unassign", "/activity-assign", "/activity-add"})
@@ -123,7 +122,7 @@ public class ActivityServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getServletPath().equals("/activity")) {
-            if(createActivity(req.getParameterMap())) {
+            if (createActivity(req.getParameterMap())) {
                 repositoryService.writeRepositoryToFile();
                 resp.setStatus(HttpServletResponse.SC_OK);
             } else {
