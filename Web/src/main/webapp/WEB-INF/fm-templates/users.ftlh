@@ -1,5 +1,5 @@
-<#import "parts/macros/basic.ftlh" as baisc/>
-<@baisc.includeContent scripts="../scripts.ftlh">
+<#import "parts/macros/basic.ftlh" as basic/>
+<@basic.includeContent scripts="../scripts.ftlh">
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Użytkowicy</h2>
@@ -17,4 +17,4 @@
             <a class="btn btn-success text-white w-100">Dodaj</a>
         </div>
     </div>
-</@baisc.includeContent>
+</@basic.includeContent>>

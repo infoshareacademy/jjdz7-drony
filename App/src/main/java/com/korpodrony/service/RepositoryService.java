@@ -9,8 +9,12 @@ import com.korpodrony.model.User;
 import com.korpodrony.repository.OrganizationRepository;
 import com.korpodrony.utils.JSONReader;
 import com.korpodrony.utils.JSONWriter;
+import org.apache.commons.io.FileUtils;
 
 import javax.enterprise.context.RequestScoped;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Set;
@@ -66,5 +70,15 @@ public class RepositoryService {
         Set<Plan> plansFromJson = JSONReader.parsePlanFromJSONFile(Paths.get(path, PLANS_JSON));
         org.setPlans(plansFromJson);
         Plan.setCurrentID(plansFromJson);
+    }
+
+    public void saveFile(InputStream fileContent, String fileName) throws IOException {
+
+        if (fileName.equals(USERS_JSON) || fileName.equals(ACTIVITIES_JSON) || fileName.equals(PLANS_JSON)) {
+            String path = new PropertiesService().getProperty(PropertiesService.APP_PATH);
+            FileUtils.copyInputStreamToFile(fileContent, new File(path + "/" + fileName));
+        } else {
+            throw new IOException("Nazwa pliku nie pasuje do wzorca.");
+        }
     }
 }

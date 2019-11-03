@@ -29,3 +29,7 @@ canvas{
 .btn-group{
     display: flex;
 }
+
+.warning-message {
+    color: red;
+}
