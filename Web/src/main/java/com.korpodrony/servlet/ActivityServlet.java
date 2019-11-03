@@ -39,8 +39,27 @@ public class ActivityServlet extends HttpServlet {
         String url = req.getServletPath();
         switch (url) {
             case "/activity": {
-                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                break;
+                String requestedId = req.getParameter("id");
+                if (!validator.validateInteger(requestedId)) {
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    break;
+                }
+                int id = Integer.parseInt(requestedId);
+                if (!acitvitiesWebService.hasActivity(id)) {
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    break;
+                }
+                Map<String, Object> model = new HashMap<>();
+                model.put("activity", acitvitiesWebService.getActivity(id));
+                model.put("users", acitvitiesWebService.getAssignedUsers(id));
+                model.put("availableUsers", acitvitiesWebService.getAvaiableUsers(id));
+                Template template = templateProvider.getTemplate(getServletContext(), "activity.ftlh");
+                try {
+                    template.process(model, writer);
+                    break;
+                } catch (TemplateException e) {
+                    break;
+                }
             }
             case "/activity-add": {
                 Template template = templateProvider.getTemplate(getServletContext(), "activity-add.ftlh");
@@ -55,6 +74,7 @@ public class ActivityServlet extends HttpServlet {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         }
+
     }
 
     @Override
