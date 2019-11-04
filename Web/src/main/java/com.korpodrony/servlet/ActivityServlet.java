@@ -64,24 +64,6 @@ public class ActivityServlet extends HttpServlet {
         }
     }
 
-    private void proccesTemplate(PrintWriter writer, Map<String, Object> model, String path) throws IOException {
-        Template template = templateProvider.getTemplate(getServletContext(), path);
-        try {
-            template.process(model, writer);
-            return;
-        } catch (TemplateException e) {
-            return;
-        }
-    }
-
-    private Map<String, Object> getActivityModel(int id) {
-        Map<String, Object> model = new HashMap<>();
-        model.put("activity", acitvitiesWebService.getActivity(id));
-        model.put("users", acitvitiesWebService.getAssignedUsers(id));
-        model.put("availableUsers", acitvitiesWebService.getAvaiableUsers(id));
-        return model;
-    }
-
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
@@ -158,15 +140,40 @@ public class ActivityServlet extends HttpServlet {
         }
     }
 
+    private Map<String, Object> getActivityModel(int id) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("activity", acitvitiesWebService.getActivity(id));
+        model.put("users", acitvitiesWebService.getAssignedUsers(id));
+        model.put("availableUsers", acitvitiesWebService.getAvaiableUsers(id));
+        return model;
+    }
+
+    private void proccesTemplate(PrintWriter writer, Map<String, Object> model, String path) throws IOException {
+        Template template = templateProvider.getTemplate(getServletContext(), path);
+        try {
+            template.process(model, writer);
+            return;
+        } catch (TemplateException e) {
+            return;
+        }
+    }
+
     private boolean assignUserToActivity(Map<String, String[]> parameterMap) {
-        if (getCountParametersArgs(parameterMap) == 2
-                && validateAssignParameters(parameterMap)) {
+        if (checkAssignParameters(parameterMap)) {
             int activityId = Integer.parseInt(parameterMap.get("id")[0]);
             int userId = Integer.parseInt(parameterMap.get("userid")[0]);
             return acitvitiesWebService.assignUserToActivity(userId, activityId);
         } else {
             return false;
         }
+    }
+
+    private boolean checkAssignParameters(Map<String, String[]> parameterMap) {
+        return checkParameters(parameterMap, 2, validateAssignParameters(parameterMap));
+    }
+
+    private boolean checkParameters(Map<String, String[]> parameterMap, int number, boolean statement) {
+        return getCountParametersArgs(parameterMap) == number && statement;
     }
 
     private long getCountParametersArgs(Map<String, String[]> parameterMap) {
@@ -180,8 +187,7 @@ public class ActivityServlet extends HttpServlet {
     }
 
     private boolean unassignUserToActivity(Map<String, String[]> parameterMap) {
-        if (getCountParametersArgs(parameterMap) == 2
-                && validateAssignParameters(parameterMap)) {
+        if (checkUnassignParmeters(parameterMap)) {
             int activityId = Integer.parseInt(parameterMap.get("id")[0]);
             int userId = Integer.parseInt(parameterMap.get("userid")[0]);
             return acitvitiesWebService.unassignUserFromActivity(userId, activityId);
@@ -190,9 +196,12 @@ public class ActivityServlet extends HttpServlet {
         }
     }
 
+    private boolean checkUnassignParmeters(Map<String, String[]> parameterMap) {
+        return checkParameters(parameterMap, 2, validateAssignParameters(parameterMap));
+    }
+
     private boolean editActivity(Map<String, String[]> parameterMap) {
-        if (getCountParametersArgs(parameterMap) == 5
-                && validateEditParameters(parameterMap)) {
+        if (checkEditParameters(parameterMap)) {
             int activityId = Integer.parseInt(parameterMap.get("id")[0]);
             String name = parameterMap.get("name")[0].trim();
             short maxUsers = Short.parseShort(parameterMap.get("maxusers")[0]);
@@ -202,6 +211,10 @@ public class ActivityServlet extends HttpServlet {
         } else {
             return false;
         }
+    }
+
+    private boolean checkEditParameters(Map<String, String[]> parameterMap) {
+        return checkParameters(parameterMap, 5, validateEditParameters(parameterMap));
     }
 
     private boolean validateEditParameters(Map<String, String[]> parameterMap) {
