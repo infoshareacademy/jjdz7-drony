@@ -26,12 +26,6 @@ public class SearchWebService {
                         .collect(Collectors.toList()));
     }
 
-    private Predicate<User> indetifyUserByText(String name) {
-        return x ->(x.getName() + " " + x.getSurname())
-                        .toLowerCase()
-                        .contains(name);
-    }
-
     public String getActivitiesByName(String name) {
         return JSONWriter.generateJsonString(dao.getAllActivities()
                 .stream()
@@ -52,5 +46,11 @@ public class SearchWebService {
                         )
                         .sorted((x, y) -> new PlanIDComparator().compare(x, y))
                         .collect(Collectors.toList()));
+    }
+
+    private Predicate<User> indetifyUserByText(String name) {
+        return x ->(x.getName() + " " + x.getSurname())
+                .toLowerCase()
+                .contains(name);
     }
 }

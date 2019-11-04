@@ -7,7 +7,6 @@
         URL = "/search-activity",
         response;
 
-
     function setURL(txt) {
         removePressedStatus();
         URL = txt;
@@ -60,36 +59,6 @@
         })
     }
 
-    function badRequest() {
-        return "<li class=\"list-group-item\"> Nie znaleziono wyników dla podanego hasła</li> "
-    }
-
-    function prepareActivity(activity) {
-        return "<li class=\"list-group-item\"><a href=\"/activity?id=" + activity.id + "\" class=\"stretched-link\">Id: " + activity.id +
-            ", nazwa: " + activity.name + "</a></li> ";
-    }
-
-    function prepareActivitiesList(resp) {
-        var str = "";
-        for (var i = 0; i < resp.length; i++) {
-            str += prepareActivity(resp[i]);
-        }
-        return str;
-    }
-
-    function preparePlan(plan) {
-        return "<li class=\"list-group-item\"><a href=\"/plan?id=" + plan.id + "\" class=\"stretched-link\">Id: " + plan.id +
-            ", nazwa: " + plan.name + "</a></li> ";
-    }
-
-    function preparePlansList(resp) {
-        var str = "";
-        for (var i = 0; i < resp.length; i++) {
-            str += preparePlan(resp[i]);
-        }
-        return str;
-    }
-
     function prepareList(resp) {
         if (URL == "/search-users") {
             return prepareUsersList(resp);
@@ -111,6 +80,36 @@
     function prepareUser(user) {
         return "<li class=\"list-group-item\"><a href=\"/user?id=" + user.id + "\" class=\"stretched-link\">Id: " + user.id +
             ", imię: " + user.name + ", nazwisko: " + user.surname + "</a></li> "
+    }
+
+    function prepareActivitiesList(resp) {
+        var str = "";
+        for (var i = 0; i < resp.length; i++) {
+            str += prepareActivity(resp[i]);
+        }
+        return str;
+    }
+
+    function prepareActivity(activity) {
+        return "<li class=\"list-group-item\"><a href=\"/activity?id=" + activity.id + "\" class=\"stretched-link\">Id: " + activity.id +
+            ", nazwa: " + activity.name + "</a></li> ";
+    }
+
+    function badRequest() {
+        return "<li class=\"list-group-item\"> Nie znaleziono wyników dla podanego hasła</li> "
+    }
+
+    function preparePlan(plan) {
+        return "<li class=\"list-group-item\"><a href=\"/plan?id=" + plan.id + "\" class=\"stretched-link\">Id: " + plan.id +
+            ", nazwa: " + plan.name + "</a></li> ";
+    }
+
+    function preparePlansList(resp) {
+        var str = "";
+        for (var i = 0; i < resp.length; i++) {
+            str += preparePlan(resp[i]);
+        }
+        return str;
     }
 
     searchInput.addEventListener("keyup", function (evt) {
