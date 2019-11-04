@@ -10,15 +10,11 @@
             </div>
         </div>
         <div class="input-group mt-5 mb-3">
-            <input type="text" class="form-control" placeholder="Searched text" aria-label="Searched text" aria-describedby="basic-addon2" id="searchInput">
-            <div class="input-group-append">
-                <span class="btn input-group-text" id="basic-addon2">Szukaj</span>
-            </div>
+            <input type="text" class="form-control" placeholder="Szukana fraza" aria-label="Searched text" aria-describedby="basic-addon2" id="searchInput">
         </div>
     </div>
     <div class="row mt-3">
         <ul class="list-group w-100 mb-3" id="results">
-            <li class="list-group-item"><a href="#" class="stretched-link">Go dadadsa</a></li>
         </ul>
     </div>
 </@baisc.includeContent>
