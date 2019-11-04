@@ -50,32 +50,36 @@ public class ActivityServlet extends HttpServlet {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     break;
                 }
-                Map<String, Object> model = new HashMap<>();
-                model.put("activity", acitvitiesWebService.getActivity(id));
-                model.put("users", acitvitiesWebService.getAssignedUsers(id));
-                model.put("availableUsers", acitvitiesWebService.getAvaiableUsers(id));
-                Template template = templateProvider.getTemplate(getServletContext(), "activity.ftlh");
-                try {
-                    template.process(model, writer);
-                    break;
-                } catch (TemplateException e) {
-                    break;
-                }
+                Map<String, Object> model = getActivityModel(id);
+                proccesTemplate(writer, model, templateProvider.ACTIVITY);
+                break;
             }
             case "/activity-add": {
-                Template template = templateProvider.getTemplate(getServletContext(), "activity-add.ftlh");
-                try {
-                    template.process(null, writer);
-                    break;
-                } catch (TemplateException e) {
-                    break;
-                }
+                proccesTemplate(writer, null, templateProvider.ADD_ACTIVITY);
+                break;
             }
             default: {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         }
+    }
 
+    private void proccesTemplate(PrintWriter writer, Map<String, Object> model, String path) throws IOException {
+        Template template = templateProvider.getTemplate(getServletContext(), path);
+        try {
+            template.process(model, writer);
+            return;
+        } catch (TemplateException e) {
+            return;
+        }
+    }
+
+    private Map<String, Object> getActivityModel(int id) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("activity", acitvitiesWebService.getActivity(id));
+        model.put("users", acitvitiesWebService.getAssignedUsers(id));
+        model.put("availableUsers", acitvitiesWebService.getAvaiableUsers(id));
+        return model;
     }
 
     @Override
@@ -85,30 +89,30 @@ public class ActivityServlet extends HttpServlet {
         String url = req.getServletPath();
         switch (url) {
             case "/activity-assign": {
-                if (assignUserToActivity(req.getParameterMap())) {
-                    repositoryService.writeRepositoryToFile();
-                    resp.setStatus(HttpServletResponse.SC_OK);
-                } else {
+                if (!assignUserToActivity(req.getParameterMap())) {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    break;
                 }
+                repositoryService.writeRepositoryToFile();
+                resp.setStatus(HttpServletResponse.SC_OK);
                 break;
             }
             case "/activity-unassign": {
-                if (unassignUserToActivity(req.getParameterMap())) {
-                    repositoryService.writeRepositoryToFile();
-                    resp.setStatus(HttpServletResponse.SC_OK);
-                } else {
+                if (!unassignUserToActivity(req.getParameterMap())) {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    break;
                 }
+                repositoryService.writeRepositoryToFile();
+                resp.setStatus(HttpServletResponse.SC_OK);
                 break;
             }
             case "/activity": {
-                if (editActivity(req.getParameterMap())) {
-                    repositoryService.writeRepositoryToFile();
-                    resp.setStatus(HttpServletResponse.SC_OK);
-                } else {
+                if (!editActivity(req.getParameterMap())) {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    break;
                 }
+                repositoryService.writeRepositoryToFile();
+                resp.setStatus(HttpServletResponse.SC_OK);
                 break;
             }
             default: {
@@ -119,24 +123,24 @@ public class ActivityServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getServletPath().equals("/activity")) {
-            String requestedId = req.getParameter("id");
-            if (!validator.validateInteger(requestedId)) {
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                return;
-            }
-            int id = Integer.parseInt(requestedId);
-            if (!acitvitiesWebService.hasActivity(id)) {
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                return;
-            }
-            if (acitvitiesWebService.deleteActivity(id)) {
-                repositoryService.writeRepositoryToFile();
-                resp.setStatus(HttpServletResponse.SC_OK);
-                return;
-            }
-        } else {
+        if (!req.getServletPath().equals("/activity")) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        String requestedId = req.getParameter("id");
+        if (!validator.validateInteger(requestedId)) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        int id = Integer.parseInt(requestedId);
+        if (!acitvitiesWebService.hasActivity(id)) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        if (acitvitiesWebService.deleteActivity(id)) {
+            repositoryService.writeRepositoryToFile();
+            resp.setStatus(HttpServletResponse.SC_OK);
+            return;
         }
     }
 

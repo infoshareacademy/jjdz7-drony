@@ -13,6 +13,10 @@ public class TemplateProvider {
 
     private final String TEMPLATE_DIRECTORY_PATH = "WEB-INF/fm-templates";
     private Configuration configuration;
+    public static final String ACTIVITY = "activity.ftlh";
+    public static final String ADD_ACTIVITY = "activity-add.ftlh";
+    public static final String INDEX = "index.ftlh";
+    public static final String USERS = "users.ftlh";
 
     @Inject
     private ConfigProvider configProvider;

@@ -23,7 +23,7 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-        Template template = templateProvider.getTemplate(getServletContext(), "index.ftlh");
+        Template template = templateProvider.getTemplate(getServletContext(), templateProvider.INDEX);
         try {
             template.process(null, writer);
         } catch (TemplateException e) {
