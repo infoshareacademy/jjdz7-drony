@@ -181,7 +181,11 @@ public class ActivityServlet extends HttpServlet {
     }
 
     private long countParameters(Map<String, String[]> parameterMap) {
-        return parameterMap.values().stream().map(x -> x.length).filter(x -> checkNumberOfParameters(1, x)).count();
+        return parameterMap.values()
+                .stream()
+                .map(x -> x.length)
+                .filter(x -> checkNumberOfParameters(1, x))
+                .count();
     }
 
     private boolean validateAssignParameters(Map<String, String[]> parameterMap) {
