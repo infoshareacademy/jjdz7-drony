@@ -173,11 +173,15 @@ public class ActivityServlet extends HttpServlet {
     }
 
     private boolean checkParameters(Map<String, String[]> parameterMap, int number, boolean statement) {
-        return getCountParametersArgs(parameterMap) == number && statement;
+        return checkNumberOfParameters(number, countParameters(parameterMap)) && statement;
     }
 
-    private long getCountParametersArgs(Map<String, String[]> parameterMap) {
-        return parameterMap.values().stream().map(x -> x.length).filter(x -> x == 1).count();
+    private boolean checkNumberOfParameters(int number, long l) {
+        return l == number;
+    }
+
+    private long countParameters(Map<String, String[]> parameterMap) {
+        return parameterMap.values().stream().map(x -> x.length).filter(x -> checkNumberOfParameters(1, x)).count();
     }
 
     private boolean validateAssignParameters(Map<String, String[]> parameterMap) {
@@ -231,8 +235,7 @@ public class ActivityServlet extends HttpServlet {
     }
 
     private boolean createActivity(Map<String, String[]> parameterMap) {
-        if (getCountParametersArgs(parameterMap) == 4
-                && validateCreateParameters(parameterMap)) {
+        if (checkParameters(parameterMap, 4, validateCreateParameters(parameterMap))) {
             String name = parameterMap.get("name")[0].trim();
             short maxUsers = Short.parseShort(parameterMap.get("maxusers")[0]);
             byte duration = Byte.parseByte(parameterMap.get("duration")[0]);
