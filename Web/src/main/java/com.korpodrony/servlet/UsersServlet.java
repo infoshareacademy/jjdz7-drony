@@ -36,7 +36,7 @@ public class UsersServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         Map<String, Object> model = new HashMap<>();
         model.put("users", usersWebService.getAllUsers());
-        Template template = templateProvider.getTemplate(getServletContext(), templateProvider.USERS);
+        Template template = templateProvider.getTemplate(getServletContext(), templateProvider.USERS_PATH);
         try {
             template.process(model, writer);
         } catch (TemplateException e) {

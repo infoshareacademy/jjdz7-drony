@@ -11,12 +11,12 @@ import java.io.IOException;
 @RequestScoped
 public class TemplateProvider {
 
+    public static final String ACTIVITY_PATH = "activity.ftlh";
+    public static final String ADD_ACTIVITY_PATH = "activity-add.ftlh";
+    public static final String INDEX_PATH = "index.ftlh";
+    public static final String USERS_PATH = "users.ftlh";
     private final String TEMPLATE_DIRECTORY_PATH = "WEB-INF/fm-templates";
     private Configuration configuration;
-    public static final String ACTIVITY = "activity.ftlh";
-    public static final String ADD_ACTIVITY = "activity-add.ftlh";
-    public static final String INDEX = "index.ftlh";
-    public static final String USERS = "users.ftlh";
 
     @Inject
     private ConfigProvider configProvider;
