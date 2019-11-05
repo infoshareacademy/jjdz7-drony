@@ -42,26 +42,19 @@ public class SearchServlet extends HttpServlet {
                 }
             }
             case "/search-users": {
-                resp.setContentType("application/json");
-                resp.setCharacterEncoding("UTF-8");
-                String name = req.getParameter("name").toLowerCase();
+                String name = getSearchText(req, resp);
                 writer.print(searchWebService.getUsersByName(name));
                 writer.flush();
                 break;
             }
             case "/search-activities": {
-                resp.setContentType("application/json");
-                resp.setCharacterEncoding("UTF-8");
-                String name = req.getParameter("name").toLowerCase();
-                String result = searchWebService.getActivitiesByName(name);
-                writer.print(result);
+                String name = getSearchText(req, resp);
+                writer.print(searchWebService.getActivitiesByName(name));
                 writer.flush();
                 break;
             }
             case "/search-plans": {
-                resp.setContentType("application/json");
-                resp.setCharacterEncoding("UTF-8");
-                String name = req.getParameter("name").toLowerCase();
+                String name = getSearchText(req, resp);
                 writer.print(searchWebService.getPlansByName(name));
                 writer.flush();
                 break;
@@ -70,5 +63,11 @@ public class SearchServlet extends HttpServlet {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         }
+    }
+
+    private String getSearchText(HttpServletRequest req, HttpServletResponse resp) {
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        return req.getParameter("name").toLowerCase();
     }
 }
