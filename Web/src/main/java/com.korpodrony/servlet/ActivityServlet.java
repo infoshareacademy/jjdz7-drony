@@ -49,11 +49,11 @@ public class ActivityServlet extends HttpServlet {
                     break;
                 }
                 Map<String, Object> model = getActivityModel(id);
-                proccesTemplate(writer, model, templateProvider.ACTIVITY_PATH);
+                proccesTemplate(writer, model, templateProvider.ACTIVITY_TEMPLATE);
                 break;
             }
             case "/activity-add": {
-                proccesTemplate(writer, null, templateProvider.ADD_ACTIVITY_PATH);
+                proccesTemplate(writer, null, templateProvider.ADD_ACTIVITY_TEMPLATE);
                 break;
             }
             default: {
