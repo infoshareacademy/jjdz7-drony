@@ -52,6 +52,7 @@ public class UploadFileServlet extends HttpServlet {
             isPrintForm = true;
         }
 
+
         printPage(resp, message, isPrintForm);
     }
 
@@ -59,7 +60,7 @@ public class UploadFileServlet extends HttpServlet {
         try {
             resp.setContentType("text/html;charset=UTF-8");
             PrintWriter writer = resp.getWriter();
-            Template template = templateProvider.getTemplate(getServletContext(), "upload-file.ftlh");
+            Template template = templateProvider.getTemplate(getServletContext(), templateProvider.UPLOAD_FILE_TEMPLATE);
 
             Map<String, Object> model = new HashMap<>();
             model.put("message", message);

@@ -1,5 +1,5 @@
 <#import "parts/macros/basic.ftlh" as basic/>
-<@basic.includeContent scripts="../scripts.ftlh">
+<@basic.includeContent scripts="../scripts.ftlh" currentPosition="upload" modal="">
 
     <div class="row">
         <span class="warning-message">${message}</span><br/><br/>

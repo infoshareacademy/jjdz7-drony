@@ -8,7 +8,6 @@ import com.korpodrony.model.Activity;
 import com.korpodrony.model.User;
 import com.korpodrony.utils.IoTools;
 
-import javax.enterprise.context.RequestScoped;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 
-@RequestScoped
 public class UsersService {
 
     private OrganizationRepositoryDao dao = new OrganizationRepositoryDaoImpl();

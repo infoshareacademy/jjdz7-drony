@@ -128,7 +128,7 @@ public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao 
 
     @Override
     public boolean unassignActivityFromPlan(int activityID, int planID) {
-        if (!hasPlanWithThisID(planID) && !hasActivityWithThisID(activityID)) {
+        if (!hasPlanWithThisID(planID) || !hasActivityWithThisID(activityID)) {
             return false;
         }
         return getPlan(planID)
@@ -137,7 +137,7 @@ public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao 
 
     @Override
     public boolean assignUserToActivity(int userID, int activityID) {
-        if (!hasUserWithThisID(userID) && !hasActivityWithThisID(activityID)) {
+        if (!hasUserWithThisID(userID) || !hasActivityWithThisID(activityID)) {
             return false;
         }
         return getActivity(activityID)
@@ -146,7 +146,7 @@ public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao 
 
     @Override
     public boolean unassignUserFromActivity(int userID, int activityID) {
-        if (!hasUserWithThisID(userID) && !hasActivityWithThisID(activityID)) {
+        if (!hasUserWithThisID(userID) || !hasActivityWithThisID(activityID)) {
             return false;
         }
         return getActivity(activityID)

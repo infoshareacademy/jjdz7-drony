@@ -94,7 +94,7 @@ public class Activity {
         this.activitiesType = activitiesType;
     }
 
-    public void editActivity(String name, short maxUsers, byte duration, ActivitiesType activitiesType) {
+    public void editActivity(String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
         setName(name);
         setMaxUsers(maxUsers);
         setLenghtInQuarters(lenghtInQuarters);
