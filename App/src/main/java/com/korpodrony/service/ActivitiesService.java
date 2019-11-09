@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 
-@RequestScoped
 public class ActivitiesService {
     private OrganizationRepositoryDao dao = new OrganizationRepositoryDaoImpl();
     private UsersService usersService = new UsersService();
