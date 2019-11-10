@@ -1,6 +1,5 @@
 <#import "parts/macros/basic.ftlh" as baisc/>
 <@baisc.includeContent scripts="../scripts-activity-add.ftlh" currentPosition="none" modal="">
-
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Zajęcia</h2>
@@ -37,7 +36,6 @@
             </ul>
         </div>
     </div>
-
     <div class="row mt-3">
         <div class="col-3 mb-3 ml-auto mr-auto">
             <button class="btn btn-success text-white w-100 save">Dodaj zajęcia</button>

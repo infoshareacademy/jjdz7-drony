@@ -10,6 +10,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @RequestScoped
@@ -46,10 +47,17 @@ public class ActivitiesWebService {
                 .collect(Collectors.toList());
     }
 
-    public Object getAllActivities() {
+    public List<Activity> getAllActivities() {
         List<Activity> activities = dao.getAllActivities();
         activities.sort(new ActivityIDComparator());
         return activities;
+    }
+
+    public List<Activity> getAllActivities(Predicate predicate) {
+        List<Activity> activities = dao.getAllActivities();
+        activities.sort(new ActivityIDComparator());
+        return (List<Activity>) activities.stream()
+                .filter(predicate).collect(Collectors.toList());
     }
 
     public boolean assignUserToActivity(int userId, int activityId) {

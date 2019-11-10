@@ -15,6 +15,7 @@ public class TemplateProvider {
     public static final String ADD_ACTIVITY_TEMPLATE = "activity-add.ftlh";
     public static final String INDEX_TEMPLATE = "index.ftlh";
     public static final String USERS_TEMPLATE = "users.ftlh";
+    public static final String ACTIVITES_TEMPLATE = "activities.ftlh";
     private final String TEMPLATE_DIRECTORY_PATH = "WEB-INF/fm-templates";
     private Configuration configuration;
 

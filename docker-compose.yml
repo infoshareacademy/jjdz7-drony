@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  wildfly:
+    build: .
+    ports:
+      - 8080:8080
+      - 9990:9990
+  mysql:
+    image: mysql:8.0.18
+    environment:
+      MYSQL_ROOT_PASSWORD: libris
+    ports:
+      - 55555:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
