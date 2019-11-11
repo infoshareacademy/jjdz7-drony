@@ -243,7 +243,7 @@ public class ActivityServlet extends HttpServlet {
                 && validator.validateString(name)
                 && validator.validateShort(maxUsers)
                 && validator.validateByte(duration)
-                && validator.validateAcitvityTypeInteger(activityType);
+                && validator.validateActivityTypeInteger(activityType);
     }
 
     private boolean createActivity(Map<String, String[]> parameterMap) {
@@ -265,6 +265,6 @@ public class ActivityServlet extends HttpServlet {
         return validator.validateString(name)
                 && validator.validateShort(maxUsers)
                 && validator.validateByte(duration)
-                && validator.validateAcitvityTypeInteger(activityType);
+                && validator.validateActivityTypeInteger(activityType);
     }
 }

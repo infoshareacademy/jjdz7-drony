@@ -53,7 +53,7 @@ public class ActivitiesWebService {
         return activities;
     }
 
-    public List<Activity> getAllActivities(Predicate predicate) {
+    public List<Activity> getAllActivities(Predicate<Activity> predicate) {
         List<Activity> activities = dao.getAllActivities();
         activities.sort(new ActivityIDComparator());
         return (List<Activity>) activities.stream()

@@ -1,13 +1,11 @@
 package com.korpodrony.servlet;
 
-import com.korpodrony.dao.OrganizationRepositoryDao;
 import com.korpodrony.freemarker.TemplateProvider;
 import com.korpodrony.services.ActivitiesWebService;
-import com.korpodrony.services.UsersWebService;
+import com.korpodrony.validation.Validator;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,8 +23,8 @@ public class ActivitiesServlet extends HttpServlet {
     @Inject
     TemplateProvider templateProvider;
 
-    @EJB
-    OrganizationRepositoryDao dao;
+    @Inject
+    Validator validator;
 
     @Inject
     ActivitiesWebService activitiesWebService;
@@ -35,13 +33,53 @@ public class ActivitiesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-        Map<String, Object> model = new HashMap<>();
-        model.put("activities", activitiesWebService.getAllActivities());
-        Template template = templateProvider.getTemplate(getServletContext(), templateProvider.ACTIVITES_TEMPLATE);
+        String typeNumber = req.getParameter("type");
+        Map<String, Object> model = getModel(typeNumber);
+        Template template = templateProvider.getTemplate(getServletContext(), templateProvider.ACTIVITIES_TEMPLATE);
         try {
             template.process(model, writer);
         } catch (TemplateException e) {
             e.printStackTrace();
         }
+    }
+
+    private Map<String, Object> getModel(String typeNumber) {
+        Map<String, Object> model = new HashMap<>();
+        if (!validator.validateInteger(typeNumber)) {
+            model.put("activities", activitiesWebService.getAllActivities());
+            model.put("type", 4);
+            return model;
+        }
+        switch (Integer.parseInt(typeNumber)) {
+            case 1: {
+                putToModelActivitiesWithTypeNumber(model, 1);
+                break;
+            }
+            case 2: {
+                putToModelActivitiesWithTypeNumber(model, 2);
+                break;
+            }
+            case 3: {
+                putToModelActivitiesWithTypeNumber(model, 3);
+                break;
+            }
+            default: {
+                putToModelActivitiesWithTypeNumber(model, 4);
+            }
+        }
+        return model;
+    }
+
+    private void putToModelActivitiesWithTypeNumber(Map<String, Object> model, int typeNumber) {
+        if (typeNumber == 4) {
+            model.put("activities", activitiesWebService.
+                    getAllActivities()
+            );
+        } else {
+            model.put("activities", activitiesWebService.
+                    getAllActivities(x -> x.getActivitiesType().getNumber() == typeNumber)
+            );
+        }
+        model.put("type", typeNumber);
     }
 }
