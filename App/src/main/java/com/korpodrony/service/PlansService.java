@@ -7,7 +7,6 @@ import com.korpodrony.model.Activity;
 import com.korpodrony.model.Plan;
 import com.korpodrony.utils.IoTools;
 
-import javax.enterprise.context.RequestScoped;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +22,8 @@ public class PlansService {
         if (checkWithMessageOnFalse(!dao.getAllPlans().isEmpty(), "Nie ma obecnie żadnych planów, które można by edytować.")) {
             printPlans();
             int planID = IoTools.getIntFromUserWithMessage("Podaj ID planu, który chcesz edytować:");
-            if (checkWithMessageOnFalse(dao.getAllPlansIDs().contains(planID),"Nie ma planu o takim ID!")) {
+            if (checkWithMessageOnFalse(dao.getAllPlansIDs().contains(planID), "Nie ma planu o takim ID!")) {
+                out.println("Poprzednia nazwa planu: " + dao.getPlan(planID).getName());
                 String name = IoTools.getStringFromUserWithMessage("Podaj nową nazwę zajęć:");
                 if (dao.editPlan(planID, name)) {
                     out.println("Zedytowano plan.");
