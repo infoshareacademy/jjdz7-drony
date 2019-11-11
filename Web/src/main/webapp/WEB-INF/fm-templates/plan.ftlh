@@ -1,5 +1,5 @@
 <#import "parts/macros/basic.ftlh" as baisc/>
-<@baisc.includeContent scripts="../scripts-activity.ftlh" currentPosition="none" modal="../activity-modal.ftlh">
+<@baisc.includeContent scripts="../scripts-plan.ftlh" currentPosition="none" modal="../plan-modal.ftlh">
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Plan</h2>
@@ -58,9 +58,9 @@
         <div class="col-10 ml-auto mr-auto mt-5">
             <div class="input-group mb-3">
                 <input type="number" class="form-control" placeholder="Id zajęć do wypisania"
-                       aria-label="deleteUser" aria-describedby="basic-addon2" id="unassignActivityInput">
+                       aria-label="unassignActivity" aria-describedby="basic-addon2" id="unassignActivityInput">
                 <div class="input-group-append col-3">
-                    <button class="btn w-100" id="unassignActivity">Wypisz użytkownika</button>
+                    <button class="btn w-100" id="unassignActivity">Wypisz zajęcia</button>
                 </div>
             </div>
         </div>
@@ -74,9 +74,9 @@
         <div class="col-10 ml-auto mr-auto">
             <div class="input-group mb-3">
                 <input type="number" class="form-control" placeholder="Id zajęć do zapisania"
-                       aria-label="assignUser" aria-describedby="basic-addon2" id="assignActivityInput">
+                       aria-label="assignActivity" aria-describedby="basic-addon2" id="assignActivityInput">
                 <div class="input-group-append col-3">
-                    <button class="btn w-100" id="assignActivity">Zapisz użytkownika</button>
+                    <button class="btn w-100" id="assignActivity">Dodaj zajęcia</button>
                 </div>
             </div>
         </div>

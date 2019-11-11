@@ -69,21 +69,21 @@ public class PlanServlet extends HttpServlet {
         String url = req.getServletPath();
         switch (url) {
             case "/plan-assign": {
-                if (setRespStatusOnValidationFailure(resp, assignUserToActivity(req.getParameterMap()))) {
+                if (setRespStatusOnValidationFailure(resp, assignActivityToPlan(req.getParameterMap()))) {
                     break;
                 }
                 saveStatus(resp);
                 break;
             }
             case "/plan-unassign": {
-                if (setRespStatusOnValidationFailure(resp, unassignUserToActivity(req.getParameterMap()))) {
+                if (setRespStatusOnValidationFailure(resp, unassignActivityFromPlan(req.getParameterMap()))) {
                     break;
                 }
                 saveStatus(resp);
                 break;
             }
             case "/plan": {
-                if (setRespStatusOnValidationFailure(resp, editActivity(req.getParameterMap()))) {
+                if (setRespStatusOnValidationFailure(resp, editPlan(req.getParameterMap()))) {
                     break;
                 }
                 saveStatus(resp);
@@ -97,7 +97,7 @@ public class PlanServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!req.getServletPath().equals("/activity")) {
+        if (!req.getServletPath().equals("/plan")) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -166,10 +166,10 @@ public class PlanServlet extends HttpServlet {
         }
     }
 
-    private boolean assignUserToActivity(Map<String, String[]> parameterMap) {
+    private boolean assignActivityToPlan(Map<String, String[]> parameterMap) {
         if (checkAssignParameters(parameterMap)) {
             int activityId = Integer.parseInt(parameterMap.get("id")[0]);
-            int userId = Integer.parseInt(parameterMap.get("userid")[0]);
+            int userId = Integer.parseInt(parameterMap.get("activityid")[0]);
             return plansWebService.assignActivityToPlan(userId, activityId);
         } else {
             return false;
@@ -198,14 +198,14 @@ public class PlanServlet extends HttpServlet {
 
     private boolean validateAssignParameters(Map<String, String[]> parameterMap) {
         String activityId = parameterMap.get("id")[0];
-        String activityUserId = parameterMap.get("userid")[0];
+        String activityUserId = parameterMap.get("activityid")[0];
         return validator.validateInteger(activityId) && validator.validateInteger(activityUserId);
     }
 
-    private boolean unassignUserToActivity(Map<String, String[]> parameterMap) {
+    private boolean unassignActivityFromPlan(Map<String, String[]> parameterMap) {
         if (checkUnassignParmeters(parameterMap)) {
             int activityId = Integer.parseInt(parameterMap.get("id")[0]);
-            int userId = Integer.parseInt(parameterMap.get("userid")[0]);
+            int userId = Integer.parseInt(parameterMap.get("activityid")[0]);
             return plansWebService.unassignActivityFromPlan(userId, activityId);
         } else {
             return false;
@@ -216,13 +216,10 @@ public class PlanServlet extends HttpServlet {
         return checkParameters(parameterMap, 2, validateAssignParameters(parameterMap));
     }
 
-    private boolean editActivity(Map<String, String[]> parameterMap) {
+    private boolean editPlan(Map<String, String[]> parameterMap) {
         if (checkEditParameters(parameterMap)) {
             int activityId = Integer.parseInt(parameterMap.get("id")[0]);
             String name = parameterMap.get("name")[0].trim();
-            short maxUsers = Short.parseShort(parameterMap.get("maxusers")[0]);
-            byte duration = Byte.parseByte(parameterMap.get("duration")[0]);
-            int activityType = Integer.parseInt(parameterMap.get("activitytype")[0]);
             return plansWebService.editPlan(activityId, name);
         } else {
             return false;
@@ -230,19 +227,14 @@ public class PlanServlet extends HttpServlet {
     }
 
     private boolean checkEditParameters(Map<String, String[]> parameterMap) {
-        return checkParameters(parameterMap, 5, validateEditParameters(parameterMap));
+        return checkParameters(parameterMap, 2, validateEditParameters(parameterMap));
     }
 
     private boolean validateEditParameters(Map<String, String[]> parameterMap) {
         String activityId = parameterMap.get("id")[0];
         String name = parameterMap.get("name")[0];
-        String maxUsers = parameterMap.get("maxusers")[0];
-        String duration = parameterMap.get("duration")[0];
-        String activityType = parameterMap.get("activitytype")[0];
         return validator.validateInteger(activityId)
-                && validator.validateString(name)
-                && validator.validateShort(maxUsers)
-                && validator.validateByte(duration);
+                && validator.validateString(name);
     }
 
     private boolean createActivity(Map<String, String[]> parameterMap) {
