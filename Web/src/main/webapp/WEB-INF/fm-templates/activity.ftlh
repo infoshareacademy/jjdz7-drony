@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-group">
                     <label for="activityType">Wybierz rodzaj zajęć</label>
-                    <select class="form-control" data-activitySelect="${activityType}"
+                    <select class="form-control" data-activitySelect="${activity.activitiesType.number}"
                             id="activityType">
                         <option value="1">Wykład</option>
                         <option value="2">Ćwiczenia</option>
