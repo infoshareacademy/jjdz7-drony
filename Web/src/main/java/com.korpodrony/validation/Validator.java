@@ -24,7 +24,7 @@ public class Validator {
         return NumberUtils.isCreatable(str) && NumberUtils.isParsable(str) && NumberUtils.createInteger(str) > 0;
     }
 
-    public boolean validateAcitvityTypeInteger(String str) {
+    public boolean validateActivityTypeInteger(String str) {
         return NumberUtils.isCreatable(str)
                 && NumberUtils.isParsable(str)
                 && NumberUtils.createInteger(str) > LOWER_LIMIT_OF_ACTIVITY_TYPE
