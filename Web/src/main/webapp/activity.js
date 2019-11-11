@@ -78,7 +78,7 @@
                 window.location.href = "/activity?id=" + dataId;
             }).fail(function (msg) {
                 $('#errors').removeClass("d-none");
-                $('#type-error').text("Nie można zmienic danych użytkownika o id: " + dataId);
+                $('#type-error').text("Nie można zmienic danych zajęć o id: " + dataId);
             })
         }
     }
@@ -89,7 +89,6 @@
 
     assingUserButton.addEventListener('click', function () {
         handleAddButton();
-        console.log('click');
     }, false);
 
     $('#delete-activty').click(function () {
@@ -102,7 +101,7 @@
             window.location.href = "/activities";
         }).fail(function (msg) {
             $('#errors').removeClass("d-none");
-            $('#type-error').text("Nie można usunąć użytkownika o id: " + dataId);
+            $('#type-error').text("Nie można usunąć zajęć o id: " + dataId);
         })
     })
 

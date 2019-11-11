@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 public class PlansWebService {
 
     @EJB
-    OrganizationRepositoryDao dao;
+    OrganizationRepositoryDao organizationRepositoryDao;
 
     public List<Plan> getAllPlans() {
-        return dao.getAllPlans()
+        return organizationRepositoryDao.getAllPlans()
                 .stream()
                 .sorted((x, y) -> new PlanIDComparator()
                         .compare(x, y))
