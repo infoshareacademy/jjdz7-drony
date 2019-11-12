@@ -47,7 +47,9 @@ public class UsersService {
             printUsers();
             int userID = IoTools.getIntFromUserWithMessage("Podaj ID użytkownika, który chcesz edytować:");
             if (checkWithMessageOnFalse(dao.hasUserWithThisID(userID), "Nie ma użytkownika o takim ID!")) {
+                out.println("Poprzednie imię użytkownika: " + dao.getUser(userID).getName());
                 String name = IoTools.getStringFromUserWithMessage("Podaj nowe imię użytkownika:");
+                out.println("Poprzednie naziwsko użytkownika: " + dao.getUser(userID).getSurname());
                 String surName = IoTools.getStringFromUserWithMessage("Podaj nowe nazwisko użytkownika:");
                 if (dao.editUser(userID, name, surName)) {
                     out.println("Zedytowano użytkownika.");
