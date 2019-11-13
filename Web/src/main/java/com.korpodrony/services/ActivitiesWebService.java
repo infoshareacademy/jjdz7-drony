@@ -10,30 +10,31 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @RequestScoped
 public class ActivitiesWebService {
 
     @EJB
-    OrganizationRepositoryDao dao;
+    OrganizationRepositoryDao organizationRepositoryDao;
 
     @Inject
     UsersWebService usersWebService;
 
     public boolean hasActivity(int activityId) {
-        return dao.hasActivityWithThisID(activityId);
+        return organizationRepositoryDao.hasActivityWithThisID(activityId);
     }
 
     public Activity getActivity(int activityId) {
-        return dao.getActivity(activityId);
+        return organizationRepositoryDao.getActivity(activityId);
     }
 
     public List<User> getAssignedUsers(int activityId) {
         return getActivity(activityId)
                 .getAssignedUsersIDs()
                 .stream()
-                .map(x -> dao.getUser(x))
+                .map(x -> organizationRepositoryDao.getUser(x))
                 .sorted((x, y) -> x.getId() - y.getId())
                 .collect(Collectors.toList());
     }
@@ -46,29 +47,36 @@ public class ActivitiesWebService {
                 .collect(Collectors.toList());
     }
 
-    public Object getAllActivities() {
-        List<Activity> activities = dao.getAllActivities();
+    public List<Activity> getAllActivities() {
+        List<Activity> activities = organizationRepositoryDao.getAllActivities();
         activities.sort(new ActivityIDComparator());
         return activities;
     }
 
+    public List<Activity> getAllActivities(Predicate<Activity> predicate) {
+        List<Activity> activities = organizationRepositoryDao.getAllActivities();
+        activities.sort(new ActivityIDComparator());
+        return (List<Activity>) activities.stream()
+                .filter(predicate).collect(Collectors.toList());
+    }
+
     public boolean assignUserToActivity(int userId, int activityId) {
-        return dao.assignUserToActivity(userId, activityId);
+        return organizationRepositoryDao.assignUserToActivity(userId, activityId);
     }
 
     public boolean unassignUserFromActivity(int userId, int activityId) {
-        return dao.unassignUserFromActivity(userId, activityId);
+        return organizationRepositoryDao.unassignUserFromActivity(userId, activityId);
     }
 
     public boolean deleteActivity(int activityId) {
-        return dao.deleteActivity(activityId);
+        return organizationRepositoryDao.deleteActivity(activityId);
     }
 
     public boolean editActivity(int activityId, String name, short maxUsers, byte duration, int activityTypeNumber) {
-        return dao.editActivity(activityId, name, maxUsers, duration, ActivitiesType.getActivity(activityTypeNumber));
+        return organizationRepositoryDao.editActivity(activityId, name, maxUsers, duration, ActivitiesType.getActivity(activityTypeNumber));
     }
 
     public boolean createActivity(String name, short maxUsers, byte duration, int activityType) {
-        return dao.createActivity(name, maxUsers, duration, ActivitiesType.getActivity(activityType));
+        return organizationRepositoryDao.createActivity(name, maxUsers, duration, ActivitiesType.getActivity(activityType));
     }
 }
