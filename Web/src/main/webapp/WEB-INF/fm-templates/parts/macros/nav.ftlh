@@ -44,6 +44,15 @@
                         <a class="nav-link text-white ml-auto" href="/search">Szukaj</a>
                     </li>
                 </#if>
+                <#if current=="upload">
+                    <li class="nav-item  active">
+                        <a class="nav-link ml-auto">Wczytaj plik</a>
+                    </li>
+                <#else>
+                    <li class="nav-item">
+                        <a class="nav-link text-white ml-auto" href="/upload-file">Wczytaj plik</a>
+                    </li>
+                </#if>
             </ul>
         </div>
     </nav>

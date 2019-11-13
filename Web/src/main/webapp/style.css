@@ -29,6 +29,10 @@ canvas{
     display: flex;
 }
 
+.warning-message {
+    color: red;
+}
+
 .errors {
 	border: solid 5px red !important;
 }
