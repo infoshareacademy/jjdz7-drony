@@ -7,7 +7,7 @@
                 <label for="activityType">Wybierz rodzaj zajęć</label>
                 <select class="form-control" data-activitySelect="${type}"
                         id="activityType">
-                    <option value="1">Wykład</option>
+                    <option value="1">Wykłady</option>
                     <option value="2">Ćwiczenia</option>
                     <option value="3">Warsztaty</option>
                     <option value="4">Wszystkie</option>

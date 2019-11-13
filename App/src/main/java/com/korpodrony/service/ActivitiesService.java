@@ -9,7 +9,6 @@ import com.korpodrony.model.Activity;
 import com.korpodrony.model.User;
 import com.korpodrony.utils.IoTools;
 
-import javax.enterprise.context.RequestScoped;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -107,8 +106,11 @@ public class ActivitiesService {
             if (checkWithMessageOnFalse(dao.getAllActivitiesIDs().contains(activityID), "Nie ma zajęć o takim ID.")) {
                 out.println("Poprzednia nazwa " + dao.getActivity(activityID).getName());
                 String name = IoTools.getStringFromUserWithMessage("Podaj nazwę zajęć:");
+                out.println("Poprzednia maksymalną liczbę użytkowników zajęć: " + dao.getActivity(activityID).getMaxUsers());
                 short maxUsers = IoTools.getShortFromUserWithMessage("Podaj maksymalną liczbę użytkowników zajęć:");
+                out.println("Poprzedni czas trwania zajęć [min]: " + dao.getActivity(activityID).getLenghtInQuarters() * 15);
                 byte lenghtInQuarters = IoTools.getByteFromUserWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach:");
+                out.println("Poprzedni typ zajęć: " + dao.getActivity(activityID).getActivitiesType().getPolishName());
                 ActivitiesType chosenActivity = choosingActivityType();
                 if (dao.editActivity(activityID, name, maxUsers, lenghtInQuarters, chosenActivity)) {
                     out.println("Zedytowano zajęcia");

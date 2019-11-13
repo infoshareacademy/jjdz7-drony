@@ -36,6 +36,7 @@
             </ul>
         </div>
     </div>
+
     <div class="row mt-3">
         <div class="col-3 mb-3 ml-auto mr-auto">
             <button class="btn btn-success text-white w-100 save">Dodaj zajęcia</button>
