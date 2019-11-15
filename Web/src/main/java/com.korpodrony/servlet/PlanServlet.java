@@ -1,7 +1,9 @@
 package com.korpodrony.servlet;
 
 import com.korpodrony.freemarker.TemplateProvider;
+import com.korpodrony.model.Plan;
 import com.korpodrony.service.RepositoryService;
+import com.korpodrony.services.ActivitiesWebService;
 import com.korpodrony.services.PlansWebService;
 import com.korpodrony.validation.Validator;
 import freemarker.template.Template;
@@ -15,8 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/plan", "/plan-unassign", "/plan-assign", "/plan-add"})
 public class PlanServlet extends HttpServlet {
@@ -26,6 +28,9 @@ public class PlanServlet extends HttpServlet {
 
     @Inject
     PlansWebService plansWebService;
+
+    @Inject
+    ActivitiesWebService activitiesWebService;
 
     @Inject
     RepositoryService repositoryService;
@@ -49,11 +54,12 @@ public class PlanServlet extends HttpServlet {
                     break;
                 }
                 Map<String, Object> model = getPlanModel(id);
-                proccesTemplate(writer, model, templateProvider.PLAN_TEMPLATE);
+                processTemplate(writer, model, templateProvider.PLAN_TEMPLATE);
                 break;
             }
             case "/plan-add": {
-                proccesTemplate(writer, null, templateProvider.ADD_PLAN_TEMPLATE);
+                Map<String, Object> model = getAddPlanModel();
+                processTemplate(writer, model, templateProvider.ADD_PLAN_TEMPLATE);
                 break;
             }
             default: {
@@ -109,7 +115,7 @@ public class PlanServlet extends HttpServlet {
         if (setRespStatusOnValidationFailure(resp, plansWebService.hasPlan(id))) {
             return;
         }
-        if (plansWebService.deleteActivity(id)) {
+        if (plansWebService.deletePlan(id)) {
             saveStatus(resp);
             return;
         }
@@ -117,8 +123,8 @@ public class PlanServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getServletPath().equals("/activity")) {
-            if (setRespStatusOnValidationFailure(resp, createActivity(req.getParameterMap()))) {
+        if (req.getServletPath().equals("/plan")) {
+            if (setRespStatusOnValidationFailure(resp, createPlan(req.getParameterMap()))) {
                 return;
             }
             saveStatus(resp);
@@ -156,7 +162,13 @@ public class PlanServlet extends HttpServlet {
         return model;
     }
 
-    private void proccesTemplate(PrintWriter writer, Map<String, Object> model, String path) throws IOException {
+    private Map<String, Object> getAddPlanModel() {
+        Map<String, Object> model = new HashMap<>();
+        model.put("activities", activitiesWebService.getAllActivities());
+        return model;
+    }
+
+    private void processTemplate(PrintWriter writer, Map<String, Object> model, String path) throws IOException {
         Template template = templateProvider.getTemplate(getServletContext(), path);
         try {
             template.process(model, writer);
@@ -237,22 +249,46 @@ public class PlanServlet extends HttpServlet {
                 && validator.validateString(name);
     }
 
-    private boolean createActivity(Map<String, String[]> parameterMap) {
-        if (checkParameters(parameterMap, 4, validateCreateParameters(parameterMap))) {
+    private boolean createPlan(Map<String, String[]> parameterMap) {
+        if (validateCreateParameters(parameterMap)) {
             String name = parameterMap.get("name")[0].trim();
-            return plansWebService.createPlan(name);
+            String activitiesIds = parameterMap.get("assignedactivities")[0].trim();
+            if (plansWebService.createPlan(name) && !activitiesIds.equals("")) {
+                assignActivitiesToCreatedPlan(parameterMap);
+            }
+            return true;
         }
         return false;
     }
 
     private boolean validateCreateParameters(Map<String, String[]> parameterMap) {
         String name = parameterMap.get("name")[0];
-        String maxUsers = parameterMap.get("maxusers")[0];
-        String duration = parameterMap.get("duration")[0];
-        String activityType = parameterMap.get("activitytype")[0];
-        return validator.validateString(name)
-                && validator.validateShort(maxUsers)
-                && validator.validateByte(duration)
-                && validator.validateActivityTypeInteger(activityType);
+        String activitiesIds = parameterMap.get("assignedactivities")[0];
+        boolean nameValidation = validator.validateString(name);
+        if (activitiesIds.equals("")) {
+            return nameValidation;
+        }
+        List<String> activitiesIdParam = Arrays.stream(activitiesIds
+                .split(","))
+                .collect(Collectors.toList());
+        boolean activitiesParamValidation = activitiesIdParam
+                .stream()
+                .allMatch(x -> validator.validateInteger(x));
+        if (activitiesParamValidation) {
+            boolean noRepeatsInActivitiesParam = activitiesIdParam.stream().allMatch(new HashSet<>()::add);
+            boolean allActivitiesExists = activitiesIdParam
+                    .stream().map(Integer::valueOf)
+                    .allMatch(x -> activitiesWebService.hasActivity(x));
+            return nameValidation && noRepeatsInActivitiesParam && allActivitiesExists;
+        }
+        return false;
+    }
+
+    private void assignActivitiesToCreatedPlan(Map<String, String[]> parameterMap) {
+        int planId = Plan.getCurrentID();
+        Arrays.stream(parameterMap.get("assignedactivities")[0]
+                .split(","))
+                .map(Integer::valueOf)
+                .forEach(x -> plansWebService.assignActivityToPlan(x, planId));
     }
 }

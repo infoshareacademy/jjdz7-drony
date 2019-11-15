@@ -4,11 +4,13 @@ import com.korpodrony.comparators.ActivityIDComparator;
 import com.korpodrony.dao.OrganizationRepositoryDao;
 import com.korpodrony.model.ActivitiesType;
 import com.korpodrony.model.Activity;
+import com.korpodrony.model.Plan;
 import com.korpodrony.model.User;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -69,7 +71,19 @@ public class ActivitiesWebService {
     }
 
     public boolean deleteActivity(int activityId) {
-        return dao.deleteActivity(activityId);
+        if (dao.deleteActivity(activityId)){
+            setActivityIdToLastValue();
+            return true;
+        }
+        return false;
+    }
+
+    private void setActivityIdToLastValue() {
+        int currentId = dao.getAllActivities()
+                .stream()
+                .map(Activity::getId).max(Comparator.comparingInt(x -> x))
+                .orElse(0);
+        Activity.setCurrentID(currentId);
     }
 
     public boolean editActivity(int activityId, String name, short maxUsers, byte duration, int activityTypeNumber) {

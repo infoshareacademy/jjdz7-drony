@@ -46,8 +46,12 @@ public class PlansWebService {
         return dao.getPlan(id);
     }
 
-    public boolean deleteActivity(int planId) {
-        return dao.deletePlan(planId);
+    public boolean deletePlan(int planId) {
+        if (dao.deletePlan(planId)) {
+            setPlanIdToLastValue();
+            return true;
+        }
+        return false;
     }
 
     public List<Activity> getAvaiableActivities(int planId) {
@@ -71,6 +75,14 @@ public class PlansWebService {
     }
 
     public boolean createPlan(String name) {
-        return true;
+        return dao.createPlan(name);
+    }
+
+    private void setPlanIdToLastValue() {
+        int currentId = dao.getAllPlans()
+                .stream()
+                .map(Plan::getId).max(Comparator.comparingInt(x -> x))
+                .orElse(0);
+        Plan.setCurrentID(currentId);
     }
 }
