@@ -1,5 +1,5 @@
 <#import "parts/macros/basic.ftlh" as baisc/>
-<@baisc.includeContent scripts="../scripts-plan-add.ftlh" currentPosition="none" modal="">
+<@baisc.includeContent scriptsSrc="plan-add.js" currentPosition="none" modal="">
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Zajęcia</h2>
@@ -26,7 +26,6 @@
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Zajęcia przypisane do planu</h2>
             <ul class="list-group w-100 mb-3" id="assignedActivities">
-
             </ul>
         </div>
     </div>

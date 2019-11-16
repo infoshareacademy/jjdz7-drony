@@ -20,6 +20,13 @@ import java.util.Map;
 @WebServlet("/activities")
 public class ActivitiesServlet extends HttpServlet {
 
+    private final int LECTURE_ACTIVITY_TYPE_NUMBER = 1;
+    private final int EXERCISE_ACTIVITY_TYPE_NUMBER = 2;
+    private final int WORKSHOP_ACTIVITY_TYPE_NUMBER = 3;
+    private final int ALL_ACTIVITIES_TYPES_NUMBER = 4;
+    private final String ACTIVITIES_FILED = "activities";
+    private final String TYPE_FILED = "type";
+
     @Inject
     TemplateProvider templateProvider;
 
@@ -33,7 +40,7 @@ public class ActivitiesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-        String typeNumber = req.getParameter("type");
+        String typeNumber = req.getParameter(TYPE_FILED);
         Map<String, Object> model = getModel(typeNumber);
         Template template = templateProvider.getTemplate(getServletContext(), templateProvider.ACTIVITIES_TEMPLATE);
         try {
@@ -46,40 +53,40 @@ public class ActivitiesServlet extends HttpServlet {
     private Map<String, Object> getModel(String typeNumber) {
         Map<String, Object> model = new HashMap<>();
         if (!validator.validateInteger(typeNumber)) {
-            model.put("activities", activitiesWebService.getAllActivities());
-            model.put("type", 4);
+            model.put(ACTIVITIES_FILED, activitiesWebService.getAllActivities());
+            model.put(TYPE_FILED, ALL_ACTIVITIES_TYPES_NUMBER);
             return model;
         }
         switch (Integer.parseInt(typeNumber)) {
             case 1: {
-                putToModelActivitiesWithTypeNumber(model, 1);
+                putToModelActivitiesWithTypeNumber(model, LECTURE_ACTIVITY_TYPE_NUMBER);
                 break;
             }
             case 2: {
-                putToModelActivitiesWithTypeNumber(model, 2);
+                putToModelActivitiesWithTypeNumber(model, EXERCISE_ACTIVITY_TYPE_NUMBER);
                 break;
             }
             case 3: {
-                putToModelActivitiesWithTypeNumber(model, 3);
+                putToModelActivitiesWithTypeNumber(model, WORKSHOP_ACTIVITY_TYPE_NUMBER);
                 break;
             }
             default: {
-                putToModelActivitiesWithTypeNumber(model, 4);
+                putToModelActivitiesWithTypeNumber(model, ALL_ACTIVITIES_TYPES_NUMBER);
             }
         }
         return model;
     }
 
     private void putToModelActivitiesWithTypeNumber(Map<String, Object> model, int typeNumber) {
-        if (typeNumber == 4) {
-            model.put("activities", activitiesWebService.
+        if (typeNumber == ALL_ACTIVITIES_TYPES_NUMBER) {
+            model.put(ACTIVITIES_FILED, activitiesWebService.
                     getAllActivities()
             );
         } else {
-            model.put("activities", activitiesWebService.
+            model.put(ACTIVITIES_FILED, activitiesWebService.
                     getAllActivities(x -> x.getActivitiesType().getNumber() == typeNumber)
             );
         }
-        model.put("type", typeNumber);
+        model.put(TYPE_FILED, typeNumber);
     }
 }

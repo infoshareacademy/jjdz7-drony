@@ -1,6 +1,5 @@
-<#import "parts/macros/basic.ftlh" as baisc/>
-<@baisc.includeContent scripts="../scripts-activity.ftlh" currentPosition="none" modal="../activity-modal.ftlh">
-
+<#import "parts/macros/basic.ftlh" as basic/>
+<@basic.includeContent scriptsSrc="activity.js" currentPosition="none" modal="../activity-modal.ftlh">
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Zajęcia</h2>
@@ -125,5 +124,4 @@
             </#if>
         </div>
     </div>
-
-</@baisc.includeContent>
+</@basic.includeContent>

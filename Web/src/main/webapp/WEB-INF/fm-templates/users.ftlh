@@ -1,5 +1,5 @@
-<#import "parts/macros/basic.ftlh" as baisc/>
-<@baisc.includeContent scripts="../scripts.ftlh" currentPosition="users" modal="">
+<#import "parts/macros/basic.ftlh" as basic/>
+<@basic.includeContent scriptsSrc="" currentPosition="users" modal="">
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Użytkownicy</h2>
@@ -16,9 +16,4 @@
             </#if>
         </div>
     </div>
-    <div class="row mt-3">
-        <div class="col-3 ml-auto mr-auto mb-3">
-            <a class="btn btn-success text-white w-100" href="/user-form">Dodaj</a>
-        </div>
-    </div>
-</@baisc.includeContent>
+</@basic.includeContent>

@@ -24,9 +24,6 @@ public class UsersServlet extends HttpServlet {
     @Inject
     TemplateProvider templateProvider;
 
-    @EJB
-    OrganizationRepositoryDao dao;
-
     @Inject
     UsersWebService usersWebService;
 

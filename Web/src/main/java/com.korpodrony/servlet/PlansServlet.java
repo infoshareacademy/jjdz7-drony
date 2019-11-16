@@ -1,12 +1,10 @@
 package com.korpodrony.servlet;
 
-import com.korpodrony.dao.OrganizationRepositoryDao;
 import com.korpodrony.freemarker.TemplateProvider;
 import com.korpodrony.services.PlansWebService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,9 +21,6 @@ public class PlansServlet extends HttpServlet {
 
     @Inject
     TemplateProvider templateProvider;
-
-    @EJB
-    OrganizationRepositoryDao dao;
 
     @Inject
     PlansWebService plansWebService;

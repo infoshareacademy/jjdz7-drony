@@ -117,7 +117,6 @@ public class PlanServlet extends HttpServlet {
         }
         if (plansWebService.deletePlan(id)) {
             saveStatus(resp);
-            return;
         }
     }
 
@@ -158,7 +157,7 @@ public class PlanServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
         model.put("plan", plansWebService.getPlan(id));
         model.put("activities", plansWebService.getAssignedActivities(id));
-        model.put("avaiableActivities", plansWebService.getAvaiableActivities(id));
+        model.put("avaiableActivities", plansWebService.getAvailableActivities(id));
         return model;
     }
 
@@ -268,20 +267,36 @@ public class PlanServlet extends HttpServlet {
         if (activitiesIds.equals("")) {
             return nameValidation;
         }
-        List<String> activitiesIdParam = Arrays.stream(activitiesIds
-                .split(","))
-                .collect(Collectors.toList());
-        boolean activitiesParamValidation = activitiesIdParam
-                .stream()
-                .allMatch(x -> validator.validateInteger(x));
+        List<String> activitiesIdParam = getActivitiesParam(activitiesIds);
+        boolean activitiesParamValidation = isActivitiesParamValid(activitiesIdParam);
         if (activitiesParamValidation) {
-            boolean noRepeatsInActivitiesParam = activitiesIdParam.stream().allMatch(new HashSet<>()::add);
-            boolean allActivitiesExists = activitiesIdParam
-                    .stream().map(Integer::valueOf)
-                    .allMatch(x -> activitiesWebService.hasActivity(x));
+            boolean noRepeatsInActivitiesParam = isNoRepeatsInActivitiesParam(activitiesIdParam);
+            boolean allActivitiesExists = doesAllActivitiesExists(activitiesIdParam);
             return nameValidation && noRepeatsInActivitiesParam && allActivitiesExists;
         }
         return false;
+    }
+
+    private List<String> getActivitiesParam(String activitiesIds) {
+        return Arrays.stream(activitiesIds
+                .split(","))
+                .collect(Collectors.toList());
+    }
+
+    private boolean isActivitiesParamValid(List<String> activitiesIdParam) {
+        return activitiesIdParam
+                .stream()
+                .allMatch(x -> validator.validateInteger(x));
+    }
+
+    private boolean isNoRepeatsInActivitiesParam(List<String> activitiesIdParam) {
+        return activitiesIdParam.stream().allMatch(new HashSet<>()::add);
+    }
+
+    private boolean doesAllActivitiesExists(List<String> activitiesIdParam) {
+        return activitiesIdParam
+                .stream().map(Integer::valueOf)
+                .allMatch(x -> activitiesWebService.hasActivity(x));
     }
 
     private void assignActivitiesToCreatedPlan(Map<String, String[]> parameterMap) {

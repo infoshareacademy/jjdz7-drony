@@ -4,7 +4,6 @@ import com.korpodrony.comparators.ActivityIDComparator;
 import com.korpodrony.dao.OrganizationRepositoryDao;
 import com.korpodrony.model.ActivitiesType;
 import com.korpodrony.model.Activity;
-import com.korpodrony.model.Plan;
 import com.korpodrony.model.User;
 
 import javax.ejb.EJB;
@@ -19,25 +18,25 @@ import java.util.stream.Collectors;
 public class ActivitiesWebService {
 
     @EJB
-    OrganizationRepositoryDao dao;
+    OrganizationRepositoryDao organizationRepositoryDao;
 
     @Inject
     UsersWebService usersWebService;
 
     public boolean hasActivity(int activityId) {
-        return dao.hasActivityWithThisID(activityId);
+        return organizationRepositoryDao.hasActivityWithThisID(activityId);
     }
 
     public Activity getActivity(int activityId) {
-        return dao.getActivity(activityId);
+        return organizationRepositoryDao.getActivity(activityId);
     }
 
     public List<User> getAssignedUsers(int activityId) {
         return getActivity(activityId)
                 .getAssignedUsersIDs()
                 .stream()
-                .map(x -> dao.getUser(x))
-                .sorted((x, y) -> x.getId() - y.getId())
+                .map(x -> organizationRepositoryDao.getUser(x))
+                .sorted(Comparator.comparingInt(User::getId))
                 .collect(Collectors.toList());
     }
 
@@ -50,47 +49,36 @@ public class ActivitiesWebService {
     }
 
     public List<Activity> getAllActivities() {
-        List<Activity> activities = dao.getAllActivities();
+        List<Activity> activities = organizationRepositoryDao.getAllActivities();
         activities.sort(new ActivityIDComparator());
         return activities;
     }
 
     public List<Activity> getAllActivities(Predicate<Activity> predicate) {
-        List<Activity> activities = dao.getAllActivities();
+        List<Activity> activities = organizationRepositoryDao
+                .getAllActivities();
         activities.sort(new ActivityIDComparator());
-        return (List<Activity>) activities.stream()
+        return activities.stream()
                 .filter(predicate).collect(Collectors.toList());
     }
 
     public boolean assignUserToActivity(int userId, int activityId) {
-        return dao.assignUserToActivity(userId, activityId);
+        return organizationRepositoryDao.assignUserToActivity(userId, activityId);
     }
 
     public boolean unassignUserFromActivity(int userId, int activityId) {
-        return dao.unassignUserFromActivity(userId, activityId);
+        return organizationRepositoryDao.unassignUserFromActivity(userId, activityId);
     }
 
     public boolean deleteActivity(int activityId) {
-        if (dao.deleteActivity(activityId)){
-            setActivityIdToLastValue();
-            return true;
-        }
-        return false;
-    }
-
-    private void setActivityIdToLastValue() {
-        int currentId = dao.getAllActivities()
-                .stream()
-                .map(Activity::getId).max(Comparator.comparingInt(x -> x))
-                .orElse(0);
-        Activity.setCurrentID(currentId);
+        return organizationRepositoryDao.deleteActivity(activityId);
     }
 
     public boolean editActivity(int activityId, String name, short maxUsers, byte duration, int activityTypeNumber) {
-        return dao.editActivity(activityId, name, maxUsers, duration, ActivitiesType.getActivity(activityTypeNumber));
+        return organizationRepositoryDao.editActivity(activityId, name, maxUsers, duration, ActivitiesType.getActivity(activityTypeNumber));
     }
 
     public boolean createActivity(String name, short maxUsers, byte duration, int activityType) {
-        return dao.createActivity(name, maxUsers, duration, ActivitiesType.getActivity(activityType));
+        return organizationRepositoryDao.createActivity(name, maxUsers, duration, ActivitiesType.getActivity(activityType));
     }
 }

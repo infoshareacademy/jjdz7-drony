@@ -9,7 +9,7 @@ import java.nio.file.StandardOpenOption;
 
 public class JSONWriter {
 
-    private static String generateJsonString(Object object) {
+    public static String generateJsonString(Object object) {
 
         ObjectMapper mapper = new ObjectMapper();
         try {

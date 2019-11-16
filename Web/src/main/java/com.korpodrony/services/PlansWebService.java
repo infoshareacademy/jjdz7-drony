@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
 public class PlansWebService {
 
     @EJB
-    OrganizationRepositoryDao dao;
+    OrganizationRepositoryDao organizationRepositoryDao;
 
     @Inject
     ActivitiesWebService activitiesWebService;
 
     public List<Plan> getAllPlans() {
-        return dao.getAllPlans()
+        return organizationRepositoryDao.getAllPlans()
                 .stream()
                 .sorted((x, y) -> new PlanIDComparator()
                         .compare(x, y))
@@ -30,31 +30,31 @@ public class PlansWebService {
     }
 
     public boolean hasPlan(int planId) {
-        return dao.hasPlanWithThisID(planId);
+        return organizationRepositoryDao.hasPlanWithThisID(planId);
     }
 
     public List<Activity> getAssignedActivities(int planId) {
         return getPlan(planId)
                 .getActivitiesID()
                 .stream()
-                .map(x -> dao.getActivity(x))
+                .map(x -> organizationRepositoryDao.getActivity(x))
                 .sorted(Comparator.comparingInt(Activity::getId))
                 .collect(Collectors.toList());
     }
 
     public Plan getPlan(int id) {
-        return dao.getPlan(id);
+        return organizationRepositoryDao.getPlan(id);
     }
 
     public boolean deletePlan(int planId) {
-        if (dao.deletePlan(planId)) {
+        if (organizationRepositoryDao.deletePlan(planId)) {
             setPlanIdToLastValue();
             return true;
         }
         return false;
     }
 
-    public List<Activity> getAvaiableActivities(int planId) {
+    public List<Activity> getAvailableActivities(int planId) {
         return activitiesWebService
                 .getAllActivities()
                 .stream()
@@ -63,23 +63,23 @@ public class PlansWebService {
     }
 
     public boolean assignActivityToPlan(int activityId, int planId) {
-        return dao.assignActivityToPlan(activityId, planId);
+        return organizationRepositoryDao.assignActivityToPlan(activityId, planId);
     }
 
     public boolean unassignActivityFromPlan(int activityId, int planId) {
-        return dao.unassignActivityFromPlan(activityId, planId);
+        return organizationRepositoryDao.unassignActivityFromPlan(activityId, planId);
     }
 
     public boolean editPlan(int planId, String name) {
-        return dao.editPlan(planId, name);
+        return organizationRepositoryDao.editPlan(planId, name);
     }
 
     public boolean createPlan(String name) {
-        return dao.createPlan(name);
+        return organizationRepositoryDao.createPlan(name);
     }
 
     private void setPlanIdToLastValue() {
-        int currentId = dao.getAllPlans()
+        int currentId = organizationRepositoryDao.getAllPlans()
                 .stream()
                 .map(Plan::getId).max(Comparator.comparingInt(x -> x))
                 .orElse(0);

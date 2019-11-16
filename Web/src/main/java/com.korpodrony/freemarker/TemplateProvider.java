@@ -16,9 +16,11 @@ public class TemplateProvider {
     public static final String ADD_PLAN_TEMPLATE = "plan-add.ftlh";
     public static final String ACTIVITIES_TEMPLATE = "activities.ftlh";
     public static final String INDEX_TEMPLATE = "index.ftlh";
+    public static final String UPLOAD_FILE_TEMPLATE = "upload-file.ftlh";
     public static final String USERS_TEMPLATE = "users.ftlh";
     public static final String PLAN_TEMPLATE = "plan.ftlh";
     public static final String PLANS_TEMPLATE = "plans.ftlh";
+    public static final String SEARCH_TEMPLATE = "search.ftlh";
     private final String TEMPLATE_DIRECTORY_PATH = "WEB-INF/fm-templates";
     private Configuration configuration;
 
