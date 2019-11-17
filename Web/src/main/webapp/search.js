@@ -9,6 +9,9 @@
 
     function setURL(txt) {
         removePressedStatus();
+        results.innerHTML = "";
+        searchInput.value = "";
+        searchInput.focus();
         URL = txt;
     }
 
@@ -78,8 +81,8 @@
     }
 
     function prepareUser(user) {
-        return "<li class=\"list-group-item\"><a href=\"/user?id=" + user.id + "\" class=\"stretched-link\">Id: " + user.id +
-            ", imię: " + user.name + ", nazwisko: " + user.surname + "</a></li> "
+        return "<li class=\"list-group-item\">Id: " + user.id +
+            ", imię: " + user.name + ", nazwisko: " + user.surname + "</li> "
     }
 
     function prepareActivitiesList(resp) {

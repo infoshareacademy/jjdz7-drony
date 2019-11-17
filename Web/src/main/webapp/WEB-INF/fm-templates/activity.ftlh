@@ -65,8 +65,8 @@
             <#list users>
                 <ul class="list-group w-100 mb-3 ">
                     <#items as user>
-                        <li class="list-group-item"><a href="/user?id=${user.id}" class="stretched-link">Id: ${user.id},
-                                imię: ${user.name}, nazwisko: ${user.surname}</a></li>
+                        <li class="list-group-item">Id: ${user.id},
+                            imię: ${user.name}, nazwisko: ${user.surname}</li>
                     </#items>
                 </ul>
             </#list>
@@ -114,8 +114,8 @@
             <#list availableUsers>
                 <ul class="list-group w-100 mb-3 ">
                     <#items as user>
-                        <li class="list-group-item"><a href="/user?id=${user.id}" class="stretched-link">Id: ${user.id},
-                                imię: ${user.name}, nazwisko: ${user.surname}</a></li>
+                        <li class="list-group-item">Id: ${user.id},
+                            imię: ${user.name}, nazwisko: ${user.surname}</li>
                     </#items>
                 </ul>
             </#list>
