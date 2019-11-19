@@ -9,6 +9,7 @@ import com.korpodrony.model.User;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class ActivitiesWebService {
                 .getAssignedUsersIDs()
                 .stream()
                 .map(x -> organizationRepositoryDao.getUser(x))
-                .sorted((x, y) -> x.getId() - y.getId())
+                .sorted(Comparator.comparingInt(User::getId))
                 .collect(Collectors.toList());
     }
 
@@ -54,9 +55,10 @@ public class ActivitiesWebService {
     }
 
     public List<Activity> getAllActivities(Predicate<Activity> predicate) {
-        List<Activity> activities = organizationRepositoryDao.getAllActivities();
+        List<Activity> activities = organizationRepositoryDao
+                .getAllActivities();
         activities.sort(new ActivityIDComparator());
-        return (List<Activity>) activities.stream()
+        return activities.stream()
                 .filter(predicate).collect(Collectors.toList());
     }
 

@@ -45,3 +45,7 @@ canvas{
 .name{
     color: black;
 }
+
+.card-img-top{
+    height: 40vh;
+}

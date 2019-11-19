@@ -14,7 +14,6 @@ public class UploadService {
     private RepositoryService repositoryService;
 
     public void uploadFile(InputStream fileContent, String fileName) throws IOException {
-
         repositoryService.saveFile(fileContent, fileName);
         repositoryService.loadRepositoryFromFile();
     }

@@ -22,7 +22,8 @@ public class SearchWebService {
                 dao.getAllUsers()
                         .stream()
                         .filter(indetifyUserByText(name))
-                        .sorted((x, y) -> new UserIDComparator().compare(x, y))
+                        .sorted((x, y) -> new UserIDComparator()
+                                .compare(x, y))
                         .collect(Collectors.toList()));
     }
 

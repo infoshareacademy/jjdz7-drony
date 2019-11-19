@@ -2,7 +2,6 @@ package com.korpodrony.servlet;
 
 import com.korpodrony.freemarker.TemplateProvider;
 import com.korpodrony.services.SearchWebService;
-import com.korpodrony.validation.Validator;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -22,9 +21,6 @@ public class SearchServlet extends HttpServlet {
     TemplateProvider templateProvider;
 
     @Inject
-    Validator validator;
-
-    @Inject
     SearchWebService searchWebService;
 
     @Override
@@ -32,9 +28,10 @@ public class SearchServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
         String url = req.getServletPath();
+
         switch (url) {
             case "/search": {
-                Template template = templateProvider.getTemplate(getServletContext(), "search.ftlh");
+                Template template = templateProvider.getTemplate(getServletContext(), TemplateProvider.SEARCH_TEMPLATE);
                 try {
                     template.process(null, writer);
                     break;

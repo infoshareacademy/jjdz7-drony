@@ -1,5 +1,5 @@
 <#import "parts/macros/basic.ftlh" as baisc/>
-<@baisc.includeContent scripts="../scripts.ftlh" currentPosition="plans" modal="">
+<@baisc.includeContent scriptsSrc="" currentPosition="plans" modal="">
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Plany</h2>
