@@ -138,7 +138,7 @@ public class Activity {
                 ", nazwa: " + name +
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
-                ", czas trwania [min]:" + lenghtInQuarters *15 +
+                ", czas trwania [min]:" + lenghtInQuarters * 15 +
                 ", typ zajęć: " + activitiesType.polishName;
     }
 }

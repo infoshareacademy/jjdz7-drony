@@ -1,4 +1,4 @@
-<#macro includeContent scripts currentPosition modal>
+<#macro includeContent scriptsSrc currentPosition modal>
     <!doctype html>
     <html lang="pl">
     <#include "../header.ftlh">
@@ -13,7 +13,8 @@
     <#if modal !="">
         <#include modal>
     </#if>
-    <#include scripts>
+    <#import "scripts.ftlh" as scripts>
+    <@scripts.setScripts script=scriptsSrc/>
     </body>
     </html>
 </#macro>

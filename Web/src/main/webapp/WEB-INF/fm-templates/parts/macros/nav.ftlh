@@ -1,47 +1,55 @@
 <#macro setNav current>
     <a class="banner nav-link nav-item" href="/index"> Korpodrony</a>
     <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-        <a class="navbar-brand col-1"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        <button class="navbar-toggler ml-auto mr-auto" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav col-10">
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav col-lg-10 col-sm-12">
                 <#if current=="users">
                     <li class="nav-item active">
-                        <a class="nav-link">Użytkownicy</a>
+                        <a class="nav-link text-center">Użytkownicy</a>
                     </li>
                 <#else>
                     <li class="nav-item active">
-                        <a class="nav-link text-white" href="/users">Użytkownicy</a>
+                        <a class="nav-link text-white text-center" href="/users">Użytkownicy</a>
                     </li>
                 </#if>
                 <#if current=="activities">
                     <li class="nav-item active">
-                        <a class="nav-link">Zajęcia</a>
+                        <a class="nav-link text-center">Zajęcia</a>
                     </li>
                 <#else>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/activities">Zajęcia</a>
+                        <a class="nav-link text-white text-center" href="/activities">Zajęcia</a>
                     </li>
                 </#if>
                 <#if current=="plans">
                     <li class="nav-item active">
-                        <a class="nav-link">Plany</a>
+                        <a class="nav-link text-center">Plany</a>
                     </li>
                 <#else>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/plans">Plany</a>
+                        <a class="nav-link text-white text-center" href="/plans">Plany</a>
                     </li>
                 </#if >
                 <#if current=="search">
                     <li class="nav-item  active">
-                        <a class="nav-link ml-auto">Szukaj</a>
+                        <a class="nav-link ml-auto text-center">Szukaj</a>
                     </li>
                 <#else>
                     <li class="nav-item">
-                        <a class="nav-link text-white ml-auto" href="/search">Szukaj</a>
+                        <a class="nav-link text-white text-center" href="/search">Szukaj</a>
+                    </li>
+                </#if>
+                <#if current=="upload">
+                    <li class="nav-item  active">
+                        <a class="nav-link text-center">Wczytaj plik</a>
+                    </li>
+                <#else>
+                    <li class="nav-item">
+                        <a class="nav-link text-white text-center" href="/upload-file">Wczytaj plik</a>
                     </li>
                 </#if>
             </ul>

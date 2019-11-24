@@ -1,6 +1,5 @@
-<#import "parts/macros/basic.ftlh" as baisc/>
-<@baisc.includeContent scripts="../scripts-activity.ftlh" currentPosition="none" modal="../activity-modal.ftlh">
-
+<#import "parts/macros/basic.ftlh" as basic/>
+<@basic.includeContent scriptsSrc="activity.js" currentPosition="none" modal="../activity-modal.ftlh">
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Zajęcia</h2>
@@ -66,8 +65,8 @@
             <#list users>
                 <ul class="list-group w-100 mb-3 ">
                     <#items as user>
-                        <li class="list-group-item"><a href="/user?id=${user.id}" class="stretched-link">Id: ${user.id},
-                                imię: ${user.name}, nazwisko: ${user.surname}</a></li>
+                        <li class="list-group-item">Id: ${user.id},
+                            imię: ${user.name}, nazwisko: ${user.surname}</li>
                     </#items>
                 </ul>
             </#list>
@@ -115,8 +114,8 @@
             <#list availableUsers>
                 <ul class="list-group w-100 mb-3 ">
                     <#items as user>
-                        <li class="list-group-item"><a href="/user?id=${user.id}" class="stretched-link">Id: ${user.id},
-                                imię: ${user.name}, nazwisko: ${user.surname}</a></li>
+                        <li class="list-group-item">Id: ${user.id},
+                            imię: ${user.name}, nazwisko: ${user.surname}</li>
                     </#items>
                 </ul>
             </#list>
@@ -125,5 +124,4 @@
             </#if>
         </div>
     </div>
-
-</@baisc.includeContent>
+</@basic.includeContent>
