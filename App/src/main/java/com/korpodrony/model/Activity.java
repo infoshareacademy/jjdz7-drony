@@ -2,7 +2,6 @@ package com.korpodrony.model;
 
 import java.util.HashSet;
 import java.util.Set;
-
 public class Activity {
     private static int currentID = 0;
     private int id;
