@@ -1,5 +1,6 @@
 package com.korpodrony.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
@@ -12,7 +13,11 @@ public class User {
     private static int currentID = 0;
     @Id
     private int id;
+
+    @Column(name = "user_name")
     private String name;
+
+    @Column(name = "user_surname")
     private String surname;
 
     public User(int id, String name, String surname) {

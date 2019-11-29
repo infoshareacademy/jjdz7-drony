@@ -1,26 +1,37 @@
 package com.korpodrony.model;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+
+@Entity
 public class Activity {
+    @Transient
     private static int currentID = 0;
+    @Id
     private int id;
+    @Column(name="activity_names")
     private String name;
+    @Column(name="activity_maxUsers")
     private short maxUsers;
+    @ElementCollection
+    @CollectionTable(name = "assigned_Users_IDs_set", joinColumns = @JoinColumn(name = "id"))
     private Set<Integer> assignedUsersIDs;
-    private byte lenghtInQuarters;
+    @Column(name = "length_in_quarters")
+    private byte lengthInQuarters;
+    @Column(name="activities_types")
     private ActivitiesType activitiesType;
 
-    public Activity(String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
-        this(++currentID, name, maxUsers, new HashSet<>(), lenghtInQuarters, activitiesType);
+    public Activity(String name, short maxUsers, byte lengthInQuarters, ActivitiesType activitiesType) {
+        this(++currentID, name, maxUsers, new HashSet<>(), lengthInQuarters, activitiesType);
     }
 
-    public Activity(int id, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte lenghtInQuarters, ActivitiesType activitiesType) {
+    public Activity(int id, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte lengthInQuarters, ActivitiesType activitiesType) {
         this.id = id;
         this.name = name;
         this.maxUsers = maxUsers;
         this.assignedUsersIDs = assignedUsersIDs;
-        this.lenghtInQuarters = lenghtInQuarters;
+        this.lengthInQuarters = lengthInQuarters;
         this.activitiesType = activitiesType;
     }
 
@@ -77,12 +88,12 @@ public class Activity {
         this.assignedUsersIDs = assignedUsersIDs;
     }
 
-    public byte getLenghtInQuarters() {
-        return lenghtInQuarters;
+    public byte getLengthInQuarters() {
+        return lengthInQuarters;
     }
 
-    public void setLenghtInQuarters(byte lenghtInQuarters) {
-        this.lenghtInQuarters = lenghtInQuarters;
+    public void setLengthInQuarters(byte lengthInQuarters) {
+        this.lengthInQuarters = lengthInQuarters;
     }
 
     public ActivitiesType getActivitiesType() {
@@ -96,7 +107,7 @@ public class Activity {
     public void editActivity(String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
         setName(name);
         setMaxUsers(maxUsers);
-        setLenghtInQuarters(lenghtInQuarters);
+        setLengthInQuarters(lenghtInQuarters);
         setActivitiesType(activitiesType);
     }
 
@@ -137,7 +148,7 @@ public class Activity {
                 ", nazwa: " + name +
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
-                ", czas trwania [min]:" + lenghtInQuarters * 15 +
+                ", czas trwania [min]:" + lengthInQuarters * 15 +
                 ", typ zajęć: " + activitiesType.polishName;
     }
 }

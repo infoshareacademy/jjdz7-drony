@@ -1,10 +1,24 @@
 package com.korpodrony.model;
 
+import javax.persistence.*;
 import java.util.*;
 
+@Entity
 public class Organization {
+    @Id
+    private int id;
+
+    @ElementCollection
+    @CollectionTable(name="users_set", joinColumns = @JoinColumn(name = "id"))
+    @Column(name="usersDB")
     private Set<User> users;
+    @ElementCollection
+    @CollectionTable(name="plans_set", joinColumns = @JoinColumn(name = "id"))
+    @Column(name="plansDB")
     private Set<Plan> plans;
+    @ElementCollection
+    @CollectionTable(name="activities_set", joinColumns = @JoinColumn(name = "id"))
+    @Column(name="activitiesDB")
     private Set<Activity> activities;
 
     public Organization(Set<User> users, Set<Plan> plans, Set<Activity> activities) {

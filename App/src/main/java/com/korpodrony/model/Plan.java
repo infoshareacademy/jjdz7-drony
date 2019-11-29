@@ -1,13 +1,23 @@
 package com.korpodrony.model;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Entity
+
 public class Plan {
+    @Transient
     private static int currentID = 0;
+
+    @Id
     private int id;
+    @Column(name="plan_name")
     private String name;
+    @ElementCollection
+    @CollectionTable(name="plan_activities_ID_set", joinColumns = @JoinColumn(name = "id"))
+    @Column(name="plan_activitiesID")
     private Set<Integer> activitiesID;
 
     public Plan(int id, String name, Set<Integer> activitiesID) {
