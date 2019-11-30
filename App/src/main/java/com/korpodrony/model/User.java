@@ -7,19 +7,11 @@ import javax.persistence.Transient;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
 public class User {
-    @Transient
     private static int currentID = 0;
-    @Id
     private int id;
-
-    @Column(name = "user_name")
     private String name;
-
-    @Column(name = "user_surname")
     private String surname;
-
     public User(int id, String name, String surname) {
         this.id = id;
         this.name = name;

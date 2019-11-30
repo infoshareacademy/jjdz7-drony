@@ -4,22 +4,13 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
 public class Activity {
-    @Transient
     private static int currentID = 0;
-    @Id
     private int id;
-    @Column(name="activity_names")
     private String name;
-    @Column(name="activity_maxUsers")
     private short maxUsers;
-    @ElementCollection
-    @CollectionTable(name = "assigned_Users_IDs_set", joinColumns = @JoinColumn(name = "id"))
     private Set<Integer> assignedUsersIDs;
-    @Column(name = "length_in_quarters")
     private byte lengthInQuarters;
-    @Column(name="activities_types")
     private ActivitiesType activitiesType;
 
     public Activity(String name, short maxUsers, byte lengthInQuarters, ActivitiesType activitiesType) {
