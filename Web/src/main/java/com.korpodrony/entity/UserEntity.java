@@ -7,8 +7,6 @@ import java.util.Set;
 @Entity(name = "User")
 @Table(name = "users")
 public class UserEntity {
-    @ManyToMany(mappedBy = "assigned_users")
-    List<ActivityEntity> usersActivities;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int user_id;
@@ -40,14 +38,6 @@ public class UserEntity {
 
     public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public List<ActivityEntity> getUsersActivities() {
-        return usersActivities;
-    }
-
-    public void setUsersActivities(List<ActivityEntity> usersActivities) {
-        this.usersActivities = usersActivities;
     }
 
     public Set<ActivityEntity> getUsers_activities() {
