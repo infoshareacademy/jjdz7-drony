@@ -7,7 +7,9 @@ services:
       - ./.env
     ports:
       - ${DB_PORT}:3306
-#    volumes:
+    volumes:
+      - ./init.sql:/data/application/init.sql
+    command: --init-file /data/application/init.sql
 #      - ./mysql:/var/lib/mysql
 #  wildfly:
 #    build: .

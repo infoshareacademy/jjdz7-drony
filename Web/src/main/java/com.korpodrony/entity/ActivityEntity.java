@@ -15,7 +15,7 @@ public class ActivityEntity {
     private short maxUsers;
     private byte lengthInQuarters;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name="activities_users", joinColumns={@JoinColumn(name = "user_id",
             referencedColumnName="activity_id")}
             , inverseJoinColumns={@JoinColumn(name = "activity_id",
@@ -62,5 +62,16 @@ public class ActivityEntity {
 
     public void setLengthInQuarters(byte lengthInQuarters) {
         this.lengthInQuarters = lengthInQuarters;
+    }
+
+    @Override
+    public String toString() {
+        return "ActivityEntity{" +
+                "activity_id=" + activity_id +
+                ", name='" + name + '\'' +
+                ", maxUsers=" + maxUsers +
+                ", lengthInQuarters=" + lengthInQuarters +
+                ", assigned_users=" + assigned_users +
+                '}';
     }
 }
