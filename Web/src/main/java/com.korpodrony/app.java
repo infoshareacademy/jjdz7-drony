@@ -1,12 +1,11 @@
 package com.korpodrony;
 
-import com.korpodrony.entity.UserEntity;
+import com.korpodrony.dto.UserDTO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
 
 public class app {
     private static EntityManager entityManager;
@@ -16,20 +15,26 @@ public class app {
                 .createEntityManagerFactory("test");
         entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();
-        entityManager.persist(new UserEntity("adam", "madam"));
-        entityManager.persist(new UserEntity("ad", "madam"));
-        entityManager.persist(new UserEntity("ada", "madam"));
-        entityManager.persist(new UserEntity("madam", "madam"));
-        transaction.commit();
+//        transaction.begin();
+//        entityManager.persist(new UserEntity("adam", "madam"));
+//        entityManager.persist(new UserEntity("ad", "madam"));
+//        entityManager.persist(new UserEntity("ada", "madam"));
+//        entityManager.persist(new UserEntity("madam", "madam"));
+//        transaction.commit();
+//
+//        transaction.begin();
+//        entityManager
+//                .createQuery("DELETE FROM User ")
+//                .executeUpdate();
+//        entityManager.flush();
+//        entityManager.clear();
+//        transaction.commit();
 
-        transaction.begin();
-        entityManager
-                .createQuery("DELETE FROM User ")
-                .executeUpdate();
-        entityManager.flush();
-        entityManager.clear();
-        transaction.commit();
+        UserDTO singleResult = entityManager
+                .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.user_id, u.name, u.surname) FROM User u"
+                        , UserDTO.class)
+                .getSingleResult();
 
+        System.out.println(singleResult);
     }
 }

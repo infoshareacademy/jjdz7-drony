@@ -3,11 +3,13 @@ package com.korpodrony.dao;
 import com.korpodrony.model.*;
 import com.korpodrony.repository.OrganizationRepository;
 
+import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Stateless
 public class OrganizationRepositoryDaoImpl implements OrganizationRepositoryDao {
 
     private Organization org = OrganizationRepository.getOrganizationRepository();

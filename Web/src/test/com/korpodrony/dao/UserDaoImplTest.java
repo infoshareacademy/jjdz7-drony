@@ -162,6 +162,18 @@ class UserDaoImplTest {
         assertThat(result).isEqualTo(expectedList);
     }
 
+
+    @Test
+    void getAllUsersReturnNull(){
+        // given
+        List<User> expectedUser = new ArrayList<>();
+
+        // when
+        List<User> result = testObj.getAllUsers();
+
+        // then
+        assertThat(result).isEqualTo(expectedUser);
+    }
     @Test
     void notDeleteUser() {
         // given

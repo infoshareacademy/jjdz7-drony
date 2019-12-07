@@ -9,8 +9,8 @@ services:
       - ${DB_PORT}:3306
     volumes:
       - ./init.sql:/data/application/init.sql
+    #      - ./mysql:/var/lib/mysql
     command: --init-file /data/application/init.sql
-#      - ./mysql:/var/lib/mysql
 #  wildfly:
 #    build: .
 #    ports:

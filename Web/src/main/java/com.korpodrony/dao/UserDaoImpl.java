@@ -1,11 +1,11 @@
 package com.korpodrony.dao;
 
+import com.korpodrony.dto.UserDTO;
 import com.korpodrony.entity.UserEntity;
 import com.korpodrony.model.User;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,8 +42,17 @@ public class UserDaoImpl implements UserRepositoryDao {
 
     @Override
     public User getUser(int userID) {
-        UserEntity userEntity = getUserEntity(userID);
-        return userEntity == null ? null : userEntity.getUserFromEntity();
+        try {
+            return entityManager
+                    .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.user_id, u.name, u.surname) FROM User u WHERE " +
+                                    "u.user_id=:id"
+                            , UserDTO.class)
+                    .setParameter("id", userID)
+                    .getSingleResult()
+                    .getUser();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
@@ -67,12 +76,12 @@ public class UserDaoImpl implements UserRepositoryDao {
 
     @Override
     public List<User> getAllUsers() {
-        List<UserEntity> resultList = entityManager
-                .createQuery("SELECT u FROM User u")
-                .getResultList();
-        return resultList
+        return entityManager
+                .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.user_id, u.name, u.surname) FROM User u"
+                        , UserDTO.class)
+                .getResultList()
                 .stream()
-                .map(UserEntity::getUserFromEntity)
+                .map(UserDTO::getUser)
                 .collect(Collectors.toList());
     }
 
@@ -89,7 +98,15 @@ public class UserDaoImpl implements UserRepositoryDao {
 
     @Override
     public boolean hasUserWithThisID(int userID) {
-        return getUser(userID) != null;
+        try {
+            Object id = entityManager
+                    .createQuery("SELECT u.user_id FROM User u where u.user_id=:id")
+                    .setParameter("id", userID)
+                    .getSingleResult();
+            return true;
+        } catch (NoResultException e) {
+            return false;
+        }
     }
 
     @Override
