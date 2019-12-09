@@ -27,13 +27,22 @@ public class ActivityDTO {
         this.activitiesType = activitiesType;
     }
 
-    public Activity createActivity(){
+    public Activity createActivity() {
         Activity activity = new Activity();
         activity.setId(id);
+        activity.setName(name);
         activity.setMaxUsers(maxUsers);
         activity.setLengthInQuarters(lengthInQuarters);
         activity.setActivitiesType(activitiesType);
         activity.setAssignedUsersIDs(assignedUsersIDs);
+        return activity;
+    }
+
+    public Activity createSimplifiedActivity() {
+        Activity activity = new Activity();
+        activity.setId(id);
+        activity.setName(name);
+        return activity;
     }
 
     public int getId() {
