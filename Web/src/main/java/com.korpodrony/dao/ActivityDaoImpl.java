@@ -5,19 +5,16 @@ import com.korpodrony.entity.UserEntity;
 import com.korpodrony.model.ActivitiesType;
 import com.korpodrony.model.Activity;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Set;
 
-public class ActivityDaoImpl implements  ActivityRepositoryDao{
+public class ActivityDaoImpl implements ActivityRepositoryDao {
 
     @PersistenceContext(unitName = "korpodrony-hibernate")
     private EntityManager entityManager;
 
-    @Override
     public boolean createActivity(String name, short maxUsers, byte lengthInQuarters, ActivitiesType activitiesType) {
         ActivityEntity activityEntity = new ActivityEntity();
         activityEntity.setName(name);
@@ -28,47 +25,59 @@ public class ActivityDaoImpl implements  ActivityRepositoryDao{
         return true;
     }
 
-    @Override
     public boolean assignUserToActivity(int userID, int activityID) {
-        if (hasActivityWithThisID(activityID) && entityManager.find(UserEntity.class, 1) != null){
-
+        ActivityEntity activityEntity = getActivityEntity(activityID);
+        UserEntity userEntity = getUserEntity(userID);
+        if (activityEntity != null && userEntity !=null){
+            activityEntity
+                    .getAssigned_users()
+                    .add(userEntity);
+            entityManager.merge(activityEntity);
+            return true;
         }
         return false;
     }
 
-    @Override
     public boolean unassignUserFromActivity(int userID, int activityID) {
+        ActivityEntity activityEntity = getActivityEntity(activityID);
+        UserEntity userEntity = getUserEntity(userID);
+        if (activityEntity != null && userEntity !=null){
+            activityEntity
+                    .getAssigned_users()
+                    .remove(userEntity);
+            entityManager.merge(activityEntity);
+            return true;
+        }
         return false;
     }
 
-    @Override
     public boolean deleteActivity(int activityID) {
-        return false;
+        if (hasActivityWithThisID(activityID)) {
+            entityManager.createQuery("DELETE FROM Activity a WHERE a.id=:id")
+                    .setParameter("id", activityID)
+                    .executeUpdate();
+            entityManager.flush();
+            entityManager.clear();
+            return true;
+        }else {
+            return false;
+        }
     }
 
-    @Override
     public Activity getActivity(int activityID) {
         return null;
     }
 
-    @Override
     public boolean editActivity(int activityID, String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
         return false;
     }
 
-    @Override
-    public List<Integer> getAllActivitiesIDs() {
-        return null;
-    }
-
-    @Override
     public List<Activity> getAllActivities() {
         return null;
     }
 
-    @Override
-    public boolean hasActivity(Activity activity) {
-        return false;
+    public List<Activity> getAllSimplifiedActivities() {
+        return null;
     }
 
     @Override
@@ -84,13 +93,15 @@ public class ActivityDaoImpl implements  ActivityRepositoryDao{
         }
     }
 
-    @Override
-    public Set<Activity> getActivitiesSet() {
-        return null;
-    }
-
     private ActivityEntity getActivityEntity(int activityId) {
         return entityManager.find(ActivityEntity.class, activityId);
     }
 
+    private UserEntity getUserEntity(int userId) {
+        return entityManager.find(UserEntity.class, userId);
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 }

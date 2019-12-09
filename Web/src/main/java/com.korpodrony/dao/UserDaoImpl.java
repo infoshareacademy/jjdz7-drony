@@ -64,7 +64,6 @@ public class UserDaoImpl implements UserRepositoryDao {
         return false;
     }
 
-    @Override
     public List<User> getAllUsers() {
         return entityManager
                 .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname) FROM User u"

@@ -20,7 +20,9 @@ public interface ActivityRepositoryDao {
 
     boolean editActivity(int activityID, String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType);
 
-    List<Integer> getAllActivitiesIDs();
+    default List<Integer> getAllActivitiesIDs() {
+        return null;
+    }
 
     List<Activity> getAllActivities();
 
