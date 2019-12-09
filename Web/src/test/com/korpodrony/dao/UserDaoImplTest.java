@@ -9,7 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -73,14 +74,12 @@ class UserDaoImplTest {
         User result = testObj.getUser(1);
 
         // then
-        assertThat(result).isEqualTo(expectedUser);
+        assertThat(result).isNull();
     }
-
 
     @Test
     void deleteUserTest() {
         // given
-        UserEntity expectedUser = null;
         transaction.begin();
         UserEntity user = new UserEntity();
         user.setName("Marwin");
@@ -95,7 +94,20 @@ class UserDaoImplTest {
 
         // then
         assertThat(result).isTrue();
-        assertThat(entityManager.find(UserEntity.class, 1)).isEqualTo(expectedUser);
+        assertThat(entityManager.find(UserEntity.class, 1)).isNull();
+    }
+
+    @Test
+    void notDeleteUserTest() {
+        // given
+
+        // when
+        transaction.begin();
+        boolean result = testObj.deleteUser(1);
+        transaction.commit();
+
+        // then
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -119,24 +131,6 @@ class UserDaoImplTest {
         assertThat(assertThat(entityManager.find(UserEntity.class, 1).getSurname())
                 .isEqualTo(expectedSurame));
 
-    }
-
-    @Test
-    void getAllUsersIDsTest() {
-        // given
-        transaction.begin();
-        entityManager.persist(new UserEntity("adam", "madam"));
-        entityManager.persist(new UserEntity("ad", "madam"));
-        entityManager.persist(new UserEntity("ada", "madam"));
-        entityManager.persist(new UserEntity("madam", "madam"));
-        transaction.commit();
-        List<Integer> expectedList = Arrays.asList(1, 2, 3, 4);
-
-        // when
-        List<Integer> result = testObj.getAllUsersIDs();
-
-        // then
-        assertThat(result).isEqualTo(expectedList);
     }
 
     @Test
@@ -186,7 +180,7 @@ class UserDaoImplTest {
 
         // then
         assertThat(result).isFalse();
-        assertThat(entityManager.find(UserEntity.class, userId)).isEqualTo(null);
+        assertThat(entityManager.find(UserEntity.class, userId)).isNull();
     }
 
     @Test
@@ -230,25 +224,14 @@ class UserDaoImplTest {
     }
 
     @Test
-    void getUsersSetTest() {
+    void NotHasUserTest() {
         // given
-        UserEntity user1 = new UserEntity("adam", "madam");
-        UserEntity user2 = new UserEntity("ada", "madam");
-        UserEntity user3 = new UserEntity("ad", "madam");
-        transaction.begin();
-        entityManager.persist(user1);
-        entityManager.persist(user2);
-        entityManager.persist(user3);
-        transaction.commit();
-        Set<User> expectedSet = new HashSet<>();
-        expectedSet.add(user1.getUserFromEntity());
-        expectedSet.add(user2.getUserFromEntity());
-        expectedSet.add(user3.getUserFromEntity());
+        int id = 1;
 
         // when
-        Set<User> result = testObj.getUsersSet();
+        boolean result = testObj.hasUserWithThisID(id);
 
         // then
-        assertThat(result).isEqualTo(expectedSet);
+        assertThat(result).isFalse();
     }
 }

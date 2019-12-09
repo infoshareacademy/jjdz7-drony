@@ -31,7 +31,7 @@ public class app {
 //        transaction.commit();
 
         UserDTO singleResult = entityManager
-                .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.user_id, u.name, u.surname) FROM User u"
+                .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname) FROM User u"
                         , UserDTO.class)
                 .getSingleResult();
 

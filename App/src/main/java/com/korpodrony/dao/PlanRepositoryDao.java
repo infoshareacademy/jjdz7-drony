@@ -23,9 +23,13 @@ public interface PlanRepositoryDao {
 
     List<Plan> getAllPlans();
 
-    boolean hasPlan(Plan plan);
+    default boolean hasPlan(Plan plan) {
+        return false;
+    }
 
     boolean hasPlanWithThisID(int planID);
 
-    Set<Plan> getPlansSet();
+    default Set<Plan> getPlansSet() {
+        return null;
+    }
 }

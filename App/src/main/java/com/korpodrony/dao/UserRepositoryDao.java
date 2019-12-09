@@ -14,13 +14,19 @@ public interface UserRepositoryDao {
 
     boolean editUser(int userID, String name, String surname);
 
-    List<Integer> getAllUsersIDs();
+    default List<Integer> getAllUsersIDs() {
+        return null;
+    }
 
     List<User> getAllUsers();
 
-    boolean hasUser(User user);
+    default boolean hasUser(User user) {
+        return false;
+    }
 
     boolean hasUserWithThisID(int userID);
 
-    Set<User> getUsersSet();
+    default Set<User> getUsersSet() {
+        return null;
+    }
 }

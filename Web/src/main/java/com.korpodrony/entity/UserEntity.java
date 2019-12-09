@@ -12,7 +12,7 @@ import java.util.Set;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int user_id;
+    private int id;
     private String name;
     private String surname;
     @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "assigned_users")
@@ -28,7 +28,7 @@ public class UserEntity {
 
     public User getUserFromEntity() {
         User user = new User();
-        user.setId(this.user_id);
+        user.setId(this.id);
         user.setName(this.name);
         user.setSurname(this.surname);
         return user;
@@ -48,12 +48,12 @@ public class UserEntity {
         return Objects.hash(name, surname);
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getId() {
+        return id;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setId(int user_id) {
+        this.id = user_id;
     }
 
     public String getName() {
@@ -83,7 +83,7 @@ public class UserEntity {
     @Override
     public String toString() {
         return "UserEntity{" +
-                "user_id=" + user_id +
+                "user_id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 '}';

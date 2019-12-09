@@ -22,17 +22,15 @@ public interface ActivityRepositoryDao {
 
     List<Integer> getAllActivitiesIDs();
 
-
     List<Activity> getAllActivities();
 
-
-    boolean hasActivity(Activity activity);
-
+    default boolean hasActivity(Activity activity) {
+        return false;
+    }
 
     boolean hasActivityWithThisID(int activityID);
 
-
-    Set<Activity> getActivitiesSet();
-
-
+    default Set<Activity> getActivitiesSet() {
+        return null;
+    }
 }

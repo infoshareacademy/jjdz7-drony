@@ -4,17 +4,19 @@
              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
              version="2.2">
 
-    <persistence-unit name="korpodrony-hibernate">
+    <persistence-unit name="korpodrony-hibernate" transaction-type="JTA">
         <description>infoShare Academy Hibernate EntityManager</description>
+        <jta-data-source>java:ds/evc</jta-data-source>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="hibernate.hbm2ddl.auto" value="create"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:5555/organization"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value="secret2"/>
-<!--            <property name="javax.persistence.sql-load-script-source" value="META-INF/initial_data.sql"/>-->
+            <property name="javax.persistence.jdbc.password" value="secret2"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <!--            <property name="javax.persistence.sql-load-script-source" value="META-INF/initial_data.sql"/>-->
         </properties>
     </persistence-unit>
 
@@ -28,7 +30,7 @@
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:5555/test"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value="secret2"/>
-<!--            <property name="javax.persistence.sql-load-script-source" value="META-INF/initial_data_test.sql"/>-->
+            <!--            <property name="javax.persistence.sql-load-script-source" value="META-INF/initial_data_test.sql"/>-->
         </properties>
     </persistence-unit>
 </persistence>

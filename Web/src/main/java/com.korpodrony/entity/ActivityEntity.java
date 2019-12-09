@@ -1,6 +1,6 @@
 package com.korpodrony.entity;
 
-import com.korpodrony.model.Plan;
+import com.korpodrony.model.ActivitiesType;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -10,26 +10,35 @@ import java.util.Set;
 public class ActivityEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int activity_id;
+    private int id;
     private String name;
     private short maxUsers;
     private byte lengthInQuarters;
+    private ActivitiesType activitiesType;
+
+    public ActivitiesType getActivitiesType() {
+        return activitiesType;
+    }
+
+    public void setActivitiesType(ActivitiesType activitiesType) {
+        this.activitiesType = activitiesType;
+    }
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name="activities_users", joinColumns={@JoinColumn(name = "user_id",
-            referencedColumnName="activity_id")}
+            referencedColumnName="id")}
             , inverseJoinColumns={@JoinColumn(name = "activity_id",
-            referencedColumnName="user_id")})
+            referencedColumnName="id")})
     private Set<UserEntity> assigned_users;
 
     public ActivityEntity(){}
 
-    public int getActivity_id() {
-        return activity_id;
+    public int getId() {
+        return id;
     }
 
-    public void setActivity_id(int activity_id) {
-        this.activity_id = activity_id;
+    public void setId(int activity_id) {
+        this.id = activity_id;
     }
 
     public String getName() {
@@ -67,7 +76,7 @@ public class ActivityEntity {
     @Override
     public String toString() {
         return "ActivityEntity{" +
-                "activity_id=" + activity_id +
+                "activity_id=" + id +
                 ", name='" + name + '\'' +
                 ", maxUsers=" + maxUsers +
                 ", lengthInQuarters=" + lengthInQuarters +
