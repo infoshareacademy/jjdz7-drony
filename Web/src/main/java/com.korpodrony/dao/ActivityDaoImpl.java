@@ -1,5 +1,6 @@
 package com.korpodrony.dao;
 
+import com.korpodrony.dto.ActivityDTO;
 import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.UserEntity;
 import com.korpodrony.model.ActivitiesType;
@@ -8,7 +9,10 @@ import com.korpodrony.model.Activity;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ActivityDaoImpl implements ActivityRepositoryDao {
 
@@ -28,12 +32,14 @@ public class ActivityDaoImpl implements ActivityRepositoryDao {
     public boolean assignUserToActivity(int userID, int activityID) {
         ActivityEntity activityEntity = getActivityEntity(activityID);
         UserEntity userEntity = getUserEntity(userID);
-        if (activityEntity != null && userEntity !=null){
-            activityEntity
-                    .getAssigned_users()
+        if (activityEntity != null && userEntity != null) {
+            if (activityEntity.getAssigned_users() == null) {
+                activityEntity.setAssigned_users(new HashSet<>());
+            }
+            boolean result = activityEntity.getAssigned_users()
                     .add(userEntity);
             entityManager.merge(activityEntity);
-            return true;
+            return result;
         }
         return false;
     }
@@ -41,12 +47,14 @@ public class ActivityDaoImpl implements ActivityRepositoryDao {
     public boolean unassignUserFromActivity(int userID, int activityID) {
         ActivityEntity activityEntity = getActivityEntity(activityID);
         UserEntity userEntity = getUserEntity(userID);
-        if (activityEntity != null && userEntity !=null){
-            activityEntity
-                    .getAssigned_users()
+        if (activityEntity != null && userEntity != null) {
+            if (activityEntity.getAssigned_users() == null) {
+                activityEntity.setAssigned_users(new HashSet<>());
+            }
+            boolean result = activityEntity.getAssigned_users()
                     .remove(userEntity);
             entityManager.merge(activityEntity);
-            return true;
+            return result;
         }
         return false;
     }
@@ -59,25 +67,49 @@ public class ActivityDaoImpl implements ActivityRepositoryDao {
             entityManager.flush();
             entityManager.clear();
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
     public Activity getActivity(int activityID) {
-        return null;
+        ActivityEntity activityEntity = getActivityEntity(activityID);
+        return activityEntity != null ? activityEntity.createActivity() : null;
     }
 
     public boolean editActivity(int activityID, String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
+        if (hasActivityWithThisID(activityID)) {
+            ActivityEntity activityEntity = getActivityEntity(activityID);
+            activityEntity.setName(name);
+            activityEntity.setMaxUsers(maxUsers);
+            activityEntity.setLengthInQuarters(lenghtInQuarters);
+            activityEntity.setActivitiesType(activitiesType);
+            entityManager.merge(activityEntity);
+            return true;
+        }
         return false;
     }
 
     public List<Activity> getAllActivities() {
-        return null;
+        return entityManager
+                .createQuery("SELECT a FROM Activity a", ActivityEntity.class)
+                .getResultList()
+                .stream()
+                .map(ActivityEntity::createActivity)
+                .collect(Collectors.toList());
     }
 
     public List<Activity> getAllSimplifiedActivities() {
-        return null;
+        try {
+            return entityManager
+                    .createQuery("SELECT new com.korpodrony.dto.ActivityDTO(a.id, a.name) FROM Activity a", ActivityDTO.class)
+                    .getResultList()
+                    .stream()
+                    .map(ActivityDTO::createSimplifiedActivity)
+                    .collect(Collectors.toList());
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override

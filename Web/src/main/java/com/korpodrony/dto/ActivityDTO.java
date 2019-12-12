@@ -1,9 +1,12 @@
 package com.korpodrony.dto;
 
+import com.korpodrony.entity.UserEntity;
 import com.korpodrony.model.ActivitiesType;
 import com.korpodrony.model.Activity;
 
+import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ActivityDTO {
     int id;
@@ -18,14 +21,18 @@ public class ActivityDTO {
         this.name = name;
     }
 
-    public ActivityDTO(int id, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte lengthInQuarters, ActivitiesType activitiesType) {
+    public ActivityDTO(int id, String name, short maxUsers, Collection<UserEntity> assignedUsers, byte lengthInQuarters, ActivitiesType activitiesType){
         this.id = id;
         this.name = name;
         this.maxUsers = maxUsers;
-        this.assignedUsersIDs = assignedUsersIDs;
+        this.assignedUsersIDs = assignedUsers.
+                stream()
+                .map(UserEntity::getId)
+                .collect(Collectors.toSet());
         this.lengthInQuarters = lengthInQuarters;
         this.activitiesType = activitiesType;
     }
+
 
     public Activity createActivity() {
         Activity activity = new Activity();

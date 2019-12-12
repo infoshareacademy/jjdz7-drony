@@ -1,7 +1,7 @@
 package com.korpodrony.model;
 
-import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Activity {
@@ -141,5 +141,23 @@ public class Activity {
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
                 ", czas trwania [min]:" + lengthInQuarters * 15 +
                 ", typ zajęć: " + activitiesType.polishName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Activity activity = (Activity) o;
+        return id == activity.id &&
+                maxUsers == activity.maxUsers &&
+                lengthInQuarters == activity.lengthInQuarters &&
+                Objects.equals(name, activity.name) &&
+                Objects.equals(assignedUsersIDs, activity.assignedUsersIDs) &&
+                activitiesType == activity.activitiesType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, maxUsers, assignedUsersIDs, lengthInQuarters, activitiesType);
     }
 }

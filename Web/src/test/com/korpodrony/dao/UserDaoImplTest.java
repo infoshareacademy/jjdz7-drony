@@ -60,7 +60,6 @@ class UserDaoImplTest {
         // when
         User result = testObj.getUser(1);
 
-
         // then
         assertThat(result).isEqualTo(expectedUser);
     }
@@ -158,7 +157,7 @@ class UserDaoImplTest {
 
 
     @Test
-    void getAllUsersReturnNull(){
+    void getAllUsersReturnNull() {
         // given
         List<User> expectedUser = new ArrayList<>();
 
@@ -168,6 +167,7 @@ class UserDaoImplTest {
         // then
         assertThat(result).isEqualTo(expectedUser);
     }
+
     @Test
     void notDeleteUser() {
         // given
@@ -197,30 +197,6 @@ class UserDaoImplTest {
 
         // then
         assertThat(result).isFalse();
-    }
-
-    @Test
-    void hasUserTest() {
-        // given
-        int id = 1;
-        String name = "M";
-        String surname = "B";
-        transaction.begin();
-        UserEntity user = new UserEntity();
-        user.setName(name);
-        user.setSurname(surname);
-        entityManager.persist(user);
-        transaction.commit();
-        User expectedUser = new User();
-        expectedUser.setName(name);
-        expectedUser.setSurname(surname);
-        expectedUser.setId(id);
-
-        // when
-        boolean result = testObj.hasUser(expectedUser);
-
-        // then
-        assertThat(result).isTrue();
     }
 
     @Test

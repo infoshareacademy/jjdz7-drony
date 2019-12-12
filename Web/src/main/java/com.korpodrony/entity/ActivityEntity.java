@@ -1,9 +1,13 @@
 package com.korpodrony.entity;
 
 import com.korpodrony.model.ActivitiesType;
+import com.korpodrony.model.Activity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity(name = "Activity")
 @Table(name = "activities")
@@ -15,6 +19,8 @@ public class ActivityEntity {
     private String name;
     private short maxUsers;
     private byte lengthInQuarters;
+
+    @Enumerated(EnumType.STRING)
     private ActivitiesType activitiesType;
 
     public ActivitiesType getActivitiesType() {
@@ -26,13 +32,32 @@ public class ActivityEntity {
     }
 
     @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name="activities_users", joinColumns={@JoinColumn(name = "user_id",
-            referencedColumnName="id")}
-            , inverseJoinColumns={@JoinColumn(name = "activity_id",
-            referencedColumnName="id")})
+    @JoinTable(name = "activities_users", joinColumns = {@JoinColumn(name = "user_id",
+            referencedColumnName = "id")}
+            , inverseJoinColumns = {@JoinColumn(name = "activity_id",
+            referencedColumnName = "id")})
     private Set<UserEntity> assigned_users;
 
-    public ActivityEntity(){}
+    public ActivityEntity() {
+    }
+
+    public Activity createActivity() {
+        Activity activity = new Activity();
+        activity.setId(id);
+        activity.setName(name);
+        activity.setMaxUsers(maxUsers);
+        activity.setLengthInQuarters(lengthInQuarters);
+        activity.setActivitiesType(activitiesType);
+        if (assigned_users != null) {
+            activity.setAssignedUsersIDs(assigned_users
+                    .stream()
+                    .map(UserEntity::getId)
+                    .collect(Collectors.toSet()));
+        } else {
+            activity.setAssignedUsersIDs(new HashSet<>());
+        }
+        return activity;
+    }
 
     public int getId() {
         return id;
@@ -83,5 +108,23 @@ public class ActivityEntity {
                 ", lengthInQuarters=" + lengthInQuarters +
                 ", assigned_users=" + assigned_users +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ActivityEntity that = (ActivityEntity) o;
+        return id == that.id &&
+                maxUsers == that.maxUsers &&
+                lengthInQuarters == that.lengthInQuarters &&
+                Objects.equals(name, that.name) &&
+                activitiesType == that.activitiesType &&
+                Objects.equals(assigned_users, that.assigned_users);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, maxUsers, lengthInQuarters, activitiesType, assigned_users);
     }
 }
