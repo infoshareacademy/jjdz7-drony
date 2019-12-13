@@ -78,16 +78,16 @@ public class ActivityDaoImpl implements ActivityRepositoryDao {
     }
 
     public boolean editActivity(int activityID, String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
-        if (hasActivityWithThisID(activityID)) {
-            ActivityEntity activityEntity = getActivityEntity(activityID);
-            activityEntity.setName(name);
-            activityEntity.setMaxUsers(maxUsers);
-            activityEntity.setLengthInQuarters(lenghtInQuarters);
-            activityEntity.setActivitiesType(activitiesType);
-            entityManager.merge(activityEntity);
-            return true;
+        ActivityEntity activityEntity = getActivityEntity(activityID);
+        if (activityEntity == null) {
+            return false;
         }
-        return false;
+        activityEntity.setName(name);
+        activityEntity.setMaxUsers(maxUsers);
+        activityEntity.setLengthInQuarters(lenghtInQuarters);
+        activityEntity.setActivitiesType(activitiesType);
+        entityManager.merge(activityEntity);
+        return true;
     }
 
     public List<Activity> getAllActivities() {

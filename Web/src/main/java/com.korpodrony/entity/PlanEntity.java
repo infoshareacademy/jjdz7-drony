@@ -1,7 +1,11 @@
 package com.korpodrony.entity;
 
+import com.korpodrony.model.Plan;
+
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity(name = "Plan")
 @Table(name = "plans")
@@ -39,6 +43,20 @@ public class PlanEntity {
 
     public Set<ActivityEntity> getAssignedActivities() {
         return assignedActivities;
+    }
+
+    public Plan createPlan() {
+        Plan plan = new Plan();
+        plan.setId(id);
+        plan.setName(name);
+        if (assignedActivities == null) {
+            plan.setActivitiesID(new HashSet<>());
+        } else {
+            plan.setActivitiesID(assignedActivities.stream()
+                    .map(ActivityEntity::getId)
+                    .collect(Collectors.toSet()));
+        }
+        return plan;
     }
 
     public void setAssignedActivities(Set<ActivityEntity> assignedActivities) {

@@ -2,6 +2,7 @@ package com.korpodrony.dao;
 
 import com.korpodrony.model.Plan;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +20,9 @@ public interface PlanRepositoryDao {
 
     boolean editPlan(int planID, String name);
 
-    List<Integer> getAllPlansIDs();
+    default List<Integer> getAllPlansIDs() {
+        return new ArrayList<>();
+    }
 
     List<Plan> getAllPlans();
 
