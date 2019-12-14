@@ -23,5 +23,4 @@ public class LifeCycleBean {
     @PreDestroy
     public void destroy() {
     }
-
 }

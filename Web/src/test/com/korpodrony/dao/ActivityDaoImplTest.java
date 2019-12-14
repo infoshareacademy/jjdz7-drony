@@ -117,7 +117,7 @@ class ActivityDaoImplTest {
 
         // then
         assertThat(result).isTrue();
-        assertThat(activityEntity.getAssigned_users()).isEmpty();
+        assertThat(resultActivityEntity.getAssigned_users()).isEmpty();
     }
 
     @Test
@@ -212,7 +212,6 @@ class ActivityDaoImplTest {
 
     @Test
     void getAllSimplifiedActivities() {
-
         // given
         ActivityEntity activityEntity = new ActivityEntity();
         activityEntity.setName("A");

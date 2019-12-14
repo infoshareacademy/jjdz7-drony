@@ -18,7 +18,7 @@ class UserDaoImplTest {
     private EntityManagerFactory entityManagerFactory = Persistence
             .createEntityManagerFactory("test");
     private EntityManager entityManager = entityManagerFactory.createEntityManager();
-    private EntityTransaction transaction;
+    private EntityTransaction transaction = entityManager.getTransaction();
     private UserDaoImpl testObj = new UserDaoImpl();
 
     @BeforeEach

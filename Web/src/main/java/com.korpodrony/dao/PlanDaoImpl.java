@@ -1,6 +1,5 @@
 package com.korpodrony.dao;
 
-import com.korpodrony.dto.ActivityDTO;
 import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.PlanEntity;
@@ -74,7 +73,8 @@ public class PlanDaoImpl implements PlanRepositoryDao {
 
     @Override
     public Plan getPlan(int planID) {
-        return null;
+        return getPlanEntity(planID)
+                .createPlan();
     }
 
     @Override
