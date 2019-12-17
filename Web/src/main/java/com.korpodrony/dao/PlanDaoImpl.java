@@ -5,6 +5,7 @@ import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.PlanEntity;
 import com.korpodrony.model.Plan;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -12,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Stateless
 public class PlanDaoImpl implements PlanRepositoryDao {
 
     @PersistenceContext(unitName = "korpodrony-hibernate")

@@ -10,7 +10,13 @@ public class Activity {
     private String name;
     private short maxUsers;
     private Set<Integer> assignedUsersIDs;
+    private Set<User> assignedUsers;
     private byte lengthInQuarters;
+
+    public void setAssignedUsers(Set<User> assignedUsers) {
+        this.assignedUsers = assignedUsers;
+    }
+
     private ActivitiesType activitiesType;
 
     public Activity(String name, short maxUsers, byte lengthInQuarters, ActivitiesType activitiesType) {
@@ -45,6 +51,10 @@ public class Activity {
 
     public static void setCurrentID(int currentID) {
         Activity.currentID = currentID;
+    }
+
+    public Set<User> getAssignedUsers() {
+        return assignedUsers;
     }
 
     public int getId() {

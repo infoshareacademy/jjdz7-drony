@@ -2,9 +2,11 @@ package com.korpodrony.dao;
 
 import com.korpodrony.model.User;
 
+import javax.ejb.Local;
 import java.util.List;
 import java.util.Set;
 
+@Local
 public interface UserRepositoryDao {
     boolean createUser(String name, String surname);
 

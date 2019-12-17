@@ -2,10 +2,13 @@ package com.korpodrony.dao;
 
 import com.korpodrony.model.ActivitiesType;
 import com.korpodrony.model.Activity;
+import com.korpodrony.model.User;
 
+import javax.ejb.Local;
 import java.util.List;
 import java.util.Set;
 
+@Local
 public interface ActivityRepositoryDao {
 
     boolean createActivity(String name, short maxUsers, byte duration, ActivitiesType activitiesType);
@@ -24,6 +27,10 @@ public interface ActivityRepositoryDao {
         return null;
     }
 
+    default List<User> getAssignedUsers(int activityId){
+        return null;
+    }
+
     List<Activity> getAllActivities();
 
     default boolean hasActivity(Activity activity) {
@@ -33,6 +40,14 @@ public interface ActivityRepositoryDao {
     boolean hasActivityWithThisID(int activityID);
 
     default Set<Activity> getActivitiesSet() {
+        return null;
+    }
+
+    default List<Activity> getSimplifiedActivatesByActivityType(ActivitiesType activity){
+        return null;
+    }
+
+    default List<Activity> getAllSimplifiedActivities(){
         return null;
     }
 }

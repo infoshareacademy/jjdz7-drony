@@ -14,7 +14,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class PlanDaoImplTest {
     private EntityManagerFactory entityManagerFactory = Persistence

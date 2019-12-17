@@ -32,9 +32,9 @@ public class ActivityEntity {
     }
 
     @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "activities_users", joinColumns = {@JoinColumn(name = "user_id",
+    @JoinTable(name = "activities_users", joinColumns = {@JoinColumn(name = "activity_id",
             referencedColumnName = "id")}
-            , inverseJoinColumns = {@JoinColumn(name = "activity_id",
+            , inverseJoinColumns = {@JoinColumn(name = "user_id",
             referencedColumnName = "id")})
     private Set<UserEntity> assigned_users;
 
@@ -49,13 +49,11 @@ public class ActivityEntity {
         activity.setLengthInQuarters(lengthInQuarters);
         activity.setActivitiesType(activitiesType);
         if (assigned_users != null) {
-            activity.setAssignedUsersIDs(assigned_users
-                    .stream()
-                    .map(UserEntity::getId)
-                    .collect(Collectors.toSet()));
-        } else {
-            activity.setAssignedUsersIDs(new HashSet<>());
+            activity.setAssignedUsers(assigned_users.stream()
+                    .map(UserEntity::getUserFromEntity
+                    ).collect(Collectors.toSet()));
         }
+        activity.setAssignedUsersIDs(new HashSet<>());
         return activity;
     }
 

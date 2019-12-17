@@ -1,6 +1,8 @@
 package com.korpodrony.servlet;
 
 import com.korpodrony.freemarker.TemplateProvider;
+import com.korpodrony.model.ActivitiesType;
+import com.korpodrony.model.Activity;
 import com.korpodrony.service.RepositoryService;
 import com.korpodrony.services.ActivitiesWebService;
 import com.korpodrony.validation.Validator;
@@ -149,10 +151,12 @@ public class ActivityServlet extends HttpServlet {
     }
 
     private Map<String, Object> getActivityModel(int id) {
+//        Activity activity = activitiesWebService.getActivity(id);
+        Activity activity = new Activity("Java", (short) 20, (byte) 3, ActivitiesType.WORKSHOP);
         Map<String, Object> model = new HashMap<>();
-        model.put("activity", activitiesWebService.getActivity(id));
-        model.put("users", activitiesWebService.getAssignedUsers(id));
-        model.put("availableUsers", activitiesWebService.getAvaiableUsers(id));
+        model.put("activity", activity);
+        model.put("users", activity.getAssignedUsers());
+        model.put("availableUsers", null);
         return model;
     }
 

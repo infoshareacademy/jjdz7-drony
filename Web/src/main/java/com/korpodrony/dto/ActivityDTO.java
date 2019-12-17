@@ -1,55 +1,24 @@
 package com.korpodrony.dto;
 
-import com.korpodrony.entity.UserEntity;
 import com.korpodrony.model.ActivitiesType;
-import com.korpodrony.model.Activity;
 
-import java.util.Collection;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ActivityDTO {
-    int id;
-    String name;
+    private int id;
+    private String name;
     private short maxUsers;
-    private Set<Integer> assignedUsersIDs;
+    private Set<UserDTO> assignedUsers;
     private byte lengthInQuarters;
     private ActivitiesType activitiesType;
 
-    public ActivityDTO(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public ActivityDTO(int id, String name, short maxUsers, Collection<UserEntity> assignedUsers, byte lengthInQuarters, ActivitiesType activitiesType){
+    public ActivityDTO(int id, String name, short maxUsers, Set<UserDTO> assignedUsers, byte lengthInQuarters, ActivitiesType activitiesType) {
         this.id = id;
         this.name = name;
         this.maxUsers = maxUsers;
-        this.assignedUsersIDs = assignedUsers.
-                stream()
-                .map(UserEntity::getId)
-                .collect(Collectors.toSet());
+        this.assignedUsers = assignedUsers;
         this.lengthInQuarters = lengthInQuarters;
         this.activitiesType = activitiesType;
-    }
-
-
-    public Activity createActivity() {
-        Activity activity = new Activity();
-        activity.setId(id);
-        activity.setName(name);
-        activity.setMaxUsers(maxUsers);
-        activity.setLengthInQuarters(lengthInQuarters);
-        activity.setActivitiesType(activitiesType);
-        activity.setAssignedUsersIDs(assignedUsersIDs);
-        return activity;
-    }
-
-    public Activity createSimplifiedActivity() {
-        Activity activity = new Activity();
-        activity.setId(id);
-        activity.setName(name);
-        return activity;
     }
 
     public int getId() {
@@ -76,12 +45,12 @@ public class ActivityDTO {
         this.maxUsers = maxUsers;
     }
 
-    public Set<Integer> getAssignedUsersIDs() {
-        return assignedUsersIDs;
+    public Set<UserDTO> getAssignedUsers() {
+        return assignedUsers;
     }
 
-    public void setAssignedUsersIDs(Set<Integer> assignedUsersIDs) {
-        this.assignedUsersIDs = assignedUsersIDs;
+    public void setAssignedUsers(Set<UserDTO> assignedUsers) {
+        this.assignedUsers = assignedUsers;
     }
 
     public byte getLengthInQuarters() {

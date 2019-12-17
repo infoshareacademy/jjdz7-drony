@@ -1,19 +1,20 @@
 package com.korpodrony.dao;
 
-import com.korpodrony.dto.ActivityDTO;
+import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.UserEntity;
 import com.korpodrony.model.ActivitiesType;
 import com.korpodrony.model.Activity;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
+@Stateless
 public class ActivityDaoImpl implements ActivityRepositoryDao {
 
     @PersistenceContext(unitName = "korpodrony-hibernate")
@@ -102,15 +103,25 @@ public class ActivityDaoImpl implements ActivityRepositoryDao {
     public List<Activity> getAllSimplifiedActivities() {
         try {
             return entityManager
-                    .createQuery("SELECT new com.korpodrony.dto.ActivityDTO(a.id, a.name) FROM Activity a", ActivityDTO.class)
+                    .createQuery("SELECT new com.korpodrony.dto.SimplifiedActivityDTO(a.id, a.name, a.activitiesType) FROM Activity a", SimplifiedActivityDTO.class)
                     .getResultList()
                     .stream()
-                    .map(ActivityDTO::createSimplifiedActivity)
+                    .map(SimplifiedActivityDTO::createSimplifiedActivity)
                     .collect(Collectors.toList());
         } catch (NoResultException e) {
             return null;
         }
     }
+
+
+//    public List<UserDTO> getAssignedUserssss(int activityId) {
+//        return entityManager
+//                .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname) FROM User u " +
+//                        " where u in (select a.assigned_users from Activity a" +
+//                            " where a.id = :id)", UserDTO.class)
+//                .setParameter("id", activityId)
+//                .getResultList();
+//    }
 
     @Override
     public boolean hasActivityWithThisID(int activityID) {
@@ -125,6 +136,33 @@ public class ActivityDaoImpl implements ActivityRepositoryDao {
         }
     }
 
+    public SimplifiedActivityDTO getActivityDTO(int activityId) {
+        return entityManager.createQuery("SELECT new com.korpodrony.dto.SimplifiedActivityDTO(a.id, a.name, a.activitiesType)" +
+                " FROM Activity a WHERE a.id=:id", SimplifiedActivityDTO.class)
+                .setParameter("id", activityId)
+                .getSingleResult();
+    }
+
+    @Override
+    public List<Activity> getSimplifiedActivatesByActivityType(ActivitiesType activity) {
+        try {
+            return entityManager
+                    .createQuery("SELECT new com.korpodrony.dto.SimplifiedActivityDTO(a.id, a.name, a.activitiesType) FROM Activity a WHERE " +
+                            "a.activitiesType=:activityType", SimplifiedActivityDTO.class)
+                    .setParameter("activityType", activity)
+                    .getResultList()
+                    .stream()
+                    .map(SimplifiedActivityDTO::createSimplifiedActivity)
+                    .collect(Collectors.toList());
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
     private ActivityEntity getActivityEntity(int activityId) {
         return entityManager.find(ActivityEntity.class, activityId);
     }
@@ -133,7 +171,4 @@ public class ActivityDaoImpl implements ActivityRepositoryDao {
         return entityManager.find(UserEntity.class, userId);
     }
 
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 }

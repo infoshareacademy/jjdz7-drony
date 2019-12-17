@@ -1,5 +1,6 @@
 package com.korpodrony.dao;
 
+import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.UserEntity;
 import com.korpodrony.model.ActivitiesType;
@@ -257,5 +258,26 @@ class ActivityDaoImplTest {
 
         // then
         assertThat(result).isTrue();
+    }
+
+    @Test
+    void getActivityDTO() {
+        int activityId = 1;
+        ActivityEntity activityEntity = new ActivityEntity();
+        activityEntity.setName("A");
+        activityEntity.setMaxUsers((short) 2);
+        activityEntity.setLengthInQuarters((byte) 2);
+        activityEntity.setActivitiesType(ActivitiesType.EXERCISE);
+        transaction.begin();
+        entityManager.persist(activityEntity);
+        transaction.commit();
+
+        // when
+        transaction.begin();
+        SimplifiedActivityDTO result = testObj.getActivityDTO(activityId);
+        transaction.commit();
+
+        // then
+//        assertThat(result).isTrue();
     }
 }
