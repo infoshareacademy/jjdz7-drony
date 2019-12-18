@@ -1,25 +1,20 @@
 package com.korpodrony.dto;
 
-import com.korpodrony.model.Activity;
-import com.korpodrony.model.Plan;
+import java.util.List;
 
 public class PlanDTO {
-
     private int id;
     private String name;
+    private List<SimplifiedActivityDTO> assignedActivities;
 
-    public PlanDTO(int id, String name) {
+    public PlanDTO(int id, String name, List<SimplifiedActivityDTO> assignedActivities) {
         this.id = id;
         this.name = name;
+        this.assignedActivities = assignedActivities;
     }
 
-    public Plan createSimplifiedPlan() {
-        Plan plan = new Plan();
-        plan.setId(id);
-        plan.setName(name);
-        return plan;
+    public PlanDTO() {
     }
-
 
     public int getId() {
         return id;
@@ -35,5 +30,13 @@ public class PlanDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<SimplifiedActivityDTO> getAssignedActivities() {
+        return assignedActivities;
+    }
+
+    public void setAssignedActivities(List<SimplifiedActivityDTO> assignedActivities) {
+        this.assignedActivities = assignedActivities;
     }
 }

@@ -3,6 +3,8 @@ package com.korpodrony.services;
 import com.korpodrony.comparators.UserIDComparator;
 import com.korpodrony.dao.UserDaoImpl;
 import com.korpodrony.dao.UserRepositoryDao;
+import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
+import com.korpodrony.dto.UserDTO;
 import com.korpodrony.model.User;
 
 import javax.ejb.EJB;
@@ -14,13 +16,11 @@ import java.util.stream.Collectors;
 public class UsersWebService {
 
     @EJB
-    UserRepositoryDao userRepositoryDao;
+    UserRepositoryDaoInterface userRepositoryDao;
 
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return userRepositoryDao.getAllUsers()
                 .stream()
-                .sorted((x, y) -> new UserIDComparator()
-                        .compare(x, y))
                 .collect(Collectors.toList());
     }
 }

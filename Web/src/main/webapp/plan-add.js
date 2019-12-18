@@ -13,11 +13,13 @@ var nameInput = document.querySelector('.name'),
     availableActivitiesMap = new Map(),
     assignedActivitiesMap = new Map();
 
-for (var i = 0; i < availableActivities.children.length; i++) {
-    availableActivitiesMap.set(
-        +availableActivities.children[i].children[0].getAttribute('data-activityid'),
-        availableActivities.children[i]
-    )
+if (availableActivities !== null) {
+    for (var i = 0; i < availableActivities.children.length; i++) {
+        availableActivitiesMap.set(
+            +availableActivities.children[i].children[0].getAttribute('data-activityid'),
+            availableActivities.children[i]
+        )
+    }
 }
 
 function checkActivityInputs() {
@@ -63,7 +65,7 @@ assignActivityButton.addEventListener('click', function (evt) {
             availableActivitiesMap.delete(id);
             $('#assign-errors').addClass('d-none');
             reloadActivitiesLists();
-        }else{
+        } else {
             $('#assign-errors').removeClass('d-none');
             $('#assign-error').text("Nie można przypisać zajęć o id: " + id);
         }

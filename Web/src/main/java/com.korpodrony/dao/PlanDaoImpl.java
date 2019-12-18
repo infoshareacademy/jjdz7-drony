@@ -1,9 +1,12 @@
 package com.korpodrony.dao;
 
+import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
 import com.korpodrony.dto.PlanDTO;
+import com.korpodrony.dto.SimplifiedActivityDTO;
+import com.korpodrony.dto.SimplifiedPlanDTO;
+import com.korpodrony.dto.UserDTO;
 import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.PlanEntity;
-import com.korpodrony.model.Plan;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -11,10 +14,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Stateless
-public class PlanDaoImpl implements PlanRepositoryDao {
+public class PlanDaoImpl implements PlanRepositoryDaoInterface {
 
     @PersistenceContext(unitName = "korpodrony-hibernate")
     private EntityManager entityManager;
@@ -74,12 +76,6 @@ public class PlanDaoImpl implements PlanRepositoryDao {
     }
 
     @Override
-    public Plan getPlan(int planID) {
-        return getPlanEntity(planID)
-                .createPlan();
-    }
-
-    @Override
     public boolean editPlan(int planId, String name) {
         PlanEntity planEntity = getPlanEntity(planId);
         if (planEntity == null) {
@@ -90,27 +86,24 @@ public class PlanDaoImpl implements PlanRepositoryDao {
         return true;
     }
 
-    @Override
-    public List<Plan> getAllPlans() {
+    public List<SimplifiedPlanDTO> getAllSimplifiedPlansDTO() {
         return entityManager
-                .createQuery("SELECT p FROM Plan p", PlanEntity.class)
-                .getResultList()
-                .stream()
-                .map(PlanEntity::createPlan)
-                .collect(Collectors.toList());
+                .createQuery("SELECT new com.korpodrony.dto.SimplifiedPlanDTO(p.id, p.name) " +
+                        "FROM Plan p", SimplifiedPlanDTO.class)
+                .getResultList();
     }
 
-    public List<Plan> getAllSimplifiedPlans() {
-        try {
-            return entityManager
-                    .createQuery("SELECT new com.korpodrony.dto.PlanDTO(p.id, p.name) FROM Plan p", PlanDTO.class)
-                    .getResultList()
-                    .stream()
-                    .map(PlanDTO::createSimplifiedPlan)
-                    .collect(Collectors.toList());
-        } catch (NoResultException e) {
-            return null;
-        }
+    @Override
+    public List<SimplifiedActivityDTO> getAvailableSimplifiedActivitiesDTO(int planId) {
+        return entityManager.createQuery("SELECT new com.korpodrony.dto.SimplifiedActivityDTO(a.id, a.name, a.activitiesType)" +
+                " from Activity a WHERE a NOT IN (select a from Plan p join p.assignedActivities a where p.id=:id)", SimplifiedActivityDTO.class)
+                .setParameter("id", planId)
+                .getResultList();
+    }
+
+    @Override
+    public PlanDTO getPlanDTO(int planId) {
+        return getPlanEntity(planId).createPlanDTO();
     }
 
     @Override

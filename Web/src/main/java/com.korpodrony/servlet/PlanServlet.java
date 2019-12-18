@@ -1,5 +1,6 @@
 package com.korpodrony.servlet;
 
+import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.freemarker.TemplateProvider;
 import com.korpodrony.model.Plan;
 import com.korpodrony.service.RepositoryService;
@@ -154,9 +155,10 @@ public class PlanServlet extends HttpServlet {
     }
 
     private Map<String, Object> getPlanModel(int id) {
+        PlanDTO planDTO = plansWebService.getPlanDTO(id);
         Map<String, Object> model = new HashMap<>();
-        model.put("plan", plansWebService.getPlan(id));
-        model.put("activities", plansWebService.getAssignedActivities(id));
+        model.put("plan", planDTO);
+        model.put("activities", planDTO.getAssignedActivities());
         model.put("avaiableActivities", plansWebService.getAvailableActivities(id));
         return model;
     }

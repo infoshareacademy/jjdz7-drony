@@ -2,12 +2,10 @@ package com.korpodrony.dao;
 
 import com.korpodrony.model.Plan;
 
-import javax.ejb.Local;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Local
 public interface PlanRepositoryDao {
 
     boolean createPlan(String name);

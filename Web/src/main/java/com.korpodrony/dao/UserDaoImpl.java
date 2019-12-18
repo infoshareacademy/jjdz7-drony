@@ -1,18 +1,17 @@
 package com.korpodrony.dao;
 
+import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
 import com.korpodrony.dto.UserDTO;
 import com.korpodrony.entity.UserEntity;
-import com.korpodrony.model.User;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Stateless
-public class UserDaoImpl implements UserRepositoryDao {
+public class UserDaoImpl implements UserRepositoryDaoInterface {
 
     @PersistenceContext(unitName = "korpodrony-hibernate")
     private EntityManager entityManager;
@@ -39,15 +38,14 @@ public class UserDaoImpl implements UserRepositoryDao {
         }
     }
 
-    public User getUser(int userID) {
+    public UserDTO getUserDTO(int userID) {
         try {
             return entityManager
                     .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname) FROM User u WHERE " +
                                     "u.id=:id"
                             , UserDTO.class)
                     .setParameter("id", userID)
-                    .getSingleResult()
-                    .getUser();
+                    .getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
@@ -64,14 +62,11 @@ public class UserDaoImpl implements UserRepositoryDao {
         return false;
     }
 
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return entityManager
                 .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname) FROM User u"
                         , UserDTO.class)
-                .getResultList()
-                .stream()
-                .map(UserDTO::getUser)
-                .collect(Collectors.toList());
+                .getResultList();
     }
 
     @Override

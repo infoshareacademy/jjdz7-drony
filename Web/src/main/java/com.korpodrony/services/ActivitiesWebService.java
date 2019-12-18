@@ -2,7 +2,10 @@ package com.korpodrony.services;
 
 import com.korpodrony.comparators.ActivityIDComparator;
 import com.korpodrony.dao.ActivityRepositoryDao;
+import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
 import com.korpodrony.dto.ActivityDTO;
+import com.korpodrony.dto.SimplifiedActivityDTO;
+import com.korpodrony.dto.UserDTO;
 import com.korpodrony.model.ActivitiesType;
 import com.korpodrony.model.Activity;
 
@@ -16,20 +19,18 @@ import java.util.stream.Collectors;
 public class ActivitiesWebService {
 
     @EJB
-    ActivityRepositoryDao activityRepositoryDao;
+    ActivityRepositoryDaoInterface activityRepositoryDao;
 
     public boolean hasActivity(int activityId) {
         return activityRepositoryDao.hasActivityWithThisID(activityId);
     }
 
-    public List<Activity> getAllActivities() {
-        List<Activity> activities = activityRepositoryDao.getAllSimplifiedActivities();
-        activities.sort(new ActivityIDComparator());
-        return activities;
+    public List<SimplifiedActivityDTO> getAllActivities() {
+        return activityRepositoryDao.getAllSimplifiedActivates();
     }
 
-    public Activity getActivity(int activityId){
-        return activityRepositoryDao.getActivity(activityId);
+    public ActivityDTO getActivityDTO(int activityId) {
+        return activityRepositoryDao.getActivityDTO(activityId);
     }
 
     public boolean assignUserToActivity(int userId, int activityId) {
@@ -52,7 +53,11 @@ public class ActivitiesWebService {
         return activityRepositoryDao.createActivity(name, maxUsers, duration, ActivitiesType.getActivity(activityType));
     }
 
-    public Object getAllActivitiesByActivityType(ActivitiesType activity) {
-        return activityRepositoryDao.getSimplifiedActivatesByActivityType(activity);
+    public List<UserDTO> getAvailableUserDTO(int activityId) {
+        return activityRepositoryDao.getAvailableUsersDTO(activityId);
+    }
+
+    public List<SimplifiedActivityDTO> getAllActivitiesByActivityType(ActivitiesType activity) {
+        return activityRepositoryDao.getAllSimplifiedActivates(activity);
     }
 }

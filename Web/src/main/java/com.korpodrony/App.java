@@ -1,5 +1,6 @@
 package com.korpodrony;
 
+import com.korpodrony.dto.UserDTO;
 import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.UserEntity;
 import com.korpodrony.model.ActivitiesType;
@@ -40,15 +41,19 @@ public class App {
         transaction.begin();
         ActivityEntity activityEntityFromDB = entityManager.find(ActivityEntity.class, activityId);
         UserEntity userEntityFromDB = entityManager.find(UserEntity.class, userId);
-        UserEntity userEntityFromDB2 = entityManager.find(UserEntity.class, 2);
         activityEntityFromDB.getAssigned_users().add(userEntityFromDB);
-        activityEntityFromDB.getAssigned_users().add(userEntityFromDB2);
         entityManager.merge(activityEntityFromDB);
         transaction.commit();
 
-        List<UserEntity> resultList = entityManager.createQuery("select u from User u join u. users_activities a where a.id = 1", UserEntity.class)
+        List<UserEntity> resultList = entityManager.createQuery("select u from User u join u.users_activities a where a.id = 1", UserEntity.class)
+                .getResultList();
+
+        List<UserDTO> id = entityManager.createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname)" +
+                " from User u WHERE u NOT IN (select u from User u join u.users_activities a where a.id=:id)", UserDTO.class)
+                .setParameter("id", activityId)
                 .getResultList();
 
         System.out.println(resultList);
+        System.out.println(id);
     }
 }

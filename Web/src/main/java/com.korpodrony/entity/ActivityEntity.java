@@ -1,5 +1,8 @@
 package com.korpodrony.entity;
 
+import com.korpodrony.dto.ActivityDTO;
+import com.korpodrony.dto.SimplifiedActivityDTO;
+import com.korpodrony.dto.SimplifiedPlanDTO;
 import com.korpodrony.model.ActivitiesType;
 import com.korpodrony.model.Activity;
 
@@ -41,20 +44,21 @@ public class ActivityEntity {
     public ActivityEntity() {
     }
 
-    public Activity createActivity() {
-        Activity activity = new Activity();
-        activity.setId(id);
-        activity.setName(name);
-        activity.setMaxUsers(maxUsers);
-        activity.setLengthInQuarters(lengthInQuarters);
-        activity.setActivitiesType(activitiesType);
-        if (assigned_users != null) {
-            activity.setAssignedUsers(assigned_users.stream()
-                    .map(UserEntity::getUserFromEntity
-                    ).collect(Collectors.toSet()));
-        }
-        activity.setAssignedUsersIDs(new HashSet<>());
-        return activity;
+    public ActivityDTO createActivityDTO() {
+        ActivityDTO activityDTO = new ActivityDTO();
+        activityDTO.setId(id);
+        activityDTO.setName(name);
+        activityDTO.setMaxUsers(maxUsers);
+        activityDTO.setAssignedUsers(assigned_users.stream()
+                .map(UserEntity::createUserDTO)
+                .collect(Collectors.toList()));
+        activityDTO.setLengthInQuarters(lengthInQuarters);
+        activityDTO.setActivitiesType(activitiesType);
+        return activityDTO;
+    }
+
+    public SimplifiedActivityDTO createSimplifiedActivityDTO() {
+        return new SimplifiedActivityDTO(id, name, activitiesType);
     }
 
     public int getId() {

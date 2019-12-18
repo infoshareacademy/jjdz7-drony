@@ -2,6 +2,8 @@ package com.korpodrony.dto;
 
 import com.korpodrony.model.User;
 
+import java.util.Objects;
+
 public class UserDTO {
     private int id;
     private String name;
@@ -41,4 +43,18 @@ public class UserDTO {
         this.surname = surname;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDTO userDTO = (UserDTO) o;
+        return id == userDTO.id &&
+                Objects.equals(name, userDTO.name) &&
+                Objects.equals(surname, userDTO.surname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname);
+    }
 }

@@ -1,7 +1,6 @@
 package com.korpodrony.dto;
 
 import com.korpodrony.model.ActivitiesType;
-import com.korpodrony.model.Activity;
 
 public class SimplifiedActivityDTO {
     int id;
@@ -12,14 +11,6 @@ public class SimplifiedActivityDTO {
         this.id = id;
         this.name = name;
         this.activitiesType = activitiesType;
-    }
-
-    public Activity createSimplifiedActivity() {
-        Activity activity = new Activity();
-        activity.setId(id);
-        activity.setName(name);
-        activity.setActivitiesType(activitiesType);
-        return activity;
     }
 
     public int getId() {

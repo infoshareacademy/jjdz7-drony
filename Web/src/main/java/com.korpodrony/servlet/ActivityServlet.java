@@ -1,9 +1,7 @@
 package com.korpodrony.servlet;
 
+import com.korpodrony.dto.ActivityDTO;
 import com.korpodrony.freemarker.TemplateProvider;
-import com.korpodrony.model.ActivitiesType;
-import com.korpodrony.model.Activity;
-import com.korpodrony.model.User;
 import com.korpodrony.service.RepositoryService;
 import com.korpodrony.services.ActivitiesWebService;
 import com.korpodrony.validation.Validator;
@@ -18,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -153,11 +150,11 @@ public class ActivityServlet extends HttpServlet {
     }
 
     private Map<String, Object> getActivityModel(int id) {
-        Activity activity = activitiesWebService.getActivity(id);
+        ActivityDTO activityDTO = activitiesWebService.getActivityDTO(id);
         Map<String, Object> model = new HashMap<>();
-        model.put("activity", activity);
-        model.put("users", activity.getAssignedUsers());
-        model.put("availableUsers", new ArrayList<User>());
+        model.put("activity", activityDTO);
+        model.put("users", activityDTO.getAssignedUsers());
+        model.put("availableUsers", activitiesWebService.getAvailableUserDTO(id));
         return model;
     }
 

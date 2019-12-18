@@ -1,5 +1,7 @@
 package com.korpodrony.entity;
 
+import com.korpodrony.dto.PlanDTO;
+import com.korpodrony.dto.SimplifiedPlanDTO;
 import com.korpodrony.model.Plan;
 
 import javax.persistence.*;
@@ -45,21 +47,22 @@ public class PlanEntity {
         return assignedActivities;
     }
 
-    public Plan createPlan() {
-        Plan plan = new Plan();
-        plan.setId(id);
-        plan.setName(name);
-        if (assignedActivities == null) {
-            plan.setActivitiesID(new HashSet<>());
-        } else {
-            plan.setActivitiesID(assignedActivities.stream()
-                    .map(ActivityEntity::getId)
-                    .collect(Collectors.toSet()));
-        }
-        return plan;
+    public SimplifiedPlanDTO createSimplifiedPlanDTO() {
+        return new SimplifiedPlanDTO(id, name);
     }
 
     public void setAssignedActivities(Set<ActivityEntity> assignedActivities) {
         this.assignedActivities = assignedActivities;
+    }
+
+    public PlanDTO createPlanDTO() {
+        PlanDTO planDTO = new PlanDTO();
+        planDTO.setId(id);
+        planDTO.setName(name);
+        planDTO.setAssignedActivities(assignedActivities.stream()
+                .map(ActivityEntity::createSimplifiedActivityDTO)
+                .collect(Collectors.toList())
+        );
+        return planDTO;
     }
 }

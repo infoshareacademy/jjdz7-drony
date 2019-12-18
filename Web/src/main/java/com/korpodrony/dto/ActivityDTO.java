@@ -2,23 +2,26 @@ package com.korpodrony.dto;
 
 import com.korpodrony.model.ActivitiesType;
 
-import java.util.Set;
+import java.util.List;
 
 public class ActivityDTO {
     private int id;
     private String name;
     private short maxUsers;
-    private Set<UserDTO> assignedUsers;
+    private List<UserDTO> assignedUsers;
     private byte lengthInQuarters;
     private ActivitiesType activitiesType;
 
-    public ActivityDTO(int id, String name, short maxUsers, Set<UserDTO> assignedUsers, byte lengthInQuarters, ActivitiesType activitiesType) {
+    public ActivityDTO(int id, String name, short maxUsers, List<UserDTO> assignedUsers, byte lengthInQuarters, ActivitiesType activitiesType) {
         this.id = id;
         this.name = name;
         this.maxUsers = maxUsers;
         this.assignedUsers = assignedUsers;
         this.lengthInQuarters = lengthInQuarters;
         this.activitiesType = activitiesType;
+    }
+
+    public ActivityDTO() {
     }
 
     public int getId() {
@@ -45,11 +48,11 @@ public class ActivityDTO {
         this.maxUsers = maxUsers;
     }
 
-    public Set<UserDTO> getAssignedUsers() {
+    public List<UserDTO> getAssignedUsers() {
         return assignedUsers;
     }
 
-    public void setAssignedUsers(Set<UserDTO> assignedUsers) {
+    public void setAssignedUsers(List<UserDTO> assignedUsers) {
         this.assignedUsers = assignedUsers;
     }
 

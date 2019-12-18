@@ -1,5 +1,6 @@
 package com.korpodrony.entity;
 
+import com.korpodrony.dto.UserDTO;
 import com.korpodrony.model.User;
 
 import javax.persistence.*;
@@ -26,12 +27,8 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public User getUserFromEntity() {
-        User user = new User();
-        user.setId(this.id);
-        user.setName(this.name);
-        user.setSurname(this.surname);
-        return user;
+    public UserDTO createUserDTO() {
+        return new UserDTO(id, name, surname);
     }
 
     @Override
