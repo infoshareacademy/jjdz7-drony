@@ -47,7 +47,7 @@ public class PlansWebService {
         return planRepositoryDao.editPlan(planId, name);
     }
 
-    public boolean createPlan(String name) {
+    public int createPlan(String name) {
         return planRepositoryDao.createPlan(name);
     }
 }

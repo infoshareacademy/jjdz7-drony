@@ -22,11 +22,11 @@ public class PlanDaoImpl implements PlanRepositoryDaoInterface {
     private EntityManager entityManager;
 
     @Override
-    public boolean createPlan(String name) {
+    public int createPlan(String name) {
         PlanEntity planEntity = new PlanEntity();
         planEntity.setName(name);
         entityManager.persist(planEntity);
-        return true;
+        return planEntity.getId();
     }
 
     @Override

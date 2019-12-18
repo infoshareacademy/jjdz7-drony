@@ -10,7 +10,7 @@ import java.util.List;
 @Local
 public interface PlanRepositoryDaoInterface {
 
-    boolean createPlan(String name);
+    int createPlan(String name);
 
     boolean assignActivityToPlan(int activityID, int planID);
 

@@ -254,8 +254,9 @@ public class PlanServlet extends HttpServlet {
         if (validateCreateParameters(parameterMap)) {
             String name = parameterMap.get("name")[0].trim();
             String activitiesIds = parameterMap.get("assignedactivities")[0].trim();
-            if (plansWebService.createPlan(name) && !activitiesIds.equals("")) {
-                assignActivitiesToCreatedPlan(parameterMap);
+            int planId = plansWebService.createPlan(name);
+            if (!activitiesIds.equals("")) {
+                assignActivitiesToCreatedPlan(planId, parameterMap);
             }
             return true;
         }
@@ -301,8 +302,7 @@ public class PlanServlet extends HttpServlet {
                 .allMatch(x -> activitiesWebService.hasActivity(x));
     }
 
-    private void assignActivitiesToCreatedPlan(Map<String, String[]> parameterMap) {
-        int planId = Plan.getCurrentID();
+    private void assignActivitiesToCreatedPlan(int planId, Map<String, String[]> parameterMap) {
         Arrays.stream(parameterMap.get("assignedactivities")[0]
                 .split(","))
                 .map(Integer::valueOf)
