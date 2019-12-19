@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -26,14 +27,14 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
 
 
     public boolean deleteUser(int userID) {
-        if (hasUserWithThisID(userID)) {
+        if (hasUser(userID)) {
             entityManager.createQuery("DELETE FROM User u WHERE u.id=:id")
                     .setParameter("id", userID)
                     .executeUpdate();
             entityManager.flush();
             entityManager.clear();
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -52,7 +53,7 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
     }
 
     public boolean editUser(int userID, String name, String surname) {
-        if (hasUserWithThisID(userID)) {
+        if (hasUser(userID)) {
             UserEntity userEntity = getUserEntity(userID);
             userEntity.setName(name);
             userEntity.setSurname(surname);
@@ -70,15 +71,46 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
     }
 
     @Override
-    public boolean hasUserWithThisID(int userID) {
+    public boolean hasUser(int userID) {
         try {
-            Object id = entityManager
+            entityManager
                     .createQuery("SELECT u.id FROM User u where u.id=:id")
                     .setParameter("id", userID)
                     .getSingleResult();
             return true;
         } catch (NoResultException e) {
             return false;
+        }
+    }
+
+    @Override
+    public List<UserDTO> getUserDTObyName(String name) {
+        try {
+            return entityManager
+                    .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname) FROM User u " +
+                                    "WHERE " +
+                                    "lower(u.name) LIKE :name Or lower(u.surname) LIKE :name"
+                            , UserDTO.class)
+                    .setParameter("name", "%" + name + "%")
+                    .getResultList();
+        } catch (NoResultException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<UserDTO> getUserDTObyName(String name, String surname) {
+        try {
+            return entityManager
+                    .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname) FROM User u " +
+                                    "WHERE " +
+                                    "lower(u.name) LIKE :name AND lower(u.surname) LIKE :surname"
+                            , UserDTO.class)
+                    .setParameter("name", "%" + name + "%")
+                    .setParameter("surname", "%" + surname + "%")
+                    .getResultList();
+        } catch (NoResultException e) {
+            return new ArrayList<>();
         }
     }
 

@@ -33,4 +33,6 @@ public interface ActivityRepositoryDaoInterface {
     ActivityDTO getActivityDTO(int activityId);
 
     List<UserDTO> getAvailableUsersDTO(int activityId);
+
+    List<SimplifiedActivityDTO> getAllSimplifiedActivates(String name);
 }

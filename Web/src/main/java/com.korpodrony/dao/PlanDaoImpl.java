@@ -93,6 +93,14 @@ public class PlanDaoImpl implements PlanRepositoryDaoInterface {
                 .getResultList();
     }
 
+    public List<SimplifiedPlanDTO> getAllSimplifiedPlansDTO(String name) {
+        return entityManager
+                .createQuery("SELECT new com.korpodrony.dto.SimplifiedPlanDTO(p.id, p.name) " +
+                        "FROM Plan p WHERE lower(p.name) like :name", SimplifiedPlanDTO.class)
+                .setParameter("name", "%" + name + "%")
+                .getResultList();
+    }
+
     @Override
     public List<SimplifiedActivityDTO> getAvailableSimplifiedActivitiesDTO(int planId) {
         return entityManager.createQuery("SELECT new com.korpodrony.dto.SimplifiedActivityDTO(a.id, a.name, a.activitiesType)" +

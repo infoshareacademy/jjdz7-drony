@@ -2,7 +2,7 @@
 <@baisc.includeContent scriptsSrc="plan-add.js" currentPosition="none" modal="">
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
-            <h2>Zajęcia</h2>
+            <h2>Plany</h2>
             <form>
                 <div class="form-group row">
                     <label for="name" class="col-sm-2 col-form-label">Nazwa</label>
@@ -18,7 +18,7 @@
     </div>
     <div class="row mt-3">
         <div class="col-3 mb-3 ml-auto mr-auto">
-            <button class="btn btn-success text-white w-100 save">Dodaj zajęcia</button>
+            <button class="btn btn-success text-white w-100 save">Dodaj plan</button>
         </div>
     </div>
 

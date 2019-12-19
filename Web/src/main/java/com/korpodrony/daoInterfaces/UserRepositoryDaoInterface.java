@@ -1,14 +1,13 @@
 package com.korpodrony.daoInterfaces;
 
 import com.korpodrony.dto.UserDTO;
-import com.korpodrony.model.User;
 
 import javax.ejb.Local;
 import java.util.List;
-import java.util.Set;
 
 @Local
 public interface UserRepositoryDaoInterface {
+
     boolean createUser(String name, String surname);
 
     boolean deleteUser(int userID);
@@ -19,5 +18,9 @@ public interface UserRepositoryDaoInterface {
 
     List<UserDTO> getAllUsers();
 
-    boolean hasUserWithThisID(int userID);
+    boolean hasUser(int userID);
+
+    List<UserDTO> getUserDTObyName(String name);
+
+    List<UserDTO> getUserDTObyName(String name, String surname);
 }

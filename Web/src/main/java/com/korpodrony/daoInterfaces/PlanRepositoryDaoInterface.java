@@ -22,6 +22,8 @@ public interface PlanRepositoryDaoInterface {
 
     List<SimplifiedPlanDTO> getAllSimplifiedPlansDTO();
 
+    List<SimplifiedPlanDTO> getAllSimplifiedPlansDTO(String name);
+
     List<SimplifiedActivityDTO> getAvailableSimplifiedActivitiesDTO(int planId);
 
     PlanDTO getPlanDTO(int planId);

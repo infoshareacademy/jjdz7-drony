@@ -142,6 +142,18 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
                 .getResultList();
     }
 
+    public List<SimplifiedActivityDTO> getAllSimplifiedActivates(String name) {
+        try {
+            return entityManager
+                    .createQuery("SELECT new com.korpodrony.dto.SimplifiedActivityDTO(a.id, a.name, a.activitiesType) FROM Activity a WHERE " +
+                            "lower(a.name) like :name", SimplifiedActivityDTO.class)
+                    .setParameter("name", "%" + name + "%")
+                    .getResultList();
+        } catch (NoResultException e) {
+            return new ArrayList<>();
+        }
+    }
+
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
