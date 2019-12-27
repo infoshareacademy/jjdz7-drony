@@ -2,10 +2,8 @@ package com.korpodrony.entity;
 
 import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.dto.SimplifiedPlanDTO;
-import com.korpodrony.model.Plan;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,12 +17,11 @@ public class PlanEntity {
 
     private String name;
 
-    @OneToMany
-    @JoinTable(
-            name = "plans_activities",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "activity_id")
-    )
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "plans_activities", joinColumns = {@JoinColumn(name = "plan_id",
+            referencedColumnName = "id")}
+            , inverseJoinColumns = {@JoinColumn(name = "activity_id",
+            referencedColumnName = "id")})
     private Set<ActivityEntity> assignedActivities;
 
     public int getId() {

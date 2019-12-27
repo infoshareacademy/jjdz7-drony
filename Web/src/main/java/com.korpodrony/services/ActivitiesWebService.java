@@ -1,19 +1,14 @@
 package com.korpodrony.services;
 
-import com.korpodrony.comparators.ActivityIDComparator;
-import com.korpodrony.dao.ActivityRepositoryDao;
 import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
 import com.korpodrony.dto.ActivityDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.UserDTO;
 import com.korpodrony.model.ActivitiesType;
-import com.korpodrony.model.Activity;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @RequestScoped
 public class ActivitiesWebService {

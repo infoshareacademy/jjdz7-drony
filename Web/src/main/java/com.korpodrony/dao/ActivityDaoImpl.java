@@ -32,6 +32,20 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
         return true;
     }
 
+    @Override
+    public int createActivity(ActivityEntity activity) {
+        ActivityEntity activityEntity = new ActivityEntity();
+        activityEntity.setName(activity.getName());
+        activityEntity.setMaxUsers(activity.getMaxUsers());
+        activityEntity.setLengthInQuarters(activity.getLengthInQuarters());
+        activityEntity.setActivitiesType(activity.getActivitiesType());
+        entityManager.persist(activityEntity);
+        entityManager.flush();
+        activityEntity.setAssigned_users(activity.getAssigned_users());
+        entityManager.merge(activityEntity);
+        return activityEntity.getId();
+    }
+
     public boolean assignUserToActivity(int userID, int activityID) {
         ActivityEntity activityEntity = getActivityEntity(activityID);
         UserEntity userEntity = getUserEntity(userID);
@@ -137,7 +151,7 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
 
     public List<UserDTO> getAvailableUsersDTO(int activityId) {
         return entityManager.createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname)" +
-                " from User u WHERE u NOT IN (select u from User u join u.users_activities a where a.id=:id)", UserDTO.class)
+                " from User u WHERE u NOT IN (select u from Activity a join a.assigned_users u where a.id=:id)", UserDTO.class)
                 .setParameter("id", activityId)
                 .getResultList();
     }

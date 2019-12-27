@@ -14,6 +14,8 @@ public interface ActivityRepositoryDaoInterface {
 
     boolean createActivity(String name, short maxUsers, byte duration, ActivitiesType activitiesType);
 
+    int createActivity(ActivityEntity activity);
+
     boolean assignUserToActivity(int userID, int activityID);
 
     boolean unassignUserFromActivity(int userID, int activityID);

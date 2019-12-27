@@ -4,7 +4,6 @@ import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
 import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.SimplifiedPlanDTO;
-import com.korpodrony.dto.UserDTO;
 import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.PlanEntity;
 
@@ -30,6 +29,14 @@ public class PlanDaoImpl implements PlanRepositoryDaoInterface {
     }
 
     @Override
+    public int createPlan(PlanEntity planEntity) {
+        PlanEntity plan = new PlanEntity();
+        plan.setName(planEntity.getName());
+        entityManager.persist(plan);
+        return plan.getId();
+    }
+
+    @Override
     public boolean assignActivityToPlan(int activityID, int planID) {
         ActivityEntity activityEntity = getActivityEntity(activityID);
         PlanEntity planEntity = getPlanEntity(planID);
@@ -39,7 +46,7 @@ public class PlanDaoImpl implements PlanRepositoryDaoInterface {
             }
             boolean result = planEntity.getAssignedActivities()
                     .add(activityEntity);
-            entityManager.merge(activityEntity);
+            entityManager.merge(planEntity);
             return result;
         }
         return false;

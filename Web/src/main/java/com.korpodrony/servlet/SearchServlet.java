@@ -28,7 +28,6 @@ public class SearchServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
         String url = req.getServletPath();
-
         switch (url) {
             case "/search": {
                 Template template = templateProvider.getTemplate(getServletContext(), TemplateProvider.SEARCH_TEMPLATE);

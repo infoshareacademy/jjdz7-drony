@@ -1,7 +1,6 @@
 package com.korpodrony.entity;
 
 import com.korpodrony.dto.UserDTO;
-import com.korpodrony.model.User;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -16,8 +15,9 @@ public class UserEntity {
     private int id;
     private String name;
     private String surname;
-    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "assigned_users")
-    private Set<ActivityEntity> users_activities;
+
+    @Column(unique = true, nullable = false)
+    private String email;
 
     public UserEntity(String name, String surname) {
         this.name = name;
@@ -31,18 +31,12 @@ public class UserEntity {
         return new UserDTO(id, name, surname);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserEntity that = (UserEntity) o;
-        return name.equals(that.name) &&
-                surname.equals(that.surname);
+    public String getEmail() {
+        return email;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, surname);
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getId() {
@@ -69,14 +63,6 @@ public class UserEntity {
         this.surname = surname;
     }
 
-    public Set<ActivityEntity> getUsers_activities() {
-        return users_activities;
-    }
-
-    public void setUsers_activities(Set<ActivityEntity> users_activities) {
-        this.users_activities = users_activities;
-    }
-
     @Override
     public String toString() {
         return "UserEntity{" +
@@ -84,5 +70,19 @@ public class UserEntity {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return name.equals(that.name) &&
+                surname.equals(that.surname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, surname);
     }
 }

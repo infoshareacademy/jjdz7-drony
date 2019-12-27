@@ -3,6 +3,7 @@ package com.korpodrony.daoInterfaces;
 import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.SimplifiedPlanDTO;
+import com.korpodrony.entity.PlanEntity;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.List;
 public interface PlanRepositoryDaoInterface {
 
     int createPlan(String name);
+
+    int createPlan(PlanEntity planEntity);
 
     boolean assignActivityToPlan(int activityID, int planID);
 

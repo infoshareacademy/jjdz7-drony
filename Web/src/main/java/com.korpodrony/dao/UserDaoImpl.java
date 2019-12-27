@@ -17,14 +17,14 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
     @PersistenceContext(unitName = "korpodrony-hibernate")
     private EntityManager entityManager;
 
-    public boolean createUser(String name, String surname) {
+    public int createUser(String name, String surname, String email) {
         UserEntity user = new UserEntity();
         user.setName(name);
         user.setSurname(surname);
+        user.setEmail(email);
         entityManager.persist(user);
-        return true;
+        return user.getId();
     }
-
 
     public boolean deleteUser(int userID) {
         if (hasUser(userID)) {
@@ -111,6 +111,18 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
                     .getResultList();
         } catch (NoResultException e) {
             return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public int getUserIdByEmail(String email) {
+        try {
+            return (int) entityManager
+                    .createQuery("SELECT u.id FROM User u where u.email=:email")
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return 0;
         }
     }
 
