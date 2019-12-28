@@ -1,20 +1,16 @@
 package com.korpodrony.services;
 
-import com.korpodrony.comparators.ActivityIDComparator;
-import com.korpodrony.comparators.PlanIDComparator;
-import com.korpodrony.dao.OrganizationRepositoryDao;
 import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
 import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
 import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
 import com.korpodrony.dto.UserDTO;
-import com.korpodrony.model.User;
 import com.korpodrony.utils.JSONWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @RequestScoped
 public class SearchWebService {
@@ -28,25 +24,31 @@ public class SearchWebService {
     @EJB
     ActivityRepositoryDaoInterface activityRepositoryDao;
 
+    Logger logger = LoggerFactory.getLogger("com.korpodrony.services");
+
     public String getUsersByName(String name) {
         String[] credentials = name.split(" ");
         List<UserDTO> userDTObyName;
+        logger.debug("Getting users by name: " + name);
         if (credentials.length == 1) {
             userDTObyName = userRepositoryDao.getUserDTObyName(credentials[0]);
         } else {
             userDTObyName = userRepositoryDao.getUserDTObyName(credentials[0], credentials[1]);
         }
+        logger.debug("result: " + userDTObyName);
         return JSONWriter.generateJsonString(
                 userDTObyName
         );
     }
 
     public String getActivitiesByName(String name) {
+        logger.debug("Getting activities by name: " + name);
         return JSONWriter.generateJsonString(activityRepositoryDao.getAllSimplifiedActivates(name)
         );
     }
 
     public String getPlansByName(String name) {
+        logger.debug("Getting plans by name: " + name);
         return JSONWriter.generateJsonString(
                 planRepositoryDao.getAllSimplifiedPlansDTO(name)
         );

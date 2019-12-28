@@ -1,12 +1,5 @@
 package com.korpodrony;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.korpodrony.entity.ActivityEntity;
-import com.korpodrony.entity.PlanEntity;
-import com.korpodrony.entity.UserEntity;
-import com.korpodrony.model.ActivitiesType;
-import com.korpodrony.utils.JSONWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,23 +8,24 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 
 public class App {
     public static void main(String[] args) throws IOException {
 
-        Logger logger = LoggerFactory.getLogger("com.korpodrony");
-        EntityManagerFactory entityManagerFactory = Persistence
-                .createEntityManagerFactory("test");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-
-        logger.info("Twoja stara");
+        Logger logger = LoggerFactory.getLogger("com.korpodrony.dao");
+        logger.debug("hello");
+//        Logger logger2 = LoggerFactory.getLogger("        Logger logger = LoggerFactory.getLogger(\"com.korpodrony\");\n");
+//        EntityManagerFactory entityManagerFactory = Persistence
+//                .createEntityManagerFactory("test");
+//        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//        EntityTransaction transaction = entityManager.getTransaction();
+//        int i = 0;
+//        while (i < 200_000) {
+//            logger.debug("Twoja stara");
+//            i++;
+//        }
+//        logger.debug("DSADSADA");
+//        logger2.info("DAADADADA");
 //        int userId = 1;
 //        int activityId = 1;
 //        ActivityEntity activityEntity = new ActivityEntity();
@@ -70,17 +64,17 @@ public class App {
 //
 //        activityEntities.add(activityEntity);
 
-        List result = entityManager.createQuery("SELECT a FROM Activity a", ActivityEntity.class).getResultList();
-        List result2 = entityManager.createQuery("SELECT a FROM User a", UserEntity.class).getResultList();
-        List result3 = entityManager.createQuery("SELECT a FROM Plan a", PlanEntity.class).getResultList();
-
-        String s = JSONWriter.generateJsonString(result);
-        String s2 = JSONWriter.generateJsonString(result2);
-        String s3 = JSONWriter.generateJsonString(result3);
-//logger.info(s);
-        Files.write(Paths.get("/home/patryk/Pulpit/drony2/jjdz7-drony/activities.json"), s.getBytes());
-        Files.write(Paths.get("/home/patryk/Pulpit/drony2/jjdz7-drony/users.json"), s2.getBytes());
-        Files.write(Paths.get("/home/patryk/Pulpit/drony2/jjdz7-drony/plans.json"), s3.getBytes());
+//        List result = entityManager.createQuery("SELECT a FROM Activity a", ActivityEntity.class).getResultList();
+//        List result2 = entityManager.createQuery("SELECT a FROM User a", UserEntity.class).getResultList();
+//        List result3 = entityManager.createQuery("SELECT a FROM Plan a", PlanEntity.class).getResultList();
+//
+//        String s = JSONWriter.generateJsonString(result);
+//        String s2 = JSONWriter.generateJsonString(result2);
+//        String s3 = JSONWriter.generateJsonString(result3);
+////logger.info(s);
+//        Files.write(Paths.get("/home/patryk/Pulpit/drony2/jjdz7-drony/activities.json"), s.getBytes());
+//        Files.write(Paths.get("/home/patryk/Pulpit/drony2/jjdz7-drony/users.json"), s2.getBytes());
+//        Files.write(Paths.get("/home/patryk/Pulpit/drony2/jjdz7-drony/plans.json"), s3.getBytes());
 //        ObjectMapper mapper = new ObjectMapper();
 //        List<ActivityEntity> list = new ArrayList<>();
 //        try {

@@ -16,7 +16,10 @@ public class UsersWebService {
     @EJB
     UserRepositoryDaoInterface userRepositoryDao;
 
+    Logger logger = LoggerFactory.getLogger("com.korpodrony.services");
+
     public List<UserDTO> getAllUsers() {
+        logger.debug("getAllUsers called");
         return userRepositoryDao.getAllUsers();
     }
 }

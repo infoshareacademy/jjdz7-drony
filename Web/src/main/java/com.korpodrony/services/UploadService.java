@@ -8,6 +8,8 @@ import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
 import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.PlanEntity;
 import com.korpodrony.entity.UserEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
@@ -29,16 +31,23 @@ public class UploadService {
     @EJB
     PlanRepositoryDaoInterface planRepositoryDao;
 
+    Logger logger = LoggerFactory.getLogger("com.korpodrony.services");
+
+
     public void uploadFile(InputStream fileContent) throws IOException {
         String fileContentString = extractFileContentString(fileContent);
-
+        logger.debug("file context: " + fileContentString);
         if (uploadUsers(fileContentString)) {
+            logger.debug("Users successfully loaded");
             return;
         } else if (uploadActivities(fileContentString)) {
+            logger.debug("Activities successfully loaded");
             return;
         } else if (uploadPlans(fileContentString)) {
+            logger.debug("Plans successfully loaded");
             return;
         } else {
+            logger.debug("No Entities loaded");
             throw new IOException("Niepoprawny plik");
         }
     }
@@ -52,11 +61,13 @@ public class UploadService {
                 textBuilder.append((char) c);
             }
         }
+        logger.debug("String extracted from file: " + textBuilder.toString());
         return textBuilder.toString();
     }
 
     private boolean uploadPlans(String json) {
         Set<PlanEntity> planEntitySet = parsePlanEntityFromJSON(json);
+        logger.debug("planEntitySet: " + planEntitySet);
         if (planEntitySet.isEmpty()) {
             return false;
         }
@@ -66,6 +77,7 @@ public class UploadService {
 
     private boolean uploadActivities(String json) {
         Set<ActivityEntity> activityEntitySet = parseActivityEntityFromJSON(json);
+        logger.debug("activityEntitySet: " + activityEntitySet);
         if (activityEntitySet.isEmpty()) {
             return false;
         }
@@ -75,6 +87,7 @@ public class UploadService {
 
     private boolean uploadUsers(String json) {
         Set<UserEntity> userEntitySet = parseUserEntityFromJSON(json);
+        logger.debug("userEntitySet: " + userEntitySet);
         if (userEntitySet.isEmpty()) {
             return false;
         }
@@ -83,6 +96,7 @@ public class UploadService {
     }
 
     private void updatePlans(Set<PlanEntity> planEntities) {
+        logger.debug("Uploading plans");
         preparePlansActivities(planEntities);
         planEntities.forEach(plan -> {
             plan.setId(planRepositoryDao.createPlan(plan));
@@ -93,40 +107,48 @@ public class UploadService {
     }
 
     private void preparePlansActivities(Set<PlanEntity> planEntities) {
+        logger.debug("preparing Activities for uploading plan");
         Map<Integer, Integer> activitiesIds = new HashMap<>();
-        planEntities.forEach(x -> x.getAssignedActivities()
-                .forEach(y -> {
-                            Integer id = activitiesIds.get(y.getId());
+        planEntities.forEach(plan -> plan.getAssignedActivities()
+                .forEach(activityEntity -> {
+                            Integer id = activitiesIds.get(activityEntity.getId());
+                            logger.debug("Activity id from activitiesIds: " + id + ", activity Id from stream: " + activityEntity.getId());
                             if (id == null) {
-                                int oldId = y.getId();
-                                updateActivity(y);
-                                activitiesIds.put(oldId, y.getId());
+                                int oldId = activityEntity.getId();
+                                updateActivity(activityEntity);
+                                logger.debug("New activity Id from stream: " + activityEntity.getId());
+                                activitiesIds.put(oldId, activityEntity.getId());
                             } else {
-                                y.setId(id);
+                                activityEntity.setId(id);
                             }
                         }
                 ));
     }
 
     private void updateActivities(Set<ActivityEntity> activityEntities) {
+        logger.debug("Uploading activities: " + activityEntities);
         activityEntities.forEach(this::updateActivity);
     }
 
     private void updateActivity(ActivityEntity activityEntity) {
+        logger.debug("Uploading single activity: " + activityEntity);
         updateActivityUsers(activityEntity);
         activityEntity.setId(activityRepositoryDao.createActivity(activityEntity));
     }
 
     private void updateActivityUsers(ActivityEntity activityEntity) {
+        logger.debug("Updating activity's users: " + activityEntity);
         activityEntity.setAssigned_users(
                 updateUsers(activityEntity.getAssigned_users()));
     }
 
     private Set<UserEntity> updateUsers(Set<UserEntity> users) {
+        logger.debug("Updating users:" + users);
         return users.stream().map(this::updateUser).collect(Collectors.toSet());
     }
 
     private UserEntity updateUser(UserEntity userEntity) {
+        logger.debug("Updating user: " + userEntity);
         int userId = userRepositoryDao.getUserIdByEmail(userEntity.getEmail());
         if (userId == 0) {
             userId = userRepositoryDao.createUser(userEntity.getName(), userEntity.getSurname(), userEntity.getEmail());
@@ -136,6 +158,7 @@ public class UploadService {
     }
 
     private Set<UserEntity> parseUserEntityFromJSON(String json) {
+        logger.debug("Parsing UserEntity from JSON: " + json);
         ObjectMapper mapper = new ObjectMapper();
         if (json != null) {
             try {
@@ -152,6 +175,8 @@ public class UploadService {
     }
 
     private Set<ActivityEntity> parseActivityEntityFromJSON(String json) {
+        logger.debug("Parsing ActivityEntity from JSON: " + json);
+
         ObjectMapper mapper = new ObjectMapper();
         if (json != null) {
             try {
@@ -168,6 +193,7 @@ public class UploadService {
     }
 
     private Set<PlanEntity> parsePlanEntityFromJSON(String json) {
+        logger.debug("Parsing PlanEntity from JSON: " + json);
         ObjectMapper mapper = new ObjectMapper();
         if (json != null) {
             try {

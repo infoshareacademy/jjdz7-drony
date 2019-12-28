@@ -2,6 +2,8 @@ package com.korpodrony.freemarker;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -27,7 +29,10 @@ public class TemplateProvider {
     @Inject
     private ConfigProvider configProvider;
 
+    Logger logger = LoggerFactory.getLogger("com.korpodrony.freemarker");
+
     public Template getTemplate(ServletContext servletContext, String templateName) throws IOException {
+        logger.debug("Getting template with name: " + templateName);
         configuration = configProvider.getConfiguration();
         configuration.setServletContextForTemplateLoading(servletContext, TEMPLATE_DIRECTORY_PATH);
         return configuration.getTemplate(templateName);
