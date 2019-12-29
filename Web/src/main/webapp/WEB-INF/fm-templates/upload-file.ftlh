@@ -5,10 +5,8 @@
         <#if isPrintForm == true>
             <form action="/upload-file" class="py-4" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="fileInput">Wybierz plik z danymi do załadowania (Activities.json, Plans.json lub
-                        Users.json):</label>
-                    <input name="file" type="file" accept="application/json"
-                           class="form-control-file border border-secondary rounded" id="fileInput">
+                    <label for="fileInput">Wybierz plik z danymi do załadowania (Activities.json, Plans.json lub Users.json):</label>
+                    <input name="file" type="file" accept="application/json" class="form-control-file border border-secondary rounded" id="fileInput">
                 </div>
                 <button type="submit" class="btn btn-primary">Załaduj</button>
             </form>

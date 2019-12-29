@@ -27,7 +27,7 @@ public class UploadFileServlet extends HttpServlet {
 
     private static final String SUCCES_MESSAGE = "Plik został załadowany";
 
-    private static final String FAILURE_MESSAGE = " Plik nie został załadowany. Spróbuj jeszcze raz. ";
+    private static final String FAILURE_MESSAGE = " Plik nie został załadowany.";
 
     @Inject
     TemplateProvider templateProvider;
