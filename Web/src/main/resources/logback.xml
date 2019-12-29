@@ -5,8 +5,10 @@
     <property name="HOME_LOG" value="/home/patryk/Pulpit/logs"/>
 
     <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
         <file>${HOME_LOG}/app.log</file>
-
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${HOME_LOG}/archived/app.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
             <!-- each archived file, size max 10MB -->
@@ -16,11 +18,11 @@
             <!-- 60 days to keep -->
             <maxHistory>60</maxHistory>
         </rollingPolicy>
-
         <encoder>
             <pattern>%logger{35} %d{HH:mm:ss.SSS} [%thread] %-5level %class{36} %M %L - %msg %n</pattern>
         </encoder>
     </appender>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%logger{35} %d{HH:mm:ss.SSS} [%thread] %-5level %class{36} %M %L - %msg %n</pattern>

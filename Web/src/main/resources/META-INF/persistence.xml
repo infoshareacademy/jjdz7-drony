@@ -16,18 +16,4 @@
             <property name="javax.persistence.jdbc.password" value="secret2"/>
         </properties>
     </persistence-unit>
-
-<!--    <persistence-unit name="test">-->
-<!--        <description>infoShare Academy Hibernate EntityManager Test</description>-->
-<!--        <properties>-->
-<!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>-->
-<!--            <property name="hibernate.hbm2ddl.auto" value="validate"/>-->
-<!--            <property name="hibernate.show_sql" value="false"/>-->
-<!--            <property name="hibernate.format_sql" value="true"/>-->
-<!--            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:5555/test"/>-->
-<!--            <property name="javax.persistence.jdbc.user" value="root"/>-->
-<!--            <property name="javax.persistence.jdbc.password" value="secret2"/>-->
-<!--&lt;!&ndash;            <property name="javax.persistence.sql-load-script-source" value="META-INF/initial_data_test.sql"/>&ndash;&gt;-->
-<!--        </properties>-->
-<!--    </persistence-unit>-->
 </persistence>
