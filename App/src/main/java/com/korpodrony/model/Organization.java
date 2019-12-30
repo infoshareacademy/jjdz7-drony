@@ -1,8 +1,11 @@
 package com.korpodrony.model;
 
+import javax.persistence.*;
 import java.util.*;
 
 public class Organization {
+    private int id;
+
     private Set<User> users;
     private Set<Plan> plans;
     private Set<Activity> activities;

@@ -1,8 +1,7 @@
 package com.korpodrony.servlet;
 
+import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.freemarker.TemplateProvider;
-import com.korpodrony.model.Plan;
-import com.korpodrony.service.RepositoryService;
 import com.korpodrony.services.ActivitiesWebService;
 import com.korpodrony.services.PlansWebService;
 import com.korpodrony.validation.Validator;
@@ -31,9 +30,6 @@ public class PlanServlet extends HttpServlet {
 
     @Inject
     ActivitiesWebService activitiesWebService;
-
-    @Inject
-    RepositoryService repositoryService;
 
     @Inject
     Validator validator;
@@ -78,21 +74,21 @@ public class PlanServlet extends HttpServlet {
                 if (setRespStatusOnValidationFailure(resp, assignActivityToPlan(req.getParameterMap()))) {
                     break;
                 }
-                saveStatus(resp);
+                setOKstatus(resp);
                 break;
             }
             case "/plan-unassign": {
                 if (setRespStatusOnValidationFailure(resp, unassignActivityFromPlan(req.getParameterMap()))) {
                     break;
                 }
-                saveStatus(resp);
+                setOKstatus(resp);
                 break;
             }
             case "/plan": {
                 if (setRespStatusOnValidationFailure(resp, editPlan(req.getParameterMap()))) {
                     break;
                 }
-                saveStatus(resp);
+                setOKstatus(resp);
                 break;
             }
             default: {
@@ -116,7 +112,7 @@ public class PlanServlet extends HttpServlet {
             return;
         }
         if (plansWebService.deletePlan(id)) {
-            saveStatus(resp);
+            setOKstatus(resp);
         }
     }
 
@@ -126,7 +122,7 @@ public class PlanServlet extends HttpServlet {
             if (setRespStatusOnValidationFailure(resp, createPlan(req.getParameterMap()))) {
                 return;
             }
-            saveStatus(resp);
+            setOKstatus(resp);
         } else {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
@@ -148,15 +144,15 @@ public class PlanServlet extends HttpServlet {
         return false;
     }
 
-    private void saveStatus(HttpServletResponse resp) {
-        repositoryService.writeRepositoryToFile();
+    private void setOKstatus(HttpServletResponse resp) {
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 
     private Map<String, Object> getPlanModel(int id) {
+        PlanDTO planDTO = plansWebService.getPlanDTO(id);
         Map<String, Object> model = new HashMap<>();
-        model.put("plan", plansWebService.getPlan(id));
-        model.put("activities", plansWebService.getAssignedActivities(id));
+        model.put("plan", planDTO);
+        model.put("activities", planDTO.getAssignedActivities());
         model.put("avaiableActivities", plansWebService.getAvailableActivities(id));
         return model;
     }
@@ -179,9 +175,10 @@ public class PlanServlet extends HttpServlet {
 
     private boolean assignActivityToPlan(Map<String, String[]> parameterMap) {
         if (checkAssignParameters(parameterMap)) {
-            int activityId = Integer.parseInt(parameterMap.get("id")[0]);
-            int userId = Integer.parseInt(parameterMap.get("activityid")[0]);
-            return plansWebService.assignActivityToPlan(userId, activityId);
+            int planId = Integer.parseInt(parameterMap.get("id")[0]);
+            int activityId = Integer.parseInt(parameterMap.get("activityid")[0]);
+            boolean b = plansWebService.assignActivityToPlan(activityId, planId);
+            return b;
         } else {
             return false;
         }
@@ -215,9 +212,9 @@ public class PlanServlet extends HttpServlet {
 
     private boolean unassignActivityFromPlan(Map<String, String[]> parameterMap) {
         if (checkUnassignParmeters(parameterMap)) {
-            int activityId = Integer.parseInt(parameterMap.get("id")[0]);
-            int userId = Integer.parseInt(parameterMap.get("activityid")[0]);
-            return plansWebService.unassignActivityFromPlan(userId, activityId);
+            int planId = Integer.parseInt(parameterMap.get("id")[0]);
+            int activityId = Integer.parseInt(parameterMap.get("activityid")[0]);
+            return plansWebService.unassignActivityFromPlan(activityId, planId);
         } else {
             return false;
         }
@@ -252,8 +249,9 @@ public class PlanServlet extends HttpServlet {
         if (validateCreateParameters(parameterMap)) {
             String name = parameterMap.get("name")[0].trim();
             String activitiesIds = parameterMap.get("assignedactivities")[0].trim();
-            if (plansWebService.createPlan(name) && !activitiesIds.equals("")) {
-                assignActivitiesToCreatedPlan(parameterMap);
+            int planId = plansWebService.createPlan(name);
+            if (!activitiesIds.equals("")) {
+                assignActivitiesToCreatedPlan(planId, parameterMap);
             }
             return true;
         }
@@ -299,8 +297,7 @@ public class PlanServlet extends HttpServlet {
                 .allMatch(x -> activitiesWebService.hasActivity(x));
     }
 
-    private void assignActivitiesToCreatedPlan(Map<String, String[]> parameterMap) {
-        int planId = Plan.getCurrentID();
+    private void assignActivitiesToCreatedPlan(int planId, Map<String, String[]> parameterMap) {
         Arrays.stream(parameterMap.get("assignedactivities")[0]
                 .split(","))
                 .map(Integer::valueOf)

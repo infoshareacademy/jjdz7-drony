@@ -51,6 +51,7 @@
                 "name": searchInput.value
             })
         }).done(function (resp) {
+            console.log(resp)
             response = resp;
             if (resp.length > 0) {
                 results.innerHTML = prepareList(resp);

@@ -108,7 +108,7 @@ public class ActivitiesService {
                 String name = IoTools.getStringFromUserWithMessage("Podaj nazwę zajęć:");
                 out.println("Poprzednia maksymalną liczbę użytkowników zajęć: " + dao.getActivity(activityID).getMaxUsers());
                 short maxUsers = IoTools.getShortFromUserWithMessage("Podaj maksymalną liczbę użytkowników zajęć:");
-                out.println("Poprzedni czas trwania zajęć [min]: " + dao.getActivity(activityID).getLenghtInQuarters() * 15);
+                out.println("Poprzedni czas trwania zajęć [min]: " + dao.getActivity(activityID).getLengthInQuarters() * 15);
                 byte lenghtInQuarters = IoTools.getByteFromUserWithMessage("Podaj czas trwania zajęć wyrażony w kwadransach:");
                 out.println("Poprzedni typ zajęć: " + dao.getActivity(activityID).getActivitiesType().getPolishName());
                 ActivitiesType chosenActivity = choosingActivityType();

@@ -16,6 +16,7 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class UploadFileServlet extends HttpServlet {
 
     private static final String SUCCES_MESSAGE = "Plik został załadowany";
 
-    private static final String FAILURE_MESSAGE = " Plik nie został załadowany. Spróbuj jeszcze raz. ";
+    private static final String FAILURE_MESSAGE = " Plik nie został załadowany.";
 
     @Inject
     TemplateProvider templateProvider;
@@ -36,23 +37,18 @@ public class UploadFileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-
         String message;
         boolean isPrintForm = false;
         try {
             Part filePart = req.getPart("file");
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             InputStream fileContent = filePart.getInputStream();
-            uploadService.uploadFile(fileContent, fileName);
+            uploadService.uploadFile(fileContent);
             message = SUCCES_MESSAGE;
-
         } catch (IOException e) {
             message = FAILURE_MESSAGE + e.getMessage();
             e.printStackTrace();
             isPrintForm = true;
         }
-
-
         printPage(resp, message, isPrintForm);
     }
 
@@ -74,7 +70,6 @@ public class UploadFileServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         printPage(resp, "", true);
     }
 }

@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class Plan {
     private static int currentID = 0;
+
     private int id;
     private String name;
     private Set<Integer> activitiesID;

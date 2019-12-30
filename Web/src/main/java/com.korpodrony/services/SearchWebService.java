@@ -1,57 +1,56 @@
 package com.korpodrony.services;
 
-import com.korpodrony.comparators.ActivityIDComparator;
-import com.korpodrony.comparators.PlanIDComparator;
-import com.korpodrony.comparators.UserIDComparator;
-import com.korpodrony.dao.OrganizationRepositoryDao;
-import com.korpodrony.model.User;
+import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
+import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
+import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
+import com.korpodrony.dto.UserDTO;
 import com.korpodrony.utils.JSONWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @RequestScoped
 public class SearchWebService {
+
     @EJB
-    OrganizationRepositoryDao dao;
+    PlanRepositoryDaoInterface planRepositoryDao;
+
+    @EJB
+    UserRepositoryDaoInterface userRepositoryDao;
+
+    @EJB
+    ActivityRepositoryDaoInterface activityRepositoryDao;
+
+    Logger logger = LoggerFactory.getLogger("com.korpodrony.services");
 
     public String getUsersByName(String name) {
+        String[] credentials = name.split(" ");
+        List<UserDTO> userDTObyName;
+        logger.debug("Getting users by name: " + name);
+        if (credentials.length == 1) {
+            userDTObyName = userRepositoryDao.getUserDTObyName(credentials[0]);
+        } else {
+            userDTObyName = userRepositoryDao.getUserDTObyName(credentials[0], credentials[1]);
+        }
+        logger.debug("result: " + userDTObyName);
         return JSONWriter.generateJsonString(
-                dao.getAllUsers()
-                        .stream()
-                        .filter(indetifyUserByText(name))
-                        .sorted((x, y) -> new UserIDComparator()
-                                .compare(x, y))
-                        .collect(Collectors.toList()));
+                userDTObyName
+        );
     }
 
     public String getActivitiesByName(String name) {
-        return JSONWriter.generateJsonString(dao.getAllActivities()
-                .stream()
-                .filter(x -> x.getName()
-                        .toLowerCase()
-                        .contains(name))
-                .sorted((x, y) -> new ActivityIDComparator().compare(x, y))
-                .collect(Collectors.toList()));
+        logger.debug("Getting activities by name: " + name);
+        return JSONWriter.generateJsonString(activityRepositoryDao.getAllSimplifiedActivates(name)
+        );
     }
 
     public String getPlansByName(String name) {
+        logger.debug("Getting plans by name: " + name);
         return JSONWriter.generateJsonString(
-                dao.getAllPlans()
-                        .stream()
-                        .filter(x -> x.getName()
-                                .toLowerCase()
-                                .contains(name)
-                        )
-                        .sorted((x, y) -> new PlanIDComparator().compare(x, y))
-                        .collect(Collectors.toList()));
-    }
-
-    private Predicate<User> indetifyUserByText(String name) {
-        return x ->(x.getName() + " " + x.getSurname())
-                .toLowerCase()
-                .contains(name);
+                planRepositoryDao.getAllSimplifiedPlansDTO(name)
+        );
     }
 }

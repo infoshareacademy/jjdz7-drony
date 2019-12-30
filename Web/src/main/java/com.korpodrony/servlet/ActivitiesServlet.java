@@ -1,6 +1,7 @@
 package com.korpodrony.servlet;
 
 import com.korpodrony.freemarker.TemplateProvider;
+import com.korpodrony.model.ActivitiesType;
 import com.korpodrony.services.ActivitiesWebService;
 import com.korpodrony.validation.Validator;
 import freemarker.template.Template;
@@ -84,7 +85,7 @@ public class ActivitiesServlet extends HttpServlet {
             );
         } else {
             model.put(ACTIVITIES_FILED, activitiesWebService.
-                    getAllActivities(x -> x.getActivitiesType().getNumber() == typeNumber)
+                    getAllActivitiesByActivityType(ActivitiesType.getActivity(typeNumber))
             );
         }
         model.put(TYPE_FILED, typeNumber);

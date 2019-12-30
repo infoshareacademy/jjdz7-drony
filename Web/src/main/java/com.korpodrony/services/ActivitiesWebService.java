@@ -1,84 +1,72 @@
 package com.korpodrony.services;
 
-import com.korpodrony.comparators.ActivityIDComparator;
-import com.korpodrony.dao.OrganizationRepositoryDao;
+import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
+import com.korpodrony.dto.ActivityDTO;
+import com.korpodrony.dto.SimplifiedActivityDTO;
+import com.korpodrony.dto.UserDTO;
 import com.korpodrony.model.ActivitiesType;
-import com.korpodrony.model.Activity;
-import com.korpodrony.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import java.util.Comparator;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @RequestScoped
 public class ActivitiesWebService {
 
-    @EJB
-    OrganizationRepositoryDao organizationRepositoryDao;
+    Logger logger = LoggerFactory.getLogger("com.korpodrony.services");
 
-    @Inject
-    UsersWebService usersWebService;
+    @EJB
+    ActivityRepositoryDaoInterface activityRepositoryDao;
 
     public boolean hasActivity(int activityId) {
-        return organizationRepositoryDao.hasActivityWithThisID(activityId);
+        logger.debug("Has Activity called");
+        return activityRepositoryDao.hasActivityWithThisID(activityId);
     }
 
-    public Activity getActivity(int activityId) {
-        return organizationRepositoryDao.getActivity(activityId);
+    public List<SimplifiedActivityDTO> getAllActivities() {
+        logger.debug("Getting AllSimplifiedActivities called");
+        return activityRepositoryDao.getAllSimplifiedActivates();
     }
 
-    public List<User> getAssignedUsers(int activityId) {
-        return getActivity(activityId)
-                .getAssignedUsersIDs()
-                .stream()
-                .map(x -> organizationRepositoryDao.getUser(x))
-                .sorted(Comparator.comparingInt(User::getId))
-                .collect(Collectors.toList());
-    }
-
-    public List<User> getAvaiableUsers(int activityId) {
-        return usersWebService
-                .getAllUsers()
-                .stream()
-                .filter(x -> !getAssignedUsers(activityId).contains(x))
-                .collect(Collectors.toList());
-    }
-
-    public List<Activity> getAllActivities() {
-        List<Activity> activities = organizationRepositoryDao.getAllActivities();
-        activities.sort(new ActivityIDComparator());
-        return activities;
-    }
-
-    public List<Activity> getAllActivities(Predicate<Activity> predicate) {
-        List<Activity> activities = organizationRepositoryDao
-                .getAllActivities();
-        activities.sort(new ActivityIDComparator());
-        return activities.stream()
-                .filter(predicate).collect(Collectors.toList());
+    public ActivityDTO getActivityDTO(int activityId) {
+        logger.debug("Getting activityDTO called");
+        return activityRepositoryDao.getActivityDTO(activityId);
     }
 
     public boolean assignUserToActivity(int userId, int activityId) {
-        return organizationRepositoryDao.assignUserToActivity(userId, activityId);
+        logger.debug("Assigning user to activity called");
+        return activityRepositoryDao.assignUserToActivity(userId, activityId);
     }
 
     public boolean unassignUserFromActivity(int userId, int activityId) {
-        return organizationRepositoryDao.unassignUserFromActivity(userId, activityId);
+        logger.debug("Unssigning user to activity called");
+        return activityRepositoryDao.unassignUserFromActivity(userId, activityId);
     }
 
     public boolean deleteActivity(int activityId) {
-        return organizationRepositoryDao.deleteActivity(activityId);
+        logger.debug("Deleting user called");
+        return activityRepositoryDao.deleteActivity(activityId);
     }
 
     public boolean editActivity(int activityId, String name, short maxUsers, byte duration, int activityTypeNumber) {
-        return organizationRepositoryDao.editActivity(activityId, name, maxUsers, duration, ActivitiesType.getActivity(activityTypeNumber));
+        logger.debug("Editing user called");
+        return activityRepositoryDao.editActivity(activityId, name, maxUsers, duration, ActivitiesType.getActivity(activityTypeNumber));
     }
 
     public boolean createActivity(String name, short maxUsers, byte duration, int activityType) {
-        return organizationRepositoryDao.createActivity(name, maxUsers, duration, ActivitiesType.getActivity(activityType));
+        logger.debug("Creating user called");
+        return activityRepositoryDao.createActivity(name, maxUsers, duration, ActivitiesType.getActivity(activityType));
+    }
+
+    public List<UserDTO> getAvailableUserDTO(int activityId) {
+        logger.debug("Getting getAvailableUsersDTO called");
+        return activityRepositoryDao.getAvailableUsersDTO(activityId);
+    }
+
+    public List<SimplifiedActivityDTO> getAllActivitiesByActivityType(ActivitiesType activity) {
+        logger.debug("Getting AllSimplifiedActivities by ActivitiesType called");
+        return activityRepositoryDao.getAllSimplifiedActivates(activity);
     }
 }

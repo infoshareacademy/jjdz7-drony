@@ -1,6 +1,7 @@
 package com.korpodrony.model;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Activity {
@@ -9,19 +10,25 @@ public class Activity {
     private String name;
     private short maxUsers;
     private Set<Integer> assignedUsersIDs;
-    private byte lenghtInQuarters;
-    private ActivitiesType activitiesType;
+    private Set<User> assignedUsers;
+    private byte lengthInQuarters;
 
-    public Activity(String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
-        this(++currentID, name, maxUsers, new HashSet<>(), lenghtInQuarters, activitiesType);
+    public void setAssignedUsers(Set<User> assignedUsers) {
+        this.assignedUsers = assignedUsers;
     }
 
-    public Activity(int id, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte lenghtInQuarters, ActivitiesType activitiesType) {
+    private ActivitiesType activitiesType;
+
+    public Activity(String name, short maxUsers, byte lengthInQuarters, ActivitiesType activitiesType) {
+        this(++currentID, name, maxUsers, new HashSet<>(), lengthInQuarters, activitiesType);
+    }
+
+    public Activity(int id, String name, short maxUsers, Set<Integer> assignedUsersIDs, byte lengthInQuarters, ActivitiesType activitiesType) {
         this.id = id;
         this.name = name;
         this.maxUsers = maxUsers;
         this.assignedUsersIDs = assignedUsersIDs;
-        this.lenghtInQuarters = lenghtInQuarters;
+        this.lengthInQuarters = lengthInQuarters;
         this.activitiesType = activitiesType;
     }
 
@@ -44,6 +51,10 @@ public class Activity {
 
     public static void setCurrentID(int currentID) {
         Activity.currentID = currentID;
+    }
+
+    public Set<User> getAssignedUsers() {
+        return assignedUsers;
     }
 
     public int getId() {
@@ -78,12 +89,12 @@ public class Activity {
         this.assignedUsersIDs = assignedUsersIDs;
     }
 
-    public byte getLenghtInQuarters() {
-        return lenghtInQuarters;
+    public byte getLengthInQuarters() {
+        return lengthInQuarters;
     }
 
-    public void setLenghtInQuarters(byte lenghtInQuarters) {
-        this.lenghtInQuarters = lenghtInQuarters;
+    public void setLengthInQuarters(byte lengthInQuarters) {
+        this.lengthInQuarters = lengthInQuarters;
     }
 
     public ActivitiesType getActivitiesType() {
@@ -97,7 +108,7 @@ public class Activity {
     public void editActivity(String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
         setName(name);
         setMaxUsers(maxUsers);
-        setLenghtInQuarters(lenghtInQuarters);
+        setLengthInQuarters(lenghtInQuarters);
         setActivitiesType(activitiesType);
     }
 
@@ -138,7 +149,25 @@ public class Activity {
                 ", nazwa: " + name +
                 ", maksymalna liczba użytkowników: " + maxUsers +
                 ", ID przypisanych użytkowników: " + assignedUsersIDs +
-                ", czas trwania [min]:" + lenghtInQuarters * 15 +
+                ", czas trwania [min]:" + lengthInQuarters * 15 +
                 ", typ zajęć: " + activitiesType.polishName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Activity activity = (Activity) o;
+        return id == activity.id &&
+                maxUsers == activity.maxUsers &&
+                lengthInQuarters == activity.lengthInQuarters &&
+                Objects.equals(name, activity.name) &&
+                Objects.equals(assignedUsersIDs, activity.assignedUsersIDs) &&
+                activitiesType == activity.activitiesType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, maxUsers, assignedUsersIDs, lengthInQuarters, activitiesType);
     }
 }
