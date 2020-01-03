@@ -9,10 +9,10 @@ services:
       - ${DB_PORT}:3306
     volumes:
       - ./init.sql:/data/application/init.sql
-    #      - ./mysql:/var/lib/mysql
+          - ./mysql:/var/lib/mysql
     command: --init-file /data/application/init.sql
-#  wildfly:
-#    build: .
-#    ports:
-#      - 8080:8080
-#      - 9990:9990
+  wildfly:
+    build: .
+    ports:
+      - 4390:8080
+      - 4391:9990
