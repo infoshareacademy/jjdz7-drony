@@ -6,18 +6,18 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=korpodrony
       - MYSQL_DATABASE=organization
-      - MYSQL_USER=root
+      - MYSQL_USER=user
       - MYSQL_PASSWORD=secret2
     ports:
-      - "4392:3306"
+      - 4392:3306
     volumes:
       - ./mysql:/var/lib/mysql
   app:
     build:
       context: .
     ports:
-      - "4390:8080"
-      - "4391:9990"
+      - 4390:8080
+      - 4391:9990
     depends_on:
       - mysql
     links:
