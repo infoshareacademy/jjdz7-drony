@@ -1,18 +1,25 @@
-version: '3'
+version: '2'
 
 services:
   mysql:
     image: mysql:8.0.18
-    env_file:
-      - ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=korpodrony
+      - MYSQL_DATABASE=organization
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=secret2
     ports:
-      - ${DB_PORT}:3306
+      - "4392:3306"
     volumes:
-      - ./init.sql:/data/application/init.sql
-          - ./mysql:/var/lib/mysql
-    command: --init-file /data/application/init.sql
-  wildfly:
-    build: .
+      - ./mysql:/var/lib/mysql
+  app:
+    build:
+      context: .
     ports:
-      - 4390:8080
-      - 4391:9990
+      - "4390:8080"
+      - "4391:9990"
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    dns: 8.8.8.8
