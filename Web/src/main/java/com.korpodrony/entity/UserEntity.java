@@ -1,10 +1,10 @@
 package com.korpodrony.entity;
 
 import com.korpodrony.dto.UserDTO;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity(name = "User")
 @Table(name = "users")
@@ -19,9 +19,15 @@ public class UserEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
-    public UserEntity(String name, String surname) {
+    @Column
+    @ColumnDefault(value = "'USER'")
+    @Enumerated(EnumType.STRING)
+    private PermissionLevel permissionLevel;
+
+    public UserEntity(String name, String surname, PermissionLevel permissionLevel) {
         this.name = name;
         this.surname = surname;
+        this.permissionLevel = permissionLevel;
     }
 
     public UserEntity() {
@@ -63,12 +69,23 @@ public class UserEntity {
         this.surname = surname;
     }
 
+    public PermissionLevel getPermissionLevel() {
+        return permissionLevel;
+    }
+
+    public void setPermissionLevel(PermissionLevel permissionLevel) {
+        this.permissionLevel = permissionLevel;
+    }
+
+
     @Override
     public String toString() {
         return "UserEntity{" +
-                "user_id=" + id +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", permissionLevel=" + permissionLevel +
                 '}';
     }
 
@@ -78,11 +95,12 @@ public class UserEntity {
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
         return name.equals(that.name) &&
-                surname.equals(that.surname);
+                surname.equals(that.surname) &&
+                permissionLevel == that.permissionLevel;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname);
+        return Objects.hash(name, surname, email, permissionLevel);
     }
 }
