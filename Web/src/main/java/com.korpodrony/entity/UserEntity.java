@@ -1,6 +1,7 @@
 package com.korpodrony.entity;
 
 import com.korpodrony.dto.UserDTO;
+import com.korpodrony.model.ActivitiesType;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -19,10 +20,9 @@ public class UserEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
-    public UserEntity(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
-    }
+    @Column(length = 32, columnDefinition = "varchar(32) default 'GUEST'")
+    @Enumerated(EnumType.STRING)
+    private UserLevel userLevel;
 
     public UserEntity() {
     }
