@@ -3,6 +3,7 @@ package com.korpodrony.entity;
 public enum PermissionLevel {
 
     ADMIN,
-    USER
+    USER,
+    GUEST
 
 }
