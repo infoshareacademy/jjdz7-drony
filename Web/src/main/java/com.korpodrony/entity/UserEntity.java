@@ -77,8 +77,8 @@ public class UserEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return name.equals(that.name) &&
-                surname.equals(that.surname);
+        return id == that.id &&
+                email.equals(that.email);
     }
 
     @Override

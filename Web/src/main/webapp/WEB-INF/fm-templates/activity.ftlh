@@ -1,5 +1,14 @@
 <#import "parts/macros/basic.ftlh" as basic/>
 <@basic.includeContent scriptsSrc="activity.js" currentPosition="none" modal="../activity-modal.ftlh">
+
+    <#if users?size !=0 >
+        <#assign minUsers = users?size>
+        <#assign maxUsers = 30+users?size>
+    <#else>
+        <#assign minUsers = 1>
+        <#assign maxUsers = 30>
+    </#if>
+
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Zajęcia</h2>
@@ -21,7 +30,8 @@
                 <div class="form-group row">
                     <label for="maxUsers" class="col-sm-6 col-form-label maxUsersLabel">Max l. użytkowników: x</label>
                     <div class="col-sm-6 col-lg-12">
-                        <input type="range" class="custom-range maxUsers" min="1" max="30" value="${activity.maxUsers}"
+                        <input type="range" class="custom-range maxUsers" min="${minUsers}" max="${maxUsers}"
+                               value="${activity.maxUsers}"
                                id="maxUsers">
                     </div>
                 </div>
