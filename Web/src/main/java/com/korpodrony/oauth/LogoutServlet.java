@@ -13,7 +13,7 @@ import java.io.IOException;
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
 
-  private static final Logger logger = LoggerFactory.getLogger(LogoutServlet.class.getName());
+  private static final Logger logger = LoggerFactory.getLogger("com.korpodrony.oauth");
 
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
     resp.setCharacterEncoding("UTF-8");
