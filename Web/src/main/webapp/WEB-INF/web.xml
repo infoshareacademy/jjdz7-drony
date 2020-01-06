@@ -11,11 +11,11 @@
         <param-value>Poland</param-value>
     </context-param>
     <data-source>
-    <name>java:ds/evc</name>
-    <class-name>com.mysql.cj.jdbc.MysqlDataSource</class-name>
-    <url>jdbc:mysql://jjdz7-drony_mysql_1:3306/organization?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>
-    <user>user</user>
-    <password>secret2</password>
+        <name>java:ds/evc</name>
+        <class-name>com.mysql.cj.jdbc.MysqlDataSource</class-name>
+        <url>jdbc:mysql://mysql:3306/organization?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>
+        <user>user</user>
+        <password>secret2</password>
     </data-source>
     <display-name>Archetype Created Web Application</display-name>
 </web-app>
