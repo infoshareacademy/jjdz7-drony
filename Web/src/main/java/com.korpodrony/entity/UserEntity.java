@@ -28,7 +28,7 @@ public class UserEntity {
     }
 
     public UserDTO createUserDTO() {
-        return new UserDTO(id, name, surname);
+        return new UserDTO(id, name, surname, email);
     }
 
     public String getEmail() {
