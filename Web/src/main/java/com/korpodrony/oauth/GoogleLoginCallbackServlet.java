@@ -29,55 +29,24 @@ import java.util.UUID;
 public class GoogleLoginCallbackServlet extends AbstractAuthorizationCodeCallbackServlet {
 
     private static final Logger logger = LoggerFactory.getLogger("com.korpodrony.oauth");
-
+    private static final String APP_NAME = "Korpodrony";
+    private static final String EMAIL_ATTR = "email";
+    private static final String NAME_ATTR = "name";
+    private static final String SURNAME_ATTR = "surname";
+    private static final String USER_ID_ATTR = "userId";
+    private static final String USER_TYPE_ATTR = "userType";
+    private static final String USER_TYPE_GUEST = "guest";
+    private static final String REDIRECT = "/index";
     @Inject
     private UsersWebService usersWebService;
 
     @Override
     protected void onSuccess(HttpServletRequest req, HttpServletResponse resp, Credential credential)
             throws IOException {
-
-        AccessToken accessToken = new AccessToken(credential.getAccessToken(), new Date(credential.getExpirationTimeMilliseconds()));
-
-        GoogleCredentials credentials = GoogleCredentials.newBuilder()
-                .setAccessToken(accessToken)
-                .build();
-
-        HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
-
-        Oauth2 oauth2 = new Oauth2.Builder(
-                new NetHttpTransport(),
-                JacksonFactory.getDefaultInstance(),
-                requestInitializer).setApplicationName("Korpodronny").build();
-
-        Userinfoplus info = oauth2.userinfo().get().execute();
-        String name = info.getGivenName();
-        String surname = info.getFamilyName();
-        String email = info.getEmail();
-
-        UserDTO verifiedUser = getVerifiedUser(name, surname, email);
-
+        UserDTO verifiedUser = getUserDTO(credential);
         setSessionAttributes(req, verifiedUser);
-
-        if (req.getSession().getAttribute("userType") == null) {
-            req.getSession().setAttribute("userType", "guest");
-        }
-        resp.sendRedirect("/index");
-    }
-
-    private UserDTO getVerifiedUser(String name, String surname, String email) {
-        if (usersWebService.findUserIdByEmail(email) == 0) {
-            usersWebService.createUser(name, surname, email);
-        }
-        logger.info("Authentication success of user: " + name);
-        return usersWebService.findUserDTOByEmail(email);
-    }
-
-    private void setSessionAttributes(HttpServletRequest req, UserDTO verifiedUser) {
-        req.getSession().setAttribute("email", verifiedUser.getEmail());
-        req.getSession().setAttribute("name", verifiedUser.getName());
-        req.getSession().setAttribute("surname", verifiedUser.getName());
-        req.getSession().setAttribute("userId", verifiedUser.getId());
+        setSessionAtrrUserType(req);
+        resp.sendRedirect(REDIRECT);
     }
 
     @Override
@@ -101,5 +70,51 @@ public class GoogleLoginCallbackServlet extends AbstractAuthorizationCodeCallbac
         String randomUserId = UUID.randomUUID().toString();
         logger.info("getUserId: " + randomUserId);
         return randomUserId;
+    }
+
+    private UserDTO getUserDTO(Credential credential) throws IOException {
+        GoogleCredentials googleCredentials = getCredentials(credential);
+        HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(googleCredentials);
+        Oauth2 oauth2 = getOauth2(requestInitializer);
+        Userinfoplus userinfoplus = oauth2.userinfo().get().execute();
+        return getVerifiedUser(userinfoplus);
+    }
+
+    private GoogleCredentials getCredentials(Credential credential) {
+        AccessToken accessToken = new AccessToken(credential.getAccessToken(), new Date(credential.getExpirationTimeMilliseconds()));
+        return GoogleCredentials.newBuilder()
+                .setAccessToken(accessToken)
+                .build();
+    }
+
+    private Oauth2 getOauth2(HttpRequestInitializer requestInitializer) {
+        return new Oauth2.Builder(
+                new NetHttpTransport(),
+                JacksonFactory.getDefaultInstance(),
+                requestInitializer).setApplicationName(APP_NAME).build();
+    }
+
+    private UserDTO getVerifiedUser(Userinfoplus userinfoplus) {
+        String email = userinfoplus.getEmail();
+        String name = userinfoplus.getGivenName();
+        String sureName = userinfoplus.getFamilyName();
+        if (usersWebService.findUserIdByEmail(email) == 0) {
+            usersWebService.createUser(name, sureName, email);
+        }
+        logger.info("Authentication success of user: " + email);
+        return usersWebService.findUserDTOByEmail(email);
+    }
+
+    private void setSessionAttributes(HttpServletRequest req, UserDTO verifiedUser) {
+        req.getSession().setAttribute(EMAIL_ATTR, verifiedUser.getEmail());
+        req.getSession().setAttribute(NAME_ATTR, verifiedUser.getName());
+        req.getSession().setAttribute(SURNAME_ATTR, verifiedUser.getName());
+        req.getSession().setAttribute(USER_ID_ATTR, verifiedUser.getId());
+    }
+
+    private void setSessionAtrrUserType(HttpServletRequest req) {
+        if (req.getSession().getAttribute(USER_TYPE_ATTR) == null) {
+            req.getSession().setAttribute(USER_TYPE_ATTR, USER_TYPE_GUEST);
+        }
     }
 }
