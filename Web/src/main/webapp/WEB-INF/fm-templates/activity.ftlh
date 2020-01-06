@@ -75,7 +75,7 @@
             <input type="text" class="form-control" placeholder="Wpisz email użytkownika"
                    aria-label="deleteUser" aria-describedby="basic-addon2" id="deleteUserInput">
             <#list users>
-                <ul class="list-group w-100 mb-3 to-un-assign">
+                <ul class="list-group limited-height mb-3 to-un-assign">
                     <#items as user>
                         <li class="list-group-item user-to-un-assign" data-userid="${user.id}" data-email="${user.email}">email: ${user.email} imię: ${user.name}
                             , nazwisko: ${user.surname}</li>
@@ -112,7 +112,7 @@
                    aria-label="assignUser" aria-describedby="basic-addon2" id="assignUserInput">
             <div class="panel-body">
                 <#list availableUsers>
-                    <ul class="list-group users w-100 mb-3 to-assign">
+                    <ul class="list-group limited-height mb-3 to-assign">
                         <#items as user>
                             <li class="list-group-item user-to-assign" data-userid="${user.id}" data-email="${user.email}">email: ${user.email} imię: ${user.name}
                                 , nazwisko: ${user.surname}</li>

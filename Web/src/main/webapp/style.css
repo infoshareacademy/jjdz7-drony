@@ -10,10 +10,7 @@ canvas {
     /*height: 0.35vh;*/
 }
 
-.overflow-auto{
-    height: 200px !important;
-}
-.users{
+.limited-height{
     max-height: 30rem;
     margin-bottom: 0.5rem;
     overflow:scroll;

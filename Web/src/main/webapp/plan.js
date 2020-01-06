@@ -4,12 +4,76 @@
         btnDelete = document.querySelector('button.delete'),
         errors = document.querySelector('#errors'),
         errorType = document.querySelector('#type-error'),
-        assingInput = document.querySelector('#assignActivityInput'),
-        deletePlanInput = document.querySelector('#unassignActivityInput'),
-        assingPlanButton = document.querySelector('#assignActivity'),
-        deletePlanButton = document.querySelector('#unassignActivity'),
+        assingInput = document.querySelector('#assignInput'),
+        unAssignInput = document.querySelector('#unAssignInput'),
+        assignButton = document.querySelector('#assignActivity'),
+        unAssignButton = document.querySelector('#unassignActivity'),
         dataId = document.querySelector('[data-id]').getAttribute('data-id'),
-        nameValue = JSON.parse(JSON.stringify(nameInput.value));
+        nameValue = JSON.parse(JSON.stringify(nameInput.value)),
+        idsToAssign = [],
+        idsToUnAssign = [];
+
+    assingInput.addEventListener("keyup", function (e) {
+        let value = assingInput.value.toLowerCase();
+        document.querySelectorAll('.activity-to-assign').forEach(x => x.classList.remove("d-none"));
+        if (value === "") {
+            return;
+        }
+        document.querySelectorAll('.activity-to-assign').forEach(x => {
+            if (!x.getAttribute("data-name").toLowerCase().includes(value)) {
+                x.classList.add("d-none");
+            }
+        });
+    }, false);
+
+    unAssignInput.addEventListener("keyup", function (e) {
+        let value = unAssignInput.value.toLowerCase();
+        document.querySelectorAll('.activity-to-un-assign').forEach(x => x.classList.remove("d-none"));
+        if (value === "") {
+            return;
+        }
+        document.querySelectorAll('.activity-to-un-assign').forEach(x => {
+            if (!x.getAttribute("data-name").toLowerCase().includes(value)) {
+                x.classList.add("d-none");
+            }
+        });
+    }, false);
+
+    if (document.querySelector('.to-assign') !== null) {
+        document.querySelector('.to-assign').addEventListener('click', function (e) {
+            var id = e.target.getAttribute('data-activityId');
+            if (idsToAssign.includes(id)) {
+                $(e.target).removeClass("bg-primary");
+                var index = idsToAssign.indexOf(id);
+                if (index !== -1) idsToAssign.splice(index, 1);
+                if (idsToAssign.length == 0) {
+                    $('#assignActivity').prop("disabled", true);
+                }
+            } else {
+                $(e.target).addClass("bg-primary");
+                idsToAssign.push(id);
+                $('#assignActivity').prop("disabled", false);
+                ;
+            }
+        }, false);
+    }
+    if (document.querySelector('.to-un-assign') !== null) {
+        document.querySelector('.to-un-assign').addEventListener('click', function (e) {
+            var id = e.target.getAttribute('data-activityId');
+            if (idsToUnAssign.includes(id)) {
+                $(e.target).removeClass("bg-danger");
+                var index = idsToUnAssign.indexOf(id);
+                if (index !== -1) idsToUnAssign.splice(index, 1);
+                if (idsToUnAssign.length == 0) {
+                    $('#unassignActivity').prop("disabled", true);
+                }
+            } else {
+                $(e.target).addClass("bg-danger");
+                idsToUnAssign.push(id);
+                $('#unassignActivity').prop("disabled", false);
+            }
+        }, false)
+    }
 
     function checkChanges() {
         if (nameInput.value == nameValue) {
@@ -56,7 +120,7 @@
         handleChangeButton();
     }, false);
 
-    assingPlanButton.addEventListener('click', function () {
+    assignButton.addEventListener('click', function () {
         handleAddButton();
     }, false);
 
@@ -76,69 +140,37 @@
 
     function handleAddButton() {
         $('#assign-errors').addClass('d-none');
-        if (checkAssignInput()) {
-            $.ajax({
-                type: 'PUT',
-                url: '/plan-assign?' + $.param({
-                    "id": dataId,
-                    "activityid": assingInput.value
-                })
-            }).done(function () {
-                window.location.href = "/plan?id=" + dataId;
-            }).fail(function (msg) {
-                $('#assign-errors').removeClass('d-none');
-                $('#assign-error').text("Nie można dodać zajęć o id: " + assingInput.value);
+        $.ajax({
+            type: 'PUT',
+            url: '/plan-assign?' + $.param({
+                "id": dataId,
+                "activityid": idsToAssign.join(",")
             })
-
-        }
+        }).done(function () {
+            window.location.href = "/plan?id=" + dataId;
+        }).fail(function (msg) {
+            $('#assign-errors').removeClass('d-none');
+            $('#assign-error').text("Nie można dodać zajęć");
+        })
     }
 
-    function checkAssignInput() {
-        if (assingInput.value == "") {
-            $('#assign-errors').removeClass('d-none');
-            $('#assign-error').text("Nie podano id zajęć do zapisania");
-            return false;
-        } else if (+assingInput.value <= 0) {
-            $('#assign-errors').removeClass('d-none');
-            $('#assign-error').text("Przekazana wartość id użytkownika musi być większa od zera");
-            return false;
-        }
-        return true;
-    }
-
-    deletePlanButton.addEventListener('click', function () {
+    unAssignButton.addEventListener('click', function () {
         handleDeleteButton();
     }, false);
 
     function handleDeleteButton() {
         $('#delete-errors').addClass('d-none');
-        if (checkDeleteInput()) {
-            $.ajax({
-                type: 'PUT',
-                url: '/plan-unassign?' + $.param({
-                    "id": dataId,
-                    "activityid": deletePlanInput.value
-                })
-            }).done(function () {
-                window.location.href = "/plan?id=" + dataId;
-            }).fail(function (msg) {
-                $('#delete-errors').removeClass('d-none');
-                $('#delete-error').text("Nie można wypisać zajęć o id: " + deletePlanInput.value);
+        $.ajax({
+            type: 'PUT',
+            url: '/plan-unassign?' + $.param({
+                "id": dataId,
+                "activityid": idsToUnAssign.join(",")
             })
-        }
-    }
-
-    function checkDeleteInput() {
-        if (deletePlanInput.value == "") {
+        }).done(function () {
+            window.location.href = "/plan?id=" + dataId;
+        }).fail(function (msg) {
             $('#delete-errors').removeClass('d-none');
-            $('#delete-error').text("Nie podano id zajęć do wypisania");
-            return false;
-        } else if (+deletePlanInput.value <= 0) {
-            $('#delete-errors').removeClass('d-none');
-            $('#delete-error').text("Przekazana wartość id zajęć musi być większa od zera");
-            return false;
-        }
-        return true;
+            $('#delete-error').text("Nie można wypisać zajęć");
+        })
     }
-
 })();
