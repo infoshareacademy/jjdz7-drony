@@ -32,14 +32,14 @@
                     <div class="col-sm-6 col-lg-12">
                         <input type="range" class="custom-range maxUsers" min="${minUsers}" max="${maxUsers}"
                                value="${activity.maxUsers}"
-                               id="maxUsers">
+                        id="maxUsers">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="duration" class="col-sm-6 col-form-label durationLabel">Czas trwania: x</label>
                     <div class="col-sm-6 col-lg-12">
                         <input type="range" class="custom-range duration" min="1" max="10"
-                               value="${activity.lengthInQuarters}" id="duration">
+                        value="${activity.lengthInQuarters}" id="duration">
                     </div>
                 </div>
                 <div class="form-group">
@@ -64,7 +64,7 @@
         </div>
         <div class="col-3 mb-3 mr-auto">
             <button class="btn btn-danger text-white w-100 delete" data-toggle="modal"
-                    data-target="#exampleModalCenter">usuń
+            data-target="#exampleModalCenter">usuń
             </button>
         </div>
     </div>
@@ -72,11 +72,12 @@
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5" id="assigned-users">
             <h2>Użytykownicy przypisani do zajęć</h2>
+            <input type="text" class="form-control" placeholder="Imię i nazwisko użytkownika"
+                   aria-label="deleteUser" aria-describedby="basic-addon2" id="deleteUserInput">
             <#list users>
-                <ul class="list-group w-100 mb-3 ">
+                <ul class="list-group w-100 mb-3 to-un-assign">
                     <#items as user>
-                        <li class="list-group-item">Id: ${user.id},
-                            imię: ${user.name}, nazwisko: ${user.surname}</li>
+                        <li class="list-group-item" data-userid="${user.id}">email: ${user.email} imię: ${user.name}, nazwisko: ${user.surname}</li>
                     </#items>
                 </ul>
             </#list>
@@ -89,10 +90,8 @@
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <div class="input-group mb-3">
-                <input type="number" class="form-control" placeholder="Id użytkownika do wypisania"
-                       aria-label="deleteUser" aria-describedby="basic-addon2" id="deleteUserInput">
                 <div class="input-group-append col-3">
-                    <button class="btn w-100" id="deleteUser">Wypisz użytkownika</button>
+                    <button class="btn w-100" id="deleteUser" disabled>Wypisz użytkownika</button>
                 </div>
             </div>
         </div>
@@ -105,10 +104,8 @@
     <div class="row">
         <div class="col-10 ml-auto mr-auto">
             <div class="input-group mb-3">
-                <input type="number" class="form-control" placeholder="Id użytkownika do zapisania"
-                       aria-label="assignUser" aria-describedby="basic-addon2" id="assignUserInput">
                 <div class="input-group-append col-3">
-                    <button class="btn w-100" id="assignUser">Zapisz użytkownika</button>
+                    <button class="btn w-100" id="assignUser" disabled>Zapisz użytkownika</button>
                 </div>
             </div>
         </div>
@@ -121,11 +118,12 @@
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Użytkownicy, których można zapisać do zajęć</h2>
+            <input type="text" class="form-control" placeholder="Imię i nazwisko użytkownika"
+                   aria-label="assignUser" aria-describedby="basic-addon2" id="assignUserInput">
             <#list availableUsers>
-                <ul class="list-group w-100 mb-3 ">
+                <ul class="list-group w-100 mb-3 to-assign">
                     <#items as user>
-                        <li class="list-group-item">Id: ${user.id},
-                            imię: ${user.name}, nazwisko: ${user.surname}</li>
+                        <li class="list-group-item" data-userid="${user.id}">email: ${user.email} imię: ${user.name}, nazwisko: ${user.surname}</li>
                     </#items>
                 </ul>
             </#list>

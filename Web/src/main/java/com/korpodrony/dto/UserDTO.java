@@ -1,22 +1,26 @@
 package com.korpodrony.dto;
 
-import com.korpodrony.model.User;
-
 import java.util.Objects;
 
 public class UserDTO {
     private int id;
     private String name;
     private String surname;
+    private String email;
 
-    public UserDTO(int id, String name, String surname) {
+    public UserDTO(int id, String name, String surname, String email) {
         this.id = id;
         this.name = name;
         this.surname = surname;
+        this.email = email;
     }
 
-    public User getUser(){
-        return new User(id, name, surname);
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getId() {

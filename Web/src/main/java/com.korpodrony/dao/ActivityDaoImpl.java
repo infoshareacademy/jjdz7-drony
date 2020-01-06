@@ -188,7 +188,7 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
 
     public List<UserDTO> getAvailableUsersDTO(int activityId) {
         logger.debug("Getting availableUsersDTOs for Activity with id: " + activityId);
-        return entityManager.createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname)" +
+        return entityManager.createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname, u.email)" +
                 " from User u WHERE u NOT IN (select u from Activity a join a.assigned_users u where a.id=:id)", UserDTO.class)
                 .setParameter("id", activityId)
                 .getResultList();

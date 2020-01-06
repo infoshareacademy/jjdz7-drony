@@ -1,11 +1,15 @@
-canvas{
+canvas {
     position: fixed;
     top: 0;
     background-color: #3c3c3c;
     z-index: -500 !important;
 }
 
-.container{
+.to-un-assign, .to-assign{
+    height: 0.35vh;
+}
+
+.container {
     z-index: 100;
     position: relative;
     background-color: #fff;
@@ -13,7 +17,11 @@ canvas{
     border-radius: 1rem;
 }
 
-.banner{
+li {
+    cursor: pointer;
+}
+
+.banner {
     display: block;
     height: 7rem;
     color: #FFf;
@@ -25,7 +33,7 @@ canvas{
     font-style: italic;
 }
 
-.btn-group{
+.btn-group {
     display: flex;
 }
 
@@ -34,18 +42,18 @@ canvas{
 }
 
 .errors {
-	border: solid 5px red !important;
+    border: solid 5px red !important;
 }
 
-.type-error{
+.type-error {
     color: crimson;
     font-weight: 800;
 }
 
-.name{
+.name {
     color: black;
 }
 
-.card-img-top{
+.card-img-top {
     height: 40vh;
 }
