@@ -21,7 +21,7 @@ public class UserEntity {
 
     @Column
     @ColumnDefault(value = "'GUEST'")
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private PermissionLevel permissionLevel;
 
     public UserEntity(String name, String surname, PermissionLevel permissionLevel) {
