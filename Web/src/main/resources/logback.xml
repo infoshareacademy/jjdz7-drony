@@ -2,7 +2,7 @@
 
 <configuration>
 
-    <property name="HOME_LOG" value="/home/patryk/Pulpit/logs"/>
+    <property name="HOME_LOG" value="/home/logs/"/>
 
     <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -30,11 +30,11 @@
     </appender>
 
     <root level="debug">
-        <appender-ref ref="FILE-ROLLING"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 
     <logger name="com.korpodrony" level="error" additivity="false">
-        <appender-ref ref="FILE-ROLLING"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="com.korpodrony.dao" level="debug">
         <appender-ref ref="STDOUT"/>
@@ -46,6 +46,9 @@
         <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="com.korpodrony.services" level="debug">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="com.korpodrony.oauth" level="debug">
         <appender-ref ref="STDOUT"/>
     </logger>
 

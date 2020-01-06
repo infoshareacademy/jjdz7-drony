@@ -61,6 +61,22 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
         }
     }
 
+    @Override
+    public UserDTO getUserDTO(String email) {
+        try {
+            logger.debug("Getting userDTO for email: " + email);
+            return entityManager
+                    .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname,u.email) FROM User u WHERE " +
+                                    "u.email=:email"
+                            , UserDTO.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            logger.info("Doesn't have user with email: " + email);
+            return null;
+        }
+    }
+
     public boolean editUser(int userID, String name, String surname) {
         if (hasUser(userID)) {
             UserEntity userEntity = getUserEntity(userID);
