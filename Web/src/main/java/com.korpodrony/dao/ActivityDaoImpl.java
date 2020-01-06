@@ -1,15 +1,19 @@
 package com.korpodrony.dao;
 
 import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
+import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
 import com.korpodrony.dto.ActivityDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.UserDTO;
 import com.korpodrony.entity.ActivityEntity;
+import com.korpodrony.entity.PlanEntity;
 import com.korpodrony.entity.UserEntity;
 import com.korpodrony.model.ActivitiesType;
+import com.korpodrony.model.Plan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -20,6 +24,9 @@ import java.util.List;
 
 @Stateless
 public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
+
+    @EJB
+    PlanRepositoryDaoInterface planRepositoryDao;
 
     @PersistenceContext(unitName = "korpodrony-hibernate")
     private EntityManager entityManager;
@@ -95,6 +102,12 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
 
     public boolean deleteActivity(int activityID) {
         if (hasActivityWithThisID(activityID)) {
+            List<PlanEntity> resultList = entityManager.createQuery("select p from Plan p join p.assignedActivities a where a.id=:id", PlanEntity.class)
+                    .setParameter("id", activityID)
+                    .getResultList();
+            resultList.forEach(x -> planRepositoryDao.unassignActivityFromPlan(activityID, x.getId()));
+            entityManager.flush();
+            entityManager.clear();
             entityManager.createQuery("DELETE FROM Activity a WHERE a.id=:id")
                     .setParameter("id", activityID)
                     .executeUpdate();
