@@ -15,6 +15,8 @@ public interface UserRepositoryDaoInterface {
 
     UserDTO getUserDTO(int userID);
 
+    UserDTO getUserDTO(String email);
+
     boolean editUser(int userID, String name, String surname);
 
     List<UserDTO> getAllUsers();

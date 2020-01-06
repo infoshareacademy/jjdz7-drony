@@ -52,6 +52,15 @@
                         <a class="nav-link text-white text-center" href="/upload-file">Wczytaj plik</a>
                     </li>
                 </#if>
+                <#if current=="admin-panel">
+                    <li class="nav-item  active">
+                        <a class="nav-link text-center">Panel Administracyjny</a>
+                    </li>
+                <#else>
+                    <li class="nav-item">
+                        <a class="nav-link text-white text-center" href="/admin-panel">Panel Administracyjny</a>
+                    </li>
+                </#if>
             </ul>
         </div>
     </nav>

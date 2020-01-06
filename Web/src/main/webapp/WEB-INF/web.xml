@@ -2,11 +2,19 @@
         "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 <web-app>
+    <context-param>
+        <param-name>province</param-name>
+        <param-value>Warsaw</param-value>
+    </context-param>
+    <context-param>
+        <param-name>country</param-name>
+        <param-value>Poland</param-value>
+    </context-param>
     <data-source>
         <name>java:ds/evc</name>
         <class-name>com.mysql.cj.jdbc.MysqlDataSource</class-name>
-        <url>jdbc:mysql://127.0.0.1:5555/organization?allowPublicKeyRetrieval=true&amp;useSSL=false&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>    <!--    <url>jdbc:mysql://0.0.0.0:3308/calendar?allowPublicKeyRetrieval=true&amp;useSSL=false&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>-->
-        <user>root</user>
+        <url>jdbc:mysql://mysql:3306/organization?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>
+        <user>user</user>
         <password>secret2</password>
     </data-source>
     <display-name>Archetype Created Web Application</display-name>
