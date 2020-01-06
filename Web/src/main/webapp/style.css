@@ -6,7 +6,18 @@ canvas {
 }
 
 .to-un-assign, .to-assign{
-    height: 0.35vh;
+     cursor: pointer;
+    /*height: 0.35vh;*/
+}
+
+.overflow-auto{
+    height: 200px !important;
+}
+.users{
+    max-height: 30rem;
+    margin-bottom: 0.5rem;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .container {
@@ -17,9 +28,9 @@ canvas {
     border-radius: 1rem;
 }
 
-li {
-    cursor: pointer;
-}
+/*li {*/
+/*    cursor: pointer;*/
+/*}*/
 
 .banner {
     display: block;

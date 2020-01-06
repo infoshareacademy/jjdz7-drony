@@ -27,38 +27,67 @@ function setInput(label, text, value, text2) {
     label.innerText = text + value + text2;
 }
 
-document.querySelector('.to-assign').addEventListener('click', function (e) {
-    var id = e.target.getAttribute('data-userid');
-    if (userIdsToAssign.includes(id)) {
-        $(e.target).removeClass("bg-primary");
-        var index = userIdsToAssign.indexOf(id);
-        if (index !== -1) userIdsToAssign.splice(index, 1);
-        if (userIdsToAssign.length==0){
-            $('#assignUser').prop("disabled", true);
+assingInput.addEventListener("keyup", function (e) {
+    let value = assingInput.value.toLowerCase();
+document.querySelectorAll('.user-to-assign').forEach(x=>x.classList.remove("d-none"));
+if(value===""){
+    return;
+}
+    document.querySelectorAll('.user-to-assign').forEach(x=>{
+        if(!x.getAttribute("data-email").toLowerCase().includes(value)){
+            x.classList.add("d-none");
         }
-    } else {
-        $(e.target).addClass("bg-primary");
-        userIdsToAssign.push(id);
-        $('#assignUser').prop("disabled", false);;
-    }
-}, false);
+    });
+},false);
 
-document.querySelector('.to-un-assign').addEventListener('click', function (e) {
-    var id = e.target.getAttribute('data-userid');
-    if (userIdsToUnAssign.includes(id)) {
-        $(e.target).removeClass("bg-danger");
-        var index = userIdsToUnAssign.indexOf(id);
-        if (index !== -1) userIdsToUnAssign.splice(index, 1);
-        if (userIdsToUnAssign.length==0){
-            $('#deleteUser').prop("disabled", true);
+deleteUserInput.addEventListener("keyup", function (e) {
+    let value = deleteUserInput.value.toLowerCase();
+    document.querySelectorAll('.user-to-no-assign').forEach(x=>x.classList.remove("d-none"));
+    if(value===""){
+        return;
+    }
+    document.querySelectorAll('.user-to-un-assign').forEach(x=>{
+        if(!x.getAttribute("data-email").toLowerCase().includes(value)){
+            x.classList.add("d-none");
         }
-    } else {
-        $(e.target).addClass("bg-danger");
-        userIdsToUnAssign.push(id);
-        $('#deleteUser').prop("disabled", false);
-    }
-}, false)
+    });
+},false);
 
+if (document.querySelector('.to-assign') !== null) {
+    document.querySelector('.to-assign').addEventListener('click', function (e) {
+        var id = e.target.getAttribute('data-userid');
+        if (userIdsToAssign.includes(id)) {
+            $(e.target).removeClass("bg-primary");
+            var index = userIdsToAssign.indexOf(id);
+            if (index !== -1) userIdsToAssign.splice(index, 1);
+            if (userIdsToAssign.length == 0) {
+                $('#assignUser').prop("disabled", true);
+            }
+        } else {
+            $(e.target).addClass("bg-primary");
+            userIdsToAssign.push(id);
+            $('#assignUser').prop("disabled", false);
+            ;
+        }
+    }, false);
+}
+if (document.querySelector('.to-un-assign') !== null) {
+    document.querySelector('.to-un-assign').addEventListener('click', function (e) {
+        var id = e.target.getAttribute('data-userid');
+        if (userIdsToUnAssign.includes(id)) {
+            $(e.target).removeClass("bg-danger");
+            var index = userIdsToUnAssign.indexOf(id);
+            if (index !== -1) userIdsToUnAssign.splice(index, 1);
+            if (userIdsToUnAssign.length == 0) {
+                $('#deleteUser').prop("disabled", true);
+            }
+        } else {
+            $(e.target).addClass("bg-danger");
+            userIdsToUnAssign.push(id);
+            $('#deleteUser').prop("disabled", false);
+        }
+    }, false)
+}
 
 setInput(maxUsersLabel, "Max l. użytkowników: ", maxUsersInput.value, "");
 setInput(durationLabel, "Czas trwania: ", durationInput.value * 15, " min");
@@ -142,34 +171,18 @@ $('#delete-activty').click(function () {
 
 function handleAddButton() {
     $('#assign-errors').addClass('d-none');
-    if (checkAssignInput()) {
-        $.ajax({
-            type: 'PUT',
-            url: '/activity-assign?' + $.param({
-                "id": dataId,
-                "userid": assingInput.value
-            })
-        }).done(function () {
-            window.location.href = "/activity?id=" + dataId;
-        }).fail(function (msg) {
-            $('#assign-errors').removeClass('d-none');
-            $('#assign-error').text("Nie można dodać użytkownika o id: " + assingInput.value);
+    $.ajax({
+        type: 'PUT',
+        url: '/activity-assign?' + $.param({
+            "id": dataId,
+            "userid": userIdsToAssign.join(",")
         })
-
-    }
-}
-
-function checkAssignInput() {
-    if (assingInput.value == "") {
+    }).done(function () {
+        window.location.href = "/activity?id=" + dataId;
+    }).fail(function (msg) {
         $('#assign-errors').removeClass('d-none');
-        $('#assign-error').text("Nie podano id użytkownika do zapisania");
-        return false;
-    } else if (+assingInput.value <= 0) {
-        $('#assign-errors').removeClass('d-none');
-        $('#assign-error').text("Przekazana wartość id użytkownika musi być większa od zera");
-        return false;
-    }
-    return true;
+        $('#assign-error').text("Nie można dodać użytkowników");
+    })
 }
 
 deleteUserButton.addEventListener('click', function () {
@@ -178,33 +191,18 @@ deleteUserButton.addEventListener('click', function () {
 
 function handleDeleteButton() {
     $('#delete-errors').addClass('d-none');
-    if (checkDeleteInput()) {
-        $.ajax({
-            type: 'PUT',
-            url: '/activity-unassign?' + $.param({
-                "id": dataId,
-                "userid": deleteUserInput.value
-            })
-        }).done(function () {
-            window.location.href = "/activity?id=" + dataId;
-        }).fail(function (msg) {
-            $('#delete-errors').removeClass('d-none');
-            $('#delete-error').text("Nie można wypisać użytkownika o id: " + deleteUserInput.value);
+    $.ajax({
+        type: 'PUT',
+        url: '/activity-unassign?' + $.param({
+            "id": dataId,
+            "userid": userIdsToUnAssign.join(",")
         })
-    }
-}
-
-function checkDeleteInput() {
-    if (deleteUserInput.value == "") {
+    }).done(function () {
+        window.location.href = "/activity?id=" + dataId;
+    }).fail(function (msg) {
         $('#delete-errors').removeClass('d-none');
-        $('#delete-error').text("Nie podano id użytkownika do usunięcia");
-        return false;
-    } else if (+deleteUserInput.value <= 0) {
-        $('#delete-errors').removeClass('d-none');
-        $('#delete-error').text("Przekazana wartość id użytkownika musi być większa od zera");
-        return false;
-    }
-    return true;
+        $('#delete-error').text("Nie można wypisać użytkowników");
+    })
 }
 
 // })();
