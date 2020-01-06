@@ -8,7 +8,6 @@
         availableActivitiesMap = new Map(),
         assignedActivitiesMap = new Map();
 
-
     assingInput.addEventListener("keyup", function (e) {
         let value = assingInput.value.toLowerCase();
         document.querySelectorAll('#availableActivities>li').forEach(x => x.classList.remove("d-none"));
@@ -34,7 +33,6 @@
             }
         });
     }, false);
-
 
     if (availableActivities !== null) {
         for (var i = 0; i < availableActivities.children.length; i++) {
