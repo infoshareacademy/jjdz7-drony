@@ -1,4 +1,4 @@
-git package com.korpodrony.services;
+package com.korpodrony.services;
 
 import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
 import com.korpodrony.dto.ActivityDTO;
