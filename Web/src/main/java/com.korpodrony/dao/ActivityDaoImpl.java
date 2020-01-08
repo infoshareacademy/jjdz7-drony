@@ -9,7 +9,6 @@ import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.PlanEntity;
 import com.korpodrony.entity.UserEntity;
 import com.korpodrony.model.ActivitiesType;
-import com.korpodrony.model.Plan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,17 +101,14 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
 
     public boolean deleteActivity(int activityID) {
         if (hasActivityWithThisID(activityID)) {
-            List<PlanEntity> resultList = entityManager.createQuery("select p from Plan p join p.assignedActivities a where a.id=:id", PlanEntity.class)
+            entityManager.createQuery("select p from Plan p join p.assignedActivities a where a.id=:id", PlanEntity.class)
                     .setParameter("id", activityID)
-                    .getResultList();
-            resultList.forEach(x -> planRepositoryDao.unassignActivityFromPlan(activityID, x.getId()));
+                    .getResultList().forEach(x -> planRepositoryDao.unassignActivityFromPlan(activityID, x.getId()));
             entityManager.flush();
-            entityManager.clear();
             entityManager.createQuery("DELETE FROM Activity a WHERE a.id=:id")
                     .setParameter("id", activityID)
                     .executeUpdate();
             entityManager.flush();
-            entityManager.clear();
             logger.info("Activity with id: " + activityID + "has been removed");
             return true;
         } else {
@@ -127,7 +123,7 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
             logger.debug("Activity with id: " + activityID + "doesn't exist");
             return false;
         }
-        if (activityEntity.getAssigned_users().size() > maxUsers) {
+        if (checkIfMaxUsersLimitsReached(maxUsers, activityEntity)) {
             logger.debug("Activity with id: " + activityID + "has more users: " + activityEntity.getAssigned_users().size() + "  than max users: " + maxUsers);
             return false;
         }
@@ -230,7 +226,11 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
         return entityManager.find(UserEntity.class, userId);
     }
 
+    private boolean checkIfMaxUsersLimitsReached(short maxUsers, ActivityEntity activityEntity) {
+        return activityEntity.getAssigned_users() != null && activityEntity.getAssigned_users().size() > maxUsers;
+    }
+
     private boolean checkIfMaxUsersLimitsReached(ActivityEntity activityEntity) {
-        return activityEntity.getAssigned_users().size() == activityEntity.getMaxUsers();
+        return activityEntity.getAssigned_users() != null && activityEntity.getAssigned_users().size() == activityEntity.getMaxUsers();
     }
 }

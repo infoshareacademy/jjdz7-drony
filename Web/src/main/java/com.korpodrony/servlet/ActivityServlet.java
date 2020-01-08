@@ -32,9 +32,6 @@ public class ActivityServlet extends HttpServlet {
     ActivitiesWebService activitiesWebService;
 
     @Inject
-    RepositoryService repositoryService;
-
-    @Inject
     Validator validator;
 
     @Override
@@ -158,8 +155,10 @@ public class ActivityServlet extends HttpServlet {
     private boolean assignUserToActivity(Map<String, String[]> parameterMap) {
         if (checkAssignParameters(parameterMap)) {
             int activityId = Integer.parseInt(parameterMap.get("id")[0]);
-            List<Integer> userId = Arrays.stream(parameterMap.get("userid")[0].split(",")).map(Integer::parseInt).collect(Collectors.toList());
-            userId.forEach(x -> activitiesWebService.assignUserToActivity(x, activityId));
+            Arrays.stream(parameterMap.get("userid")[0]
+                    .split(","))
+                    .map(Integer::parseInt)
+                    .forEach(x -> activitiesWebService.assignUserToActivity(x, activityId));
             return true;
         } else {
             return false;
@@ -189,7 +188,8 @@ public class ActivityServlet extends HttpServlet {
     private boolean validateAssignParameters(Map<String, String[]> parameterMap) {
         String activityId = parameterMap.get("id")[0];
         String activityUserId = parameterMap.get("userid")[0];
-        boolean result = Arrays.stream(activityUserId.split(","))
+        boolean result = Arrays.stream(activityUserId
+                .split(","))
                 .map(x -> validator.validateInteger(x))
                 .allMatch(x -> x);
         return validator.validateInteger(activityId) && result;
@@ -198,10 +198,10 @@ public class ActivityServlet extends HttpServlet {
     private boolean unassignUserToActivity(Map<String, String[]> parameterMap) {
         if (checkUnassignParmeters(parameterMap)) {
             int activityId = Integer.parseInt(parameterMap.get("id")[0]);
-            List<Integer> userId = Arrays.stream(parameterMap.get("userid")[0].split(","))
+            Arrays.stream(parameterMap.get("userid")[0]
+                    .split(","))
                     .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-            userId.forEach(x -> activitiesWebService.unassignUserFromActivity(x, activityId));
+                    .forEach(x -> activitiesWebService.unassignUserFromActivity(x, activityId));
             return true;
         } else {
             return false;

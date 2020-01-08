@@ -7,7 +7,6 @@ canvas {
 
 .to-un-assign, .to-assign{
      cursor: pointer;
-    /*height: 0.35vh;*/
 }
 
 .limited-height{
@@ -24,10 +23,6 @@ canvas {
     box-sizing: border-box;
     border-radius: 1rem;
 }
-
-/*li {*/
-/*    cursor: pointer;*/
-/*}*/
 
 .banner {
     display: block;
