@@ -23,6 +23,7 @@ public class TemplateProvider {
     public static final String PLAN_TEMPLATE = "plan.ftlh";
     public static final String PLANS_TEMPLATE = "plans.ftlh";
     public static final String SEARCH_TEMPLATE = "search.ftlh";
+    public static final String ADMIN_PANEL = "admin-panel.ftlh";
     private final String TEMPLATE_DIRECTORY_PATH = "WEB-INF/fm-templates";
     private Configuration configuration;
 
