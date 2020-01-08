@@ -4,6 +4,7 @@ import com.korpodrony.dto.UserDTO;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity(name = "User")
 @Table(name = "users")
@@ -27,7 +28,7 @@ public class UserEntity {
     }
 
     public UserDTO createUserDTO() {
-        return new UserDTO(id, name, surname, email);
+        return new UserDTO(id, name, surname);
     }
 
     public String getEmail() {

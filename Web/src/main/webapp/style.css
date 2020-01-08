@@ -1,23 +1,11 @@
-canvas {
+canvas{
     position: fixed;
     top: 0;
     background-color: #3c3c3c;
     z-index: -500 !important;
 }
 
-.to-un-assign, .to-assign{
-     cursor: pointer;
-    /*height: 0.35vh;*/
-}
-
-.limited-height{
-    max-height: 30rem;
-    margin-bottom: 0.5rem;
-    overflow:scroll;
-    -webkit-overflow-scrolling: touch;
-}
-
-.container {
+.container{
     z-index: 100;
     position: relative;
     background-color: #fff;
@@ -25,11 +13,7 @@ canvas {
     border-radius: 1rem;
 }
 
-/*li {*/
-/*    cursor: pointer;*/
-/*}*/
-
-.banner {
+.banner{
     display: block;
     height: 7rem;
     color: #FFf;
@@ -41,7 +25,7 @@ canvas {
     font-style: italic;
 }
 
-.btn-group {
+.btn-group{
     display: flex;
 }
 
@@ -50,18 +34,18 @@ canvas {
 }
 
 .errors {
-    border: solid 5px red !important;
+	border: solid 5px red !important;
 }
 
-.type-error {
+.type-error{
     color: crimson;
     font-weight: 800;
 }
 
-.name {
+.name{
     color: black;
 }
 
-.card-img-top {
-    height: 18rem;
+.card-img-top{
+    height: 40vh;
 }

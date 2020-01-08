@@ -176,9 +176,9 @@ public class PlanServlet extends HttpServlet {
     private boolean assignActivityToPlan(Map<String, String[]> parameterMap) {
         if (checkAssignParameters(parameterMap)) {
             int planId = Integer.parseInt(parameterMap.get("id")[0]);
-            List<Integer> activityId = Arrays.stream(parameterMap.get("activityid")[0].split(",")).map(Integer::parseInt).collect(Collectors.toList());
-            activityId.forEach(x -> plansWebService.assignActivityToPlan(x, planId));
-            return true;
+            int activityId = Integer.parseInt(parameterMap.get("activityid")[0]);
+            boolean b = plansWebService.assignActivityToPlan(activityId, planId);
+            return b;
         } else {
             return false;
         }
@@ -205,19 +205,16 @@ public class PlanServlet extends HttpServlet {
     }
 
     private boolean validateAssignParameters(Map<String, String[]> parameterMap) {
-        String planId = parameterMap.get("id")[0];
-        String activityIds = parameterMap.get("activityid")[0];
-        boolean result = Arrays.stream(activityIds.split(","))
-                .allMatch(x -> validator.validateInteger(x));
-        return validator.validateInteger(planId) && result;
+        String activityId = parameterMap.get("id")[0];
+        String activityUserId = parameterMap.get("activityid")[0];
+        return validator.validateInteger(activityId) && validator.validateInteger(activityUserId);
     }
 
     private boolean unassignActivityFromPlan(Map<String, String[]> parameterMap) {
         if (checkUnassignParmeters(parameterMap)) {
             int planId = Integer.parseInt(parameterMap.get("id")[0]);
-            List<Integer> activityId = Arrays.stream(parameterMap.get("activityid")[0].split(",")).map(Integer::parseInt).collect(Collectors.toList());
-            activityId.forEach(x -> plansWebService.unassignActivityFromPlan(x, planId));
-            return true;
+            int activityId = Integer.parseInt(parameterMap.get("activityid")[0]);
+            return plansWebService.unassignActivityFromPlan(activityId, planId);
         } else {
             return false;
         }

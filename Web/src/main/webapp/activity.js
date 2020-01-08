@@ -17,76 +17,12 @@
         basicActitiyTypeValue = $('#activityType').attr('data-activitySelect'),
         maxUsersValue = JSON.parse(JSON.stringify(maxUsersInput.value)),
         durationValue = JSON.parse(JSON.stringify(durationInput.value)),
-        nameValue = JSON.parse(JSON.stringify(nameInput.value)),
-        userIdsToAssign = [],
-        userIdsToUnAssign = [];
+        nameValue = JSON.parse(JSON.stringify(nameInput.value));
 
     $('#activityType').val($('#activityType').attr('data-activitySelect'));
 
     function setInput(label, text, value, text2) {
         label.innerText = text + value + text2;
-    }
-
-    assingInput.addEventListener("keyup", function (e) {
-        let value = assingInput.value.toLowerCase();
-        document.querySelectorAll('.user-to-assign').forEach(x => x.classList.remove("d-none"));
-        if (value === "") {
-            return;
-        }
-        document.querySelectorAll('.user-to-assign').forEach(x => {
-            if (!x.getAttribute("data-email").toLowerCase().includes(value)) {
-                x.classList.add("d-none");
-            }
-        });
-    }, false);
-
-    deleteUserInput.addEventListener("keyup", function (e) {
-        let value = deleteUserInput.value.toLowerCase();
-        document.querySelectorAll('.user-to-un-assign').forEach(x => x.classList.remove("d-none"));
-        if (value === "") {
-            return;
-        }
-        document.querySelectorAll('.user-to-un-assign').forEach(x => {
-            if (!x.getAttribute("data-email").toLowerCase().includes(value)) {
-                x.classList.add("d-none");
-            }
-        });
-    }, false);
-
-    if (document.querySelector('.to-assign') !== null) {
-        document.querySelector('.to-assign').addEventListener('click', function (e) {
-            var id = e.target.getAttribute('data-userid');
-            if (userIdsToAssign.includes(id)) {
-                $(e.target).removeClass("bg-primary");
-                var index = userIdsToAssign.indexOf(id);
-                if (index !== -1) userIdsToAssign.splice(index, 1);
-                if (userIdsToAssign.length == 0) {
-                    $('#assignUser').prop("disabled", true);
-                }
-            } else {
-                $(e.target).addClass("bg-primary");
-                userIdsToAssign.push(id);
-                $('#assignUser').prop("disabled", false);
-                ;
-            }
-        }, false);
-    }
-    if (document.querySelector('.to-un-assign') !== null) {
-        document.querySelector('.to-un-assign').addEventListener('click', function (e) {
-            var id = e.target.getAttribute('data-userid');
-            if (userIdsToUnAssign.includes(id)) {
-                $(e.target).removeClass("bg-danger");
-                var index = userIdsToUnAssign.indexOf(id);
-                if (index !== -1) userIdsToUnAssign.splice(index, 1);
-                if (userIdsToUnAssign.length == 0) {
-                    $('#deleteUser').prop("disabled", true);
-                }
-            } else {
-                $(e.target).addClass("bg-danger");
-                userIdsToUnAssign.push(id);
-                $('#deleteUser').prop("disabled", false);
-            }
-        }, false)
     }
 
     setInput(maxUsersLabel, "Max l. użytkowników: ", maxUsersInput.value, "");
@@ -171,18 +107,34 @@
 
     function handleAddButton() {
         $('#assign-errors').addClass('d-none');
-        $.ajax({
-            type: 'PUT',
-            url: '/activity-assign?' + $.param({
-                "id": dataId,
-                "userid": userIdsToAssign.join(",")
+        if (checkAssignInput()) {
+            $.ajax({
+                type: 'PUT',
+                url: '/activity-assign?' + $.param({
+                    "id": dataId,
+                    "userid": assingInput.value
+                })
+            }).done(function () {
+                window.location.href = "/activity?id=" + dataId;
+            }).fail(function (msg) {
+                $('#assign-errors').removeClass('d-none');
+                $('#assign-error').text("Nie można dodać użytkownika o id: " + assingInput.value);
             })
-        }).done(function () {
-            window.location.href = "/activity?id=" + dataId;
-        }).fail(function (msg) {
+
+        }
+    }
+
+    function checkAssignInput() {
+        if (assingInput.value == "") {
             $('#assign-errors').removeClass('d-none');
-            $('#assign-error').text("Nie można dodać użytkowników");
-        })
+            $('#assign-error').text("Nie podano id użytkownika do zapisania");
+            return false;
+        } else if (+assingInput.value <= 0) {
+            $('#assign-errors').removeClass('d-none');
+            $('#assign-error').text("Przekazana wartość id użytkownika musi być większa od zera");
+            return false;
+        }
+        return true;
     }
 
     deleteUserButton.addEventListener('click', function () {
@@ -191,17 +143,33 @@
 
     function handleDeleteButton() {
         $('#delete-errors').addClass('d-none');
-        $.ajax({
-            type: 'PUT',
-            url: '/activity-unassign?' + $.param({
-                "id": dataId,
-                "userid": userIdsToUnAssign.join(",")
+        if (checkDeleteInput()) {
+            $.ajax({
+                type: 'PUT',
+                url: '/activity-unassign?' + $.param({
+                    "id": dataId,
+                    "userid": deleteUserInput.value
+                })
+            }).done(function () {
+                window.location.href = "/activity?id=" + dataId;
+            }).fail(function (msg) {
+                $('#delete-errors').removeClass('d-none');
+                $('#delete-error').text("Nie można wypisać użytkownika o id: " + deleteUserInput.value);
             })
-        }).done(function () {
-            window.location.href = "/activity?id=" + dataId;
-        }).fail(function (msg) {
-            $('#delete-errors').removeClass('d-none');
-            $('#delete-error').text("Nie można wypisać użytkowników");
-        })
+        }
     }
+
+    function checkDeleteInput() {
+        if (deleteUserInput.value == "") {
+            $('#delete-errors').removeClass('d-none');
+            $('#delete-error').text("Nie podano id użytkownika do usunięcia");
+            return false;
+        } else if (+deleteUserInput.value <= 0) {
+            $('#delete-errors').removeClass('d-none');
+            $('#delete-error').text("Przekazana wartość id użytkownika musi być większa od zera");
+            return false;
+        }
+        return true;
+    }
+
 })();

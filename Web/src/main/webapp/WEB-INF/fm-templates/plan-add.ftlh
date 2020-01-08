@@ -25,16 +25,38 @@
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Zajęcia przypisane do planu</h2>
-            <input type="text" class="form-control" placeholder="Wpisz nazwę zajęć"
-                   aria-label="deleteUser" aria-describedby="basic-addon2" id="unAssignInput">
-            <ul class="list-group limited-height mb-3 to-un-assign" id="assignedActivities">
+            <ul class="list-group w-100 mb-3" id="assignedActivities">
             </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-10 ml-auto mr-auto mt-5">
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" placeholder="Id zajęć do wypisania"
+                       aria-label="deleteUser" aria-describedby="basic-addon2" id="deleteActivityInput">
+                <div class="input-group-append col-3">
+                    <button class="btn w-100" id="deleteActivity">Odpisz zajęcia</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <ul class="list-group w-80 mb-3 border border-danger d-none col-10 mr-auto ml-auto errors" id="delete-errors">
         <li class="list-group-item type-error" id="delete-error"></li>
     </ul>
+
+    <div class="row">
+        <div class="col-10 ml-auto mr-auto">
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" placeholder="Id zajęć do zapisania"
+                       aria-label="assignActivity" aria-describedby="basic-addon2" id="assignActivityInput">
+                <div class="input-group-append col-3">
+                    <button class="btn w-100" id="assignActivity">Dopisz zajęcia</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <ul class="list-group w-80 mb-3 border border-danger mr-auto ml-auto col-10 d-none errors" id="assign-errors">
         <li class="list-group-item type-error" id="assign-error"></li>
@@ -43,13 +65,13 @@
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Zajęcia, które można przypisać do planu</h2>
-            <input type="text" class="form-control" placeholder="Wpisz nazwę zajęć"
-                   aria-label="assignUser" aria-describedby="basic-addon2" id="assignInput">
             <#list activities>
-                <ul class="list-group limited-height mb-3 to-assign" id="availableActivities">
+                <ul class="list-group w-100 mb-3" id="availableActivities">
                     <#items as activity>
-                        <li class="list-group-item" data-activityid="${activity.id}" data-name="${activity.name}">
-                            nazwa: ${activity.name} - ${activity.activitiesType.polishName}</li>
+                        <li class="list-group-item"><a href="/activity?id=${activity.id}"
+                                                       class="stretched-link"
+                                                       data-activityid="${activity.id}">Id: ${activity.id},
+                                nazwa: ${activity.name} - ${activity.activitiesType.polishName}</a></li>
                     </#items>
                 </ul>
             </#list>
