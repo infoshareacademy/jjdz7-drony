@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @WebServlet(urlPatterns = {"/plan", "/plan-unassign", "/plan-assign", "/plan-add"})
 public class PlanServlet extends HttpServlet {
@@ -176,9 +177,11 @@ public class PlanServlet extends HttpServlet {
     private boolean assignActivityToPlan(Map<String, String[]> parameterMap) {
         if (checkAssignParameters(parameterMap)) {
             int planId = Integer.parseInt(parameterMap.get("id")[0]);
-            List<Integer> activityId = Arrays.stream(parameterMap.get("activityid")[0].split(",")).map(Integer::parseInt).collect(Collectors.toList());
-            activityId.forEach(x -> plansWebService.assignActivityToPlan(x, planId));
-            return true;
+            List<Integer> activityId = Arrays.stream(parameterMap.get("activityid")[0]
+                    .split(","))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+           return plansWebService.assignActivitiesToPlan(activityId, planId);
         } else {
             return false;
         }
@@ -215,9 +218,11 @@ public class PlanServlet extends HttpServlet {
     private boolean unassignActivityFromPlan(Map<String, String[]> parameterMap) {
         if (checkUnassignParmeters(parameterMap)) {
             int planId = Integer.parseInt(parameterMap.get("id")[0]);
-            List<Integer> activityId = Arrays.stream(parameterMap.get("activityid")[0].split(",")).map(Integer::parseInt).collect(Collectors.toList());
-            activityId.forEach(x -> plansWebService.unassignActivityFromPlan(x, planId));
-            return true;
+            List<Integer> activitiesIds = Arrays.stream(parameterMap.get("activityid")[0]
+                    .split(","))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+            return plansWebService.unassignActivitiesFromPlan(activitiesIds, planId);
         } else {
             return false;
         }
@@ -301,9 +306,10 @@ public class PlanServlet extends HttpServlet {
     }
 
     private void assignActivitiesToCreatedPlan(int planId, Map<String, String[]> parameterMap) {
-        Arrays.stream(parameterMap.get("assignedactivities")[0]
+        List<Integer> activitiesToAssign = Arrays.stream(parameterMap.get("assignedactivities")[0]
                 .split(","))
                 .map(Integer::valueOf)
-                .forEach(x -> plansWebService.assignActivityToPlan(x, planId));
+                .collect(Collectors.toList());
+        plansWebService.assignActivitiesToPlan(activitiesToAssign, planId);
     }
 }

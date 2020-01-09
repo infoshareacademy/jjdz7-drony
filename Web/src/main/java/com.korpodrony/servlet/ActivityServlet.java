@@ -2,7 +2,6 @@ package com.korpodrony.servlet;
 
 import com.korpodrony.dto.ActivityDTO;
 import com.korpodrony.freemarker.TemplateProvider;
-import com.korpodrony.service.RepositoryService;
 import com.korpodrony.services.ActivitiesWebService;
 import com.korpodrony.validation.Validator;
 import freemarker.template.Template;
@@ -155,10 +154,11 @@ public class ActivityServlet extends HttpServlet {
     private boolean assignUserToActivity(Map<String, String[]> parameterMap) {
         if (checkAssignParameters(parameterMap)) {
             int activityId = Integer.parseInt(parameterMap.get("id")[0]);
-            Arrays.stream(parameterMap.get("userid")[0]
+            List<Integer> userIds = Arrays.stream(parameterMap.get("userid")[0]
                     .split(","))
                     .map(Integer::parseInt)
-                    .forEach(x -> activitiesWebService.assignUserToActivity(x, activityId));
+                    .collect(Collectors.toList());
+            activitiesWebService.assignUsersToActivity(userIds, activityId);
             return true;
         } else {
             return false;
@@ -198,10 +198,11 @@ public class ActivityServlet extends HttpServlet {
     private boolean unassignUserToActivity(Map<String, String[]> parameterMap) {
         if (checkUnassignParmeters(parameterMap)) {
             int activityId = Integer.parseInt(parameterMap.get("id")[0]);
-            Arrays.stream(parameterMap.get("userid")[0]
+            List<Integer> userIds = Arrays.stream(parameterMap.get("userid")[0]
                     .split(","))
                     .map(Integer::parseInt)
-                    .forEach(x -> activitiesWebService.unassignUserFromActivity(x, activityId));
+                    .collect(Collectors.toList());
+            activitiesWebService.unassignUsersFromActivity(userIds, activityId);
             return true;
         } else {
             return false;

@@ -100,8 +100,10 @@ public class UploadService {
         preparePlansActivities(planEntities);
         planEntities.forEach(plan -> {
             plan.setId(planRepositoryDao.createPlan(plan));
-            plan.getAssignedActivities().forEach(
-                    activity -> planRepositoryDao.assignActivityToPlan(activity.getId(), plan.getId())
+            planRepositoryDao.assignActivitiesToPlan(plan.getAssignedActivities()
+                    .stream()
+                    .map(ActivityEntity::getId)
+                    .collect(Collectors.toList()), plan.getId()
             );
         });
     }
