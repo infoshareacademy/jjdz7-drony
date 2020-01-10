@@ -3,7 +3,6 @@ package com.korpodrony.daoInterfaces;
 import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.SimplifiedPlanDTO;
-import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.PlanEntity;
 
 import javax.ejb.Local;
