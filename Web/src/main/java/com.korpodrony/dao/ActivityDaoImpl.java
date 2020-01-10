@@ -62,9 +62,11 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
             if (activityEntity.getAssigned_users() == null) {
                 activityEntity.setAssigned_users(new HashSet<>());
                 logger.debug("new HashSet created");
+            } else if (checkIfMaxUsersLimitsReached(activityEntity)) {
+                logger.debug("Users max limit reached");
+                return false;
             }
-            boolean result = activityEntity.getAssigned_users()
-                    .add(userEntity);
+            boolean result = activityEntity.getAssigned_users().add(userEntity);
             entityManager.merge(activityEntity);
             logger.debug("userEntity assigned to Activity: " + result);
             return result;
@@ -110,6 +112,10 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
         ActivityEntity activityEntity = getActivityEntity(activityID);
         if (activityEntity == null) {
             logger.debug("Activity with id: " + activityID + "doesn't exist");
+            return false;
+        }
+        if (activityEntity.getAssigned_users().size() > maxUsers) {
+            logger.debug("Activity with id: " + activityID + "has more users: " + activityEntity.getAssigned_users().size() + "  than max users: " + maxUsers);
             return false;
         }
         logger.debug("Activity before changes: " + activityEntity);
@@ -182,7 +188,7 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
 
     public List<UserDTO> getAvailableUsersDTO(int activityId) {
         logger.debug("Getting availableUsersDTOs for Activity with id: " + activityId);
-        return entityManager.createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname, u.email)" +
+        return entityManager.createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname)" +
                 " from User u WHERE u NOT IN (select u from Activity a join a.assigned_users u where a.id=:id)", UserDTO.class)
                 .setParameter("id", activityId)
                 .getResultList();
@@ -209,5 +215,9 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
     private UserEntity getUserEntity(int userId) {
         logger.debug("Getting UserEntity for id: " + userId);
         return entityManager.find(UserEntity.class, userId);
+    }
+
+    private boolean checkIfMaxUsersLimitsReached(ActivityEntity activityEntity) {
+        return activityEntity.getAssigned_users().size() == activityEntity.getMaxUsers();
     }
 }
