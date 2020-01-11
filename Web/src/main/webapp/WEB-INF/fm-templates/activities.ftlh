@@ -16,7 +16,7 @@
             <#list activities>
                 <ul class="list-group w-100 ">
                     <#items as activity>
-                        <li class="list-group-item"><a href="/activity?id=${activity.id}" class="stretched-link">Id: ${activity.id},
+                        <li class="list-group-item"><a href="/activity?id=${activity.id}" class="stretched-link">
                                 nazwa: ${activity.name} - ${activity.activitiesType.polishName}</a></li>
                     </#items>
                 </ul>
