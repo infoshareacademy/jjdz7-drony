@@ -20,7 +20,7 @@ public class UserEntity {
     private String email;
 
     @Column
-    @ColumnDefault(value = "'GUEST'")
+    @ColumnDefault(value = "2")
     @Enumerated(EnumType.ORDINAL)
     private PermissionLevel permissionLevel;
 
