@@ -2,12 +2,9 @@ package com.korpodrony.entity;
 
 import com.korpodrony.dto.ActivityDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
-import com.korpodrony.dto.SimplifiedPlanDTO;
 import com.korpodrony.model.ActivitiesType;
-import com.korpodrony.model.Activity;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;

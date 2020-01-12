@@ -72,11 +72,13 @@
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5" id="assigned-users">
             <h2>Użytykownicy przypisani do zajęć</h2>
+            <input type="text" class="form-control" placeholder="Wpisz email użytkownika"
+                   aria-label="deleteUser" aria-describedby="basic-addon2" id="deleteUserInput">
             <#list users>
-                <ul class="list-group w-100 mb-3 ">
+                <ul class="list-group limited-height mb-3 to-un-assign">
                     <#items as user>
-                        <li class="list-group-item">Id: ${user.id},
-                            imię: ${user.name}, nazwisko: ${user.surname}</li>
+                        <li class="list-group-item user-to-un-assign" data-userid="${user.id}" data-email="${user.email}">email: ${user.email} imię: ${user.name}
+                            , nazwisko: ${user.surname}</li>
                     </#items>
                 </ul>
             </#list>
@@ -86,33 +88,18 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-10 ml-auto mr-auto mt-5">
-            <div class="input-group mb-3">
-                <input type="number" class="form-control" placeholder="Id użytkownika do wypisania"
-                       aria-label="deleteUser" aria-describedby="basic-addon2" id="deleteUserInput">
-                <div class="input-group-append col-3">
-                    <button class="btn w-100" id="deleteUser">Wypisz użytkownika</button>
-                </div>
-            </div>
+    <div class="row mt-3">
+        <div class="col-3 mb-3 ml-auto">
+            <button class="btn w-100 bg-danger" id="deleteUser" disabled>Wypisz użytkowników</button>
+        </div>
+        <div class="col-3 mb-3 mr-auto">
+            <button class="btn w-100 bg-primary" id="assignUser" disabled>Zapisz użytkowników</button>
         </div>
     </div>
 
     <ul class="list-group w-80 mb-3 border border-danger d-none col-10 mr-auto ml-auto errors" id="delete-errors">
         <li class="list-group-item type-error" id="delete-error"></li>
     </ul>
-
-    <div class="row">
-        <div class="col-10 ml-auto mr-auto">
-            <div class="input-group mb-3">
-                <input type="number" class="form-control" placeholder="Id użytkownika do zapisania"
-                       aria-label="assignUser" aria-describedby="basic-addon2" id="assignUserInput">
-                <div class="input-group-append col-3">
-                    <button class="btn w-100" id="assignUser">Zapisz użytkownika</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <ul class="list-group w-80 mb-3 border border-danger mr-auto ml-auto col-10 d-none errors" id="assign-errors">
         <li class="list-group-item type-error" id="assign-error"></li>
@@ -121,17 +108,21 @@
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Użytkownicy, których można zapisać do zajęć</h2>
-            <#list availableUsers>
-                <ul class="list-group w-100 mb-3 ">
-                    <#items as user>
-                        <li class="list-group-item">Id: ${user.id},
-                            imię: ${user.name}, nazwisko: ${user.surname}</li>
-                    </#items>
-                </ul>
-            </#list>
-            <#if availableUsers?size ==0>
-                <p>Nie ma obecnie żadnych użytkowników, których można zapisać do zajęć</p>
-            </#if>
+            <input type="text" class="form-control" placeholder="Wpisz email użytkownika"
+                   aria-label="assignUser" aria-describedby="basic-addon2" id="assignUserInput">
+            <div class="panel-body">
+                <#list availableUsers>
+                    <ul class="list-group limited-height mb-3 to-assign">
+                        <#items as user>
+                            <li class="list-group-item user-to-assign" data-userid="${user.id}" data-email="${user.email}">email: ${user.email} imię: ${user.name}
+                                , nazwisko: ${user.surname}</li>
+                        </#items>
+                    </ul>
+                </#list>
+                <#if availableUsers?size ==0>
+                    <p>Nie ma obecnie żadnych użytkowników, których można zapisać do zajęć</p>
+                </#if>
+            </div>
         </div>
     </div>
 </@basic.includeContent>

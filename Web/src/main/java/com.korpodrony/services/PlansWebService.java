@@ -44,14 +44,14 @@ public class PlansWebService {
         return planRepositoryDao.getAvailableSimplifiedActivitiesDTO(planId);
     }
 
-    public boolean assignActivityToPlan(int activityId, int planId) {
+    public boolean assignActivitiesToPlan(List<Integer> activitiesIds, int planId) {
         logger.debug("assignActivityToPlan called");
-        return planRepositoryDao.assignActivityToPlan(activityId, planId);
+        return planRepositoryDao.assignActivitiesToPlan(activitiesIds, planId);
     }
 
-    public boolean unassignActivityFromPlan(int activityId, int planId) {
+    public boolean unassignActivitiesFromPlan(List<Integer> activitiesIds, int planId) {
         logger.debug("unassignActivityFromPlan called");
-        return planRepositoryDao.unassignActivityFromPlan(activityId, planId);
+        return planRepositoryDao.unassignActivityFromPlan(activitiesIds, planId);
     }
 
     public boolean editPlan(int planId, String name) {

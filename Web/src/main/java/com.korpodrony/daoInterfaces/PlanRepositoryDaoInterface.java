@@ -15,9 +15,11 @@ public interface PlanRepositoryDaoInterface {
 
     int createPlan(PlanEntity planEntity);
 
-    boolean assignActivityToPlan(int activityID, int planID);
+    boolean assignActivitiesToPlan(List<Integer> activityIDs, int planID);
 
     boolean unassignActivityFromPlan(int activityID, int planID);
+
+    boolean unassignActivityFromPlan(List<Integer> activityIDs, int planID);
 
     boolean deletePlan(int planID);
 

@@ -50,7 +50,7 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
         try {
             logger.debug("Getting userDTO for id: " + userID);
             return entityManager
-                    .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname) FROM User u WHERE " +
+                    .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname, u.email) FROM User u WHERE " +
                                     "u.id=:id"
                             , UserDTO.class)
                     .setParameter("id", userID)
@@ -95,7 +95,7 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
     public List<UserDTO> getAllUsers() {
         logger.debug("Getting list of UserDTOs");
         return entityManager
-                .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname) FROM User u"
+                .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname, u.email) FROM User u"
                         , UserDTO.class)
                 .getResultList();
     }
@@ -120,7 +120,7 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
         try {
             logger.debug("Getting userDTOS by name: " + name);
             return entityManager
-                    .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname) FROM User u " +
+                    .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname, u.email) FROM User u " +
                                     "WHERE " +
                                     "lower(u.name) LIKE :name Or lower(u.surname) LIKE :name"
                             , UserDTO.class)
@@ -138,7 +138,7 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
             logger.debug("Getting userDTOS by name: " + name + "and surname: " + surname);
 
             return entityManager
-                    .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname) FROM User u " +
+                    .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname, u.email) FROM User u " +
                                     "WHERE " +
                                     "lower(u.name) LIKE :name AND lower(u.surname) LIKE :surname"
                             , UserDTO.class)

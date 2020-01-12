@@ -2,7 +2,6 @@ package com.korpodrony.servlet;
 
 import com.korpodrony.dto.ActivityDTO;
 import com.korpodrony.freemarker.TemplateProvider;
-import com.korpodrony.service.RepositoryService;
 import com.korpodrony.services.ActivitiesWebService;
 import com.korpodrony.validation.Validator;
 import freemarker.template.Template;
@@ -16,8 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/activity", "/activity-unassign", "/activity-assign", "/activity-add"})
 public class ActivityServlet extends HttpServlet {
@@ -27,9 +29,6 @@ public class ActivityServlet extends HttpServlet {
 
     @Inject
     ActivitiesWebService activitiesWebService;
-
-    @Inject
-    RepositoryService repositoryService;
 
     @Inject
     Validator validator;
@@ -70,24 +69,15 @@ public class ActivityServlet extends HttpServlet {
         String url = req.getServletPath();
         switch (url) {
             case "/activity-assign": {
-                if (setRespStatusOnValidationFailure(resp, assignUserToActivity(req.getParameterMap()))) {
-                    break;
-                }
-                saveStatus(resp);
+                setRespStatusOnValidationFailure(resp, assignUserToActivity(req.getParameterMap()));
                 break;
             }
             case "/activity-unassign": {
-                if (setRespStatusOnValidationFailure(resp, unassignUserToActivity(req.getParameterMap()))) {
-                    break;
-                }
-                saveStatus(resp);
+                setRespStatusOnValidationFailure(resp, unassignUserToActivity(req.getParameterMap()));
                 break;
             }
             case "/activity": {
-                if (setRespStatusOnValidationFailure(resp, editActivity(req.getParameterMap()))) {
-                    break;
-                }
-                saveStatus(resp);
+                setRespStatusOnValidationFailure(resp, editActivity(req.getParameterMap()));
                 break;
             }
             default: {
@@ -111,7 +101,6 @@ public class ActivityServlet extends HttpServlet {
             return;
         }
         if (activitiesWebService.deleteActivity(id)) {
-            saveStatus(resp);
             return;
         }
     }
@@ -122,7 +111,6 @@ public class ActivityServlet extends HttpServlet {
             if (setRespStatusOnValidationFailure(resp, createActivity(req.getParameterMap()))) {
                 return;
             }
-            saveStatus(resp);
         } else {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
@@ -142,11 +130,6 @@ public class ActivityServlet extends HttpServlet {
             return true;
         }
         return false;
-    }
-
-    private void saveStatus(HttpServletResponse resp) {
-        repositoryService.writeRepositoryToFile();
-        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
     private Map<String, Object> getActivityModel(int id) {
@@ -171,8 +154,12 @@ public class ActivityServlet extends HttpServlet {
     private boolean assignUserToActivity(Map<String, String[]> parameterMap) {
         if (checkAssignParameters(parameterMap)) {
             int activityId = Integer.parseInt(parameterMap.get("id")[0]);
-            int userId = Integer.parseInt(parameterMap.get("userid")[0]);
-            return activitiesWebService.assignUserToActivity(userId, activityId);
+            List<Integer> userIds = Arrays.stream(parameterMap.get("userid")[0]
+                    .split(","))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+            activitiesWebService.assignUsersToActivity(userIds, activityId);
+            return true;
         } else {
             return false;
         }
@@ -201,14 +188,22 @@ public class ActivityServlet extends HttpServlet {
     private boolean validateAssignParameters(Map<String, String[]> parameterMap) {
         String activityId = parameterMap.get("id")[0];
         String activityUserId = parameterMap.get("userid")[0];
-        return validator.validateInteger(activityId) && validator.validateInteger(activityUserId);
+        boolean result = Arrays.stream(activityUserId
+                .split(","))
+                .map(x -> validator.validateInteger(x))
+                .allMatch(x -> x);
+        return validator.validateInteger(activityId) && result;
     }
 
     private boolean unassignUserToActivity(Map<String, String[]> parameterMap) {
         if (checkUnassignParmeters(parameterMap)) {
             int activityId = Integer.parseInt(parameterMap.get("id")[0]);
-            int userId = Integer.parseInt(parameterMap.get("userid")[0]);
-            return activitiesWebService.unassignUserFromActivity(userId, activityId);
+            List<Integer> userIds = Arrays.stream(parameterMap.get("userid")[0]
+                    .split(","))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+            activitiesWebService.unassignUsersFromActivity(userIds, activityId);
+            return true;
         } else {
             return false;
         }

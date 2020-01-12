@@ -6,7 +6,7 @@
             <#list plans>
                 <ul class="list-group w-100 ">
                     <#items as plan>
-                        <li class="list-group-item"><a href="/plan?id=${plan.id}" class="stretched-link">Id: ${plan.id},
+                        <li class="list-group-item"><a href="/plan?id=${plan.id}" class="stretched-link">
                                 nazwa: ${plan.name}</a></li>
                     </#items>
                 </ul>

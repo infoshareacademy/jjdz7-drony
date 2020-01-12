@@ -6,7 +6,7 @@
             <#list users>
                 <ul class="list-group w-100 ">
                     <#items as user>
-                        <li class="list-group-item" href="/user?id=${user.id}" class="stretched-link">Id: ${user.id},
+                        <li class="list-group-item" href="/user?id=${user.id}" class="stretched-link">email: ${user.email},
                             imię: ${user.name}, nazwisko: ${user.surname}</li>
                     </#items>
                 </ul>

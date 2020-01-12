@@ -1,7 +1,6 @@
 package com.korpodrony.daoInterfaces;
 
 import com.korpodrony.dto.UserDTO;
-import com.korpodrony.entity.UserEntity;
 
 import javax.ejb.Local;
 import java.util.List;
