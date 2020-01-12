@@ -25,19 +25,19 @@ function removePressedStatus() {
 }
 
 btnSearchUsers.addEventListener('click', function () {
-    setURL("/search-users");
+    setURL("/admin/search-users");
     btnSearchUsers.classList.remove('btn-secondary');
     btnSearchUsers.classList.add('btn-success');
 }, false);
 
 btnSearchActivities.addEventListener('click', function () {
-    setURL("/search-activities");
+    setURL("/admin/search-activities");
     btnSearchActivities.classList.remove('btn-secondary');
     btnSearchActivities.classList.add('btn-success');
 }, false);
 
 btnSearchPlans.addEventListener('click', function () {
-    setURL("/search-plans");
+    setURL("/admin/search-plans");
     btnSearchPlans.classList.remove('btn-secondary');
     btnSearchPlans.classList.add('btn-success');
 }, false);
@@ -63,11 +63,11 @@ function handleInput() {
 }
 
 function prepareList(resp) {
-    if (URL == "/search-users") {
+    if (URL == "admin/search-users") {
         return prepareUsersList(resp);
-    } else if (URL == "/search-activities") {
+    } else if (URL == "admin/search-activities") {
         return prepareActivitiesList(resp);
-    } else if (URL == "/search-plans") {
+    } else if (URL == "admin/search-plans") {
         return preparePlansList(resp);
     }
 }

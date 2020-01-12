@@ -131,7 +131,7 @@
             nameInput.value = trimedValue;
             $.ajax({
                 type: 'PUT',
-                url: '/activity?' + $.param({
+                url: '/admin/activity?' + $.param({
                     "id": dataId,
                     "name": trimedValue,
                     "maxusers": maxUsersInput.value,
@@ -139,7 +139,7 @@
                     "activitytype": activityType.value
                 })
             }).done(function () {
-                window.location.href = "/activity?id=" + dataId;
+                window.location.href = "/admin/activity?id=" + dataId;
             }).fail(function (msg) {
                 $('#errors').removeClass("d-none");
                 $('#type-error').text("Nie można zmienic danych zajęć o id: " + dataId);
@@ -158,11 +158,11 @@
     $('#delete-activty').click(function () {
         $.ajax({
             type: 'DELETE',
-            url: '/activity?' + $.param({
+            url: '/admin/activity?' + $.param({
                 "id": dataId,
             })
         }).done(function () {
-            window.location.href = "/activities";
+            window.location.href = "/admin/activities";
         }).fail(function (msg) {
             $('#errors').removeClass("d-none");
             $('#type-error').text("Nie można usunąć zajęć o id: " + dataId);
@@ -173,12 +173,12 @@
         $('#assign-errors').addClass('d-none');
         $.ajax({
             type: 'PUT',
-            url: '/activity-assign?' + $.param({
+            url: '/admin/activity-assign?' + $.param({
                 "id": dataId,
                 "userid": userIdsToAssign.join(",")
             })
         }).done(function () {
-            window.location.href = "/activity?id=" + dataId;
+            window.location.href = "/admin/activity?id=" + dataId;
         }).fail(function (msg) {
             $('#assign-errors').removeClass('d-none');
             $('#assign-error').text("Nie można dodać użytkowników");
@@ -193,12 +193,12 @@
         $('#delete-errors').addClass('d-none');
         $.ajax({
             type: 'PUT',
-            url: '/activity-unassign?' + $.param({
+            url: '/admin/activity-unassign?' + $.param({
                 "id": dataId,
                 "userid": userIdsToUnAssign.join(",")
             })
         }).done(function () {
-            window.location.href = "/activity?id=" + dataId;
+            window.location.href = "/admin/activity?id=" + dataId;
         }).fail(function (msg) {
             $('#delete-errors').removeClass('d-none');
             $('#delete-error').text("Nie można wypisać użytkowników");

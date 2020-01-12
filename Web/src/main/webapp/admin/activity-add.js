@@ -40,14 +40,14 @@
             nameInput.value = trimedValue;
             $.ajax({
                 type: 'POST',
-                url: '/activity?' + $.param({
+                url: '/admin/activity?' + $.param({
                     "name": trimedValue,
                     "maxusers": maxUsersInput.value,
                     "duration": durationInput.value,
                     "activitytype": activityType.value
                 })
             }).done(function () {
-                window.location.href = "/activities";
+                window.location.href = "/admin/activities";
             }).fail(function (msg) {
                 $('#errors').removeClass("d-none");
                 $('#type-error').text("Nie można doadać tych zajęć");

@@ -94,12 +94,12 @@
             nameInput.value = trimedValue;
             $.ajax({
                 type: 'POST',
-                url: '/plan?' + $.param({
+                url: '/admin/plan?' + $.param({
                     "name": trimedValue,
                     "assignedactivities": Array.from(assignedActivitiesMap.keys()).join(',')
                 })
             }).done(function () {
-                window.location.href = "/plans";
+                window.location.href = "/admin/plans";
             }).fail(function (msg) {
                 $('#errors').removeClass("d-none");
                 $('#type-error').text("Nie można doadać tego planu");

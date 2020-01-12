@@ -103,12 +103,12 @@
             nameInput.value = trimedValue;
             $.ajax({
                 type: 'PUT',
-                url: '/plan?' + $.param({
+                url: '/admin/plan?' + $.param({
                     "id": dataId,
                     "name": trimedValue
                 })
             }).done(function () {
-                window.location.href = "/plan?id=" + dataId;
+                window.location.href = "/admin/plan?id=" + dataId;
             }).fail(function (msg) {
                 $('#errors').removeClass("d-none");
                 $('#type-error').text("Nie można zmienic danych planu o id: " + dataId);
@@ -127,11 +127,11 @@
     $('#delete-plan').click(function () {
         $.ajax({
             type: 'DELETE',
-            url: '/plan?' + $.param({
+            url: '/admin/plan?' + $.param({
                 "id": dataId,
             })
         }).done(function () {
-            window.location.href = "/plans";
+            window.location.href = "/admin/plans";
         }).fail(function (msg) {
             $('#errors').removeClass("d-none");
             $('#type-error').text("Nie można usunąć planu o id: " + dataId);
@@ -142,12 +142,12 @@
         $('#assign-errors').addClass('d-none');
         $.ajax({
             type: 'PUT',
-            url: '/plan-assign?' + $.param({
+            url: '/admin/plan-assign?' + $.param({
                 "id": dataId,
                 "activityid": idsToAssign.join(",")
             })
         }).done(function () {
-            window.location.href = "/plan?id=" + dataId;
+            window.location.href = "/admin/plan?id=" + dataId;
         }).fail(function (msg) {
             $('#assign-errors').removeClass('d-none');
             $('#assign-error').text("Nie można dodać zajęć");
@@ -162,12 +162,12 @@
         $('#delete-errors').addClass('d-none');
         $.ajax({
             type: 'PUT',
-            url: '/plan-unassign?' + $.param({
+            url: '/admin/plan-unassign?' + $.param({
                 "id": dataId,
                 "activityid": idsToUnAssign.join(",")
             })
         }).done(function () {
-            window.location.href = "/plan?id=" + dataId;
+            window.location.href = "/admin/plan?id=" + dataId;
         }).fail(function (msg) {
             $('#delete-errors').removeClass('d-none');
             $('#delete-error').text("Nie można wypisać zajęć");
