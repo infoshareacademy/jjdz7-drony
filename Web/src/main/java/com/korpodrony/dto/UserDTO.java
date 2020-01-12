@@ -10,11 +10,10 @@ public class UserDTO {
     private String surname;
     private String email;
 
-    public UserDTO(int id, String name, String surname, String email) {
+    public UserDTO(int id, String name, String surname) {
         this.id = id;
         this.name = name;
         this.surname = surname;
-        this.email = email;
     }
 
     public String getEmail() {

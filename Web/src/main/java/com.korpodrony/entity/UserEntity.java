@@ -34,7 +34,7 @@ public class UserEntity {
     }
 
     public UserDTO createUserDTO() {
-        return new UserDTO(id, name, surname, email);
+        return new UserDTO(id, name, surname);
     }
 
     public String getEmail() {
@@ -81,11 +81,9 @@ public class UserEntity {
     @Override
     public String toString() {
         return "UserEntity{" +
-                "id=" + id +
+                "user_id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", permissionLevel=" + permissionLevel +
                 '}';
     }
 
@@ -94,13 +92,12 @@ public class UserEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return name.equals(that.name) &&
-                surname.equals(that.surname) &&
-                permissionLevel == that.permissionLevel;
+        return id == that.id &&
+                email.equals(that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, email, permissionLevel);
+        return Objects.hash(name, surname);
     }
 }
