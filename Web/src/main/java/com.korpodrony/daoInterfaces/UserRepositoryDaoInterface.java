@@ -1,6 +1,8 @@
 package com.korpodrony.daoInterfaces;
 
+import com.korpodrony.dto.AuthUserDTO;
 import com.korpodrony.dto.UserDTO;
+import com.korpodrony.entity.PermissionLevel;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -10,13 +12,11 @@ public interface UserRepositoryDaoInterface {
 
     int createUser(String name, String surname, String email);
 
-    boolean deleteUser(int userID);
-
-    UserDTO getUserDTO(int userID);
+    int createUser(String name, String surname, String email, PermissionLevel permissionLevel);
 
     UserDTO getUserDTO(String email);
 
-    boolean editUser(int userID, String name, String surname);
+    AuthUserDTO getAuthUserDTO(String email);
 
     List<UserDTO> getAllUsers();
 

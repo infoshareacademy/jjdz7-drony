@@ -1,6 +1,7 @@
 package com.korpodrony.services;
 
 import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
+import com.korpodrony.dto.AuthUserDTO;
 import com.korpodrony.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ public class UsersWebService {
         return userRepositoryDao.createUser(name, surname, email);
     }
 
-    public UserDTO findUserDTOByEmail(String email) {
-        return userRepositoryDao.getUserDTO(email);
+    public AuthUserDTO findAuthUserDTOByEmail(String email) {
+        return userRepositoryDao.getAuthUserDTO(email);
     }
 }

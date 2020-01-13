@@ -12,7 +12,7 @@ import com.google.api.services.oauth2.model.Userinfoplus;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.korpodrony.dto.UserDTO;
+import com.korpodrony.dto.AuthUserDTO;
 import com.korpodrony.services.UsersWebService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,20 +30,17 @@ public class GoogleLoginCallbackServlet extends AbstractAuthorizationCodeCallbac
 
     private static final Logger logger = LoggerFactory.getLogger("com.korpodrony.oauth");
     private static final String APP_NAME = "Korpodrony";
-    private static final String EMAIL_ATTR = "email";
-    private static final String NAME_ATTR = "name";
-    private static final String SURNAME_ATTR = "surname";
-    private static final String USER_ID_ATTR = "userId";
-    private static final String USER_TYPE_ATTR = "userType";
-    private static final String USER_TYPE_GUEST = "guest";
-    private static final String REDIRECT = "/index";
+    protected static final String USER_ID_ATTR = "userId";
+    protected static final String USER_TYPE_ATTR = "userType";
+    private static final String USER_TYPE_GUEST = "GUEST";
+    protected static final String REDIRECT = "/index";
     @Inject
     private UsersWebService usersWebService;
 
     @Override
     protected void onSuccess(HttpServletRequest req, HttpServletResponse resp, Credential credential)
             throws IOException {
-        UserDTO verifiedUser = getUserDTO(credential);
+        AuthUserDTO verifiedUser = getAuthUserDTO(credential);
         setSessionAttributes(req, verifiedUser);
         setSessionAtrrUserType(req);
         resp.sendRedirect(REDIRECT);
@@ -72,7 +69,7 @@ public class GoogleLoginCallbackServlet extends AbstractAuthorizationCodeCallbac
         return randomUserId;
     }
 
-    private UserDTO getUserDTO(Credential credential) throws IOException {
+    private AuthUserDTO getAuthUserDTO(Credential credential) throws IOException {
         GoogleCredentials googleCredentials = getCredentials(credential);
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(googleCredentials);
         Oauth2 oauth2 = getOauth2(requestInitializer);
@@ -94,22 +91,20 @@ public class GoogleLoginCallbackServlet extends AbstractAuthorizationCodeCallbac
                 requestInitializer).setApplicationName(APP_NAME).build();
     }
 
-    private UserDTO getVerifiedUser(Userinfoplus userinfoplus) {
+    private AuthUserDTO getVerifiedUser(Userinfoplus userinfoplus) {
         String email = userinfoplus.getEmail();
-        String name = userinfoplus.getGivenName();
-        String sureName = userinfoplus.getFamilyName();
         if (usersWebService.findUserIdByEmail(email) == 0) {
+            String name = userinfoplus.getGivenName();
+            String sureName = userinfoplus.getFamilyName();
             usersWebService.createUser(name, sureName, email);
         }
         logger.info("Authentication success of user: " + email);
-        return usersWebService.findUserDTOByEmail(email);
+        return usersWebService.findAuthUserDTOByEmail(email);
     }
 
-    private void setSessionAttributes(HttpServletRequest req, UserDTO verifiedUser) {
-        req.getSession().setAttribute(EMAIL_ATTR, verifiedUser.getEmail());
-        req.getSession().setAttribute(NAME_ATTR, verifiedUser.getName());
-        req.getSession().setAttribute(SURNAME_ATTR, verifiedUser.getName());
+    private void setSessionAttributes(HttpServletRequest req, AuthUserDTO verifiedUser) {
         req.getSession().setAttribute(USER_ID_ATTR, verifiedUser.getId());
+        req.getSession().setAttribute(USER_TYPE_ATTR, verifiedUser.getPermissionLevel().toString());
     }
 
     private void setSessionAtrrUserType(HttpServletRequest req) {
