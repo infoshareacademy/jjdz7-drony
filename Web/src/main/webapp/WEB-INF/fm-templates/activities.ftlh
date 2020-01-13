@@ -16,7 +16,7 @@
             <#list activities>
                 <ul class="list-group w-100 ">
                     <#items as activity>
-                        <li class="list-group-item"><a href="/activity?id=${activity.id}" class="stretched-link">
+                        <li class="list-group-item"><a href="/admin/activity?id=${activity.id}" class="stretched-link">
                                 nazwa: ${activity.name} - ${activity.activitiesType.polishName}</a></li>
                     </#items>
                 </ul>
@@ -28,7 +28,7 @@
     </div>
     <div class="row mt-3">
         <div class="col-3 ml-auto mr-auto mb-3">
-            <a class="btn btn-success text-white w-100" href="/activity-add">Dodaj</a>
+            <a class="btn btn-success text-white w-100" href="/admin/activity-add">Dodaj</a>
         </div>
     </div>
 </@baisc.includeContent>

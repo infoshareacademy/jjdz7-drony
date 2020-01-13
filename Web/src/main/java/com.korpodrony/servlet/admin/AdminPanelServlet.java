@@ -1,4 +1,4 @@
-package com.korpodrony.servlet;
+package com.korpodrony.servlet.admin;
 
 import com.korpodrony.freemarker.TemplateProvider;
 import com.korpodrony.services.UsersWebService;
@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/admin-panel")
+@WebServlet("admin/admin-panel")
 public class AdminPanelServlet extends HttpServlet {
 
     @Inject

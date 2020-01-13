@@ -1,4 +1,4 @@
-package com.korpodrony.servlet;
+package com.korpodrony.servlet.admin;
 
 import com.korpodrony.freemarker.TemplateProvider;
 import com.korpodrony.services.UploadService;
@@ -21,7 +21,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/upload-file")
+@WebServlet("admin/upload-file")
 @MultipartConfig
 public class UploadFileServlet extends HttpServlet {
 

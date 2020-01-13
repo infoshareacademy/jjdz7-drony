@@ -4,7 +4,7 @@ var btnSearchUsers = document.querySelector('#btnSearchUser'),
     btnSearchPlans = document.querySelector('#btnSearchPlans'),
     searchInput = document.querySelector('#searchInput'),
     results = document.querySelector('#results'),
-    URL = "/search-activity",
+    URL = "/admin/search-activity",
     response;
 
 function setURL(txt) {
@@ -63,11 +63,11 @@ function handleInput() {
 }
 
 function prepareList(resp) {
-    if (URL == "admin/search-users") {
+    if (URL == "/admin/search-users") {
         return prepareUsersList(resp);
-    } else if (URL == "admin/search-activities") {
+    } else if (URL == "/admin/search-activities") {
         return prepareActivitiesList(resp);
-    } else if (URL == "admin/search-plans") {
+    } else if (URL == "/admin/search-plans") {
         return preparePlansList(resp);
     }
 }

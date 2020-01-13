@@ -1,4 +1,4 @@
-package com.korpodrony.servlet;
+package com.korpodrony.servlet.admin;
 
 import com.korpodrony.freemarker.TemplateProvider;
 import com.korpodrony.services.PlansWebService;
@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/plans")
+@WebServlet("admin/plans")
 public class PlansServlet extends HttpServlet {
 
     @Inject

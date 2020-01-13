@@ -6,7 +6,7 @@
             <#list plans>
                 <ul class="list-group w-100 ">
                     <#items as plan>
-                        <li class="list-group-item"><a href="/plan?id=${plan.id}" class="stretched-link">
+                        <li class="list-group-item"><a href="/admin/plan?id=${plan.id}" class="stretched-link">
                                 nazwa: ${plan.name}</a></li>
                     </#items>
                 </ul>
@@ -18,7 +18,7 @@
     </div>
     <div class="row mt-3">
         <div class="col-3 ml-auto mr-auto mb-3">
-            <a class="btn btn-success text-white w-100" href="/plan-add">Dodaj</a>
+            <a class="btn btn-success text-white w-100" href="/admin/plan-add">Dodaj</a>
         </div>
     </div>
 </@baisc.includeContent>

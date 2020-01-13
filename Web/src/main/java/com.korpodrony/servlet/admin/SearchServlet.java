@@ -1,4 +1,4 @@
-package com.korpodrony.servlet;
+package com.korpodrony.servlet.admin;
 
 import com.korpodrony.freemarker.TemplateProvider;
 import com.korpodrony.services.SearchWebService;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(urlPatterns = {"/search", "/search-users", "/search-activities", "/search-plans"})
+@WebServlet(urlPatterns = {"admin/search", "admin/search-users", "admin/search-activities", "admin/search-plans"})
 public class SearchServlet extends HttpServlet {
 
     @Inject
@@ -29,7 +29,7 @@ public class SearchServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         String url = req.getServletPath();
         switch (url) {
-            case "/search": {
+            case "/admin/search": {
                 Template template = templateProvider.getTemplate(getServletContext(), TemplateProvider.SEARCH_TEMPLATE);
                 try {
                     template.process(null, writer);
@@ -37,19 +37,19 @@ public class SearchServlet extends HttpServlet {
                 } catch (TemplateException e) {
                 }
             }
-            case "/search-users": {
+            case "/admin/search-users": {
                 String name = getSearchText(req, resp);
                 writer.print(searchWebService.getUsersByName(name));
                 writer.flush();
                 break;
             }
-            case "/search-activities": {
+            case "/admin/search-activities": {
                 String name = getSearchText(req, resp);
                 writer.print(searchWebService.getActivitiesByName(name));
                 writer.flush();
                 break;
             }
-            case "/search-plans": {
+            case "/admin/search-plans": {
                 String name = getSearchText(req, resp);
                 writer.print(searchWebService.getPlansByName(name));
                 writer.flush();

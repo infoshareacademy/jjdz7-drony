@@ -1,4 +1,4 @@
-package com.korpodrony.servlet;
+package com.korpodrony.servlet.admin;
 
 import com.korpodrony.dto.ActivityDTO;
 import com.korpodrony.freemarker.TemplateProvider;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = {"/activity", "/activity-unassign", "/activity-assign", "/activity-add"})
+@WebServlet(urlPatterns = {"admin/activity", "admin/activity-unassign", "admin/activity-assign", "admin/activity-add"})
 public class ActivityServlet extends HttpServlet {
 
     @Inject
@@ -39,7 +39,7 @@ public class ActivityServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         String url = req.getServletPath();
         switch (url) {
-            case "/activity": {
+            case "/admin/activity": {
                 String requestedId = req.getParameter("id");
                 if (setRespStatusOnValidationFailure(resp, validator.validateInteger(requestedId))) {
                     break;
@@ -52,7 +52,7 @@ public class ActivityServlet extends HttpServlet {
                 proccesTemplate(writer, model, templateProvider.ACTIVITY_TEMPLATE);
                 break;
             }
-            case "/activity-add": {
+            case "/admin/activity-add": {
                 proccesTemplate(writer, null, templateProvider.ADD_ACTIVITY_TEMPLATE);
                 break;
             }
@@ -68,15 +68,15 @@ public class ActivityServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         String url = req.getServletPath();
         switch (url) {
-            case "/activity-assign": {
+            case "/admin/activity-assign": {
                 setRespStatusOnValidationFailure(resp, assignUserToActivity(req.getParameterMap()));
                 break;
             }
-            case "/activity-unassign": {
+            case "/admin/activity-unassign": {
                 setRespStatusOnValidationFailure(resp, unassignUserToActivity(req.getParameterMap()));
                 break;
             }
-            case "/activity": {
+            case "/admin/activity": {
                 setRespStatusOnValidationFailure(resp, editActivity(req.getParameterMap()));
                 break;
             }
@@ -88,7 +88,7 @@ public class ActivityServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!req.getServletPath().equals("/activity")) {
+        if (!req.getServletPath().equals("/admin/activity")) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -107,7 +107,7 @@ public class ActivityServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getServletPath().equals("/activity")) {
+        if (req.getServletPath().equals("/admin/activity")) {
             if (setRespStatusOnValidationFailure(resp, createActivity(req.getParameterMap()))) {
                 return;
             }

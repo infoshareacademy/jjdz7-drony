@@ -1,12 +1,10 @@
-package com.korpodrony.servlet;
+package com.korpodrony.servlet.admin;
 
-import com.korpodrony.dao.OrganizationRepositoryDao;
 import com.korpodrony.freemarker.TemplateProvider;
 import com.korpodrony.services.UsersWebService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +16,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/users")
+@WebServlet("admin/users")
 public class UsersServlet extends HttpServlet {
 
     @Inject

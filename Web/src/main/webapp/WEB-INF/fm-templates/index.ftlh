@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-4 col-sm-8 m-5">
             <div class="card">
-                <img src="pobrane.jpg" class="card-img-top" alt="Patryk img">
+                <img src="../pobrane.jpg" class="card-img-top" alt="Patryk img">
                 <div class="card-body">
                     <p class="card-text text-center font-weight-bold">PATRYK</p>
                 </div>
@@ -11,7 +11,7 @@
         </div>
         <div class="col-lg-4 col-sm-8 m-5">
             <div class="card">
-                <img src="misterion.png" class="card-img-top" alt="Konrad img">
+                <img src="../misterion.png" class="card-img-top" alt="Konrad img">
                 <div class="card-body">
                     <p class="card-text text-center font-weight-bold">KONRAD</p>
                 </div>
@@ -22,7 +22,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-4 col-sm-8 m-5">
             <div class="card">
-                <img src="zuza.png" class="card-img-top" alt="Zuza img">
+                <img src="../zuza.png" class="card-img-top" alt="Zuza img">
                 <div class="card-body">
                     <p class="card-text text-center font-weight-bold">ZUZA</p>
                 </div>
@@ -30,7 +30,7 @@
         </div>
         <div class="col-lg-4 col-sm-8 m-5">
             <div class="card">
-                <img src="misterion.png" class="card-img-top" alt="Błażej img">
+                <img src="../misterion.png" class="card-img-top" alt="Błażej img">
                 <div class="card-body">
                     <p class="card-text text-center font-weight-bold">BŁAŻEJ</p>
                 </div>

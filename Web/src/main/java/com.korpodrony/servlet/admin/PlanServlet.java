@@ -1,4 +1,4 @@
-package com.korpodrony.servlet;
+package com.korpodrony.servlet.admin;
 
 import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.freemarker.TemplateProvider;
@@ -19,7 +19,7 @@ import java.io.PrintWriter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = {"/plan", "/plan-unassign", "/plan-assign", "/plan-add"})
+@WebServlet(urlPatterns = {"/admin/plan", "/admin/plan-unassign", "/admin/plan-assign", "/admin/plan-add"})
 public class PlanServlet extends HttpServlet {
 
     @Inject
@@ -40,7 +40,7 @@ public class PlanServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         String url = req.getServletPath();
         switch (url) {
-            case "/plan": {
+            case "/admin/plan": {
                 String requestedId = req.getParameter("id");
                 if (setRespStatusOnValidationFailure(resp, validator.validateInteger(requestedId))) {
                     break;
@@ -53,7 +53,7 @@ public class PlanServlet extends HttpServlet {
                 processTemplate(writer, model, templateProvider.PLAN_TEMPLATE);
                 break;
             }
-            case "/plan-add": {
+            case "/admin/plan-add": {
                 Map<String, Object> model = getAddPlanModel();
                 processTemplate(writer, model, templateProvider.ADD_PLAN_TEMPLATE);
                 break;
@@ -70,21 +70,21 @@ public class PlanServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         String url = req.getServletPath();
         switch (url) {
-            case "/plan-assign": {
+            case "/admin/plan-assign": {
                 if (setRespStatusOnValidationFailure(resp, assignActivityToPlan(req.getParameterMap()))) {
                     break;
                 }
                 setOKstatus(resp);
                 break;
             }
-            case "/plan-unassign": {
+            case "/admin/plan-unassign": {
                 if (setRespStatusOnValidationFailure(resp, unassignActivityFromPlan(req.getParameterMap()))) {
                     break;
                 }
                 setOKstatus(resp);
                 break;
             }
-            case "/plan": {
+            case "/admin/plan": {
                 if (setRespStatusOnValidationFailure(resp, editPlan(req.getParameterMap()))) {
                     break;
                 }
@@ -99,7 +99,7 @@ public class PlanServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!req.getServletPath().equals("/plan")) {
+        if (!req.getServletPath().equals("/admin/plan")) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -118,7 +118,7 @@ public class PlanServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getServletPath().equals("/plan")) {
+        if (req.getServletPath().equals("/admin/plan")) {
             if (setRespStatusOnValidationFailure(resp, createPlan(req.getParameterMap()))) {
                 return;
             }
@@ -180,7 +180,7 @@ public class PlanServlet extends HttpServlet {
                     .split(","))
                     .map(Integer::parseInt)
                     .collect(Collectors.toList());
-           return plansWebService.assignActivitiesToPlan(activityId, planId);
+            return plansWebService.assignActivitiesToPlan(activityId, planId);
         } else {
             return false;
         }

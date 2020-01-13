@@ -13,7 +13,7 @@
                     </li>
                 <#else>
                     <li class="nav-item active">
-                        <a class="nav-link text-white text-center" href="/users">Użytkownicy</a>
+                        <a class="nav-link text-white text-center" href="/admin/users">Użytkownicy</a>
                     </li>
                 </#if>
                 <#if current=="activities">
@@ -22,7 +22,7 @@
                     </li>
                 <#else>
                     <li class="nav-item">
-                        <a class="nav-link text-white text-center" href="/activities">Zajęcia</a>
+                        <a class="nav-link text-white text-center" href="/admin/activities">Zajęcia</a>
                     </li>
                 </#if>
                 <#if current=="plans">
@@ -31,7 +31,7 @@
                     </li>
                 <#else>
                     <li class="nav-item">
-                        <a class="nav-link text-white text-center" href="/plans">Plany</a>
+                        <a class="nav-link text-white text-center" href="/admin/plans">Plany</a>
                     </li>
                 </#if >
                 <#if current=="search">
@@ -40,7 +40,7 @@
                     </li>
                 <#else>
                     <li class="nav-item">
-                        <a class="nav-link text-white text-center" href="/search">Szukaj</a>
+                        <a class="nav-link text-white text-center" href="/admin/search">Szukaj</a>
                     </li>
                 </#if>
                 <#if current=="upload">
@@ -49,7 +49,7 @@
                     </li>
                 <#else>
                     <li class="nav-item">
-                        <a class="nav-link text-white text-center" href="/upload-file">Wczytaj plik</a>
+                        <a class="nav-link text-white text-center" href="/admin/upload-file">Wczytaj plik</a>
                     </li>
                 </#if>
                 <#if current=="admin-panel">
@@ -58,7 +58,7 @@
                     </li>
                 <#else>
                     <li class="nav-item">
-                        <a class="nav-link text-white text-center" href="/admin-panel">Panel Administracyjny</a>
+                        <a class="nav-link text-white text-center" href="/admin/admin-panel">Panel Administracyjny</a>
                     </li>
                 </#if>
             </ul>
