@@ -22,6 +22,7 @@ public class TemplateProvider {
     public static final String GUEST_INDEX_TEMPLATE = "guestIndex.ftlh";
     public static final String UPLOAD_FILE_TEMPLATE = "admin/upload-file.ftlh";
     public static final String USERS_TEMPLATE = "admin/users.ftlh";
+    public static final String SUPER_ADMIN_USERS_TEMPLATE = "superAdmin/users.ftlh";
     public static final String PLAN_TEMPLATE = "admin/plan.ftlh";
     public static final String PLANS_TEMPLATE = "admin/plans.ftlh";
     public static final String SEARCH_TEMPLATE = "admin/search.ftlh";

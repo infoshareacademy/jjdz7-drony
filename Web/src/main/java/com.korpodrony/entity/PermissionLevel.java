@@ -4,7 +4,8 @@ public enum PermissionLevel {
 
     ADMIN(0),
     USER(1),
-    GUEST(2);
+    GUEST(2),
+    SUPER_ADMIN(3);
 
     int value;
 

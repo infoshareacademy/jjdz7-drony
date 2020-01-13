@@ -1,5 +1,5 @@
 <#import "../parts/macros/basic.ftlh" as basic/>
-<@basic.includeContent scriptsSrc="users.js" currentPosition="users" modal=""permissionLevel="ADMIN">
+<@basic.includeContent scriptsSrc="" currentPosition="users" modal=""permissionLevel="ADMIN">
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5 mb-5">
             <h2>Użytkownicy</h2>
@@ -7,23 +7,7 @@
                 <ul class="list-group w-100 ">
                     <#items as user>
                         <li class="list-group-item" href="/user?id=${user.id}" class="stretched-link">
-                            <div class="row">
-                                <div class="col-8">
-                                    email: ${user.email}, imię: ${user.name}, nazwisko: ${user.surname}
-                                </div>
-                                <div class="col-4">
-                                    <select class="custom-select" data-userId="${user.id}" id="userType"
-                                            value="${user.permissionLevel.value}">
-                                        <#if user.permissionLevel.value==0>
-                                            <option value="0" selected>ADMIN</option>
-                                            <option value="1">USER</option>
-                                        <#else>
-                                            <option value="0">ADMIN</option>
-                                            <option value="1" selected>USER</option>
-                                        </#if>
-                                    </select>
-                                </div>
-                            </div>
+                            email: ${user.email}, imię: ${user.name}, nazwisko: ${user.surname}
                         </li>
                     </#items>
                 </ul>

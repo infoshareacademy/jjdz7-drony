@@ -24,6 +24,7 @@ public class AuthorizationFilter implements Filter {
     public static final String USER_PATH = "/user";
     public static final String ADMIN_PATH = "/admin";
     public static final String ADMIN_USER_TYPE = "ADMIN";
+    public static final String SUPER_ADMIN_USER_TYPE = "SUPER_ADMIN";
     public static final String GUEST_USER_TYPE = "GUEST";
 
     private String userType;
@@ -42,7 +43,6 @@ public class AuthorizationFilter implements Filter {
         resetUserTypeToDefaultValue();
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
-        HttpSession session = req.getSession();
         String path = setPath(req);
         setUserType(req);
         authorizeAdmin(resp, path);
@@ -73,15 +73,18 @@ public class AuthorizationFilter implements Filter {
     }
 
     private void authorizeAdmin(HttpServletResponse resp, String path) throws IOException {
-        if ((path.startsWith(ADMIN_PATH)) && (!userType.equals(ADMIN_USER_TYPE))) {
+        if ((path.startsWith(ADMIN_PATH)) && checkIfUserHasAccessToAdminPart()) {
             resp.sendRedirect(REDIRECT_LOGIN);
             logger.warn("An unauthorized attempt to recipe edition panel has occurred!");
         }
     }
 
+    private boolean checkIfUserHasAccessToAdminPart() {
+        return !userType.equals(ADMIN_USER_TYPE) && !userType.equals(SUPER_ADMIN_USER_TYPE);
+    }
+
     private void authorizeUser(HttpServletResponse resp, String path) throws IOException {
         if ((path.startsWith(USER_PATH)) && (userType.equals(GUEST_USER_TYPE))) {
-//            req.getSession().setAttribute("authorization", "unauthorizedAttempt");
             resp.sendRedirect(REDIRECT_LOGIN);
             logger.warn("An unauthorized attempt to the admin panel has occurred!");
         }

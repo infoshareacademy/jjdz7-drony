@@ -37,7 +37,7 @@ public class IndexServlet extends HttpServlet {
     }
 
     private String getPathToTemplate(String userType) {
-        if ((PermissionLevel.ADMIN.toString()).equals(userType)) {
+        if ((PermissionLevel.ADMIN.toString()).equals(userType) || (PermissionLevel.SUPER_ADMIN.toString()).equals(userType)) {
             return templateProvider.ADMIN_INDEX_TEMPLATE;
         } else if ((PermissionLevel.USER.toString()).equals(userType)) {
             return templateProvider.USER_INDEX_TEMPLATE;
