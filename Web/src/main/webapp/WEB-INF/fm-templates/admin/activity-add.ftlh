@@ -1,5 +1,5 @@
-<#import "parts/macros/basic.ftlh" as baisc/>
-<@baisc.includeContent scriptsSrc="activity-add.js" currentPosition="none" modal="">
+<#import "../parts/macros/basic.ftlh" as baisc/>
+<@baisc.includeContent scriptsSrc="activity-add.js" currentPosition="none" modal="" permissionLevel="ADMIN">
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Zajęcia</h2>

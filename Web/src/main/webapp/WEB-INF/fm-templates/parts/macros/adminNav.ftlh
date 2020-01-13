@@ -61,6 +61,9 @@
                         <a class="nav-link text-white text-center" href="/admin/admin-panel">Panel Administracyjny</a>
                     </li>
                 </#if>
+                <li class="nav-item">
+                    <a class="nav-link text-white text-center" href="/logout">Wyloguj</a>
+                </li>
             </ul>
         </div>
     </nav>

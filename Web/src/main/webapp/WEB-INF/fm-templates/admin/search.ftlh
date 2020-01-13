@@ -1,5 +1,5 @@
-<#import "parts/macros/basic.ftlh" as baisc/>
-<@baisc.includeContent scriptsSrc="search.js" currentPosition="search" modal="">
+<#import "../parts/macros/basic.ftlh" as baisc/>
+<@baisc.includeContent scriptsSrc="search.js" currentPosition="search" modal="" permissionLevel="ADMIN">
     <div class="row">
         <div class="col-10 ml-auto mr-auto mt-5">
             <h2>Szukaj</h2>

@@ -1,4 +1,4 @@
-package com.korpodrony.servlet.admin;
+package com.korpodrony.servlet.user;
 
 import com.korpodrony.freemarker.TemplateProvider;
 import com.korpodrony.model.ActivitiesType;
@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("admin/activities")
+@WebServlet("user/activities")
 public class ActivitiesServlet extends HttpServlet {
 
     private final int LECTURE_ACTIVITY_TYPE_NUMBER = 1;

@@ -4,7 +4,7 @@
     $('#activityType').val($('#activityType').attr('data-activitySelect'));
 
     function handleSelectChange() {
-        window.location.href = "/admin/activities?type=" + activityType.value;
+        window.location.href = "user/activities?type=" + activityType.value;
     }
 
     activityType.addEventListener('change', handleSelectChange, false);

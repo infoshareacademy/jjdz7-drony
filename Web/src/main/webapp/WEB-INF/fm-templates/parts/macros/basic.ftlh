@@ -1,9 +1,16 @@
-<#macro includeContent scriptsSrc currentPosition modal>
+<#macro includeContent scriptsSrc currentPosition modal permissionLevel>
+    <#if permissionLevel=="ADMIN">
+        <#assign navBar ="./adminNav.ftlh">
+    <#elseif permissionLevel=="USER">
+        <#assign navBar = "./userNav.ftlh">
+    <#else>
+        <#assign navBar = "./guestNav.ftlh">
+    </#if>
     <!doctype html>
     <html lang="pl">
     <#include "../header.ftlh">
     <body>
-    <#import "nav.ftlh" as nav>
+    <#import navBar as nav>
     <@nav.setNav current=currentPosition/>
     <div id="particles-js">
         <div class="container pr-5 pl-5 mt-5 mb-5">

@@ -42,7 +42,7 @@ public class PlanServlet extends HttpServlet {
         switch (url) {
             case "/admin/plan": {
                 String requestedId = req.getParameter("id");
-                if (setRespStatusOnValidationFailure(resp, validator.validateInteger(requestedId))) {
+                if (setRespStatusOnValidationFailure(resp, validator.validateIntegerAsPositiveValue(requestedId))) {
                     break;
                 }
                 int id = Integer.parseInt(requestedId);
@@ -137,7 +137,7 @@ public class PlanServlet extends HttpServlet {
     }
 
     private boolean setRespStatusOnValidationFailure(HttpServletResponse resp, String requestedId) {
-        if (!validator.validateInteger(requestedId)) {
+        if (!validator.validateIntegerAsPositiveValue(requestedId)) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return true;
         }
@@ -210,8 +210,8 @@ public class PlanServlet extends HttpServlet {
         String planId = parameterMap.get("id")[0];
         String activityIds = parameterMap.get("activityid")[0];
         boolean result = Arrays.stream(activityIds.split(","))
-                .allMatch(x -> validator.validateInteger(x));
-        return validator.validateInteger(planId) && result;
+                .allMatch(x -> validator.validateIntegerAsPositiveValue(x));
+        return validator.validateIntegerAsPositiveValue(planId) && result;
     }
 
     private boolean unassignActivityFromPlan(Map<String, String[]> parameterMap) {
@@ -248,7 +248,7 @@ public class PlanServlet extends HttpServlet {
     private boolean validateEditParameters(Map<String, String[]> parameterMap) {
         String activityId = parameterMap.get("id")[0];
         String name = parameterMap.get("name")[0];
-        return validator.validateInteger(activityId)
+        return validator.validateIntegerAsPositiveValue(activityId)
                 && validator.validateString(name);
     }
 
@@ -291,7 +291,7 @@ public class PlanServlet extends HttpServlet {
     private boolean isActivitiesParamValid(List<String> activitiesIdParam) {
         return activitiesIdParam
                 .stream()
-                .allMatch(x -> validator.validateInteger(x));
+                .allMatch(x -> validator.validateIntegerAsPositiveValue(x));
     }
 
     private boolean isNoRepeatsInActivitiesParam(List<String> activitiesIdParam) {

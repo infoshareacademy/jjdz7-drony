@@ -41,7 +41,7 @@ public class ActivityServlet extends HttpServlet {
         switch (url) {
             case "/admin/activity": {
                 String requestedId = req.getParameter("id");
-                if (setRespStatusOnValidationFailure(resp, validator.validateInteger(requestedId))) {
+                if (setRespStatusOnValidationFailure(resp, validator.validateIntegerAsPositiveValue(requestedId))) {
                     break;
                 }
                 int id = Integer.parseInt(requestedId);
@@ -125,7 +125,7 @@ public class ActivityServlet extends HttpServlet {
     }
 
     private boolean setRespStatusOnValidationFailure(HttpServletResponse resp, String requestedId) {
-        if (!validator.validateInteger(requestedId)) {
+        if (!validator.validateIntegerAsPositiveValue(requestedId)) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return true;
         }
@@ -190,9 +190,9 @@ public class ActivityServlet extends HttpServlet {
         String activityUserId = parameterMap.get("userid")[0];
         boolean result = Arrays.stream(activityUserId
                 .split(","))
-                .map(x -> validator.validateInteger(x))
+                .map(x -> validator.validateIntegerAsPositiveValue(x))
                 .allMatch(x -> x);
-        return validator.validateInteger(activityId) && result;
+        return validator.validateIntegerAsPositiveValue(activityId) && result;
     }
 
     private boolean unassignUserToActivity(Map<String, String[]> parameterMap) {
@@ -236,7 +236,7 @@ public class ActivityServlet extends HttpServlet {
         String maxUsers = parameterMap.get("maxusers")[0];
         String duration = parameterMap.get("duration")[0];
         String activityType = parameterMap.get("activitytype")[0];
-        return validator.validateInteger(activityId)
+        return validator.validateIntegerAsPositiveValue(activityId)
                 && validator.validateString(name)
                 && validator.validateShort(maxUsers)
                 && validator.validateByte(duration)

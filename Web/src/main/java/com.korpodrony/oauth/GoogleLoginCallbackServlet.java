@@ -13,6 +13,7 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.korpodrony.dto.AuthUserDTO;
+import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.services.UsersWebService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +97,8 @@ public class GoogleLoginCallbackServlet extends AbstractAuthorizationCodeCallbac
         if (usersWebService.findUserIdByEmail(email) == 0) {
             String name = userinfoplus.getGivenName();
             String sureName = userinfoplus.getFamilyName();
-            usersWebService.createUser(name, sureName, email);
+            PermissionLevel permissionLevel = PermissionLevel.USER;
+            usersWebService.createUser(name, sureName, email, permissionLevel);
         }
         logger.info("Authentication success of user: " + email);
         return usersWebService.findAuthUserDTOByEmail(email);

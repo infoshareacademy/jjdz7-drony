@@ -1,5 +1,5 @@
 <#import "parts/macros/basic.ftlh" as basic/>
-<@basic.includeContent scriptsSrc="" currentPosition="home" modal="">
+<@basic.includeContent scriptsSrc="" currentPosition="home" modal="" permissionLevel="GUEST">
     <div class="row justify-content-center">
         <div class="col-lg-4 col-sm-8 m-5">
             <div class="card">

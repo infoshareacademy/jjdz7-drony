@@ -1,5 +1,5 @@
-<#import "parts/macros/basic.ftlh" as basic/>
-<@basic.includeContent scriptsSrc="" currentPosition="admin-panel" modal="">
+<#import "../parts/macros/basic.ftlh" as basic/>
+<@basic.includeContent scriptsSrc="" currentPosition="admin-panel" modal="" permissionLevel="ADMIN">
     <div class="row">
         <ul class="nav nav-tabs w-80 py-3" id="myTab" role="tablist">
             <li class="nav-item">

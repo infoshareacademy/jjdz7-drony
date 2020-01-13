@@ -1,5 +1,5 @@
-<#import "parts/macros/basic.ftlh" as basic/>
-<@basic.includeContent scriptsSrc="" currentPosition="upload" modal="">
+<#import "../parts/macros/basic.ftlh" as basic/>
+<@basic.includeContent scriptsSrc="" currentPosition="upload" modal="" permissionLevel="ADMIN">
     <div class="row">
         <span class="warning-message">${message}</span><br/><br/>
         <#if isPrintForm == true>

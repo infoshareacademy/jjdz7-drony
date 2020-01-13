@@ -1,5 +1,5 @@
-<#import "parts/macros/basic.ftlh" as basic/>
-<@basic.includeContent scriptsSrc="activity.js" currentPosition="none" modal="../activity-modal.ftlh">
+<#import "../parts/macros/basic.ftlh" as basic/>
+<@basic.includeContent scriptsSrc="activity.js" currentPosition="none" modal="../activity-modal.ftlh" permissionLevel="ADMIN">
 
     <#if users?size !=0 >
         <#assign minUsers = users?size>
