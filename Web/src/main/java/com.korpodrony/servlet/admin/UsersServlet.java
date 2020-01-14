@@ -34,15 +34,24 @@ public class UsersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-        Map<String, Object> model = new HashMap<>();
-        model.put("users", usersWebService.getAllUserEntities());
         String path = setPath(req, resp);
+        Map<String, Object> model = getModel(path);
         Template template = templateProvider.getTemplate(getServletContext(), path);
         try {
             template.process(model, writer);
         } catch (TemplateException e) {
             e.printStackTrace();
         }
+    }
+
+    private Map<String, Object> getModel(String path) {
+        Map<String, Object> model = new HashMap<>();
+        if (templateProvider.SUPER_ADMIN_USERS_TEMPLATE.equals(path)) {
+            model.put("users", usersWebService.getAllUserEntities());
+        } else {
+            model.put("users", usersWebService.getAllUsers());
+        }
+        return model;
     }
 
     @Override

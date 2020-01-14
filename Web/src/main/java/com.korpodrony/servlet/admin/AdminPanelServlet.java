@@ -29,11 +29,9 @@ public class AdminPanelServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-        Map<String, Object> model = new HashMap<>();
-        model.put("users", usersWebService.getAllUsers());
         Template template = templateProvider.getTemplate(getServletContext(), templateProvider.ADMIN_PANEL);
         try {
-            template.process(model, writer);
+            template.process(null, writer);
         } catch (TemplateException e) {
             e.printStackTrace();
         }

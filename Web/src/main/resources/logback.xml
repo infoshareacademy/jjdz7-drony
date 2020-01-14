@@ -51,5 +51,8 @@
     <logger name="com.korpodrony.oauth" level="debug">
         <appender-ref ref="STDOUT"/>
     </logger>
+    <logger name="com.korpodrony.filter" level="debug">
+        <appender-ref ref="STDOUT"/>
+    </logger>
 
 </configuration>

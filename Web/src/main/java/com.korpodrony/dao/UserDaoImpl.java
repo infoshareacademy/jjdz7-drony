@@ -53,8 +53,10 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
     public List<UserDTO> getAllUsers() {
         logger.debug("Getting list of UserDTOs");
         return entityManager
-                .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname, u.email) FROM User u"
+                .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname, u.email) FROM User u " +
+                                "WHERE u.permissionLevel=:level"
                         , UserDTO.class)
+                .setParameter("level", PermissionLevel.USER)
                 .getResultList();
     }
 

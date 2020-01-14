@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebFilter(
@@ -27,6 +26,8 @@ public class AuthorizationFilter implements Filter {
     public static final String SUPER_ADMIN_USER_TYPE = "SUPER_ADMIN";
     public static final String GUEST_USER_TYPE = "GUEST";
 
+    private static final Logger logger = LoggerFactory.getLogger("com.korpodrony.oauth");
+
     private String userType;
     private String defaultUserType;
 
@@ -34,8 +35,6 @@ public class AuthorizationFilter implements Filter {
     public void init(FilterConfig filterConfig) {
         defaultUserType = filterConfig.getInitParameter("userType");
     }
-
-    private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
@@ -56,13 +55,13 @@ public class AuthorizationFilter implements Filter {
 
     private String setPath(HttpServletRequest req) {
         String path = req.getServletPath();
-        logger.info("logger{}", path);
+        logger.info("Trying to log to path: " + path);
         return path;
     }
 
     private void setUserType(HttpServletRequest req) {
         String sessionUserType = (String) req.getSession().getAttribute("userType");
-        logger.info("logger{}", sessionUserType);
+        logger.info("userType: ", sessionUserType);
         if (checkIfSessionUserTypeExists(sessionUserType)) {
             userType = sessionUserType;
         }
