@@ -16,7 +16,8 @@ public class TemplateProvider {
     public static final String ACTIVITY_TEMPLATE = "admin/activity.ftlh";
     public static final String ADD_ACTIVITY_TEMPLATE = "admin/activity-add.ftlh";
     public static final String ADD_PLAN_TEMPLATE = "admin/plan-add.ftlh";
-    public static final String ACTIVITIES_TEMPLATE = "admin/activities.ftlh";
+    public static final String ADMIN_ACTIVITIES_TEMPLATE = "admin/activities.ftlh";
+    public static final String USER_ACTIVITIES_TEMPLATE = "user/activities.ftlh";
     public static final String ADMIN_INDEX_TEMPLATE = "admin/adminIndex.ftlh";
     public static final String USER_INDEX_TEMPLATE = "userIndex.ftlh";
     public static final String GUEST_INDEX_TEMPLATE = "guestIndex.ftlh";

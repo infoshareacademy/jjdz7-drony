@@ -1,7 +1,7 @@
 <#import "../parts/macros/basic.ftlh" as baisc/>
 <@baisc.includeContent scriptsSrc="activities.js" currentPosition="activities" modal="" permissionLevel="USER">
     <div class="row">
-        <div class="col-10 ml-auto mr-auto mt-5">
+        <div class="col-10 ml-auto mr-auto mt-5 mb-5">
             <h2>Zajęcia</h2>
             <div class="form-group">
                 <label for="activityType">Wybierz rodzaj zajęć</label>
@@ -24,11 +24,6 @@
             <#if activities?size == 0>
                 <p>Nie ma obecnie żadnych zajęć podanego typu</p>
             </#if>
-        </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col-3 ml-auto mr-auto mb-3">
-            <a class="btn btn-success text-white w-100" href="/admin/activity-add">Dodaj</a>
         </div>
     </div>
 </@baisc.includeContent>
