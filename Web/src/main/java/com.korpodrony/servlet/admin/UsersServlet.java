@@ -98,29 +98,36 @@ public class UsersServlet extends HttpServlet {
     }
 
     private boolean validateParameters(HttpServletRequest req, HttpServletResponse resp) {
-        if (!validateNumber(req, "id") || !validateNumber(req, "select")) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return false;
-        }
-        int value = Integer.parseInt(req.getParameter("select"));
-        if (checkIfRequestedValueIsOneOfPermissionLevels(value)) {
+        if (!validateNumber(req, "id") || !validateString(req, "select")) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return false;
         }
         return true;
     }
 
-    private void updatePermissionLevel(HttpServletRequest req) {
-        int id = Integer.parseInt(req.getParameter("id"));
-        int value = Integer.parseInt(req.getParameter("select"));
-        usersWebService.updatePermissionLevel(id, value);
-    }
-
     private boolean validateNumber(HttpServletRequest req, String attribute) {
         return validator.validateInteger(req.getParameter(attribute));
     }
 
-    private boolean checkIfRequestedValueIsOneOfPermissionLevels(int value) {
-        return value != 0 && value != 1 && value != 3;
+    private boolean validateString(HttpServletRequest req, String attribute) {
+        return validator.validateString(req.getParameter(attribute));
+    }
+
+    private PermissionLevel getPermissionLevelFromString(String value) {
+        switch (value) {
+            case "SUPER_ADMIN":
+                return PermissionLevel.SUPER_ADMIN;
+            case "ADMIN":
+                return PermissionLevel.ADMIN;
+            default:
+                return PermissionLevel.USER;
+        }
+    }
+
+    private void updatePermissionLevel(HttpServletRequest req) {
+        int id = Integer.parseInt(req.getParameter("id"));
+        String value = req.getParameter("select");
+        PermissionLevel permissionLevel = getPermissionLevelFromString(value);
+        usersWebService.updatePermissionLevel(id, permissionLevel);
     }
 }

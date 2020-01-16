@@ -21,7 +21,7 @@ public interface UserRepositoryDaoInterface {
 
     List<UserDTO> getUserDTObyName(String name, String surname);
 
-    void updateUserPermissionLevel(int userId, int permissionLevel);
+    void updateUserPermissionLevel(int userId, PermissionLevel permissionLevel);
 
     int getUserIdByEmail(String email);
 

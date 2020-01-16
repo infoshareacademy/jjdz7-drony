@@ -13,19 +13,19 @@
                                 </div>
                                 <div class="col-4">
                                     <select class="custom-select" data-userId="${user.id}" id="userType"
-                                            value="${user.permissionLevel.value}">
-                                        <#if user.permissionLevel.value==3>
-                                            <option value="3" selected>SUPER ADMIN</option>
-                                            <option value="0">ADMIN</option>
-                                            <option value="1">USER</option>
-                                        <#elseif user.permissionLevel.value==0>
-                                            <option value="3">SUPER ADMIN</option>
-                                            <option value="0" selected>ADMIN</option>
-                                            <option value="1">USER</option>
+                                            value="${user.permissionLevel}">
+                                        <#if user.permissionLevel == "SUPER_ADMIN">
+                                            <option value="SUPER_ADMIN" selected>SUPER ADMIN</option>
+                                            <option value="ADMIN">ADMIN</option>
+                                            <option value="USER">USER</option>
+                                        <#elseif user.permissionLevel == "ADMIN">
+                                            <option value="SUPER_ADMIN">SUPER ADMIN</option>
+                                            <option value="ADMIN" selected>ADMIN</option>
+                                            <option value="USER">USER</option>
                                         <#else>
-                                            <option value="3">SUPER ADMIN</option>
-                                            <option value="0">ADMIN</option>
-                                            <option value="1" selected>USER</option>
+                                            <option value="SUPER_ADMIN">SUPER ADMIN</option>
+                                            <option value="ADMIN">ADMIN</option>
+                                            <option value="USER" selected>USER</option>
                                         </#if>
                                     </select>
                                 </div>

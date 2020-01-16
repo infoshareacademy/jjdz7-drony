@@ -38,7 +38,7 @@ public class UsersWebService {
         return userRepositoryDao.createUser(name, surname, email, permissionLevel);
     }
 
-    public void updatePermissionLevel(int userId, int level) {
+    public void updatePermissionLevel(int userId, PermissionLevel level) {
         userRepositoryDao.updateUserPermissionLevel(userId, level);
     }
 

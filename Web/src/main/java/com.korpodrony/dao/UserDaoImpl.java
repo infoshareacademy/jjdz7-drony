@@ -97,9 +97,8 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
     }
 
     @Override
-    public void updateUserPermissionLevel(int userId, int level) {
+    public void updateUserPermissionLevel(int userId, PermissionLevel permissionLevel) {
         UserEntity userEntity = getUserEntity(userId);
-        PermissionLevel permissionLevel = PermissionLevel.getPermissionLevelFromInteger(level);
         userEntity.setPermissionLevel(permissionLevel);
         entityManager.merge(userEntity);
     }
