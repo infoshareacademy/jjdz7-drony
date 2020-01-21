@@ -6,6 +6,7 @@ import com.korpodrony.dto.ActivityDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.UserDTO;
 import com.korpodrony.entity.ActivityEntity;
+import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.entity.PlanEntity;
 import com.korpodrony.entity.UserEntity;
 import com.korpodrony.model.ActivitiesType;
@@ -201,8 +202,9 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
     public List<UserDTO> getAvailableUsersDTO(int activityId) {
         logger.debug("Getting availableUsersDTOs for Activity with id: " + activityId);
         return entityManager.createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname, u.email)" +
-                " from User u WHERE u NOT IN (select u from Activity a join a.assigned_users u where a.id=:id)", UserDTO.class)
+                " from User u WHERE u NOT IN (select u from Activity a join a.assigned_users u where a.id=:id) and u.permissionLevel=:level", UserDTO.class)
                 .setParameter("id", activityId)
+                .setParameter("level", PermissionLevel.USER)
                 .getResultList();
     }
 

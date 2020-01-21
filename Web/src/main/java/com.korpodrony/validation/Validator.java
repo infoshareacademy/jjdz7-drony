@@ -26,6 +26,11 @@ public class Validator {
 
     public boolean validateInteger(String str) {
         logger.info("Validating integer: " + str);
+        return NumberUtils.isCreatable(str) && NumberUtils.isParsable(str);
+    }
+
+    public boolean validateIntegerAsPositiveValue(String str) {
+        logger.info("Validating integer as positive value: " + str);
         return NumberUtils.isCreatable(str) && NumberUtils.isParsable(str) && NumberUtils.createInteger(str) > 0;
     }
 

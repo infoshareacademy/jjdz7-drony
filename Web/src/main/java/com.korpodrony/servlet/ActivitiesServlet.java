@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/activities")
+@WebServlet(urlPatterns = {"admin/activities", "user/activities"})
 public class ActivitiesServlet extends HttpServlet {
 
     private final int LECTURE_ACTIVITY_TYPE_NUMBER = 1;
@@ -42,22 +42,31 @@ public class ActivitiesServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
         String typeNumber = req.getParameter(TYPE_FILED);
+        String url = req.getServletPath();
         Map<String, Object> model = getModel(typeNumber);
-        Template template = templateProvider.getTemplate(getServletContext(), templateProvider.ACTIVITIES_TEMPLATE);
-        try {
-            template.process(model, writer);
-        } catch (TemplateException e) {
-            e.printStackTrace();
+        switch (url) {
+            case "/admin/activities": {
+                proccesTemplate(writer, model, templateProvider.ADMIN_ACTIVITIES_TEMPLATE);
+                break;
+            }
+            case "/user/activities": {
+                proccesTemplate(writer, model, templateProvider.USER_ACTIVITIES_TEMPLATE);
+                break;
+            }
+            default: {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
         }
     }
 
     private Map<String, Object> getModel(String typeNumber) {
         Map<String, Object> model = new HashMap<>();
-        if (!validator.validateInteger(typeNumber)) {
+        if (!validator.validateIntegerAsPositiveValue(typeNumber)) {
             model.put(ACTIVITIES_FILED, activitiesWebService.getAllActivities());
             model.put(TYPE_FILED, ALL_ACTIVITIES_TYPES_NUMBER);
             return model;
         }
+
         switch (Integer.parseInt(typeNumber)) {
             case 1: {
                 putToModelActivitiesWithTypeNumber(model, LECTURE_ACTIVITY_TYPE_NUMBER);
@@ -89,5 +98,15 @@ public class ActivitiesServlet extends HttpServlet {
             );
         }
         model.put(TYPE_FILED, typeNumber);
+    }
+
+    private void proccesTemplate(PrintWriter writer, Map<String, Object> model, String path) throws IOException {
+        Template template = templateProvider.getTemplate(getServletContext(), path);
+        try {
+            template.process(model, writer);
+            return;
+        } catch (TemplateException e) {
+            return;
+        }
     }
 }

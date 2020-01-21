@@ -1,7 +1,9 @@
 package com.korpodrony.dao;
 
 import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
+import com.korpodrony.dto.AuthUserDTO;
 import com.korpodrony.dto.UserDTO;
+import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.entity.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,54 +23,25 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
 
     Logger logger = LoggerFactory.getLogger("com.korpodrony.dao");
 
-    public int createUser(String name, String surname, String email) {
+    public int createUser(String name, String surname, String email, PermissionLevel permissionLevel) {
         UserEntity user = new UserEntity();
         user.setName(name);
         user.setSurname(surname);
         user.setEmail(email);
+        user.setPermissionLevel(permissionLevel);
         entityManager.persist(user);
         logger.info("created user: " + user + " from name: " + name + ", surname: " + surname + ", email: " + email);
         return user.getId();
     }
 
-    public boolean deleteUser(int userID) {
-        if (hasUser(userID)) {
-            entityManager.createQuery("DELETE FROM User u WHERE u.id=:id")
-                    .setParameter("id", userID)
-                    .executeUpdate();
-            entityManager.flush();
-            entityManager.clear();
-            logger.info("User with id: " + userID + "has been removed");
-            return true;
-        } else {
-            logger.info("User with id: " + userID + "doesn't exist");
-            return false;
-        }
-    }
-
-    public UserDTO getUserDTO(int userID) {
-        try {
-            logger.debug("Getting userDTO for id: " + userID);
-            return entityManager
-                    .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname, u.email) FROM User u WHERE " +
-                                    "u.id=:id"
-                            , UserDTO.class)
-                    .setParameter("id", userID)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            logger.info("Doesn't have user with id: " + userID);
-            return null;
-        }
-    }
-
     @Override
-    public UserDTO getUserDTO(String email) {
+    public AuthUserDTO getAuthUserDTO(String email) {
         try {
             logger.debug("Getting userDTO for email: " + email);
             return entityManager
-                    .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname,u.email) FROM User u WHERE " +
+                    .createQuery("SELECT new com.korpodrony.dto.AuthUserDTO(u.id, u.permissionLevel) FROM User u WHERE " +
                                     "u.email=:email"
-                            , UserDTO.class)
+                            , AuthUserDTO.class)
                     .setParameter("email", email)
                     .getSingleResult();
         } catch (NoResultException e) {
@@ -77,42 +50,14 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
         }
     }
 
-    public boolean editUser(int userID, String name, String surname) {
-        if (hasUser(userID)) {
-            UserEntity userEntity = getUserEntity(userID);
-            logger.debug("User before changes: " + userEntity);
-            logger.debug("Values of fields which will be changed: " + "name: " + name + ", surname" + surname);
-            userEntity.setName(name);
-            userEntity.setSurname(surname);
-            entityManager.merge(userEntity);
-            logger.debug("User after changes: " + userEntity);
-            return true;
-        }
-        logger.debug("No user with id: " + userID);
-        return false;
-    }
-
     public List<UserDTO> getAllUsers() {
         logger.debug("Getting list of UserDTOs");
         return entityManager
-                .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname, u.email) FROM User u"
+                .createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname, u.email) FROM User u " +
+                                "WHERE u.permissionLevel=:level"
                         , UserDTO.class)
+                .setParameter("level", PermissionLevel.USER)
                 .getResultList();
-    }
-
-    @Override
-    public boolean hasUser(int userID) {
-        try {
-            entityManager
-                    .createQuery("SELECT u.id FROM User u where u.id=:id")
-                    .setParameter("id", userID)
-                    .getSingleResult();
-            logger.debug("Has user with id: " + userID);
-            return true;
-        } catch (NoResultException e) {
-            logger.info("Doesn't have user with id: " + userID);
-            return false;
-        }
     }
 
     @Override
@@ -152,6 +97,13 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
     }
 
     @Override
+    public void updateUserPermissionLevel(int userId, PermissionLevel permissionLevel) {
+        UserEntity userEntity = getUserEntity(userId);
+        userEntity.setPermissionLevel(permissionLevel);
+        entityManager.merge(userEntity);
+    }
+
+    @Override
     public int getUserIdByEmail(String email) {
         try {
             logger.debug("Getting user id for email: " + email);
@@ -165,12 +117,14 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
         }
     }
 
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    @Override
+    public List<UserEntity> getAllUsersEntities() {
+        return entityManager
+                .createQuery("SELECT u FROM User u", UserEntity.class)
+                .getResultList();
     }
 
-    private UserEntity getUserEntity(int userID) {
-        logger.debug("Getting userEntity for id: " + userID);
-        return entityManager.find(UserEntity.class, userID);
+    private UserEntity getUserEntity(int userId) {
+        return entityManager.find(UserEntity.class, userId);
     }
 }

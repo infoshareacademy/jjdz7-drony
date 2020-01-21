@@ -1,7 +1,7 @@
-package com.korpodrony.servlet;
+package com.korpodrony.servlet.admin;
 
-import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.freemarker.TemplateProvider;
+import com.korpodrony.services.PlansWebService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -16,33 +16,26 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/index")
-public class IndexServlet extends HttpServlet {
+@WebServlet("admin/plans")
+public class PlansServlet extends HttpServlet {
 
     @Inject
     TemplateProvider templateProvider;
+
+    @Inject
+    PlansWebService plansWebService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-        String userType = (String) req.getSession().getAttribute("userType");
-        String path = getPathToTemplate(userType);
-        Template template = templateProvider.getTemplate(getServletContext(), path);
+        Map<String, Object> model = new HashMap<>();
+        model.put("plans", plansWebService.getAllPlans());
+        Template template = templateProvider.getTemplate(getServletContext(), templateProvider.PLANS_TEMPLATE);
         try {
-            template.process(null, writer);
+            template.process(model, writer);
         } catch (TemplateException e) {
             e.printStackTrace();
-        }
-    }
-
-    private String getPathToTemplate(String userType) {
-        if ((PermissionLevel.ADMIN.toString()).equals(userType) || (PermissionLevel.SUPER_ADMIN.toString()).equals(userType)) {
-            return templateProvider.ADMIN_INDEX_TEMPLATE;
-        } else if ((PermissionLevel.USER.toString()).equals(userType)) {
-            return templateProvider.USER_INDEX_TEMPLATE;
-        } else {
-            return templateProvider.GUEST_INDEX_TEMPLATE;
         }
     }
 }
