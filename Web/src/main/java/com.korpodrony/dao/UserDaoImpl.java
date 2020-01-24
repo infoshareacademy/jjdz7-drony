@@ -23,15 +23,11 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
 
     Logger logger = LoggerFactory.getLogger("com.korpodrony.dao");
 
-    public int createUser(String name, String surname, String email, PermissionLevel permissionLevel) {
-        UserEntity user = new UserEntity();
-        user.setName(name);
-        user.setSurname(surname);
-        user.setEmail(email);
-        user.setPermissionLevel(permissionLevel);
-        entityManager.persist(user);
-        logger.info("created user: " + user + " from name: " + name + ", surname: " + surname + ", email: " + email);
-        return user.getId();
+    public int createUser(UserEntity userEntity) {
+        entityManager.persist(userEntity);
+        logger.info("created user: " + userEntity + " from name: " + userEntity.getName() + ", surname: " + userEntity.getSurname()
+                + ", email: " + userEntity.getEmail());
+        return userEntity.getId();
     }
 
     @Override
@@ -97,9 +93,7 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
     }
 
     @Override
-    public void updateUserPermissionLevel(int userId, PermissionLevel permissionLevel) {
-        UserEntity userEntity = getUserEntity(userId);
-        userEntity.setPermissionLevel(permissionLevel);
+    public void updateUser(UserEntity userEntity) {
         entityManager.merge(userEntity);
     }
 
@@ -124,7 +118,7 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
                 .getResultList();
     }
 
-    private UserEntity getUserEntity(int userId) {
+    public UserEntity getUserEntity(int userId) {
         return entityManager.find(UserEntity.class, userId);
     }
 }

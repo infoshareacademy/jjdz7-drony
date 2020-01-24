@@ -34,12 +34,14 @@ public class UsersWebService {
         return userRepositoryDao.getUserIdByEmail(email);
     }
 
-    public int createUser(String name, String surname, String email, PermissionLevel permissionLevel) {
-        return userRepositoryDao.createUser(name, surname, email, permissionLevel);
+    public int createUser(UserEntity userEntity) {
+        return userRepositoryDao.createUser(userEntity);
     }
 
     public void updatePermissionLevel(int userId, PermissionLevel level) {
-        userRepositoryDao.updateUserPermissionLevel(userId, level);
+        UserEntity userEntity = userRepositoryDao.getUserEntity(userId);
+        userEntity.setPermissionLevel(level);
+        userRepositoryDao.updateUser(userEntity);
     }
 
     public AuthUserDTO findAuthUserDTOByEmail(String email) {
