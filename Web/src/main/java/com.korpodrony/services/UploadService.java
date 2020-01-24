@@ -2,6 +2,7 @@ package com.korpodrony.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.korpodrony.dao.PlanRepositoryDao;
 import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
 import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
 import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -30,6 +32,9 @@ public class UploadService {
 
     @EJB
     PlanRepositoryDaoInterface planRepositoryDao;
+
+    @Inject
+    PlansWebService plansWebService;
 
     Logger logger = LoggerFactory.getLogger("com.korpodrony.services");
 
@@ -100,7 +105,7 @@ public class UploadService {
         preparePlansActivities(planEntities);
         planEntities.forEach(plan -> {
             plan.setId(planRepositoryDao.createPlan(plan));
-            planRepositoryDao.assignActivitiesToPlan(plan.getAssignedActivities()
+            plansWebService.assignActivitiesToPlan(plan.getAssignedActivities()
                     .stream()
                     .map(ActivityEntity::getId)
                     .collect(Collectors.toList()), plan.getId()

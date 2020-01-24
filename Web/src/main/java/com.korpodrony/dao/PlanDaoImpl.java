@@ -110,6 +110,25 @@ public class PlanDaoImpl implements PlanRepositoryDaoInterface {
                 .getResultList();
     }
 
+    @Override
+    public boolean unassignActivityFromPlan(int activityId, int planId) {
+        ActivityEntity activityEntity = getActivityEntity(activityId);
+        logger.debug("ActivityEntity: " + activityEntity);
+        PlanEntity planEntity = getPlanEntity(planId);
+        logger.debug("PlanEntity: " + planEntity);
+        if (activityEntity != null && planEntity != null) {
+            if (planEntity.getAssignedActivities() == null) {
+                return false;
+            }
+            boolean result = planEntity.getAssignedActivities()
+                    .remove(activityEntity);
+            entityManager.merge(planEntity);
+            logger.debug("Activity unassigned from Plan: " + result);
+            return result;
+        }
+        return false;
+    }
+
     public ActivityEntity getActivityEntity(int activityId) {
         logger.debug("Getting activityEntity for id: " + activityId);
         return entityManager.find(ActivityEntity.class, activityId);

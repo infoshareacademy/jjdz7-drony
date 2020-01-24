@@ -31,6 +31,9 @@ public class UsersWebService {
     }
 
     public int findUserIdByEmail(String email) {
+        if (email == null) {
+            throw new IllegalArgumentException("Email cannot be null");
+        }
         return userRepositoryDao.getUserIdByEmail(email);
     }
 
@@ -39,6 +42,9 @@ public class UsersWebService {
     }
 
     public void updatePermissionLevel(int userId, PermissionLevel level) {
+        if (level == null) {
+            throw new IllegalArgumentException("PermissionLevel cannot be null");
+        }
         UserEntity userEntity = userRepositoryDao.getUserEntity(userId);
         userEntity.setPermissionLevel(level);
         userRepositoryDao.updateUser(userEntity);
