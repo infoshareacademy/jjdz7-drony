@@ -153,8 +153,7 @@ public class UploadService {
         logger.debug("Updating user: " + userEntity);
         int userId = userRepositoryDao.getUserIdByEmail(userEntity.getEmail());
         if (userId == 0) {
-            userId = userRepositoryDao.createUser(userEntity.getName(), userEntity.getSurname(),
-                    userEntity.getEmail(), userEntity.getPermissionLevel());
+            userId = userRepositoryDao.createUser(userEntity);
         }
         userEntity.setId(userId);
         return userEntity;

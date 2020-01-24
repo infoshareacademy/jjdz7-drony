@@ -13,9 +13,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Stateless
 public class PlanDaoImpl implements PlanRepositoryDaoInterface {
@@ -26,82 +24,10 @@ public class PlanDaoImpl implements PlanRepositoryDaoInterface {
     Logger logger = LoggerFactory.getLogger("com.korpodrony.dao");
 
     @Override
-    public int createPlan(String name) {
-        PlanEntity planEntity = new PlanEntity();
-        planEntity.setName(name);
-        entityManager.persist(planEntity);
-        logger.info("created plan: " + planEntity + " from name: " + name);
-        return planEntity.getId();
-    }
-
-    @Override
     public int createPlan(PlanEntity planEntity) {
-        PlanEntity plan = new PlanEntity();
-        plan.setName(planEntity.getName());
-        entityManager.persist(plan);
-        logger.info("Created plan: " + plan + "from planEntity: " + planEntity);
-        return plan.getId();
-    }
-
-    @Override
-    public boolean assignActivitiesToPlan(List<Integer> activityIDs, int planID) {
-        PlanEntity planEntity = getPlanEntity(planID);
-        logger.debug("PlanEntity: " + planEntity + ", activtiesIds: " + activityIDs);
-        if (planEntity != null && activityIDs != null) {
-            if (planEntity.getAssignedActivities() == null) {
-                planEntity.setAssignedActivities(new HashSet<>());
-                logger.debug("New HashSet created");
-            }
-            getActivitiesEntitiesList(activityIDs).forEach(
-                    x -> planEntity.getAssignedActivities()
-                            .add(x)
-            );
-            entityManager.merge(planEntity);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean unassignActivityFromPlan(int activityID, int planID) {
-        ActivityEntity activityEntity = getActivityEntity(activityID);
-        logger.debug("ActivityEntity: " + activityEntity);
-        PlanEntity planEntity = getPlanEntity(planID);
-        logger.debug("PlanEntity: " + planEntity);
-        if (activityEntity != null && planEntity != null) {
-            if (planEntity.getAssignedActivities() == null) {
-                return false;
-            }
-            boolean result = planEntity.getAssignedActivities()
-                    .remove(activityEntity);
-            entityManager.merge(planEntity);
-            logger.debug("Activity unassigned from Plan: " + result);
-            return result;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean unassignActivityFromPlan(List<Integer> activityIDs, int planID) {
-        PlanEntity planEntity = getPlanEntity(planID);
-        logger.debug("PlanEntity: " + planEntity + ", activtiesIds: " + activityIDs);
-        if (planEntity != null) {
-            if (checkIfAssignedActiviesOrIdsToAssignAreNotNull(activityIDs, planEntity)) {
-                return false;
-            }
-            planEntity.setAssignedActivities(planEntity.getAssignedActivities()
-                    .stream()
-                    .filter(x -> !activityIDs.contains(x.getId()))
-                    .collect(Collectors.toSet())
-            );
-            entityManager.merge(planEntity);
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkIfAssignedActiviesOrIdsToAssignAreNotNull(List<Integer> activityIDs, PlanEntity planEntity) {
-        return planEntity.getAssignedActivities() == null || activityIDs == null;
+        entityManager.persist(planEntity);
+        logger.info("Created plan: " + planEntity + "from planEntity: " + planEntity);
+        return planEntity.getId();
     }
 
     @Override
@@ -121,17 +47,9 @@ public class PlanDaoImpl implements PlanRepositoryDaoInterface {
     }
 
     @Override
-    public boolean editPlan(int planId, String name) {
-        PlanEntity planEntity = getPlanEntity(planId);
-        logger.debug("Plan before changes: " + planEntity);
-        logger.debug("Values of fileds which will be changed: " + "name: " + name);
-        if (planEntity == null) {
-            return false;
-        }
-        planEntity.setName(name);
+    public void updatePlan(PlanEntity planEntity) {
         entityManager.merge(planEntity);
         logger.debug("Plan after changes: " + planEntity);
-        return true;
     }
 
     public List<SimplifiedPlanDTO> getAllSimplifiedPlansDTO() {
@@ -181,18 +99,18 @@ public class PlanDaoImpl implements PlanRepositoryDaoInterface {
         }
     }
 
-    private PlanEntity getPlanEntity(int planId) {
+    public PlanEntity getPlanEntity(int planId) {
         logger.debug("Getting planEntity for id: " + planId);
         return entityManager.find(PlanEntity.class, planId);
     }
 
-    private List<ActivityEntity> getActivitiesEntitiesList(List<Integer> activitiesIds) {
+    public List<ActivityEntity> getActivitiesEntitiesList(List<Integer> activitiesIds) {
         return entityManager.createQuery("SELECT a from Activity a WHERE a.id in (:activtiesIds)", ActivityEntity.class)
                 .setParameter("activtiesIds", activitiesIds)
                 .getResultList();
     }
 
-    private ActivityEntity getActivityEntity(int activityId) {
+    public ActivityEntity getActivityEntity(int activityId) {
         logger.debug("Getting activityEntity for id: " + activityId);
         return entityManager.find(ActivityEntity.class, activityId);
     }

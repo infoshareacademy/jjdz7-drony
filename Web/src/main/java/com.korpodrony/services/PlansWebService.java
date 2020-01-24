@@ -4,12 +4,15 @@ import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
 import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.SimplifiedPlanDTO;
+import com.korpodrony.entity.PlanEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestScoped
 public class PlansWebService {
@@ -45,22 +48,60 @@ public class PlansWebService {
     }
 
     public boolean assignActivitiesToPlan(List<Integer> activitiesIds, int planId) {
-        logger.debug("assignActivityToPlan called");
-        return planRepositoryDao.assignActivitiesToPlan(activitiesIds, planId);
+        PlanEntity planEntity = planRepositoryDao.getPlanEntity(planId);
+        logger.debug("PlanEntity: " + planEntity + ", activtiesIds: " + activitiesIds);
+        if (planEntity != null && activitiesIds != null) {
+            if (planEntity.getAssignedActivities() == null) {
+                planEntity.setAssignedActivities(new HashSet<>());
+                logger.debug("New HashSet created");
+            }
+            planRepositoryDao.getActivitiesEntitiesList(activitiesIds).forEach(
+                    x -> planEntity.getAssignedActivities()
+                            .add(x)
+            );
+            planRepositoryDao.updatePlan(planEntity);
+            return true;
+        }
+        return false;
     }
 
     public boolean unassignActivitiesFromPlan(List<Integer> activitiesIds, int planId) {
-        logger.debug("unassignActivityFromPlan called");
-        return planRepositoryDao.unassignActivityFromPlan(activitiesIds, planId);
+        PlanEntity planEntity = planRepositoryDao.getPlanEntity(planId);
+        logger.debug("PlanEntity: " + planEntity + ", activtiesIds: " + activitiesIds);
+        if (planEntity != null) {
+            if (checkIfAssignedActivitiesOrIdsToAssignAreNotNull(activitiesIds, planEntity)) {
+                return false;
+            }
+            planEntity.setAssignedActivities(planEntity.getAssignedActivities()
+                    .stream()
+                    .filter(x -> !activitiesIds.contains(x.getId()))
+                    .collect(Collectors.toSet())
+            );
+            planRepositoryDao.updatePlan(planEntity);
+            return true;
+        }
+        return false;
     }
 
     public boolean editPlan(int planId, String name) {
         logger.debug("editPlan called");
-        return planRepositoryDao.editPlan(planId, name);
+        PlanEntity planEntity = planRepositoryDao.getPlanEntity(planId);
+        if (planEntity == null) {
+            return false;
+        }
+        planEntity.setName(name);
+        planRepositoryDao.updatePlan(planEntity);
+        return true;
     }
 
     public int createPlan(String name) {
+        PlanEntity planEntity = new PlanEntity();
+        planEntity.setName(name);
         logger.debug("createPlan called");
-        return planRepositoryDao.createPlan(name);
+        return planRepositoryDao.createPlan(planEntity);
+    }
+
+    private boolean checkIfAssignedActivitiesOrIdsToAssignAreNotNull(List<Integer> activityIDs, PlanEntity planEntity) {
+        return planEntity.getAssignedActivities() == null || activityIDs == null;
     }
 }

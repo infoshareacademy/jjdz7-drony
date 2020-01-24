@@ -13,11 +13,9 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.korpodrony.dto.AuthUserDTO;
-import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.entity.UserEntity;
-import com.korpodrony.entity.UserEntityBuilder;
+import com.korpodrony.entity.builder.UserEntityBuilder;
 import com.korpodrony.services.UsersWebService;
-import jdk.jshell.spi.ExecutionControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

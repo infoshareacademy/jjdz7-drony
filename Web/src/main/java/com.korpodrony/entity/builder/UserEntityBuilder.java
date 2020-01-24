@@ -1,4 +1,7 @@
-package com.korpodrony.entity;
+package com.korpodrony.entity.builder;
+
+import com.korpodrony.entity.PermissionLevel;
+import com.korpodrony.entity.UserEntity;
 
 public final class UserEntityBuilder {
     private String name;

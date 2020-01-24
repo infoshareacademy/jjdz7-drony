@@ -34,17 +34,6 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
 
     Logger logger = LoggerFactory.getLogger("com.korpodrony.dao");
 
-    public boolean createActivity(String name, short maxUsers, byte lengthInQuarters, ActivitiesType activitiesType) {
-        ActivityEntity activityEntity = new ActivityEntity();
-        activityEntity.setName(name);
-        activityEntity.setMaxUsers(maxUsers);
-        activityEntity.setLengthInQuarters(lengthInQuarters);
-        activityEntity.setActivitiesType(activitiesType);
-        entityManager.persist(activityEntity);
-        logger.info("Created activity " + activityEntity);
-        return true;
-    }
-
     @Override
     public int createActivity(ActivityEntity activity) {
         ActivityEntity activityEntity = new ActivityEntity();
@@ -61,45 +50,9 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
         return activityEntity.getId();
     }
 
-    public boolean assignUsersToActivity(List<Integer> usersIds, int activityID) {
-        ActivityEntity activityEntity = getActivityEntity(activityID);
-        logger.debug("activityEntity: " + activityEntity);
-        logger.debug("users ids: " + usersIds);
-        if (activityEntity != null && usersIds != null) {
-            if (activityEntity.getAssigned_users() == null) {
-                activityEntity.setAssigned_users(new HashSet<>());
-                logger.debug("new HashSet created");
-            }
-            List<Integer> userIdsListToAssign = getUserIdsListToAssign(usersIds, activityEntity);
-            getUsersEntitiesList(userIdsListToAssign).forEach(x -> activityEntity.getAssigned_users()
-                    .add(x)
-            );
-            entityManager.merge(activityEntity);
-            logger.debug("usersEntities assigned to Activity");
-            return true;
-        }
-        return false;
-    }
-
-    public boolean unassignUsersFromActivity(List<Integer> usersIds, int activityID) {
-        ActivityEntity activityEntity = getActivityEntity(activityID);
-        logger.debug("activityEntity: " + activityEntity);
-        logger.debug("userIds " + usersIds);
-        if (activityEntity != null && usersIds != null) {
-            if (activityEntity.getAssigned_users() == null) {
-                logger.debug("no assigned users to activity");
-                return false;
-            }
-            activityEntity.setAssigned_users(activityEntity.getAssigned_users()
-                    .stream()
-                    .filter(x -> !usersIds.contains(x.getId()))
-                    .collect(Collectors.toSet())
-            );
-            entityManager.merge(activityEntity);
-            logger.debug("usersEntities unassigned from Activity");
-            return true;
-        }
-        return false;
+    @Override
+    public void updateActivity(ActivityEntity activityEntity) {
+        entityManager.merge(activityEntity);
     }
 
     public boolean deleteActivity(int activityID) {
@@ -107,7 +60,8 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
             entityManager.createQuery(
                     "select p from Plan p join p.assignedActivities a where a.id=:id", PlanEntity.class)
                     .setParameter("id", activityID)
-                    .getResultList().forEach(x -> planRepositoryDao.unassignActivityFromPlan(activityID, x.getId()));
+                    .getResultList()
+                    .forEach(x -> planRepositoryDao.unassignActivityFromPlan(activityID, x.getId()));
             entityManager.flush();
             entityManager.createQuery("DELETE FROM Activity a WHERE a.id=:id")
                     .setParameter("id", activityID)
@@ -119,28 +73,6 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
             logger.info("Activity with id: " + activityID + "doesn't exist");
             return false;
         }
-    }
-
-    public boolean editActivity(int activityID, String name, short maxUsers, byte lenghtInQuarters, ActivitiesType activitiesType) {
-        ActivityEntity activityEntity = getActivityEntity(activityID);
-        if (activityEntity == null) {
-            logger.debug("Activity with id: " + activityID + "doesn't exist");
-            return false;
-        }
-        if (checkIfMaxUsersIsSmallerThanAssignedUsersNumber(maxUsers, activityEntity)) {
-            logger.debug("Activity with id: " + activityID + "has more users: " + activityEntity.getAssigned_users().size() + "  than max users: " + maxUsers);
-            return false;
-        }
-        logger.debug("Activity before changes: " + activityEntity);
-        logger.debug("Values of fileds which will be changed: " + "name: "
-                + name + ", maxUsers: " + maxUsers + "lenghtInQuarters: " + lenghtInQuarters + ", activityType: " + activitiesType);
-        activityEntity.setName(name);
-        activityEntity.setMaxUsers(maxUsers);
-        activityEntity.setLengthInQuarters(lenghtInQuarters);
-        activityEntity.setActivitiesType(activitiesType);
-        entityManager.merge(activityEntity);
-        logger.debug("Activity after changes: " + activityEntity);
-        return true;
     }
 
     public boolean hasActivityWithThisID(int activityID) {
@@ -230,7 +162,7 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
         return usersIds;
     }
 
-    private List<UserEntity> getUsersEntitiesList(List<Integer> usersIds) {
+    public List<UserEntity> getUsersEntitiesList(List<Integer> usersIds) {
         return entityManager.createQuery("SELECT u from User u WHERE u.id in (:usersIds)", UserEntity.class)
                 .setParameter("usersIds", usersIds)
                 .getResultList();
