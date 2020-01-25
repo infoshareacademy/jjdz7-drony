@@ -7,7 +7,7 @@ public final class UserEntityBuilder {
     private String name;
     private String surname;
     private String email;
-    private PermissionLevel permissionLevel = PermissionLevel.GUEST;
+    private PermissionLevel permissionLevel = PermissionLevel.USER;
 
     private UserEntityBuilder() {
     }
