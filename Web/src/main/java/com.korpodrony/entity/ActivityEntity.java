@@ -31,7 +31,7 @@ public class ActivityEntity {
         this.activitiesType = activitiesType;
     }
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "activities_users", joinColumns = {@JoinColumn(name = "activity_id",
             referencedColumnName = "id")}
             , inverseJoinColumns = {@JoinColumn(name = "user_id",

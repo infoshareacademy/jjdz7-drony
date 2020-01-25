@@ -4,6 +4,7 @@ import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.dto.SimplifiedPlanDTO;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ public class PlanEntity {
 
     private String name;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "plans_activities", joinColumns = {@JoinColumn(name = "plan_id",
             referencedColumnName = "id")}
             , inverseJoinColumns = {@JoinColumn(name = "activity_id",

@@ -4,6 +4,7 @@ import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
 import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.SimplifiedPlanDTO;
+import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.PlanEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequestScoped
@@ -55,10 +57,10 @@ public class PlansWebService {
                 planEntity.setAssignedActivities(new HashSet<>());
                 logger.debug("New HashSet created");
             }
-            planRepositoryDao.getActivitiesEntitiesList(activitiesIds).forEach(
-                    x -> planEntity.getAssignedActivities()
-                            .add(x)
-            );
+            planEntity.getAssignedActivities()
+                    .addAll(planRepositoryDao
+                            .getActivitiesEntitiesList(activitiesIds)
+                    );
             planRepositoryDao.updatePlan(planEntity);
             return true;
         }
