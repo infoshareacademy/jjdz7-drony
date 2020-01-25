@@ -25,9 +25,11 @@ public class PlanDaoImpl implements PlanRepositoryDaoInterface {
 
     @Override
     public int createPlan(PlanEntity planEntity) {
-        entityManager.persist(planEntity);
+        PlanEntity newPlanEntity = new PlanEntity();
+        newPlanEntity.setName(planEntity.getName());
+        entityManager.persist(newPlanEntity);
         logger.info("Created plan: " + planEntity + "from planEntity: " + planEntity);
-        return planEntity.getId();
+        return newPlanEntity.getId();
     }
 
     @Override

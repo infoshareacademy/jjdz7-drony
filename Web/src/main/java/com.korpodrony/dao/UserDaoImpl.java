@@ -5,6 +5,7 @@ import com.korpodrony.dto.AuthUserDTO;
 import com.korpodrony.dto.UserDTO;
 import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.entity.UserEntity;
+import com.korpodrony.entity.builder.UserEntityBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,10 +25,15 @@ public class UserDaoImpl implements UserRepositoryDaoInterface {
     Logger logger = LoggerFactory.getLogger("com.korpodrony.dao");
 
     public int createUser(UserEntity userEntity) {
-        entityManager.persist(userEntity);
+        UserEntity newUserEntity = UserEntityBuilder.anUserEntity()
+                .withEmail(userEntity.getEmail())
+                .withName(userEntity.getName())
+                .withSurname(userEntity.getSurname())
+                .build();
+        entityManager.persist(newUserEntity);
         logger.info("created user: " + userEntity + " from name: " + userEntity.getName() + ", surname: " + userEntity.getSurname()
                 + ", email: " + userEntity.getEmail());
-        return userEntity.getId();
+        return newUserEntity.getId();
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.entity.PlanEntity;
 import com.korpodrony.entity.UserEntity;
+import com.korpodrony.entity.builder.ActivityEntityBuilder;
 import com.korpodrony.model.ActivitiesType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +37,12 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
 
     @Override
     public int createActivity(ActivityEntity activity) {
-        ActivityEntity activityEntity = new ActivityEntity();
-        activityEntity.setName(activity.getName());
-        activityEntity.setMaxUsers(activity.getMaxUsers());
-        activityEntity.setLengthInQuarters(activity.getLengthInQuarters());
-        activityEntity.setActivitiesType(activity.getActivitiesType());
+        ActivityEntity activityEntity = ActivityEntityBuilder.anActivityEntity()
+                .withName(activity.getName())
+                .withMaxUsers(activity.getMaxUsers())
+                .withActivitiesType(activity.getActivitiesType())
+                .withLengthInQuarters(activity.getLengthInQuarters())
+                .build();
         entityManager.persist(activityEntity);
         entityManager.flush();
         logger.info("Created activity with id: " + activityEntity.getId() + " from " + activityEntity);
