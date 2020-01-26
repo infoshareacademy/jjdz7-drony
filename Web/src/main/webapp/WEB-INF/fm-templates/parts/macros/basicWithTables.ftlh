@@ -8,7 +8,7 @@
     </#if>
     <!doctype html>
     <html lang="pl">
-    <#include "../header.ftlh">
+    <#include "../headerWithDataPicker.ftlh">
     <body>
     <#import navBar as nav>
     <@nav.setNav current=currentPosition/>

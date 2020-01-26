@@ -11,11 +11,18 @@
             crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
     <script src="../particles.min.js"></script>
     <script src="../app.js"></script>
     <script>
         $(document).ready(function () {
             $('#example').DataTable();
+            $('#datepickerFrom').datepicker({
+                uiLibrary: 'bootstrap4'
+            });
+            $('#datepickerTo').datepicker({
+                uiLibrary: 'bootstrap4'
+            });
         });
     </script>
     <#if script != "">

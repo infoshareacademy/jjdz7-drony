@@ -3,10 +3,12 @@
     <div class="row">
         <ul class="nav nav-tabs w-80 py-3" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="reports-tab" data-toggle="tab" href="#reports" role="tab" aria-controls="reports" aria-selected="true">Raporty</a>
+                <a class="nav-link active" id="reports-tab" data-toggle="tab" href="#reports" role="tab"
+                   aria-controls="reports" aria-selected="true">Raporty</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="configuration-tab" data-toggle="tab" href="#configuration" role="tab" aria-controls="configuration" aria-selected="false">Konfiguracja</a>
+                <a class="nav-link" id="configuration-tab" data-toggle="tab" href="#configuration" role="tab"
+                   aria-controls="configuration" aria-selected="false">Konfiguracja</a>
             </li>
         </ul>
         <div class="tab-content py-3 col-12" id="myTabContent">
@@ -492,7 +494,19 @@
                     </tfoot>
                 </table>
             </div>
-            <div class="tab-pane fade" id="configuration" role="configuration" aria-labelledby="configuration-tab">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</div>
+            <div class="tab-pane fade col-12 col-lg-8 mx-auto" id="configuration" role="configuration"
+                 aria-labelledby="configuration-tab">
+                <div class="row">
+                    <div class="col-lg-6 col-md-8 mx-auto">
+                        Data Od
+                        <input id="datepickerFrom"/>
+                    </div>
+                    <div class="col-lg-6 col-md-8 mx-auto">
+                        Data do
+                        <input id="datepickerTo"/>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </@basic.includeContent>
