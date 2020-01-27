@@ -11,6 +11,7 @@ import com.korpodrony.entity.PlanEntity;
 import com.korpodrony.entity.UserEntity;
 import com.korpodrony.entity.builder.ActivityEntityBuilder;
 import com.korpodrony.model.ActivitiesType;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,9 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Stateless
 public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
@@ -122,6 +121,14 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
         return entityManager.find(ActivityEntity.class, activityId);
     }
 
+    @Override
+    public ActivityEntity getActivityEntityWithRelations(int activityId) {
+        logger.debug("Getting activityEntity with id: " + activityId);
+        ActivityEntity activityEntity = entityManager.find(ActivityEntity.class, activityId);
+        Hibernate.initialize(activityEntity.getAssigned_users());
+        return activityEntity;
+    }
+
     public ActivityDTO getActivityDTO(int activityId) {
         try {
             logger.debug("Getting activityDTO with id: " + activityId);
@@ -156,21 +163,9 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
         }
     }
 
-    private List<Integer> getUserIdsListToAssign(List<Integer> usersIds, ActivityEntity activityEntity) {
-        int numberOfPlaces = activityEntity.getMaxUsers() - activityEntity.getAssigned_users().size();
-        if (numberOfPlaces < usersIds.size()) {
-            return usersIds.subList(0, numberOfPlaces);
-        }
-        return usersIds;
-    }
-
     public List<UserEntity> getUsersEntitiesList(List<Integer> usersIds) {
         return entityManager.createQuery("SELECT u from User u WHERE u.id in (:usersIds)", UserEntity.class)
                 .setParameter("usersIds", usersIds)
                 .getResultList();
-    }
-
-    private boolean checkIfMaxUsersIsSmallerThanAssignedUsersNumber(short maxUsers, ActivityEntity activityEntity) {
-        return activityEntity.getAssigned_users() != null && activityEntity.getAssigned_users().size() > maxUsers;
     }
 }

@@ -32,6 +32,8 @@ public interface PlanRepositoryDaoInterface {
 
     PlanEntity getPlanEntity(int planId);
 
+    PlanEntity getPlanEntityWithRelations(int planId);
+
     List<ActivityEntity> getActivitiesEntitiesList(List<Integer> activitiesIds);
 
     boolean unassignActivityFromPlan(int activityId, int planId);

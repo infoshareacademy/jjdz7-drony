@@ -4,16 +4,13 @@ import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
 import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.SimplifiedPlanDTO;
-import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.PlanEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequestScoped
@@ -50,13 +47,9 @@ public class PlansWebService {
     }
 
     public boolean assignActivitiesToPlan(List<Integer> activitiesIds, int planId) {
-        PlanEntity planEntity = planRepositoryDao.getPlanEntity(planId);
+        PlanEntity planEntity = planRepositoryDao.getPlanEntityWithRelations(planId);
         logger.debug("PlanEntity: " + planEntity + ", activtiesIds: " + activitiesIds);
         if (planEntity != null && activitiesIds != null) {
-            if (planEntity.getAssignedActivities() == null) {
-                planEntity.setAssignedActivities(new HashSet<>());
-                logger.debug("New HashSet created");
-            }
             planEntity.getAssignedActivities()
                     .addAll(planRepositoryDao
                             .getActivitiesEntitiesList(activitiesIds)
@@ -68,7 +61,7 @@ public class PlansWebService {
     }
 
     public boolean unassignActivitiesFromPlan(List<Integer> activitiesIds, int planId) {
-        PlanEntity planEntity = planRepositoryDao.getPlanEntity(planId);
+        PlanEntity planEntity = planRepositoryDao.getPlanEntityWithRelations(planId);
         logger.debug("PlanEntity: " + planEntity + ", activtiesIds: " + activitiesIds);
         if (planEntity != null) {
             if (checkIfAssignedActivitiesOrIdsToAssignAreNotNull(activitiesIds, planEntity)) {

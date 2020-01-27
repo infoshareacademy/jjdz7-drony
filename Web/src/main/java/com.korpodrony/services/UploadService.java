@@ -7,6 +7,7 @@ import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
 import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
 import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
 import com.korpodrony.entity.ActivityEntity;
+import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.entity.PlanEntity;
 import com.korpodrony.entity.UserEntity;
 import org.slf4j.Logger;
@@ -161,6 +162,7 @@ public class UploadService {
             userId = userRepositoryDao.createUser(userEntity);
         }
         userEntity.setId(userId);
+        userEntity.setPermissionLevel(PermissionLevel.USER);
         return userEntity;
     }
 

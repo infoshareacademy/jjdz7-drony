@@ -40,7 +40,7 @@ public class ActivitiesWebService {
     }
 
     public boolean assignUsersToActivity(List<Integer> usersIds, int activityId) {
-        ActivityEntity activityEntity = activityRepositoryDao.getActivityEntity(activityId);
+        ActivityEntity activityEntity = activityRepositoryDao.getActivityEntityWithRelations(activityId);
         logger.debug("activityEntity: " + activityEntity);
         logger.debug("users ids: " + usersIds);
         if (activityEntity != null && usersIds != null) {
@@ -60,7 +60,7 @@ public class ActivitiesWebService {
     }
 
     public boolean unassignUsersFromActivity(List<Integer> usersIds, int activityId) {
-        ActivityEntity activityEntity = activityRepositoryDao.getActivityEntity(activityId);
+        ActivityEntity activityEntity = activityRepositoryDao.getActivityEntityWithRelations(activityId);
         logger.debug("activityEntity: " + activityEntity);
         logger.debug("userIds " + usersIds);
         if (activityEntity != null && usersIds != null) {
@@ -107,7 +107,7 @@ public class ActivitiesWebService {
                 .withLengthInQuarters(duration)
                 .withActivitiesType(ActivitiesType.getActivity(activityType))
                 .build();
-                activityRepositoryDao.createActivity(activityEntity);
+        activityRepositoryDao.createActivity(activityEntity);
         return activityEntity.getId();
     }
 

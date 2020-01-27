@@ -6,6 +6,8 @@ import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.SimplifiedPlanDTO;
 import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.PlanEntity;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +52,7 @@ public class PlanDaoImpl implements PlanRepositoryDaoInterface {
 
     @Override
     public void updatePlan(PlanEntity planEntity) {
+        entityManager.flush();
         entityManager.merge(planEntity);
         logger.debug("Plan after changes: " + planEntity);
     }
@@ -106,10 +109,19 @@ public class PlanDaoImpl implements PlanRepositoryDaoInterface {
         return entityManager.find(PlanEntity.class, planId);
     }
 
+    public PlanEntity getPlanEntityWithRelations(int planId) {
+        logger.debug("Getting planEntity for id: " + planId);
+        PlanEntity planEntity = entityManager.find(PlanEntity.class, planId);
+        Hibernate.initialize(planEntity.getAssignedActivities());
+        return planEntity;
+    }
+
     public List<ActivityEntity> getActivitiesEntitiesList(List<Integer> activitiesIds) {
-        return entityManager.createQuery("SELECT a from Activity a WHERE a.id in (:activtiesIds)", ActivityEntity.class)
+        List<ActivityEntity> activities = entityManager.createQuery("SELECT a from Activity a WHERE a.id in (:activtiesIds)", ActivityEntity.class)
                 .setParameter("activtiesIds", activitiesIds)
                 .getResultList();
+        activities.forEach(x->Hibernate.initialize(x.getAssigned_users()));
+        return activities;
     }
 
     @Override
@@ -117,7 +129,6 @@ public class PlanDaoImpl implements PlanRepositoryDaoInterface {
         ActivityEntity activityEntity = getActivityEntity(activityId);
         logger.debug("ActivityEntity: " + activityEntity);
         PlanEntity planEntity = getPlanEntity(planId);
-        logger.debug("PlanEntity: " + planEntity);
         if (activityEntity != null && planEntity != null) {
             if (planEntity.getAssignedActivities() == null) {
                 return false;

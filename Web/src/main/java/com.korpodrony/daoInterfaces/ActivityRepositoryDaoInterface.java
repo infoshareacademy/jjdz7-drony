@@ -27,6 +27,8 @@ public interface ActivityRepositoryDaoInterface {
 
     ActivityEntity getActivityEntity(int activityId);
 
+    ActivityEntity getActivityEntityWithRelations(int activityId);
+
     ActivityDTO getActivityDTO(int activityId);
 
     List<UserDTO> getAvailableUsersDTO(int activityId);

@@ -18,7 +18,7 @@ public class PlanEntity {
 
     private String name;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "plans_activities", joinColumns = {@JoinColumn(name = "plan_id",
             referencedColumnName = "id")}
             , inverseJoinColumns = {@JoinColumn(name = "activity_id",
