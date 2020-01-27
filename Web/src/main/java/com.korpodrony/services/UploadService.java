@@ -4,15 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
 import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
+import com.korpodrony.daoInterfaces.ReportsStatisticsDaoInterface;
 import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
-import com.korpodrony.entity.ActivityEntity;
-import com.korpodrony.entity.PlanEntity;
-import com.korpodrony.entity.UserEntity;
+import com.korpodrony.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -31,6 +31,9 @@ public class UploadService {
     @EJB
     PlanRepositoryDaoInterface planRepositoryDao;
 
+    @Inject
+    ReportsStatisticsDaoInterface reportsStatisticsDaoInterface;
+
     Logger logger = LoggerFactory.getLogger("com.korpodrony.services");
 
 
@@ -39,12 +42,16 @@ public class UploadService {
         logger.debug("file context: " + fileContentString);
         if (uploadUsers(fileContentString)) {
             logger.debug("Users successfully loaded");
+            reportsStatisticsDaoInterface.createReportsStatisticsEntry(View.UPLOAD_FILE, Action.USERS_FILE_UPLOAD);
             return;
         } else if (uploadActivities(fileContentString)) {
             logger.debug("Activities successfully loaded");
+            reportsStatisticsDaoInterface.createReportsStatisticsEntry(View.UPLOAD_FILE, Action.ACTIVITIES_FILE_UPLOAD);
+
             return;
         } else if (uploadPlans(fileContentString)) {
             logger.debug("Plans successfully loaded");
+            reportsStatisticsDaoInterface.createReportsStatisticsEntry(View.UPLOAD_FILE, Action.PLANS_FILE_UPLOAD);
             return;
         } else {
             logger.debug("No Entities loaded");

@@ -1,7 +1,7 @@
 package com.korpodrony.servlet;
 
+import com.korpodrony.daoInterfaces.ReportsStatisticsDaoInterface;
 import com.korpodrony.freemarker.TemplateProvider;
-import com.korpodrony.services.UsersWebService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -23,14 +23,14 @@ public class AdminPanelServlet extends HttpServlet {
     TemplateProvider templateProvider;
 
     @Inject
-    UsersWebService usersWebService;
+    ReportsStatisticsDaoInterface reportsStatisticsDaoInterface;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
         Map<String, Object> model = new HashMap<>();
-        model.put("users", usersWebService.getAllUsers());
+        model.put("reportsStatistics", reportsStatisticsDaoInterface.getAllReportsStatistics());
         Template template = templateProvider.getTemplate(getServletContext(), templateProvider.ADMIN_PANEL);
         try {
             template.process(model, writer);
