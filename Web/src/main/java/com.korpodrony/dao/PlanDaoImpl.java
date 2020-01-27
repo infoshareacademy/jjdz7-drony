@@ -52,7 +52,6 @@ public class PlanDaoImpl implements PlanRepositoryDaoInterface {
 
     @Override
     public void updatePlan(PlanEntity planEntity) {
-        entityManager.flush();
         entityManager.merge(planEntity);
         logger.debug("Plan after changes: " + planEntity);
     }
