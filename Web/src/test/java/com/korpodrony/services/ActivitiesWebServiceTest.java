@@ -61,10 +61,8 @@ class ActivitiesWebServiceTest {
     @Test
     void testGetAllActivities() {
         //given
-        int id = 0;
-        String name = "name";
-        ActivitiesType activitiesType = ActivitiesType.LECTURE;
-        List<SimplifiedActivityDTO> expected = Arrays.asList(new SimplifiedActivityDTO(id, name, activitiesType));
+        SimplifiedActivityDTO simplifiedActivityDTO = prepareSimplifiedActivityDTO();
+        List<SimplifiedActivityDTO> expected = Arrays.asList(simplifiedActivityDTO);
         when(activityRepositoryDao.getAllSimplifiedActivates()).thenReturn(expected);
 
         //when
@@ -77,15 +75,9 @@ class ActivitiesWebServiceTest {
     @Test
     void testGetActivityDTO() {
         //given
-        int id = 0;
-        String name = "name";
-        short maxUsers = (short) 30;
-        String surname = "surname";
-        String email = "email";
-        UserDTO userDTO = new UserDTO(id, name, surname, email);
-        byte duration = (byte) 3;
-        ActivitiesType activitiesType = ActivitiesType.LECTURE;
-        ActivityDTO activityDTO = new ActivityDTO(id, name, maxUsers, Arrays.asList(userDTO), duration, activitiesType);
+        int id = 1;
+        UserDTO userDTO = prepareUserDTO();
+        ActivityDTO activityDTO = prepareActivityDTO(userDTO, id);
         when(activityRepositoryDao.getActivityDTO(anyInt())).thenReturn(activityDTO);
 
         //when
@@ -100,7 +92,7 @@ class ActivitiesWebServiceTest {
         //given
         UserEntity userEntity = new UserEntity();
         ActivityEntity activityEntity = new ActivityEntity();
-        when(activityRepositoryDao.getActivityEntity(anyInt())).thenReturn(activityEntity);
+        when(activityRepositoryDao.getActivityEntityWithRelations(anyInt())).thenReturn(activityEntity);
         when(activityRepositoryDao.getUsersEntitiesList(any())).thenReturn(Arrays.asList(userEntity));
 
         //when
@@ -128,16 +120,12 @@ class ActivitiesWebServiceTest {
     @Test
     void testUnassignUsersFromActivity() {
         //given
-        ActivityEntity activityEntity = new ActivityEntity();
         int activity_id = 1;
-        activityEntity.setId(activity_id);
-        UserEntity userEntity = new UserEntity();
+        ActivityEntity activityEntity = prepareActivityEntity(activity_id);
         int user_id = 1;
-        userEntity.setId(user_id);
-        HashSet<UserEntity> users = new HashSet<>();
-        users.add(userEntity);
-        activityEntity.setAssigned_users(users);
-        when(activityRepositoryDao.getActivityEntity(anyInt())).thenReturn(activityEntity);
+        UserEntity userEntity = prepareUserEntity(user_id);
+        prepareAssignedUsers(activityEntity, userEntity);
+        when(activityRepositoryDao.getActivityEntityWithRelations(anyInt())).thenReturn(activityEntity);
 
         //when
         boolean result = testObj.unassignUsersFromActivity(Arrays.asList(Integer.valueOf(user_id)), activity_id);
@@ -216,11 +204,7 @@ class ActivitiesWebServiceTest {
     @Test
     void testGetAvailableUserDTO() {
         //given
-        int id = 1;
-        String name = "name";
-        String surname = "surname";
-        String email = "email";
-        UserDTO userDTO = new UserDTO(id, name, surname, email);
+        UserDTO userDTO = prepareUserDTO();
         List<UserDTO> expected = Arrays.asList(userDTO);
         int activityId = 0;
         when(activityRepositoryDao.getAvailableUsersDTO(anyInt())).thenReturn(expected);
@@ -236,9 +220,8 @@ class ActivitiesWebServiceTest {
     void testGetAllActivitiesByActivityType() {
         //given
         ActivitiesType lecture = ActivitiesType.LECTURE;
-        int id = 1;
-        String name = "name";
-        List<SimplifiedActivityDTO> expected = Arrays.asList(new SimplifiedActivityDTO(id, name, lecture));
+        SimplifiedActivityDTO simplifiedActivityDTO = prepareSimplifiedActivityDTO(lecture);
+        List<SimplifiedActivityDTO> expected = Arrays.asList(simplifiedActivityDTO);
         when(activityRepositoryDao.getAllSimplifiedActivates(lecture)).thenReturn(expected);
 
         //when
@@ -246,5 +229,52 @@ class ActivitiesWebServiceTest {
 
         //then
         assertThat(result).isEqualTo(expected);
+    }
+
+    private SimplifiedActivityDTO prepareSimplifiedActivityDTO() {
+        int id = 0;
+        String name = "name";
+        ActivitiesType activitiesType = ActivitiesType.LECTURE;
+        return new SimplifiedActivityDTO(id, name, activitiesType);
+    }
+
+    private UserDTO prepareUserDTO() {
+        int id = 1;
+        String name = "name";
+        String surname = "surname";
+        String email = "email";
+        return new UserDTO(id, name, surname, email);
+    }
+
+    private ActivityDTO prepareActivityDTO(UserDTO userDTO, int id) {
+        String name = "name";
+        byte duration = (byte) 3;
+        short maxUsers = (short) 30;
+        ActivitiesType activitiesType = ActivitiesType.LECTURE;
+        return new ActivityDTO(id, name, maxUsers, Arrays.asList(userDTO), duration, activitiesType);
+    }
+
+    private ActivityEntity prepareActivityEntity(int activity_id) {
+        ActivityEntity activityEntity = new ActivityEntity();
+        activityEntity.setId(activity_id);
+        return activityEntity;
+    }
+
+    private UserEntity prepareUserEntity(int userId) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(userId);
+        return userEntity;
+    }
+
+    private void prepareAssignedUsers(ActivityEntity activityEntity, UserEntity userEntity) {
+        HashSet<UserEntity> users = new HashSet<>();
+        users.add(userEntity);
+        activityEntity.setAssigned_users(users);
+    }
+
+    private SimplifiedActivityDTO prepareSimplifiedActivityDTO(ActivitiesType lecture) {
+        int id = 1;
+        String name = "name";
+        return new SimplifiedActivityDTO(id, name, lecture);
     }
 }
