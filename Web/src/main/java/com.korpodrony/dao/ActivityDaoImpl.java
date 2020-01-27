@@ -1,15 +1,19 @@
 package com.korpodrony.dao;
 
 import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
+import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
 import com.korpodrony.dto.ActivityDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.UserDTO;
 import com.korpodrony.entity.ActivityEntity;
+import com.korpodrony.entity.PermissionLevel;
+import com.korpodrony.entity.PlanEntity;
 import com.korpodrony.entity.UserEntity;
 import com.korpodrony.model.ActivitiesType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -17,9 +21,13 @@ import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
+
+    @EJB
+    PlanRepositoryDaoInterface planRepositoryDao;
 
     @PersistenceContext(unitName = "korpodrony-hibernate")
     private EntityManager entityManager;
@@ -53,53 +61,58 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
         return activityEntity.getId();
     }
 
-    public boolean assignUserToActivity(int userID, int activityID) {
+    public boolean assignUsersToActivity(List<Integer> usersIds, int activityID) {
         ActivityEntity activityEntity = getActivityEntity(activityID);
         logger.debug("activityEntity: " + activityEntity);
-        UserEntity userEntity = getUserEntity(userID);
-        logger.debug("userEntity: " + userEntity);
-        if (activityEntity != null && userEntity != null) {
+        logger.debug("users ids: " + usersIds);
+        if (activityEntity != null && usersIds != null) {
             if (activityEntity.getAssigned_users() == null) {
                 activityEntity.setAssigned_users(new HashSet<>());
                 logger.debug("new HashSet created");
-            } else if (checkIfMaxUsersLimitsReached(activityEntity)) {
-                logger.debug("Users max limit reached");
-                return false;
             }
-            boolean result = activityEntity.getAssigned_users().add(userEntity);
+            List<Integer> userIdsListToAssign = getUserIdsListToAssign(usersIds, activityEntity);
+            getUsersEntitiesList(userIdsListToAssign).forEach(x -> activityEntity.getAssigned_users()
+                    .add(x)
+            );
             entityManager.merge(activityEntity);
-            logger.debug("userEntity assigned to Activity: " + result);
-            return result;
+            logger.debug("usersEntities assigned to Activity");
+            return true;
         }
         return false;
     }
 
-    public boolean unassignUserFromActivity(int userID, int activityID) {
+    public boolean unassignUsersFromActivity(List<Integer> usersIds, int activityID) {
         ActivityEntity activityEntity = getActivityEntity(activityID);
         logger.debug("activityEntity: " + activityEntity);
-        UserEntity userEntity = getUserEntity(userID);
-        logger.debug("userEntity: " + userEntity);
-        if (activityEntity != null && userEntity != null) {
+        logger.debug("userIds " + usersIds);
+        if (activityEntity != null && usersIds != null) {
             if (activityEntity.getAssigned_users() == null) {
                 logger.debug("no assigned users to activity");
                 return false;
             }
-            boolean result = activityEntity.getAssigned_users()
-                    .remove(userEntity);
+            activityEntity.setAssigned_users(activityEntity.getAssigned_users()
+                    .stream()
+                    .filter(x -> !usersIds.contains(x.getId()))
+                    .collect(Collectors.toSet())
+            );
             entityManager.merge(activityEntity);
-            logger.debug("userEntity unassigned from Activity: " + result);
-            return result;
+            logger.debug("usersEntities unassigned from Activity");
+            return true;
         }
         return false;
     }
 
     public boolean deleteActivity(int activityID) {
         if (hasActivityWithThisID(activityID)) {
+            entityManager.createQuery(
+                    "select p from Plan p join p.assignedActivities a where a.id=:id", PlanEntity.class)
+                    .setParameter("id", activityID)
+                    .getResultList().forEach(x -> planRepositoryDao.unassignActivityFromPlan(activityID, x.getId()));
+            entityManager.flush();
             entityManager.createQuery("DELETE FROM Activity a WHERE a.id=:id")
                     .setParameter("id", activityID)
                     .executeUpdate();
             entityManager.flush();
-            entityManager.clear();
             logger.info("Activity with id: " + activityID + "has been removed");
             return true;
         } else {
@@ -114,7 +127,7 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
             logger.debug("Activity with id: " + activityID + "doesn't exist");
             return false;
         }
-        if (activityEntity.getAssigned_users().size() > maxUsers) {
+        if (checkIfMaxUsersIsSmallerThanAssignedUsersNumber(maxUsers, activityEntity)) {
             logger.debug("Activity with id: " + activityID + "has more users: " + activityEntity.getAssigned_users().size() + "  than max users: " + maxUsers);
             return false;
         }
@@ -188,9 +201,10 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
 
     public List<UserDTO> getAvailableUsersDTO(int activityId) {
         logger.debug("Getting availableUsersDTOs for Activity with id: " + activityId);
-        return entityManager.createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname)" +
-                " from User u WHERE u NOT IN (select u from Activity a join a.assigned_users u where a.id=:id)", UserDTO.class)
+        return entityManager.createQuery("SELECT new com.korpodrony.dto.UserDTO(u.id, u.name, u.surname, u.email)" +
+                " from User u WHERE u NOT IN (select u from Activity a join a.assigned_users u where a.id=:id) and u.permissionLevel=:level", UserDTO.class)
                 .setParameter("id", activityId)
+                .setParameter("level", PermissionLevel.USER)
                 .getResultList();
     }
 
@@ -208,16 +222,21 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
         }
     }
 
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    private List<Integer> getUserIdsListToAssign(List<Integer> usersIds, ActivityEntity activityEntity) {
+        int numberOfPlaces = activityEntity.getMaxUsers() - activityEntity.getAssigned_users().size();
+        if (numberOfPlaces < usersIds.size()) {
+            return usersIds.subList(0, numberOfPlaces);
+        }
+        return usersIds;
     }
 
-    private UserEntity getUserEntity(int userId) {
-        logger.debug("Getting UserEntity for id: " + userId);
-        return entityManager.find(UserEntity.class, userId);
+    private List<UserEntity> getUsersEntitiesList(List<Integer> usersIds) {
+        return entityManager.createQuery("SELECT u from User u WHERE u.id in (:usersIds)", UserEntity.class)
+                .setParameter("usersIds", usersIds)
+                .getResultList();
     }
 
-    private boolean checkIfMaxUsersLimitsReached(ActivityEntity activityEntity) {
-        return activityEntity.getAssigned_users().size() == activityEntity.getMaxUsers();
+    private boolean checkIfMaxUsersIsSmallerThanAssignedUsersNumber(short maxUsers, ActivityEntity activityEntity) {
+        return activityEntity.getAssigned_users() != null && activityEntity.getAssigned_users().size() > maxUsers;
     }
 }

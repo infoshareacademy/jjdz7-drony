@@ -107,8 +107,10 @@ public class UploadService {
         preparePlansActivities(planEntities);
         planEntities.forEach(plan -> {
             plan.setId(planRepositoryDao.createPlan(plan));
-            plan.getAssignedActivities().forEach(
-                    activity -> planRepositoryDao.assignActivityToPlan(activity.getId(), plan.getId())
+            planRepositoryDao.assignActivitiesToPlan(plan.getAssignedActivities()
+                    .stream()
+                    .map(ActivityEntity::getId)
+                    .collect(Collectors.toList()), plan.getId()
             );
         });
     }
@@ -158,7 +160,8 @@ public class UploadService {
         logger.debug("Updating user: " + userEntity);
         int userId = userRepositoryDao.getUserIdByEmail(userEntity.getEmail());
         if (userId == 0) {
-            userId = userRepositoryDao.createUser(userEntity.getName(), userEntity.getSurname(), userEntity.getEmail());
+            userId = userRepositoryDao.createUser(userEntity.getName(), userEntity.getSurname(),
+                    userEntity.getEmail(), userEntity.getPermissionLevel());
         }
         userEntity.setId(userId);
         return userEntity;

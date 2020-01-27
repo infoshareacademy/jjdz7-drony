@@ -1,10 +1,10 @@
 package com.korpodrony.entity;
 
 import com.korpodrony.dto.UserDTO;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity(name = "User")
 @Table(name = "users")
@@ -19,16 +19,22 @@ public class UserEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
-    public UserEntity(String name, String surname) {
+    @Column
+    @ColumnDefault(value = "2")
+    @Enumerated(EnumType.ORDINAL)
+    private PermissionLevel permissionLevel;
+
+    public UserEntity(String name, String surname, PermissionLevel permissionLevel) {
         this.name = name;
         this.surname = surname;
+        this.permissionLevel = permissionLevel;
     }
 
     public UserEntity() {
     }
 
     public UserDTO createUserDTO() {
-        return new UserDTO(id, name, surname);
+        return new UserDTO(id, name, surname, email);
     }
 
     public String getEmail() {
@@ -62,6 +68,15 @@ public class UserEntity {
     public void setSurname(String surname) {
         this.surname = surname;
     }
+
+    public PermissionLevel getPermissionLevel() {
+        return permissionLevel;
+    }
+
+    public void setPermissionLevel(PermissionLevel permissionLevel) {
+        this.permissionLevel = permissionLevel;
+    }
+
 
     @Override
     public String toString() {

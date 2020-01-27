@@ -42,14 +42,14 @@ public class ActivitiesWebService {
         return activityRepositoryDao.getActivityDTO(activityId);
     }
 
-    public boolean assignUserToActivity(int userId, int activityId) {
-        logger.debug("Assigning user to activity called");
-        return activityRepositoryDao.assignUserToActivity(userId, activityId);
+    public boolean assignUsersToActivity(List<Integer> usersIds, int activityId) {
+        logger.debug("Assigning users to activity called");
+        return activityRepositoryDao.assignUsersToActivity(usersIds, activityId);
     }
 
-    public boolean unassignUserFromActivity(int userId, int activityId) {
-        logger.debug("Unssigning user to activity called");
-        return activityRepositoryDao.unassignUserFromActivity(userId, activityId);
+    public boolean unassignUsersFromActivity(List<Integer> usersIds, int activityId) {
+        logger.debug("Unssigning users from activity called");
+        return activityRepositoryDao.unassignUsersFromActivity(usersIds, activityId);
     }
 
     public boolean deleteActivity(int activityId) {
