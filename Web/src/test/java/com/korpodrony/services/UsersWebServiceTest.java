@@ -34,27 +34,23 @@ class UsersWebServiceTest {
     @Test
     void shouldGetAllUsers() {
         //given
-        String name = "name";
-        String surname = "surname";
-        String email = "email";
+        UserDTO userDTO = prepareUserDTO();
+        List<UserDTO> expected = Arrays.asList(userDTO);
         when(userRepositoryDao.getAllUsers())
-                .thenReturn(Arrays.asList(new UserDTO(0, name, surname, email)));
+                .thenReturn(expected);
 
         //when
         List<UserDTO> result = testObj.getAllUsers();
 
         //then
-        assertThat(result).isEqualTo(Arrays.asList(new UserDTO(0, name, surname, email)));
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
     void shouldGetAllUserEntities() {
         //given
         int user_id = 1;
-        String name = "name";
-        String surname = "surname";
-        PermissionLevel admin = PermissionLevel.ADMIN;
-        UserEntity expectedUser = new UserEntity(name, surname, admin);
+        UserEntity expectedUser = prepareUserEntity(PermissionLevel.ADMIN);
         expectedUser.setId(user_id);
         when(userRepositoryDao.getAllUsersEntities())
                 .thenReturn(Arrays.asList(expectedUser));
@@ -98,13 +94,11 @@ class UsersWebServiceTest {
     void shouldCreateUser() {
         //given
         int expectedId = 1;
-        String name = "name";
-        String surname = "surname";
-        PermissionLevel admin = PermissionLevel.ADMIN;
+        UserEntity userEntity = prepareUserEntity(PermissionLevel.ADMIN);
         when(userRepositoryDao.createUser(any())).thenReturn(expectedId);
 
         //when
-        int result = testObj.createUser(new UserEntity(name, surname, admin));
+        int result = testObj.createUser(userEntity);
 
         //then
         assertThat(result).isEqualTo(expectedId);
@@ -114,11 +108,8 @@ class UsersWebServiceTest {
     void shouldUpdatePermissionLevel() {
         //given
         int userId = 0;
-        String name = "name";
-        String surname = "surname";
-        PermissionLevel permissionLevel = PermissionLevel.USER;
         PermissionLevel expectedPermissionLevel = PermissionLevel.ADMIN;
-        UserEntity userEntity = new UserEntity(name, surname, permissionLevel);
+        UserEntity userEntity = prepareUserEntity(PermissionLevel.USER);
         when(userRepositoryDao.getUserEntity(anyInt())).thenReturn(userEntity);
 
         //when
@@ -132,10 +123,7 @@ class UsersWebServiceTest {
     void shouldThrowExceptionWhenUpdatePermissionLevel() {
         //given
         int userId = 0;
-        String name = "name";
-        String surname = "surname";
-        PermissionLevel permissionLevel = PermissionLevel.USER;
-        UserEntity userEntity = new UserEntity(name, surname, permissionLevel);
+        UserEntity userEntity = prepareUserEntity(PermissionLevel.USER);
         when(userRepositoryDao.getUserEntity(anyInt())).thenReturn(userEntity);
 
         //when
@@ -174,5 +162,19 @@ class UsersWebServiceTest {
         assertThatThrownBy(() -> testObj.findUserIdByEmail(null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Email cannot be null");
+    }
+
+    private UserDTO prepareUserDTO() {
+        String name = "name";
+        String surname = "surname";
+        String email = "email";
+        return new UserDTO(1, name, surname, email);
+    }
+
+    private UserEntity prepareUserEntity(PermissionLevel permissionLevel) {
+        String name = "name";
+        String surname = "surname";
+        PermissionLevel admin = permissionLevel;
+        return new UserEntity(name, surname, admin);
     }
 }
