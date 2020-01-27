@@ -35,9 +35,8 @@ class PlansWebServiceTest {
     @Test
     void testGetAllPlans() {
         //given
-        int id = 0;
-        String name = "name";
-        List<SimplifiedPlanDTO> expected = Arrays.asList(new SimplifiedPlanDTO(id, name));
+        SimplifiedPlanDTO simplifiedPlanDTO = prepareSimplifiedPlanDTO();
+        List<SimplifiedPlanDTO> expected = Arrays.asList(simplifiedPlanDTO);
         when(planRepositoryDao.getAllSimplifiedPlansDTO()).thenReturn(expected);
 
         //when
@@ -64,7 +63,8 @@ class PlansWebServiceTest {
     void testGetPlanDTO() {
         //given
         int id = 1;
-        PlanDTO expected = new PlanDTO(0, "name", Arrays.asList(new SimplifiedActivityDTO(0, "name", ActivitiesType.LECTURE)));
+        SimplifiedActivityDTO simplifiedActivityDTO = prepareSimplifiedActivityDTO();
+        PlanDTO expected = preparePlanDTO(simplifiedActivityDTO);
         when(planRepositoryDao.getPlanDTO(anyInt())).thenReturn(expected);
 
         //when
@@ -90,10 +90,8 @@ class PlansWebServiceTest {
     @Test
     void testGetAvailableActivities() {
         //given
-        int id = 0;
-        String name = "name";
-        ActivitiesType lecture = ActivitiesType.LECTURE;
-        List<SimplifiedActivityDTO> expected = Arrays.asList(new SimplifiedActivityDTO(id, name, lecture));
+        SimplifiedActivityDTO simplifiedActivityDTO = prepareSimplifiedActivityDTO();
+        List<SimplifiedActivityDTO> expected = Arrays.asList(simplifiedActivityDTO);
         when(planRepositoryDao.getAvailableSimplifiedActivitiesDTO(anyInt())).thenReturn(expected);
         int planId = 1;
 
@@ -212,5 +210,19 @@ class PlansWebServiceTest {
 
         //then
         assertThat(result).isEqualTo(expectedId);
+    }
+
+    private SimplifiedPlanDTO prepareSimplifiedPlanDTO() {
+        int id = 0;
+        String name = "name";
+        return new SimplifiedPlanDTO(id, name);
+    }
+
+    private SimplifiedActivityDTO prepareSimplifiedActivityDTO() {
+        return new SimplifiedActivityDTO(0, "name", ActivitiesType.LECTURE);
+    }
+
+    private PlanDTO preparePlanDTO(SimplifiedActivityDTO simplifiedActivityDTO) {
+        return new PlanDTO(0, "name", Arrays.asList(simplifiedActivityDTO));
     }
 }
