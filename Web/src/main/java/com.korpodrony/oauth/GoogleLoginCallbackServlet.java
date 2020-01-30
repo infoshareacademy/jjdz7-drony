@@ -14,6 +14,9 @@ import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.korpodrony.dto.AuthUserDTO;
 import com.korpodrony.entity.PermissionLevel;
+import com.korpodrony.reports.entity.Action;
+import com.korpodrony.reports.entity.View;
+import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;
 import com.korpodrony.services.UsersWebService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +41,9 @@ public class GoogleLoginCallbackServlet extends AbstractAuthorizationCodeCallbac
     @Inject
     private UsersWebService usersWebService;
 
+    @Inject
+    ReportsStatisticsRestConsumerInterface reportsStatisticsRestConsumerInterface;
+
     @Override
     protected void onSuccess(HttpServletRequest req, HttpServletResponse resp, Credential credential)
             throws IOException {
@@ -45,6 +51,7 @@ public class GoogleLoginCallbackServlet extends AbstractAuthorizationCodeCallbac
         setSessionAttributes(req, verifiedUser);
         setSessionAtrrUserType(req);
         resp.sendRedirect(REDIRECT);
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.LOGGING, Action.LOGIN);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.korpodrony.entity;
+package com.korpodrony.reports.entity;
 
 public enum View {
 
@@ -8,5 +8,6 @@ public enum View {
     SEARCH,
     UPLOAD_FILE,
     ADMIN_PANEL,
+    LOGGING,
 
 }

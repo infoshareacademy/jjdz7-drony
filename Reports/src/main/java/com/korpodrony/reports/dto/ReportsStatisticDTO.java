@@ -1,7 +1,7 @@
-package com.korpodrony.dto;
+package com.korpodrony.reports.dto;
 
-import com.korpodrony.entity.Action;
-import com.korpodrony.entity.View;
+import com.korpodrony.reports.entity.Action;
+import com.korpodrony.reports.entity.View;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -20,6 +20,9 @@ public class ReportsStatisticDTO {
         this.view = view;
         this.action = action;
         this.timeOfAction = timeOfAction;
+    }
+
+    public ReportsStatisticDTO() {
     }
 
     public int getId() {

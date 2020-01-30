@@ -1,4 +1,4 @@
-package com.korpodrony.entity;
+package com.korpodrony.reports.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

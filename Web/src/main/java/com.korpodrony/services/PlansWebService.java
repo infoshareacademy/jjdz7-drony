@@ -1,12 +1,12 @@
 package com.korpodrony.services;
 
 import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
-import com.korpodrony.daoInterfaces.ReportsStatisticsDaoInterface;
 import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.SimplifiedPlanDTO;
-import com.korpodrony.entity.Action;
-import com.korpodrony.entity.View;
+import com.korpodrony.reports.entity.Action;
+import com.korpodrony.reports.entity.View;
+import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +22,7 @@ public class PlansWebService {
     PlanRepositoryDaoInterface planRepositoryDao;
 
     @Inject
-    ReportsStatisticsDaoInterface reportsStatisticsDaoInterface;
+    ReportsStatisticsRestConsumerInterface reportsStatisticsRestConsumerInterface;
 
     Logger logger = LoggerFactory.getLogger("com.korpodrony.services");
 
@@ -43,13 +43,13 @@ public class PlansWebService {
 
     public boolean deletePlan(int planId) {
         logger.debug("deletePlan called");
-        reportsStatisticsDaoInterface.createReportsStatisticsEntry(View.PLANS, Action.DELETE);
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.PLANS, Action.DELETE);
         return planRepositoryDao.deletePlan(planId);
     }
 
     public List<SimplifiedActivityDTO> getAvailableActivities(int planId) {
         logger.debug("getAvailableActivities called");
-        reportsStatisticsDaoInterface.createReportsStatisticsEntry(View.PLANS, Action.GET_AVAILABLE_LIST);
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.PLANS, Action.GET_AVAILABLE_LIST);
         return planRepositoryDao.getAvailableSimplifiedActivitiesDTO(planId);
     }
 
@@ -65,13 +65,13 @@ public class PlansWebService {
 
     public boolean editPlan(int planId, String name) {
         logger.debug("editPlan called");
-        reportsStatisticsDaoInterface.createReportsStatisticsEntry(View.PLANS, Action.EDIT);
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.PLANS, Action.EDIT);
         return planRepositoryDao.editPlan(planId, name);
     }
 
     public int createPlan(String name) {
         logger.debug("createPlan called");
-        reportsStatisticsDaoInterface.createReportsStatisticsEntry(View.PLANS, Action.ADD);
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.PLANS, Action.ADD);
         return planRepositoryDao.createPlan(name);
     }
 }

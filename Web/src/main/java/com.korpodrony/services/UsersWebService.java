@@ -1,14 +1,13 @@
 package com.korpodrony.services;
 
-import com.korpodrony.daoInterfaces.ReportsStatisticsDaoInterface;
 import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
 import com.korpodrony.dto.AuthUserDTO;
 import com.korpodrony.dto.UserDTO;
-import com.korpodrony.entity.Action;
-import com.korpodrony.entity.View;
 import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.entity.UserEntity;
-import com.korpodrony.entity.View;
+import com.korpodrony.reports.entity.Action;
+import com.korpodrony.reports.entity.View;
+import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +23,7 @@ public class UsersWebService {
     UserRepositoryDaoInterface userRepositoryDao;
 
     @Inject
-    ReportsStatisticsDaoInterface reportsStatisticsDaoInterface;
+    ReportsStatisticsRestConsumerInterface reportsStatisticsRestConsumerInterface;
 
     @Inject
     CurrentUserService currentUserService;
@@ -33,7 +32,7 @@ public class UsersWebService {
 
     public List<UserDTO> getAllUsers() {
         logger.debug("getAllUsers called");
-        reportsStatisticsDaoInterface.createReportsStatisticsEntry(View.USERS, Action.GET_AVAILABLE_LIST);
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.USERS, Action.GET_AVAILABLE_LIST);
         return userRepositoryDao.getAllUsers();
     }
 
@@ -47,7 +46,7 @@ public class UsersWebService {
     }
 
     public int createUser(String name, String surname, String email, PermissionLevel permissionLevel) {
-        reportsStatisticsDaoInterface.createReportsStatisticsEntry(View.USERS, Action.ADD);
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.USERS, Action.ADD);
         return userRepositoryDao.createUser(name, surname, email, permissionLevel);
     }
 

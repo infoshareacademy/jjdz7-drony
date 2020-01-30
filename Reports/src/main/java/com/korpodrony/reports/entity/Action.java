@@ -1,4 +1,4 @@
-package com.korpodrony.entity;
+package com.korpodrony.reports.entity;
 
 public enum Action {
 
@@ -9,4 +9,6 @@ public enum Action {
     USERS_FILE_UPLOAD,
     PLANS_FILE_UPLOAD,
     ACTIVITIES_FILE_UPLOAD,
+    LOGIN,
+    LOGOUT,
 }

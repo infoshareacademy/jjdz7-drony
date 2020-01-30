@@ -2,11 +2,11 @@ package com.korpodrony.services;
 
 import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
 import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
-import com.korpodrony.daoInterfaces.ReportsStatisticsDaoInterface;
 import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
 import com.korpodrony.dto.UserDTO;
-import com.korpodrony.entity.Action;
-import com.korpodrony.entity.View;
+import com.korpodrony.reports.entity.Action;
+import com.korpodrony.reports.entity.View;
+import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;
 import com.korpodrony.utils.JSONWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class SearchWebService {
     ActivityRepositoryDaoInterface activityRepositoryDao;
 
     @Inject
-    ReportsStatisticsDaoInterface reportsStatisticsDaoInterface;
+    ReportsStatisticsRestConsumerInterface reportsStatisticsRestConsumerInterface;
 
     Logger logger = LoggerFactory.getLogger("com.korpodrony.services");
 
@@ -43,7 +43,7 @@ public class SearchWebService {
             userDTObyName = userRepositoryDao.getUserDTObyName(credentials[0], credentials[1]);
         }
         logger.debug("result: " + userDTObyName);
-        reportsStatisticsDaoInterface.createReportsStatisticsEntry(View.SEARCH, Action.GET_AVAILABLE_LIST);
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.SEARCH, Action.GET_AVAILABLE_LIST);
         return JSONWriter.generateJsonString(
                 userDTObyName
         );
