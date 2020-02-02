@@ -1,6 +1,7 @@
 FROM jboss/wildfly:18.0.0.Final
 
 ADD Web/target/LibrisWeb.war /opt/jboss/wildfly/standalone/deployments/
+#ADD Reports/target/reports-1.0-SNAPSHOT.jar /opt/jboss/wildfly/standalone/deployments/
 
 RUN /opt/jboss/wildfly/bin/add-user.sh root korpodrony --silent
 CMD ["echo Waiting 5 seconds"]

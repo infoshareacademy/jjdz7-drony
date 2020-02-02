@@ -23,3 +23,14 @@ services:
     links:
       - mysql
     dns: 8.8.8.8
+#  reports:
+#    build:
+#      context: Reports
+#    ports:
+#      - 4393:8080
+#      - 4394:9990
+#    depends_on:
+#      - mysql
+#    links:
+#      - mysql
+#    dns: 8.8.8.8
