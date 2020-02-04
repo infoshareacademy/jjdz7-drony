@@ -12,7 +12,6 @@
     <modules>
         <module>App</module>
         <module>Web</module>
-        <module>Reports</module>
     </modules>
 
     <properties>

@@ -16,7 +16,7 @@ public class ReportsStatisticsDaoImpl implements ReportsStatisticsInterface {
 
     private Logger logger = LoggerFactory.getLogger(ReportsStatisticsDaoImpl.class);
 
-    @PersistenceContext(unitName = "korpodrony-hibernate-reports")
+    @PersistenceContext(unitName = "korpodrony-hibernate")
     private EntityManager entityManager;
 
     @Override

@@ -8,5 +8,7 @@ public class ReportsConstants {
 
     public static final String API_PATH = "/api";
 
-    public static final String URL = "http://localhost:8080" + API_PATH;
+    public static final String REST_PREFIX = "/rest";
+
+    public static final String URL = "http://localhost:8080" + REST_PREFIX + API_PATH;
 }

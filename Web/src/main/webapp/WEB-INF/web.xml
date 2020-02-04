@@ -3,6 +3,10 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 <web-app>
     <context-param>
+        <param-name>resteasy.servlet.mapping.prefix</param-name>
+        <param-value>/rest</param-value>
+    </context-param>
+    <context-param>
         <param-name>province</param-name>
         <param-value>Warsaw</param-value>
     </context-param>
@@ -13,7 +17,7 @@
     <data-source>
         <name>java:ds/evc</name>
         <class-name>com.mysql.cj.jdbc.MysqlDataSource</class-name>
-        <url>jdbc:mysql://mysql:3306/organization?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>
+        <url>jdbc:mysql://0.0.0.0:4392/organization?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>
         <user>user</user>
         <password>secret2</password>
     </data-source>
