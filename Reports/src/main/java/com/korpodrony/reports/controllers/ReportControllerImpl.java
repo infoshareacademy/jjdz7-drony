@@ -13,11 +13,12 @@ import javax.ws.rs.core.Response;
 @Path(ReportsConstants.API_PATH)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ReportController {
+public class ReportControllerImpl { // implements ReportController {
 
     @Inject
     ReportsStatisticsInterface reportsStatistics;
 
+    // @Override
     @POST
     @Path(ReportsConstants.CREATE_ENTRY_ENDPOINT)
     public Response createEntry(@Valid ReportsStatisticDTO reportsStatisticDTO) {
@@ -28,6 +29,7 @@ public class ReportController {
                 .build();
     }
 
+    // @Override
     @GET
     @Path(ReportsConstants.GET_ALL_STATISTICS_ENDPOINT)
     public Response getAllStatistics() {

@@ -3,10 +3,12 @@ package com.korpodrony.reports.dto;
 import com.korpodrony.reports.entity.Action;
 import com.korpodrony.reports.entity.View;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-public class ReportsStatisticDTO {
+public class ReportsStatisticDTO implements Serializable {
+
+    private static final long serialVersionUID = 42L;
 
     private int id;
     private String email;
@@ -63,22 +65,5 @@ public class ReportsStatisticDTO {
 
     public void setTimeOfAction(LocalDateTime timeOfAction) {
         this.timeOfAction = timeOfAction;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ReportsStatisticDTO that = (ReportsStatisticDTO) o;
-        return id == that.id &&
-                Objects.equals(email, that.email) &&
-                Objects.equals(view, that.view) &&
-                Objects.equals(action, that.action) &&
-                Objects.equals(timeOfAction, that.timeOfAction);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email, view, action, timeOfAction);
     }
 }

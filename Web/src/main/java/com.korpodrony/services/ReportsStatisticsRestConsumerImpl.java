@@ -5,6 +5,7 @@ import com.korpodrony.reports.dto.ReportsStatisticDTO;
 import com.korpodrony.reports.entity.Action;
 import com.korpodrony.reports.entity.View;
 import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +14,6 @@ import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
@@ -38,17 +38,22 @@ public class ReportsStatisticsRestConsumerImpl implements ReportsStatisticsRestC
             return;
         }
 
-        Client client = ClientBuilder.newClient();
-        String restUrl = ReportsConstants.URL + ReportsConstants.CREATE_ENTRY_ENDPOINT;
-        WebTarget target = client.target(restUrl);
+        Client client = ClientBuilder.newClient().register(new JacksonFeature());
 
         ReportsStatisticDTO reportStatisticsDto = createReportStatisticsDTO(view, action, email);
 
-        Response response = target
+        Response response = client
+                .target(ReportsConstants.URL)
+                .path(ReportsConstants.CREATE_ENTRY_ENDPOINT)
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(reportStatisticsDto, MediaType.APPLICATION_JSON));
 
         int status = response.getStatus();
+        if (status != 200) {
+            String s = response.readEntity(String.class);
+            logger.error("ERROR! {} ", s);
+
+        }
 
         logger.info("created reports statistics status: {} entry: {} ", status, reportStatisticsDto);
     }
