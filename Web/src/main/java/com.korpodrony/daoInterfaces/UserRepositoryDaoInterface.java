@@ -11,7 +11,7 @@ import java.util.List;
 @Local
 public interface UserRepositoryDaoInterface {
 
-    int createUser(String name, String surname, String email, PermissionLevel permissionLevel);
+    int createUser(UserEntity userEntity);
 
     AuthUserDTO getAuthUserDTO(String email);
 
@@ -21,9 +21,11 @@ public interface UserRepositoryDaoInterface {
 
     List<UserDTO> getUserDTObyName(String name, String surname);
 
-    void updateUserPermissionLevel(int userId, PermissionLevel permissionLevel);
+    void updateUser(UserEntity userEntity);
 
     int getUserIdByEmail(String email);
+
+    UserEntity getUserEntity(int userId);
 
     List<UserEntity> getAllUsersEntities();
 }

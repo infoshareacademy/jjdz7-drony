@@ -42,16 +42,24 @@ public class UsersWebService {
     }
 
     public int findUserIdByEmail(String email) {
+        if (email == null) {
+            throw new IllegalArgumentException("Email cannot be null");
+        }
         return userRepositoryDao.getUserIdByEmail(email);
     }
 
-    public int createUser(String name, String surname, String email, PermissionLevel permissionLevel) {
+    public int createUser(UserEntity userEntity) {
         reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.USERS, Action.ADD);
-        return userRepositoryDao.createUser(name, surname, email, permissionLevel);
+        return userRepositoryDao.createUser(userEntity);
     }
 
     public void updatePermissionLevel(int userId, PermissionLevel level) {
-        userRepositoryDao.updateUserPermissionLevel(userId, level);
+        if (level == null) {
+            throw new IllegalArgumentException("PermissionLevel cannot be null");
+        }
+        UserEntity userEntity = userRepositoryDao.getUserEntity(userId);
+        userEntity.setPermissionLevel(level);
+        userRepositoryDao.updateUser(userEntity);
     }
 
     public AuthUserDTO findAuthUserDTOByEmail(String email) {

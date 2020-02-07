@@ -2,10 +2,12 @@ package com.korpodrony.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.korpodrony.dao.PlanRepositoryDao;
 import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
 import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
 import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
 import com.korpodrony.entity.ActivityEntity;
+import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.entity.PlanEntity;
 import com.korpodrony.entity.UserEntity;
 import com.korpodrony.reports.entity.Action;
@@ -34,6 +36,9 @@ public class UploadService {
 
     @EJB
     PlanRepositoryDaoInterface planRepositoryDao;
+
+    @Inject
+    PlansWebService plansWebService;
 
     @Inject
     ReportsStatisticsRestConsumerInterface reportsStatisticsRestConsumerInterface;
@@ -111,7 +116,7 @@ public class UploadService {
         preparePlansActivities(planEntities);
         planEntities.forEach(plan -> {
             plan.setId(planRepositoryDao.createPlan(plan));
-            planRepositoryDao.assignActivitiesToPlan(plan.getAssignedActivities()
+            plansWebService.assignActivitiesToPlan(plan.getAssignedActivities()
                     .stream()
                     .map(ActivityEntity::getId)
                     .collect(Collectors.toList()), plan.getId()
@@ -164,10 +169,10 @@ public class UploadService {
         logger.debug("Updating user: " + userEntity);
         int userId = userRepositoryDao.getUserIdByEmail(userEntity.getEmail());
         if (userId == 0) {
-            userId = userRepositoryDao.createUser(userEntity.getName(), userEntity.getSurname(),
-                    userEntity.getEmail(), userEntity.getPermissionLevel());
+            userId = userRepositoryDao.createUser(userEntity);
         }
         userEntity.setId(userId);
+        userEntity.setPermissionLevel(PermissionLevel.USER);
         return userEntity;
     }
 

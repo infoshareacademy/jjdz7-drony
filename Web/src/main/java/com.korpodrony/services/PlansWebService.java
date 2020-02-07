@@ -4,6 +4,7 @@ import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
 import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.SimplifiedPlanDTO;
+import com.korpodrony.entity.PlanEntity;
 import com.korpodrony.reports.entity.Action;
 import com.korpodrony.reports.entity.View;
 import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;
@@ -14,6 +15,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestScoped
 public class PlansWebService {
@@ -54,24 +56,58 @@ public class PlansWebService {
     }
 
     public boolean assignActivitiesToPlan(List<Integer> activitiesIds, int planId) {
-        logger.debug("assignActivityToPlan called");
-        return planRepositoryDao.assignActivitiesToPlan(activitiesIds, planId);
+        PlanEntity planEntity = planRepositoryDao.getPlanEntityWithRelations(planId);
+        logger.debug("PlanEntity: " + planEntity + ", activtiesIds: " + activitiesIds);
+        if (planEntity != null && activitiesIds != null) {
+            planEntity.getAssignedActivities()
+                    .addAll(planRepositoryDao
+                            .getActivitiesEntitiesList(activitiesIds)
+                    );
+            planRepositoryDao.updatePlan(planEntity);
+            return true;
+        }
+        return false;
     }
 
     public boolean unassignActivitiesFromPlan(List<Integer> activitiesIds, int planId) {
-        logger.debug("unassignActivityFromPlan called");
-        return planRepositoryDao.unassignActivityFromPlan(activitiesIds, planId);
+        PlanEntity planEntity = planRepositoryDao.getPlanEntityWithRelations(planId);
+        logger.debug("PlanEntity: " + planEntity + ", activtiesIds: " + activitiesIds);
+        if (planEntity != null) {
+            if (checkIfAssignedActivitiesOrIdsToAssignAreNotNull(activitiesIds, planEntity)) {
+                return false;
+            }
+            planEntity.setAssignedActivities(planEntity.getAssignedActivities()
+                    .stream()
+                    .filter(x -> !activitiesIds.contains(x.getId()))
+                    .collect(Collectors.toSet())
+            );
+            planRepositoryDao.updatePlan(planEntity);
+            return true;
+        }
+        return false;
     }
 
     public boolean editPlan(int planId, String name) {
         logger.debug("editPlan called");
+        PlanEntity planEntity = planRepositoryDao.getPlanEntity(planId);
+        if (planEntity == null) {
+            return false;
+        }
+        planEntity.setName(name);
+        planRepositoryDao.updatePlan(planEntity);
         reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.PLANS, Action.EDIT);
-        return planRepositoryDao.editPlan(planId, name);
+        return true;
     }
 
     public int createPlan(String name) {
+        PlanEntity planEntity = new PlanEntity();
+        planEntity.setName(name);
         logger.debug("createPlan called");
         reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.PLANS, Action.ADD);
-        return planRepositoryDao.createPlan(name);
+        return planRepositoryDao.createPlan(planEntity);
+    }
+
+    private boolean checkIfAssignedActivitiesOrIdsToAssignAreNotNull(List<Integer> activityIDs, PlanEntity planEntity) {
+        return planEntity.getAssignedActivities() == null || activityIDs == null;
     }
 }
