@@ -3,6 +3,7 @@ package com.korpodrony.reports.dto;
 import com.korpodrony.reports.entity.Action;
 import com.korpodrony.reports.entity.View;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -11,17 +12,21 @@ public class ReportsStatisticDTO implements Serializable {
     private static final long serialVersionUID = 42L;
 
     private int id;
+    @NotNull
     private String email;
+    @NotNull
     private View view;
+    @NotNull
     private Action action;
-    private LocalDateTime timeOfAction;
+
+    private String timeOfAction;
 
     public ReportsStatisticDTO(int id, String email, View view, Action action, LocalDateTime timeOfAction) {
         this.id = id;
         this.email = email;
         this.view = view;
         this.action = action;
-        this.timeOfAction = timeOfAction;
+        this.timeOfAction = LocalDateTimeConverter.fromLocalDateTime(timeOfAction);
     }
 
     public ReportsStatisticDTO() {
@@ -59,11 +64,11 @@ public class ReportsStatisticDTO implements Serializable {
         this.action = action;
     }
 
-    public LocalDateTime getTimeOfAction() {
+    public String getTimeOfAction() {
         return timeOfAction;
     }
 
-    public void setTimeOfAction(LocalDateTime timeOfAction) {
+    public void setTimeOfAction(String timeOfAction) {
         this.timeOfAction = timeOfAction;
     }
 }

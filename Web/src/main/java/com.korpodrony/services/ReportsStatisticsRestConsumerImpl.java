@@ -1,6 +1,7 @@
 package com.korpodrony.services;
 
 import com.korpodrony.reports.client.ReportsConstants;
+import com.korpodrony.reports.dto.LocalDateTimeConverter;
 import com.korpodrony.reports.dto.ReportsStatisticDTO;
 import com.korpodrony.reports.entity.Action;
 import com.korpodrony.reports.entity.View;
@@ -49,7 +50,7 @@ public class ReportsStatisticsRestConsumerImpl implements ReportsStatisticsRestC
                 .post(Entity.entity(reportStatisticsDto, MediaType.APPLICATION_JSON));
 
         int status = response.getStatus();
-        if (status != 200) {
+        if (status != Response.Status.CREATED.getStatusCode()) {
             String s = response.readEntity(String.class);
             logger.error("ERROR! {} ", s);
 
@@ -60,15 +61,17 @@ public class ReportsStatisticsRestConsumerImpl implements ReportsStatisticsRestC
 
     private ReportsStatisticDTO createReportStatisticsDTO(View view, Action action, String email) {
 
-        LocalDateTime currentTime = LocalDateTime.now(ZoneId.systemDefault());
 
         ReportsStatisticDTO reportsStatisticDTO = new ReportsStatisticDTO();
         reportsStatisticDTO.setAction(action);
         reportsStatisticDTO.setEmail(email);
         reportsStatisticDTO.setView(view);
-        reportsStatisticDTO.setTimeOfAction(currentTime);
-        return reportsStatisticDTO;
 
+        LocalDateTime currentTime = LocalDateTime.now(ZoneId.systemDefault());
+        String localDateTimeString = LocalDateTimeConverter.fromLocalDateTime(currentTime);
+        reportsStatisticDTO.setTimeOfAction(localDateTimeString);
+
+        return reportsStatisticDTO;
     }
 
     @Override

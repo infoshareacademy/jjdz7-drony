@@ -1,5 +1,6 @@
 package com.korpodrony.reports.dao;
 
+import com.korpodrony.reports.dto.LocalDateTimeConverter;
 import com.korpodrony.reports.dto.ReportsStatisticDTO;
 import com.korpodrony.reports.entity.ReportsStatisticsEntity;
 import com.korpodrony.reports.interfaces.ReportsStatisticsInterface;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Stateless
@@ -26,8 +28,13 @@ public class ReportsStatisticsDaoImpl implements ReportsStatisticsInterface {
         reportsStatistics.setEmail(reportsStatisticDTO.getEmail());
         reportsStatistics.setView(reportsStatisticDTO.getView());
         reportsStatistics.setAction(reportsStatisticDTO.getAction());
-        reportsStatistics.setTimeOfAction(reportsStatisticDTO.getTimeOfAction());
+
+        String timeOfAction = reportsStatisticDTO.getTimeOfAction();
+        LocalDateTime localDateTime = LocalDateTimeConverter.fromStringToLocalDateTime(timeOfAction);
+        reportsStatistics.setTimeOfAction(localDateTime);
+
         entityManager.persist(reportsStatistics);
+        entityManager.flush();
         logger.info("created reports statistics: {} ", reportsStatistics);
         return reportsStatistics.getId();
     }
@@ -36,7 +43,7 @@ public class ReportsStatisticsDaoImpl implements ReportsStatisticsInterface {
     public List<ReportsStatisticDTO> getAllReportsStatistics() {
 
         logger.debug("Getting list of ReportsStatisticDTO");
-        return entityManager
+          return entityManager
                 .createQuery("SELECT new com.korpodrony.reports.dto.ReportsStatisticDTO(r.id, r.email, r.view, r.action, r.timeOfAction) FROM ReportsStatistics r", ReportsStatisticDTO.class)
                 .getResultList();
     }
