@@ -1,4 +1,4 @@
-package com.korpodrony.reports.dao;
+package com.korpodrony.dao;
 
 import com.korpodrony.reports.dto.ReportsStatisticDTO;
 import com.korpodrony.reports.entity.ReportsStatisticsEntity;
@@ -16,7 +16,7 @@ public class ReportsStatisticsDaoImpl implements ReportsStatisticsInterface {
 
     private Logger logger = LoggerFactory.getLogger(ReportsStatisticsDaoImpl.class);
 
-    @PersistenceContext(unitName = "korpodrony-hibernate-reports")
+    @PersistenceContext(unitName = "korpodrony-hibernate")
     private EntityManager entityManager;
 
     @Override

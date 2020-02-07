@@ -1,4 +1,4 @@
-package com.korpodrony.reports.controllers;
+package com.korpodrony.controllers;
 
 import com.korpodrony.reports.client.ReportsConstants;
 import com.korpodrony.reports.dto.ReportsStatisticDTO;
@@ -13,23 +13,20 @@ import javax.ws.rs.core.Response;
 @Path(ReportsConstants.API_PATH)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ReportControllerImpl { // implements ReportController {
+public class ReportControllerImpl {
 
     @Inject
     ReportsStatisticsInterface reportsStatistics;
 
-    // @Override
     @POST
     @Path(ReportsConstants.CREATE_ENTRY_ENDPOINT)
     public Response createEntry(@Valid ReportsStatisticDTO reportsStatisticDTO) {
 
-        return Response
-                .status(Response.Status.CREATED)
-                .entity(reportsStatistics.createReportsStatisticsEntry(reportsStatisticDTO))
-                .build();
+        int reportsStatisticsEntryId = reportsStatistics.createReportsStatisticsEntry(reportsStatisticDTO);
+
+        return Response.ok().build();
     }
 
-    // @Override
     @GET
     @Path(ReportsConstants.GET_ALL_STATISTICS_ENDPOINT)
     public Response getAllStatistics() {

@@ -1,6 +1,6 @@
 package com.korpodrony.reports.domain;
 
-import com.korpodrony.reports.controllers.ReportControllerImpl;
+import com.korpodrony.controllers.ReportControllerImpl;
 import com.korpodrony.reports.exceptions.AllExceptionHandler;
 
 import javax.ws.rs.ApplicationPath;
