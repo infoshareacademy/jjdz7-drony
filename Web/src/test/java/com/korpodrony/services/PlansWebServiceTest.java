@@ -143,7 +143,7 @@ class PlansWebServiceTest {
         ActivityEntity activityEntity = new ActivityEntity();
         planEntity.setAssignedActivities(Set.of(activityEntity));
         List<Integer> activitiesIds = Arrays.asList(activityEntity.getId());
-        when(planRepositoryDao.getPlanEntity(anyInt())).thenReturn(planEntity);
+        when(planRepositoryDao.getPlanEntityWithRelations(anyInt())).thenReturn(planEntity);
 
         //when
         boolean result = plansWebService.unassignActivitiesFromPlan(activitiesIds, planEntity.getId());
