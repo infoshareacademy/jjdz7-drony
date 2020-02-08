@@ -12,7 +12,7 @@
     </context-param>
     <servlet-mapping>
         <servlet-name>javax.ws.rs.core.Application</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
     <data-source>
         <name>java:ds/evc</name>
