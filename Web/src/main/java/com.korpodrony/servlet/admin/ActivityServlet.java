@@ -249,7 +249,8 @@ public class ActivityServlet extends HttpServlet {
             short maxUsers = Short.parseShort(parameterMap.get("maxusers")[0]);
             byte duration = Byte.parseByte(parameterMap.get("duration")[0]);
             int activityType = Integer.parseInt(parameterMap.get("activitytype")[0]);
-            return activitiesWebService.createActivity(name, maxUsers, duration, activityType);
+            activitiesWebService.createActivity(name, maxUsers, duration, activityType);
+            return true;
         }
         return false;
     }

@@ -8,32 +8,34 @@
         availableActivitiesMap = new Map(),
         assignedActivitiesMap = new Map();
 
-    assingInput.addEventListener("keyup", function (e) {
-        let value = assingInput.value.toLowerCase();
-        document.querySelectorAll('#availableActivities>li').forEach(x => x.classList.remove("d-none"));
-        if (value === "") {
-            return;
-        }
-        document.querySelectorAll('#availableActivities>li').forEach(x => {
-            if (!x.getAttribute("data-name").toLowerCase().includes(value)) {
-                x.classList.add("d-none");
+    if (assingInput != null) {
+        assingInput.addEventListener("keyup", function (e) {
+            let value = assingInput.value.toLowerCase();
+            document.querySelectorAll('#availableActivities>li').forEach(x => x.classList.remove("d-none"));
+            if (value === "") {
+                return;
             }
-        });
-    }, false);
-
-    unAssignInput.addEventListener("keyup", function (e) {
-        let value = unAssignInput.value.toLowerCase();
-        document.querySelectorAll('#assignedActivities>li').forEach(x => x.classList.remove("d-none"));
-        if (value === "") {
-            return;
-        }
-        document.querySelectorAll('#assignedActivities>li').forEach(x => {
-            if (!x.getAttribute("data-name").toLowerCase().includes(value)) {
-                x.classList.add("d-none");
+            document.querySelectorAll('#availableActivities>li').forEach(x => {
+                if (!x.getAttribute("data-name").toLowerCase().includes(value)) {
+                    x.classList.add("d-none");
+                }
+            });
+        }, false);
+    }
+    if (unAssignInput != null) {
+        unAssignInput.addEventListener("keyup", function (e) {
+            let value = unAssignInput.value.toLowerCase();
+            document.querySelectorAll('#assignedActivities>li').forEach(x => x.classList.remove("d-none"));
+            if (value === "") {
+                return;
             }
-        });
-    }, false);
-
+            document.querySelectorAll('#assignedActivities>li').forEach(x => {
+                if (!x.getAttribute("data-name").toLowerCase().includes(value)) {
+                    x.classList.add("d-none");
+                }
+            });
+        }, false);
+    }
     if (availableActivities !== null) {
         for (var i = 0; i < availableActivities.children.length; i++) {
             availableActivitiesMap.set(
@@ -52,31 +54,34 @@
         return true;
     }
 
-    document.querySelector('.to-assign').addEventListener('click', function (evt) {
-        var id = +evt.target.getAttribute('data-activityid');
-        if (availableActivitiesMap.get(id) !== undefined) {
-            assignedActivitiesMap.set(id, availableActivitiesMap.get(id));
-            availableActivitiesMap.delete(id);
-            $('#assign-errors').addClass('d-none');
-            reloadActivitiesLists();
-        } else {
-            $('#assign-errors').removeClass('d-none');
-            $('#assign-error').text("Nie można przypisać zajęć o id: " + id);
-        }
-    }, false);
-
-    document.querySelector('.to-un-assign').addEventListener('click', function (evt) {
-        var id = +evt.target.getAttribute('data-activityid');
-        if (assignedActivitiesMap.get(id) !== undefined) {
-            availableActivitiesMap.set(id, assignedActivitiesMap.get(id));
-            assignedActivitiesMap.delete(id);
-            $('#delete-errors').addClass('d-none');
-            reloadActivitiesLists();
-        } else {
-            $('#delete-errors').removeClass('d-none');
-            $('#delete-error').text("Nie można wypisać zajęć o id: " + id);
-        }
-    }, false);
+    if (document.querySelector('.to-assign') != null) {
+        document.querySelector('.to-assign').addEventListener('click', function (evt) {
+            var id = +evt.target.getAttribute('data-activityid');
+            if (availableActivitiesMap.get(id) !== undefined) {
+                assignedActivitiesMap.set(id, availableActivitiesMap.get(id));
+                availableActivitiesMap.delete(id);
+                $('#assign-errors').addClass('d-none');
+                reloadActivitiesLists();
+            } else {
+                $('#assign-errors').removeClass('d-none');
+                $('#assign-error').text("Nie można przypisać zajęć o id: " + id);
+            }
+        }, false);
+    }
+    if (document.querySelector('.to-un-assign') != null) {
+        document.querySelector('.to-un-assign').addEventListener('click', function (evt) {
+            var id = +evt.target.getAttribute('data-activityid');
+            if (assignedActivitiesMap.get(id) !== undefined) {
+                availableActivitiesMap.set(id, assignedActivitiesMap.get(id));
+                assignedActivitiesMap.delete(id);
+                $('#delete-errors').addClass('d-none');
+                reloadActivitiesLists();
+            } else {
+                $('#delete-errors').removeClass('d-none');
+                $('#delete-error').text("Nie można wypisać zajęć o id: " + id);
+            }
+        }, false);
+    }
 
     function reloadActivitiesLists() {
         availableActivities.innerHTML = "";
