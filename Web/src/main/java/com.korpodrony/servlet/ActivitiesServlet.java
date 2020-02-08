@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(urlPatterns = {"admin/activities", "user/activities"})
+@WebServlet(urlPatterns = {"admin/activities", "user/activities", "user/useractivities"})
 public class ActivitiesServlet extends HttpServlet {
 
     private final int LECTURE_ACTIVITY_TYPE_NUMBER = 1;
@@ -42,16 +42,23 @@ public class ActivitiesServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
         String typeNumber = req.getParameter(TYPE_FILED);
+        int userId = (Integer) req.getSession().getAttribute("userId");
         String url = req.getServletPath();
-        Map<String, Object> model = getModel(typeNumber);
+        Map<String, Object> model = new HashMap<>();
         switch (url) {
             case "/admin/activities": {
+                model = getRegularModel(typeNumber);
                 proccesTemplate(writer, model, templateProvider.ADMIN_ACTIVITIES_TEMPLATE);
                 break;
             }
             case "/user/activities": {
+                model = getRegularModel(typeNumber);
                 proccesTemplate(writer, model, templateProvider.USER_ACTIVITIES_TEMPLATE);
                 break;
+            }
+            case "/user/useractivities": {
+                model = getUserActivitiesModel(typeNumber, userId);
+                proccesTemplate(writer, model, templateProvider.USER_ASSIGNED_TO_ACTIVITIES_TEMPLATE);
             }
             default: {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -59,14 +66,29 @@ public class ActivitiesServlet extends HttpServlet {
         }
     }
 
-    private Map<String, Object> getModel(String typeNumber) {
+    private Map<String, Object> getUserActivitiesModel(String typeNumber, int userId) {
+        Map<String, Object> model = new HashMap<>();
+        if (!validator.validateIntegerAsPositiveValue(typeNumber)) {
+            model.put(ACTIVITIES_FILED, activitiesWebService.getAllUserActivities(userId));
+            model.put(TYPE_FILED, ALL_ACTIVITIES_TYPES_NUMBER);
+            return model;
+        }
+        addToModelTypeActivities(typeNumber, model);
+        return model;
+    }
+
+    private Map<String, Object> getRegularModel(String typeNumber) {
         Map<String, Object> model = new HashMap<>();
         if (!validator.validateIntegerAsPositiveValue(typeNumber)) {
             model.put(ACTIVITIES_FILED, activitiesWebService.getAllActivities());
             model.put(TYPE_FILED, ALL_ACTIVITIES_TYPES_NUMBER);
             return model;
         }
+        addToModelTypeActivities(typeNumber, model);
+        return model;
+    }
 
+    private void addToModelTypeActivities(String typeNumber, Map<String, Object> model) {
         switch (Integer.parseInt(typeNumber)) {
             case 1: {
                 putToModelActivitiesWithTypeNumber(model, LECTURE_ACTIVITY_TYPE_NUMBER);
@@ -84,7 +106,6 @@ public class ActivitiesServlet extends HttpServlet {
                 putToModelActivitiesWithTypeNumber(model, ALL_ACTIVITIES_TYPES_NUMBER);
             }
         }
-        return model;
     }
 
     private void putToModelActivitiesWithTypeNumber(Map<String, Object> model, int typeNumber) {

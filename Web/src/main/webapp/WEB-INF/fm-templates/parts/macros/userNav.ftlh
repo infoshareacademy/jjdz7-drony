@@ -16,6 +16,15 @@
                         <a class="nav-link text-white text-center" href="/user/activities">Zajęcia</a>
                     </li>
                 </#if>
+                <#if current=="userActivities">
+                    <li class="nav-item active">
+                        <a class="nav-link text-center">Moje Zajęcia</a>
+                    </li>
+                <#else>
+                    <li class="nav-item">
+                        <a class="nav-link text-white text-center" href="/user/useractivities">Moje Zajęcia</a>
+                    </li>
+                </#if>
                 <li class="nav-item active">
                     <a class="nav-link text-white text-center" href="/logout">Wyloguj</a>
                 </li>

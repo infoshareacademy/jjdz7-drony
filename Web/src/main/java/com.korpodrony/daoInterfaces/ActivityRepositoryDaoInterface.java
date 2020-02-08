@@ -23,6 +23,8 @@ public interface ActivityRepositoryDaoInterface {
 
     List<SimplifiedActivityDTO> getAllSimplifiedActivates();
 
+    List<SimplifiedActivityDTO> getAllUserSimplifiedActivates(int userId);
+
     List<SimplifiedActivityDTO> getAllSimplifiedActivates(ActivitiesType activitiesType);
 
     ActivityEntity getActivityEntity(int activityId);
