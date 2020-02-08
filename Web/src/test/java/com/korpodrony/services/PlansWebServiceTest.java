@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -106,9 +107,10 @@ class PlansWebServiceTest {
     void testAssignActivitiesToPlan() {
         //given
         PlanEntity planEntity = new PlanEntity();
+        planEntity.setAssignedActivities(new HashSet<>());
         ActivityEntity activityEntity = new ActivityEntity();
         List<ActivityEntity> expected = Arrays.asList(activityEntity);
-        when(planRepositoryDao.getPlanEntity(anyInt())).thenReturn(planEntity);
+        when(planRepositoryDao.getPlanEntityWithRelations(anyInt())).thenReturn(planEntity);
         when(planRepositoryDao.getActivitiesEntitiesList(any())).thenReturn(expected);
         List<Integer> activitiesIds = Arrays.asList(Integer.valueOf(activityEntity.getId()));
 
@@ -143,7 +145,7 @@ class PlansWebServiceTest {
         ActivityEntity activityEntity = new ActivityEntity();
         planEntity.setAssignedActivities(Set.of(activityEntity));
         List<Integer> activitiesIds = Arrays.asList(activityEntity.getId());
-        when(planRepositoryDao.getPlanEntity(anyInt())).thenReturn(planEntity);
+        when(planRepositoryDao.getPlanEntityWithRelations(anyInt())).thenReturn(planEntity);
 
         //when
         boolean result = plansWebService.unassignActivitiesFromPlan(activitiesIds, planEntity.getId());
