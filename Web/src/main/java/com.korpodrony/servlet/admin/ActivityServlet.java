@@ -49,11 +49,11 @@ public class ActivityServlet extends HttpServlet {
                     break;
                 }
                 Map<String, Object> model = getActivityModel(id);
-                proccesTemplate(writer, model, templateProvider.ACTIVITY_TEMPLATE);
+                processTemplate(writer, model, templateProvider.ACTIVITY_TEMPLATE);
                 break;
             }
             case "/admin/activity-add": {
-                proccesTemplate(writer, null, templateProvider.ADD_ACTIVITY_TEMPLATE);
+                processTemplate(writer, null, templateProvider.ADD_ACTIVITY_TEMPLATE);
                 break;
             }
             default: {
@@ -141,7 +141,7 @@ public class ActivityServlet extends HttpServlet {
         return model;
     }
 
-    private void proccesTemplate(PrintWriter writer, Map<String, Object> model, String path) throws IOException {
+    private void processTemplate(PrintWriter writer, Map<String, Object> model, String path) throws IOException {
         Template template = templateProvider.getTemplate(getServletContext(), path);
         try {
             template.process(model, writer);
