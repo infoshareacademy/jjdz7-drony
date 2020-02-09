@@ -25,8 +25,8 @@ public class ActivitiesServlet extends HttpServlet {
     private final int EXERCISE_ACTIVITY_TYPE_NUMBER = 2;
     private final int WORKSHOP_ACTIVITY_TYPE_NUMBER = 3;
     private final int ALL_ACTIVITIES_TYPES_NUMBER = 4;
-    private final String ACTIVITIES_FILED = "activities";
-    private final String TYPE_FILED = "type";
+    private final String ACTIVITIES_FIELD = "activities";
+    private final String TYPE_FIELD = "type";
 
     @Inject
     TemplateProvider templateProvider;
@@ -41,7 +41,7 @@ public class ActivitiesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-        String typeNumber = req.getParameter(TYPE_FILED);
+        String typeNumber = req.getParameter(TYPE_FIELD);
         int userId = (Integer) req.getSession().getAttribute("userId");
         String url = req.getServletPath();
         Map<String, Object> model = new HashMap<>();
@@ -69,8 +69,8 @@ public class ActivitiesServlet extends HttpServlet {
     private Map<String, Object> getUserActivitiesModel(String typeNumber, int userId) {
         Map<String, Object> model = new HashMap<>();
         if (!validator.validateIntegerAsPositiveValue(typeNumber)) {
-            model.put(ACTIVITIES_FILED, activitiesWebService.getAllUserActivities(userId));
-            model.put(TYPE_FILED, ALL_ACTIVITIES_TYPES_NUMBER);
+            model.put(ACTIVITIES_FIELD, activitiesWebService.getAllUserActivities(userId));
+            model.put(TYPE_FIELD, ALL_ACTIVITIES_TYPES_NUMBER);
             return model;
         }
         addToModelTypeActivities(typeNumber, model);
@@ -80,8 +80,8 @@ public class ActivitiesServlet extends HttpServlet {
     private Map<String, Object> getRegularModel(String typeNumber) {
         Map<String, Object> model = new HashMap<>();
         if (!validator.validateIntegerAsPositiveValue(typeNumber)) {
-            model.put(ACTIVITIES_FILED, activitiesWebService.getAllActivities());
-            model.put(TYPE_FILED, ALL_ACTIVITIES_TYPES_NUMBER);
+            model.put(ACTIVITIES_FIELD, activitiesWebService.getAllActivities());
+            model.put(TYPE_FIELD, ALL_ACTIVITIES_TYPES_NUMBER);
             return model;
         }
         addToModelTypeActivities(typeNumber, model);
@@ -110,15 +110,15 @@ public class ActivitiesServlet extends HttpServlet {
 
     private void putToModelActivitiesWithTypeNumber(Map<String, Object> model, int typeNumber) {
         if (typeNumber == ALL_ACTIVITIES_TYPES_NUMBER) {
-            model.put(ACTIVITIES_FILED, activitiesWebService.
+            model.put(ACTIVITIES_FIELD, activitiesWebService.
                     getAllActivities()
             );
         } else {
-            model.put(ACTIVITIES_FILED, activitiesWebService.
+            model.put(ACTIVITIES_FIELD, activitiesWebService.
                     getAllActivitiesByActivityType(ActivitiesType.getActivity(typeNumber))
             );
         }
-        model.put(TYPE_FILED, typeNumber);
+        model.put(TYPE_FIELD, typeNumber);
     }
 
     private void proccesTemplate(PrintWriter writer, Map<String, Object> model, String path) throws IOException {

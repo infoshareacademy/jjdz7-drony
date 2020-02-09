@@ -2,7 +2,6 @@ package com.korpodrony.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.korpodrony.dao.PlanRepositoryDao;
 import com.korpodrony.daoInterfaces.ActivityRepositoryDaoInterface;
 import com.korpodrony.daoInterfaces.PlanRepositoryDaoInterface;
 import com.korpodrony.daoInterfaces.UserRepositoryDaoInterface;
