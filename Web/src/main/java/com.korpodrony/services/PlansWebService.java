@@ -5,11 +5,15 @@ import com.korpodrony.dto.PlanDTO;
 import com.korpodrony.dto.SimplifiedActivityDTO;
 import com.korpodrony.dto.SimplifiedPlanDTO;
 import com.korpodrony.entity.PlanEntity;
+import com.korpodrony.reports.entity.Action;
+import com.korpodrony.reports.entity.View;
+import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +22,9 @@ public class PlansWebService {
 
     @EJB
     PlanRepositoryDaoInterface planRepositoryDao;
+
+    @Inject
+    ReportsStatisticsRestConsumerInterface reportsStatisticsRestConsumerInterface;
 
     Logger logger = LoggerFactory.getLogger("com.korpodrony.services");
 
@@ -38,11 +45,13 @@ public class PlansWebService {
 
     public boolean deletePlan(int planId) {
         logger.debug("deletePlan called");
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.PLANS, Action.DELETE);
         return planRepositoryDao.deletePlan(planId);
     }
 
     public List<SimplifiedActivityDTO> getAvailableActivities(int planId) {
         logger.debug("getAvailableActivities called");
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.PLANS, Action.GET_AVAILABLE_LIST);
         return planRepositoryDao.getAvailableSimplifiedActivitiesDTO(planId);
     }
 
@@ -86,6 +95,7 @@ public class PlansWebService {
         }
         planEntity.setName(name);
         planRepositoryDao.updatePlan(planEntity);
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.PLANS, Action.EDIT);
         return true;
     }
 
@@ -93,6 +103,7 @@ public class PlansWebService {
         PlanEntity planEntity = new PlanEntity();
         planEntity.setName(name);
         logger.debug("createPlan called");
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.PLANS, Action.ADD);
         return planRepositoryDao.createPlan(planEntity);
     }
 

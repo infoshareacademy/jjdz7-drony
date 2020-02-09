@@ -7,6 +7,7 @@ import com.korpodrony.dto.UserDTO;
 import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.UserEntity;
 import com.korpodrony.model.ActivitiesType;
+import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,6 +25,10 @@ class ActivitiesWebServiceTest {
 
     @Mock
     ActivityRepositoryDaoInterface activityRepositoryDao;
+
+    @Mock
+    ReportsStatisticsRestConsumerInterface reportsStatisticsRestConsumerInterface;
+
     @InjectMocks
     ActivitiesWebService testObj;
 

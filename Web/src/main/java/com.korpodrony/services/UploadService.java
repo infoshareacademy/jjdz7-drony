@@ -10,6 +10,9 @@ import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.entity.PlanEntity;
 import com.korpodrony.entity.UserEntity;
+import com.korpodrony.reports.entity.Action;
+import com.korpodrony.reports.entity.View;
+import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +40,9 @@ public class UploadService {
     @Inject
     PlansWebService plansWebService;
 
+    @Inject
+    ReportsStatisticsRestConsumerInterface reportsStatisticsRestConsumerInterface;
+
     Logger logger = LoggerFactory.getLogger("com.korpodrony.services");
 
 
@@ -45,12 +51,16 @@ public class UploadService {
         logger.debug("file context: " + fileContentString);
         if (uploadUsers(fileContentString)) {
             logger.debug("Users successfully loaded");
+            reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.UPLOAD_FILE, Action.USERS_FILE_UPLOAD);
             return;
         } else if (uploadActivities(fileContentString)) {
             logger.debug("Activities successfully loaded");
+            reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.UPLOAD_FILE, Action.ACTIVITIES_FILE_UPLOAD);
+
             return;
         } else if (uploadPlans(fileContentString)) {
             logger.debug("Plans successfully loaded");
+            reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.UPLOAD_FILE, Action.PLANS_FILE_UPLOAD);
             return;
         } else {
             logger.debug("No Entities loaded");

@@ -7,6 +7,7 @@ import com.korpodrony.dto.SimplifiedPlanDTO;
 import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.PlanEntity;
 import com.korpodrony.model.ActivitiesType;
+import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,6 +25,9 @@ import static org.mockito.Mockito.*;
 class PlansWebServiceTest {
     @Mock
     PlanRepositoryDaoInterface planRepositoryDao;
+
+    @Mock
+    ReportsStatisticsRestConsumerInterface reportsStatisticsRestConsumerInterface;
 
     @InjectMocks
     PlansWebService plansWebService;
