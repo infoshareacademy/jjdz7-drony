@@ -15,7 +15,6 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.korpodrony.dto.AuthUserDTO;
 import com.korpodrony.entity.UserEntity;
 import com.korpodrony.entity.builder.UserEntityBuilder;
-import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.reports.entity.Action;
 import com.korpodrony.reports.entity.View;
 import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;

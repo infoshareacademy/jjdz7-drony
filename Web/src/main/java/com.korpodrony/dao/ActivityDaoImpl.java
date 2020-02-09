@@ -102,6 +102,15 @@ public class ActivityDaoImpl implements ActivityRepositoryDaoInterface {
         }
     }
 
+    @Override
+    public List<SimplifiedActivityDTO> getAllUserSimplifiedActivates(int userId) {
+        logger.debug("Getting all activities where user is assigned: " + userId);
+        return entityManager.createQuery("SELECT new com.korpodrony.dto.SimplifiedActivityDTO(a.id, a.name, a.activitiesType)" +
+                " from Activity a WHERE a IN (select a from Activity a join a.assigned_users u where u.id=:id)", SimplifiedActivityDTO.class)
+                .setParameter("id", userId)
+                .getResultList();
+    }
+
     public List<SimplifiedActivityDTO> getAllSimplifiedActivates(ActivitiesType activitiesType) {
         try {
             logger.debug("Getting simplified list of activities which are type of: " + activitiesType);

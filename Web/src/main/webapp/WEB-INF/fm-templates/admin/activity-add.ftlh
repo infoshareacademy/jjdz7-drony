@@ -11,15 +11,15 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="maxUsers" class="col-sm-6 col-form-label maxUsersLabel">Max l. użytkowników: x</label>
-                    <div class="col-sm-6 col-lg-12">
-                        <input type="range" class="custom-range maxUsers" min="1" max="30">
+                    <label for="maxUsers" class="col-sm-6 col-lg-3 col-form-label maxUsersLabel">Max l. użytkowników: x</label>
+                    <div class="col-sm-6 col-lg-3 mr-auto">
+                        <input type="number" class="custom-range maxUsers" value="1" min="1">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="duration" class="col-sm-6 col-form-label durationLabel">Czas trwania: x</label>
-                    <div class="col-sm-6 col-lg-12">
-                        <input type="range" class="custom-range duration" min="1" max="10" id="duration">
+                    <label for="duration" class="col-sm-6 col-lg-3 col-form-label durationLabel">Czas trwania: x</label>
+                    <div class="col-sm-6 col-lg-3 mr-auto">
+                        <input type="number" class="custom-range duration" min="1" value="1" id="duration">
                     </div>
                 </div>
                 <div class="form-group">

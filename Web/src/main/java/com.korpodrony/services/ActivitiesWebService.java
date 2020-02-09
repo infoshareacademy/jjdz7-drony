@@ -41,6 +41,11 @@ public class ActivitiesWebService {
         return activityRepositoryDao.getAllSimplifiedActivates();
     }
 
+    public List<SimplifiedActivityDTO> getAllUserActivities(int userId) {
+        logger.debug("Getting AllSimplifiedActivities called");
+        return activityRepositoryDao.getAllUserSimplifiedActivates(userId);
+    }
+
     public ActivityDTO getActivityDTO(int activityId) {
         logger.debug("Getting activityDTO called");
         return activityRepositoryDao.getActivityDTO(activityId);

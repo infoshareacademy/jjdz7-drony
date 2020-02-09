@@ -28,17 +28,17 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="maxUsers" class="col-sm-6 col-form-label maxUsersLabel">Max l. użytkowników: x</label>
-                    <div class="col-sm-6 col-lg-12">
-                        <input type="range" class="custom-range maxUsers" min="${minUsers}" max="${maxUsers}"
+                    <label for="maxUsers" class="col-sm-6 col-lg-3 col-form-label maxUsersLabel">Max l. użytkowników: x</label>
+                    <div class="col-sm-6 col-lg-3 mr-auto">
+                        <input type="number" class="custom-range maxUsers" min="${minUsers}"
                                value="${activity.maxUsers}"
                                id="maxUsers">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="duration" class="col-sm-6 col-form-label durationLabel">Czas trwania: x</label>
-                    <div class="col-sm-6 col-lg-12">
-                        <input type="range" class="custom-range duration" min="1" max="10"
+                    <label for="duration" class="col-sm-6 col-lg-3 col-form-label durationLabel">Czas trwania: x</label>
+                    <div class="col-sm-6 col-lg-3 mr-auto">
+                        <input type="number" class="custom-range duration" min="1"
                                value="${activity.lengthInQuarters}" id="duration">
                     </div>
                 </div>
