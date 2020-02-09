@@ -10,6 +10,10 @@
         <param-name>country</param-name>
         <param-value>Poland</param-value>
     </context-param>
+    <servlet-mapping>
+        <servlet-name>javax.ws.rs.core.Application</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
     <data-source>
         <name>java:ds/evc</name>
         <class-name>com.mysql.cj.jdbc.MysqlDataSource</class-name>

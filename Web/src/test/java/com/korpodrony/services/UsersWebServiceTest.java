@@ -5,6 +5,7 @@ import com.korpodrony.dto.AuthUserDTO;
 import com.korpodrony.dto.UserDTO;
 import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.entity.UserEntity;
+import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,6 +23,12 @@ class UsersWebServiceTest {
 
     @Mock
     UserRepositoryDaoInterface userRepositoryDao;
+
+    @Mock
+    ReportsStatisticsRestConsumerInterface reportsStatisticsRestConsumerInterface;
+
+    @Mock
+    CurrentUserService currentUserService;
 
     @InjectMocks
     private UsersWebService testObj;

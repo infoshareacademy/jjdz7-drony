@@ -16,8 +16,6 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +23,7 @@ import java.util.Map;
 @MultipartConfig
 public class UploadFileServlet extends HttpServlet {
 
-    private static final String SUCCES_MESSAGE = "Plik został załadowany";
+    private static final String SUCCESS_MESSAGE = "Plik został załadowany";
 
     private static final String FAILURE_MESSAGE = " Plik nie został załadowany.";
 
@@ -43,7 +41,7 @@ public class UploadFileServlet extends HttpServlet {
             Part filePart = req.getPart("file");
             InputStream fileContent = filePart.getInputStream();
             uploadService.uploadFile(fileContent);
-            message = SUCCES_MESSAGE;
+            message = SUCCESS_MESSAGE;
         } catch (IOException e) {
             message = FAILURE_MESSAGE + e.getMessage();
             e.printStackTrace();
