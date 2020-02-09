@@ -7,11 +7,15 @@ import com.korpodrony.dto.UserDTO;
 import com.korpodrony.entity.ActivityEntity;
 import com.korpodrony.entity.builder.ActivityEntityBuilder;
 import com.korpodrony.model.ActivitiesType;
+import com.korpodrony.reports.entity.Action;
+import com.korpodrony.reports.entity.View;
+import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +27,9 @@ public class ActivitiesWebService {
 
     @EJB
     ActivityRepositoryDaoInterface activityRepositoryDao;
+
+    @Inject
+    ReportsStatisticsRestConsumerInterface reportsStatisticsRestConsumerInterface;
 
     public boolean hasActivity(int activityId) {
         logger.debug("Has Activity called");
@@ -82,6 +89,7 @@ public class ActivitiesWebService {
 
     public boolean deleteActivity(int activityId) {
         logger.debug("Deleting user called");
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.ACTIVITIES, Action.DELETE);
         return activityRepositoryDao.deleteActivity(activityId);
     }
 
@@ -96,6 +104,7 @@ public class ActivitiesWebService {
         activityEntity.setLengthInQuarters(duration);
         activityEntity.setActivitiesType(ActivitiesType.getActivity(activityTypeNumber));
         activityRepositoryDao.updateActivity(activityEntity);
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.ACTIVITIES, Action.EDIT);
         return true;
     }
 
@@ -108,11 +117,13 @@ public class ActivitiesWebService {
                 .withActivitiesType(ActivitiesType.getActivity(activityType))
                 .build();
         activityRepositoryDao.createActivity(activityEntity);
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.ACTIVITIES, Action.ADD);
         return activityEntity.getId();
     }
 
     public List<UserDTO> getAvailableUserDTO(int activityId) {
         logger.debug("Getting getAvailableUsersDTO called");
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.ACTIVITIES, Action.GET_AVAILABLE_LIST);
         return activityRepositoryDao.getAvailableUsersDTO(activityId);
     }
 

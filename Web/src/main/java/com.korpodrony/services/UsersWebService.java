@@ -5,11 +5,15 @@ import com.korpodrony.dto.AuthUserDTO;
 import com.korpodrony.dto.UserDTO;
 import com.korpodrony.entity.PermissionLevel;
 import com.korpodrony.entity.UserEntity;
+import com.korpodrony.reports.entity.Action;
+import com.korpodrony.reports.entity.View;
+import com.korpodrony.rest.ReportsStatisticsRestConsumerInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import java.util.List;
 
 @RequestScoped
@@ -18,10 +22,17 @@ public class UsersWebService {
     @EJB
     UserRepositoryDaoInterface userRepositoryDao;
 
+    @Inject
+    ReportsStatisticsRestConsumerInterface reportsStatisticsRestConsumerInterface;
+
+    @Inject
+    CurrentUserService currentUserService;
+
     Logger logger = LoggerFactory.getLogger("com.korpodrony.services");
 
     public List<UserDTO> getAllUsers() {
         logger.debug("getAllUsers called");
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.USERS, Action.GET_AVAILABLE_LIST);
         return userRepositoryDao.getAllUsers();
     }
 
@@ -38,6 +49,7 @@ public class UsersWebService {
     }
 
     public int createUser(UserEntity userEntity) {
+        reportsStatisticsRestConsumerInterface.createReportsStatisticsEntry(View.USERS, Action.ADD);
         return userRepositoryDao.createUser(userEntity);
     }
 
@@ -51,6 +63,7 @@ public class UsersWebService {
     }
 
     public AuthUserDTO findAuthUserDTOByEmail(String email) {
+        currentUserService.setEmail(email);
         return userRepositoryDao.getAuthUserDTO(email);
     }
 }
