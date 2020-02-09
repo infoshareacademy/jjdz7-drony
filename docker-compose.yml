@@ -10,16 +10,16 @@ services:
       - MYSQL_PASSWORD=secret2
     ports:
       - 4392:3306
-#    volumes:
-#      - ./mysql:/var/lib/mysql
-#  app:
-#    build:
-#      context: .
-#    ports:
-#      - 4390:8080
-#      - 4391:9990
-#    depends_on:
-#      - mysql
-#    links:
-#      - mysql
-#    dns: 8.8.8.8
+    volumes:
+      - ./mysql:/var/lib/mysql
+  app:
+    build:
+      context: .
+    ports:
+      - 4390:8080
+      - 4391:9990
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    dns: 8.8.8.8
